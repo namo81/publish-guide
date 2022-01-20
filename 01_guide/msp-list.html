@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+	<meta charset="UTF-8" >
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="user-scalable=yes, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, width=device-width">
+	<meta name="author" content="seonamho - SK MNS" >
+	<meta name="description" content="MSP - Total Manage">
+	<meta name="keywords" content="msp mns mnservice html css javascript jquery 퍼블리셔 퍼블리싱">
+	<meta property="og:type" content="website">
+	<meta property="og:title" content="MSP - Total Manage">
+	<meta property="og:description" content="msp(mns 퍼블리셔) 업무 및 퍼블 관련 종합 정보 ">
+	<meta property="og:image" content="">
+	<meta property="og:url" content="10.125.253.31:1200">
+	<link rel="shortcut icon" href="data:;base64,iVBORwOKGO=" />
+
+	<title>퍼블 화면 리스트 가이드 | MSP</title>
+
+	<!-- 가이드 관련 -->
+	<link rel="stylesheet" href="../guide/list-guide.css" media="screen, print" />
+	<link rel="stylesheet" href="../guide/vendor/railscasts.css">
+	<script src="../guide/vendor/highlight.pack.js"></script>
+	
+</head>
+<body>
+
+	
+<div id="work-list">
+	<div class="guide">
+
+		<!-- 퍼블 화면 리스트 -->
+		<section>
+			<h2 class="guide-sec-tit">퍼블 화면 리스트</h2>
+			<div class="guide-sec">
+				<h3 class="guide-stit">개요</h3>
+				<p>프로젝트 진행 시 작업된 화면에 대한 관리 및 미리보기 화면 제공을 위한 리스트를 작성해야 합니다.</p>
+				<p>파일 다운로드 및 작성방법을 참고하여 작성해주세요.</p>
+				<p><button type="button" class="btn down_pub-list">파일 다운로드</button></p>
+				<p>파일 내에 <strong>신규 프로젝트 기준 폴더 구조 및 화면 리스트 파일</strong>이 포함되어 있습니다.</p>
+			</div>
+
+			<div class="guide-sec">
+				<h3 class="guide-stit">기본구조</h3>
+				<p><strong>타이틀 / 관련 작업자 / 사이트구분 메뉴(front/mobiel/admin 등) / 리스트 관련 기능 / 리스트</strong> 로 구성됩니다.</p>
+				<ol>
+					<li><strong>- 타이틀</strong> : 해당 프로젝트의 이름</li>
+					<li><strong>- 관련 작업자</strong> : 프로젝트 관련 기획/디자인/퍼블/개발자 등에 대한 정보 기입</li>
+					<li><strong>- 구분메뉴</strong> : 프로젝트가 Front / Mobile / admin 등으로 구분될 경우 링크를 넣을 수 있는 영역</li>
+					<li><strong>- 리스트 관련 기능</strong> : 현재 리스트 진행율 / 전체 화면 대상 텍스트 검색 / 미리보기 기능 제공</li>
+					<li><strong>- 리스트</strong> : 실 퍼블 화면 리스트</li>
+				</ol>
+				<p> 화면 기본 구조</p>
+				<pre><code class="html">&lt;div id="work-list"&gt;
+	&lt;!-- 타이틀 및 작업자 --&gt;
+	&lt;div class="title"&gt;
+		&lt;h1 class="project-title"&gt;프로젝트 이름&lt;/h1&gt;
+		&lt;p class="project-info"&gt;
+			&lt;span&gt;&bull; 담당자 : &lt;/span&gt;
+			&lt;span&gt;&bull; 담당자 : &lt;/span&gt;
+		&lt;/p&gt;
+	&lt;/div&gt;
+
+	&lt;!-- 구분메뉴 --&gt;
+	&lt;div class="menu"&gt;
+		&lt;ul&gt;
+			&lt;li&gt;&lt;a href="#"&gt;Front&lt;/a&gt;&lt;/li&gt;
+		&lt;/ul&gt;
+	&lt;/div&gt;
+
+	&lt;!-- 리스트 관련 기능 --&gt;
+	&lt;div class="function"&gt;
+		//	리스트 관련 기능
+	&lt;/div&gt;
+
+	&lt;!-- 리스트 --&gt;
+	&lt;div class="list"&gt;
+		// 리스트
+	&lt;/div&gt;
+	
+	&lt;!-- 미리보기용 iframe --&gt;
+	&lt;div class="iframe"&gt;
+		&lt;iframe src="" frameborder="0" scrollbars="yes"&gt;&lt;/iframe&gt;
+		&lt;button type="button" class="btn-frame-close"&gt;닫기&lt;/button&gt;
+	&lt;/div&gt;
+&lt;/div&gt;</code></pre>
+				<p>구분메뉴 : 프로젝트 내 경로를 절대경로로 작업 진행 시 Front / Mobile / Admin 등의 구분을 포트별로 분리하고 각각의 포트 URL 작성</p>
+				<p>구분메뉴 : 프로젝트 내 경로를 상대경로로 작업 진행 시 Front / Mobile / Admin 등의 구분을 폴더로 구분하며, index 파일을 각 구분별로 생성하여 해당 index 파일 경로 작성</p>
+			</div>
+			
+			<div class="guide-sec">
+				<h3 class="guide-stit">작성방법</h3>
+				<p></p>
+				<ol>
+					<li>1. 사이트명 / 작성일, 파트별 작업자 정보 기입</li>
+					<li>2. SB 문서 IA 기준으로 depth1 ~ depth4 정리</li>
+					<li>3. 각 페이지명에 따른 파일명과 a 태그 생성</li>
+					<li>4. 진행 전 페이지의 경우 a 태그를 주석 처리 &rarr; '진행상태'가 '대기'로 자동 변경 <br>&nbsp;&nbsp;&nbsp;진행 중인 페이지 a 태그 활성화 &rarr; '진행상태'가 '진행중'으로 자동 변경<br>&nbsp;&nbsp;&nbsp;완료된 페이지일 경우 'end-date' 칸에 완성일자 추가 &rarr; '진행상태'가 '완료'로 자동 변경</li>
+					<li>5. 단순 텍스트 수정 제외, 화면 레이아웃 변경 등의 수정이 있을 경우 '수정 및 참고' 칸에 수정 날짜 / 수정 내역 기입</li>
+					<li>* 페이지가 특정 페이지에 포함되어 있을 경우, 페이지명은 작성하되 a 버튼은 생성하지 않습니다. 단, '수정 및 참고' 항목에 포함된 페이지 안내를 표시합니다.</li>
+				</ol>
+				<pre><code class="html">// 일반 페이지
+&lt;tr&gt;
+	&lt;td class="no"&gt;&lt;/td&gt;
+	&lt;td class="depth1"&gt;1 depth 페이지명&lt;/td&gt;
+	&lt;td class="depth2"&gt;2 depth 페이지명&lt;/td&gt;
+	&lt;td class="depth3"&gt;3 depth 페이지명&lt;/td&gt;
+	&lt;td class="depth4"&gt;4 depth 페이지명&lt;/td&gt;
+	&lt;td class="state"&gt;&lt;/td&gt;
+	&lt;td class="link"&gt;&lt;a href="html 파일 경로" target="_blank">html 파일명&lt;/a&gt;&lt;/td&gt;
+	&lt;td class="end-date"&gt;완료일자&lt;/td&gt;
+	&lt;td class="modify"&gt;
+		&lt;dl&gt;
+				&lt;dt&gt;수정일자&lt;/dt&gt;
+				&lt;dd&gt;수정내역&lt;/dd&gt;
+		&lt;/dl&gt;
+	&lt;/td&gt;
+&lt;/tr&gt;
+// 종속된 페이지 (3depth 페이지에 종속된 4depth 페이지)
+&lt;tr&gt;
+	&lt;td class="no"&gt;&lt;/td&gt;
+	&lt;td class="depth1"&gt;&lt;/td&gt;
+	&lt;td class="depth2"&gt;&lt;/td&gt;
+	&lt;td class="depth3"&gt;&lt;/td&gt;
+	&lt;td class="depth4"&gt;4 depth 페이지명&lt;/td&gt;
+	&lt;td class="state"&gt;&lt;/td&gt;
+	&lt;td class="link"&gt;&lt;/td&gt;
+	&lt;td class="end-date"&gt;완료일자&lt;/td&gt;
+	&lt;td class="modify"&gt;포함된 페이지 지정&lt;/td&gt;
+&lt;/tr&gt;</code></pre>
+			</div>
+			<div class="guide-sec">
+				<h3 class="guide-stit">추가 사용 방법</h3>
+				<p>좌측 상단 진행율 : 전체 페이지 대비 '완료' 페이지의 수를 백분율한 값 표기됩니다.</p>
+				<p>우측 상단 'Text' 검색 : 리스트 내 링크된 작업 페이지 전체에서 input 에 입력한 단어를 검색하며, 해당 페이지가 단어를 포함할 경우 링크명이 붉은색으로 표기됩니다.</p>
+				<p>우측 상단 '미리보기' : 해당 기능 on 시킨 후 '링크' 부분의 파일명에 마우스 오버 시 해당 페이지가 좌측에 iframe 형태로 표출 됩니다. <br>
+					해당 iframe 의 크기는 guide 폴더 내 guiide.css 파일 수정하여 조정 가능합니다.</p>
+			</div>
+		</section>
+
+		<!-- 기타 -->
+		<section>
+			<h2 class="guide-sec-tit">기타</h2>
+			<div class="guide-sec">
+				<p>화면 리스트는 퍼블리싱 작업에 대하여 사내 관련 팀에 공유되는 화면으로, 항상 최신 상태를 유지하여야 합니다. 작업 후 실시간으로 관리하여 주세요.</p>
+			</div>
+		</section>
+	</div>
+</div>
+
+<script src="/js/vendor/jszip.min.js"></script>
+<script src="/js/vendor/FileSaver.js"></script>
+<script src="/js/vendor/jszip-utils.js"></script>
+<script src="/js/common.js"></script>
+<script>
+	hljs.initHighlightingOnLoad(); 
+
+	function urlToPromise(url) {
+		return new Promise(function (resolve, reject) {
+			JSZipUtils.getBinaryContent(url, function (err, data) {
+				if (err) {
+					reject(err);
+				} else {
+					resolve(data);
+				}
+			});
+		});
+	}
+
+	var zipBtn = document.querySelector('.down_pub-list');
+	zipBtn.addEventListener('click', function(){
+		var zip = new JSZip();
+		zip.folder('html', '', { binary: true });
+		zip.folder('images', '', { binary: true });
+		zip.folder('css/vendor', '', { binary: true });
+		zip.folder('js/vendor', '', { binary: true });
+		zip.file('index.html', urlToPromise('../index_base.html'), { binary: true });
+		zip.file('js/common.js', urlToPromise('../js/common.js'), { binary: true });
+		zip.file('guide/list-guide.css', urlToPromise('../guide/list-guide.css'), { binary: true });
+		zip.file('guide/list-guide.js', urlToPromise('../guide/list-guide.js'), { binary: true });
+		zip.file('guide/images/next.png', urlToPromise('../guide/images/next.png'), { binary: true });
+		zip.file('guide/images/tree-btn.png', urlToPromise('../guide/images/tree-btn.png'), { binary: true });
+		zip.file('guide/images/tree-btn-open.png', urlToPromise('../guide/images/tree-btn-open.png'), { binary: true });
+		zip.file('guide/images/tree-line.png', urlToPromise('../guide/images/tree-line.png'), { binary: true });
+		zip.file('guide/images/tree-onoff.png', urlToPromise('../guide/images/tree-onoff.png'), { binary: true });
+		zip.file('guide/vendor/highlight.pack.js', urlToPromise('../guide/vendor/highlight.pack.js'), { binary: true });
+		zip.file('guide/vendor/railscasts.css', urlToPromise('../guide/vendor/railscasts.css'), { binary: true });
+
+		zip.generateAsync({ type: "blob" }).then(
+			function (blob) {
+				saveAs(blob, 'msp_퍼블리스트.zip');
+			}
+		);
+	});
+</script>
+
+</body>
+</html>

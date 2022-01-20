@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+	<meta charset="UTF-8" >
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="user-scalable=yes, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, width=device-width">
+	<meta name="author" content="seonamho - SK MNS" >
+	<meta name="description" content="">
+	<meta name="keywords" content="Site Template">
+	<meta property="og:type" content="website">
+	<meta property="og:title" content="Site Template">
+	<meta property="og:description" content="">
+	<meta property="og:image" content="">
+	<meta property="og:url" content="">
+	<link rel="shortcut icon" href="data:;base64,iVBORwOKGO=" />
+
+	<title>버그 현상 및 해결방법</title>
+
+	<!-- 가이드 관련 -->
+	<link rel="stylesheet" href="../../../../guide/list-guide.css" media="screen, print" />
+	<link rel="stylesheet" href="../../../../guide/vendor/railscasts.css">
+	<script src="../../../../guide/vendor/highlight.pack.js"></script>
+
+</head>
+<body>
+	<div id="work-list">
+		<div class="guide">
+	
+			<section id="guide-basic">
+				<h2 class="guide-sec-tit">테이블 td 에 마우스 hover 시 라인 사라지는 현상</h2>
+	
+				<div class="guide-sec">
+					<h3 class="guide-stit">상세 현상</h3>
+					<p>테이블 td 에 라인 설정이 되어있는 상태에서, td나 tr 에 hover 를 주어 배경색상을 주었을 경우. IE 에서 라인이 사라지는 현상이 있음.</p>
+					<p>IE 11 에서만 인지, 타 버전 포함인지 확실치 않음.</p>
+				</div>
+				<div class="guide-sec">
+					<h3 class="guide-stit">해결 방법</h3>
+					<p><strong>해당 td 에 position:relative 설정이 있을 경우 삭제.</strong></p>
+					<h2>&bull; 해결 방법2</h2>
+					<p><strong>relative 를 삭제할 수 없는 경우 CSS에 'background-clip:padding-box;' 속성 추가</strong></p>
+				</div>
+			</section>
+		</div>
+	</div>
+
+</body>
+</html>

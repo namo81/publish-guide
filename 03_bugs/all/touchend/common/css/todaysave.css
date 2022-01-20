@@ -1,0 +1,115 @@
+.evt-wrap { padding-bottom:5%; background:#f6f2dd; color:#3d3d3d; word-break:keep-all; } /* 2016-11-07 수정 */
+.evt-wrap button { width:100%; } /* 2016-11-08 수정 */
+
+.tx-red { color:#f5493f !important; }
+.f-wrap { display:block; overflow:hidden; }
+.f-wrap .fl { float:left; width:50%; }
+.f-wrap .fr { float:right; width:50%; }
+
+/* 카드 추가할인 */
+.evt-tx-ban { padding-bottom:3%; background:#ffc43a; }
+.evt-tx-ban .top { padding:3% 3% 1%; overflow:hidden;}
+.evt-tx-ban .top .tit { float:left; width:50%; font-size:1.4rem; line-height:1.2em; font-weight:bold; }
+.evt-tx-ban .top .page-num { float:right; width:50%; text-align:right; font-size:1.2rem; line-height:1.4em; }
+.evt-tx-ban .top .page-num i { color:#26b286; }
+.evt-tx-ban .ban-wrap { overflow:hidden; }
+.evt-tx-ban .ban-wrap ul { position:relative; display:inline-block; width:100%; margin-left:1%; vertical-align:top; }
+.evt-tx-ban .ban-wrap li { float:left; padding-bottom:1px; }
+.evt-tx-ban .ban-wrap button { display:block; width:97%; margin:0 1.5%; padding:3% 2%; background:#fff; border:1px solid #52514e; overflow:hidden; }
+.evt-tx-ban .ban-wrap .logo { float:left; display:block; width:27%; padding:0 3%; box-sizing:border-box; line-height:3rem; border-right:1px solid #aeaeae; vertical-align:middle; }
+.evt-tx-ban .ban-wrap .logo img { vertical-align:middle; }
+.evt-tx-ban .ban-wrap .tx-wrap { float:left; display:block; width:73%; padding:0 3%; box-sizing:border-box; text-align:left; font-size:1.2rem; line-height:1.4em; }
+.evt-tx-ban .ban-wrap .tx-wrap .tx { display:block; width:100%; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+
+.evt-tx-ban .ban-wrap-1 { overflow:hidden; padding:0 2% ; }
+.evt-tx-ban .ban-wrap-1 button { display:block; width:100%; padding:3% 2%; background:#fff; border:1px solid #52514e; overflow:hidden; box-sizing:border-box;}
+.evt-tx-ban .ban-wrap-1 .logo { float:left; display:block; width:27%; padding:0 3%; box-sizing:border-box; line-height:3rem; border-right:1px solid #aeaeae; vertical-align:middle; }
+.evt-tx-ban .ban-wrap-1 .logo img { vertical-align:middle; }
+.evt-tx-ban .ban-wrap-1 .tx-wrap { float:left; display:block; width:73%; padding:0 3%; box-sizing:border-box; text-align:left; font-size:1.2rem; line-height:1.4em; }
+.evt-tx-ban .ban-wrap-1 .tx-wrap .tx { display:block; width:100%; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+
+/* 2016-11-02 수정 */
+.evt-top .top { position:relative; padding:3% 0; text-align:center; }
+.evt-top .top .tit { font-size:1.6rem; line-height:1.2em; text-align:center; font-weight:bold; letter-spacing:-0.05em; }
+.evt-top .top .btn-info { display:inline-block; width:1.8rem; line-height:1.8rem; vertical-align:10%; }
+.evt-top .balloon-info { position:absolute; display:none; width:84%; padding:6% 0 0%; right:2%; top:75%; background:#3d3d3d; color:#fff; border-radius:.5rem; z-index:20; } /* 2016-10-25 수정 */
+/* 2016-11-02 수정 // */
+.evt-top-ban .balloon-info.view { display:block; }
+.evt-top-ban .balloon-info .f-wrap > div { padding:0 6%; box-sizing:border-box; text-align:left; line-height:1.2em; letter-spacing:-0.05em; }
+.evt-top-ban .balloon-info .fr { border-left:1px solid #6e6e6e; }
+.evt-top-ban .balloon-info .step { display:block; margin-bottom:5%; font-weight:bold; padding-top:3.6rem; background:url(../../images/ico_touch.png) no-repeat left top; background-size:3.1rem 3.1rem; font-size:1.3rem; }
+.evt-top-ban .balloon-info .fr .step { background-image:url(../../images/ico_1P.png) }
+.evt-top-ban .balloon-info .btns { margin:5% 0; padding:0 5%; text-align:right; }
+.evt-top-ban .balloon-info .btn-info-close { display:inline-block; padding:1.5% 10%; font-size:1.2rem; color:#fff; border:1px solid #909090; border-radius:.4rem; }
+
+/* 2016-11-02 수정 */
+.evt-top-ban { margin-bottom:4%; }
+.evt-top-ban .ban-list { padding:0 2%; position:relative; }
+.evt-top-ban .ban-list button { vertical-align:top; border:1px solid #bababa; }
+.ball-reg { position:absolute; display:block; width:4rem; height:2.4rem; padding:.8rem 0; bottom:5%; right:2%; background:#ffee5c; color:#805d44; text-align:center; font-size:1.2rem; line-height:1.1em; border-radius:50%; }
+.ball-reg strong { display:block; }
+.evt-top-ban .ball-reg { right:4%; } /* 2016-11-08 수정 */
+/* 2016-11-02 수정 // */
+
+/* 2016-11-02 수정 */
+.pdt-list { padding:0 2% 0; margin-bottom:4%; }
+.pdt-list .wrap { position:relative; }
+.pdt-list .imp { position:absolute; width:38%; top:2%; left:-.3rem; z-index:10; text-align:center; } /* 2016-10-25 수정 */
+.pdt-list .imp strong { position:relative; display:block; padding:8% 12%; background:#fda145; color:#fff; font-size:1.4rem; line-height:1.2em; letter-spacing:-0.05em; border-top-right-radius:4rem; border-bottom-right-radius:4rem; }
+.pdt-list .imp:before { position:absolute; display:block; content:''; width:0; height:0; left:-.4rem; bottom:-.4rem; border:.4rem solid transparent; border-right-color:#bb752f; z-index:0; }
+/* 2016-11-02 수정 // */
+.btn-pdt { display:block; padding:3%; border:1px solid #bababa; background:#fff; }
+.btn-pdt .img { position:relative; display:block; border:1px solid #e5e5e5; }
+.btn-pdt .store-name { display:block; margin:4% 0 1%; font-sze:1.1rem; line-height:1.2em; color:#a4a3a3; text-align:left; }
+.btn-pdt .fl { text-align:left; padding-right:3%; box-sizing:border-box; font-size:1.3rem; line-height:1.2em;}
+.btn-pdt .fr { text-align:right; font-size:1.3rem; line-height:1.2em; letter-spacing:-0.05em; } 
+.btn-pdt .fr del { display:block; font-size:1.2rem; color:#999; }
+.btn-pdt .fr .price i { font-size:1.2rem; }
+.btn-pdt .total-price { display:block; margin-top:2%; text-align:right; font-size:1.6rem; line-height:1.2em; color:#e85a5a; }
+.btn-pdt .total-price strong { font-size:2rem; }
+.btn-pdt .total-price .ocb { display:inline-block; padding:0.2% 0.8%; border:1px solid #e85a5a; font-size:1.1rem; line-height:1.2em; border-radius:.5rem; vertical-align:17%; }
+
+.evt-notice { padding:6% 4.5%; border-top:1px solid #b3b1a4; font-size:1.2rem; line-height:1.4em; color:#6e6e6e; }
+.evt-notice h2 { margin-bottom:3%; padding-left:2rem; font-size:1.4rem; background:url(../../images/ico_!.png) no-repeat left 50%; background-size:1.4rem 1.4rem; }
+.evt-notice ul { width:100%; }
+.evt-notice li { overflow:hidden; width:100%; margin-bottom:1%; }
+.evt-notice .blet { float:left; }
+.evt-notice .tx { display:block; padding-left:.5rem; overflow:hidden; }
+.evt-notice .in-list { margin:1% 0 1% 3%; }
+
+.evt-shair { margin:0 5% 0; padding:5%; border:1px solid #bbb; border-radius:1rem; text-align:center;}
+.evt-shair h2 { font-size:1.4rem; line-height:1.4em; margin-bottom:2%; color:#555; }
+.evt-shair ul { display:inline-block; width:95%; }
+.evt-shair li { display:inline-block; width:23%; }
+.evt-shair li .img { display:block; width:65%; margin:0 auto 10%; }
+.evt-shair li .tx { font-size:1.1rem; letter-spacing:-0.05em; color:#555; }
+
+.top-area { position:fixed; display:block; width:5rem; height:5rem; right:1.5%; bottom:5%; background:#fff; border:1px solid #b8b5ab; border-radius:50%; overflow:hidden; transition:.6s cubic-bezier(.3,.04,.28,.96); -webkit-transform:translate3d(200%,0,0); }
+.top-area.on { -webkit-transform:translate3d(0,0,0); }
+.top-area a { position:relative; display:block; }
+.top-area .top { position:absolute; width:100%; height:100%; top:0; left:0; padding:18% 33%; box-sizing:border-box; background:#fff; border-radius:50%; z-index:10; } /* 2016-11-07 수정 */
+.top-area .top.off { display:none; }
+.top-area .paging { position:relative; width:70%; margin:0.5rem auto 0; text-align:center; font-size:1.3rem; line-height:1.6em; font-weight:bold; color:#b3b3b3; z-index:5; } /* 2016-11-07 수정 */
+.top-area .paging .now { color:#3a3a3a; border-bottom:1px solid #c7c7c7; }
+
+
+/* 2016-09-22 추가 */
+.evt-use { padding:0 2%; margin-bottom:4%; } /* 2016-11-02 수정 */
+.evt-use > button { padding:3%; border:1px solid #bababa; box-sizing:border-box; background:#fff; color:#464646; letter-spacing:-0.05em; text-align:left; }
+.evt-use > button > span { display:block; }
+.evt-use .tit { margin-bottom:2%; font-size:1.4rem; line-height:1.4em; }
+.evt-use .tx-cnt { font-size:1.2rem; line-height:1.4em; color:#646464; }
+.evt-use .origin { margin:2% 0 1%; text-align:right; font-size:1.2rem; color:#5289af; }
+.evt-use .img { position:relative; padding-bottom:1px; border:1px solid #e5e5e5; }
+.evt-use .pdt-name { margin:2% 0; font-size:1.4rem; text-align:center;}
+
+.pdt-roll { margin:0 2% 4%; padding:3% 0 5%; border:1px solid #bababa; background:#fff; } /* 2016-11-02 수정 */
+.pdt-roll .partner { margin-bottom:1%; font-size:1.1rem; line-height:1.2em; color:#a4a3a3; text-align:center; }
+.pdt-roll .tit { font-size:2rem; line-height:1.2em; color:#464646; text-align:center; font-weight:bold; letter-spacing:-0.05em; }
+.pdt-roll .desc { margin:1% 0 2%; font-size:1.2rem; line-height:1.2em; color:#5289af; text-align:center; }
+.pdt-roll .roll { overflow:hidden; }
+.pdt-roll .roll ul { position:relative; display:inline-block; width:100%; margin-left:1%; vertical-align:top; }
+.pdt-roll .roll li { float:left; }
+.pdt-roll .roll li button { position:relative; padding:0 3%; }
+.pdt-roll .roll li button .img { display:block; border:1px solid #e5e5e5; box-sizing:border-box; }
+.pdt-roll .ball-reg { right:auto; left:6%; }

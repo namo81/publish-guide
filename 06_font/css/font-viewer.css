@@ -1,0 +1,58 @@
+input { padding:5px 12px 3px; vertical-align:0px; border:1px solid #999; background:#ddd; font-size:12px; line-height:1.4em; vertical-align:top; }
+input[type=submit] { cursor:pointer; }
+.input-wrap { position:relative; padding-right:100px;}
+.inputBox { width:100%; height:50px; padding:5px; border:1px solid #ccc; font-size:16px; background:#efefef; box-sizing:border-box; }
+#inBtn { position:absolute; display:block; width:95px; height:50px; top:0; right:0; background:#da146c; color:#fff; border-color:#da146c; font-weight:bold; font-size:16px; cursor:pointer; border-radius:3px; }
+.now { min-height:22px; padding:5px 10px; font-size:16px; line-height:22px; font-family:'맑은 고딕', dotum; color:#eee; background:#444; border:1px solid #222; }
+.now em { margin:0 10px; opacity:.5; }
+.f_size { font-weight:bold; }
+.secTitle { margin:0 0 25px 0; padding:6px 10px 3px; font-size:16px; line-height:1.4em; color:#fff; background:#9acb51; text-align:center; }
+
+#web .secTitle { background:#e15d70; }
+#mobile { display:none; }
+
+.colorInp {width:100px; vertical-align:-1px;}
+.colorBox {display:inline-block; width:12px; height:12px; margin-left:10px; background:#000;}
+.colorNum {font-style:normal;}
+
+.viewTxt h2 { font-size:14px; margin-bottom:5px; color:#aaa; }
+.viewTxt p { border-bottom:1px solid #eee; margin-bottom:10px; padding:8px; font-size:12px; line-height:1.2em; color:#000; }
+
+.set-area { margin-top:10px; }
+.set-area .set-box { display:inline-block; margin:0 10px 0 0; vertical-align:top;}
+.set-area .tit { font-size:14px; line-height:27px; vertical-align:top;}
+.set-area select { height:27px; }
+
+#font-w { height:27px; }
+#delBtn { background-color:#333; border-color:#333; color:#fff; font-weight:bold;}
+
+#cnt .mid { margin-top:0; padding:0 10px; background:transparent; }
+#web, #mobile { background:#fff; }
+
+/* 폰트 설정 */
+@import url(http://fonts.googleapis.com/earlyaccess/nanumgothic.css);
+
+.f_dotum {font-family:dotum; }
+.f_gulim {font-family:gulim;}
+.f_malgun {font-family:맑은 고딕;}
+.f_arial {font-family:arial;}
+.f_tahoma {font-family:tahoma;}
+.f_dserif {font-family:serif;}
+.f_dsans {font-family:arial, sans;}
+.f_Century {font-family:Century Gothic }
+.f_microsoft {font-family:Microsoft PhagsPa}
+.f_Calisto {font-family:Calisto MT }
+.f_nanum {font-family:'나눔고딕', 'Nanum Gothic';}
+.f_sserif {font-family:sans-serif;}
+.f_TimesNR {font-family:Times New Roman;}
+.f_Trebuchet {font-family:Trebuchet MS;}
+.f_NewTaiLue {font-family:Microsoft New Tai Lue;}
+.f_Verdana {font-family:Verdana;}
+.f_helveticaLT {font-family:'HelveticaNeue LT 47 LtCnObl';}
+.f_Courier {font-family:Courier;}
+/* // 폰트 설정 */
+
+@media all and (max-width:600px){
+	.input-wrap { position:relative; padding-right:0; }
+	#inBtn { position:relative; display:block; width:100%; height:auto; padding:5px; }
+}

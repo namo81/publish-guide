@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+	<meta charset="UTF-8" >
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="user-scalable=yes, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, width=device-width">
+	<meta name="author" content="seonamho - SK MNS" >
+	<meta name="description" content="">
+	<meta name="keywords" content="Site Template">
+	<meta property="og:type" content="website">
+	<meta property="og:title" content="Site Template">
+	<meta property="og:description" content="">
+	<meta property="og:image" content="">
+	<meta property="og:url" content="">
+	<link rel="shortcut icon" href="data:;base64,iVBORwOKGO=" />
+
+	<title>알럿 / 컨펌 | 가이드</title>
+
+	<!-- 가이드 관련 -->
+	<link rel="stylesheet" href="../guide/list-guide.css" media="screen, print" />
+	<link rel="stylesheet" href="../guide/vendor/railscasts.css">
+	<script src="../guide/vendor/highlight.pack.js"></script>
+
+	<!-- 프로젝트 관련 CSS 및 JS 파일 로드 -->
+	<link rel="stylesheet" href="/css/layout.css" media="screen, print" />
+
+</head>
+<body>
+	
+	
+	<div id="work-list">
+		<div class="guide">
+			<section id="guide-basic">
+				<h2 class="guide-sec-tit">알럿 / 컨펌</h2>
+				<div class="guide-sec">
+					<h3 class="guide-stit">알럿</h3>
+					<p>기본 스타일은 레이어팝업과 공유하며, css 에서 별도 설정 가능</p>
+					<p>알럿 관련 클래스 추가 후 javascript 에서 기능 설정 (ex : alert 등..)</p>
+					<p>알럿 함수 파라미터 : nlayerAlert('내용', '타이틀', 확인 후 실행할 함수, '버튼 텍스트');</p>
+					<p>첫번째 '내용' 텍스트는 필수항목임</p>
+					<p>실제 팝업 관련 html 은 자동생성되므로 별도 하드코딩 X</p>
+					<p>팝업 style은 css 로 설정 / 특정 클래스 필요 시 layerpop-v4.0.0.js 파일 내 항목 수정</p>
+					<div class="guide-show">
+					<!-- 코드 작성 -->
+						<button type="button" class="btn small alert">알럿 호출</button>
+					<!-- // 코드 작성 -->
+					</div>
+	<pre><code class="html ">&lt;button type="button" class="btn01 alert"&gt;알럿 호출&lt;/button&gt;
+	</code></pre>
+
+	<pre><code class="js">var btnAlert = document.querySelector('.alert');
+btnAlert.addEventListener('click', function(){
+	nlayerAlert('내용을 확인하셨습니까?');
+});
+	</code></pre>
+				</div>
+
+				<div class="guide-sec">
+					<h3 class="guide-stit">컨펌</h3>
+					<p>기본 스타일은 레이어팝업과 공유하며, css 에서 별도 설정 가능</p>
+					<p>컨펌 관련 클래스 추가 후 javascript 에서 기능 설정 (ex : confirm 등..)</p>
+					<p>컨펌 함수 파라미터 : nlayerAlert('내용', 확인 시 실행할 함수, '타이틀', '취소버튼 텍스트', '확인버튼 텍스트');</p>
+					<p>첫번째 '내용' 텍스트는 필수항목임</p>
+					<p>'확인' 시 실행할 함수는 별도 생성 후 함수명 기입</p>
+					<p>실제 팝업 관련 html 은 자동생성되므로 별도 하드코딩 X</p>
+					<p>팝업 style은 css 로 설정 / 특정 클래스 필요 시 layerpop-v4.0.0.js 파일 내 항목 수정</p>
+					<div class="guide-show">
+					<!-- 코드 작성 -->
+						<button type="button" class="btn small confirm">컨펌 호출</button>
+					<!-- // 코드 작성 -->
+					</div>
+	<pre><code class="html ">&lt;button type="button" class="btn01 confirm"&gt;컨펌 호출&lt;/button&gt;
+	</code></pre>
+
+	<pre><code class="js">var btnConfirm = document.querySelector('.confirm');
+btnConfirm.addEventListener('click', function(){
+	var funcRun = function(){
+		console.log('YES');
+	}
+	nlayerConfirm('내용을 확인하셨습니까?', funcRun)
+});
+	</code></pre>
+				</div>
+			</section>
+		</div>
+	</div>
+
+	<script src="/js/common.js"></script>
+	<script src="/js/layerpop_v4.0.0.js"></script>
+	<script>
+		hljs.initHighlightingOnLoad(); 
+
+		var btnAlert = document.querySelector('.alert');
+		btnAlert.addEventListener('click', function(){
+			nlayerAlert('내용을 확인하셨습니까?');
+		});
+
+		var btnConfirm = document.querySelector('.confirm');
+		btnConfirm.addEventListener('click', function(){
+			var funcRun = function(){
+				console.log('YES');
+			}
+			nlayerConfirm('내용을 확인하셨습니까?', funcRun)
+		});
+	</script>
+</body>
+</html>

@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 16.2.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<!DOCTYPE html>
+<svg id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 100 100" enable-background="new 0 0 100 100" xml:space="preserve">
+	<style type="text/css">
+		<![CDATA[
+			@keyframes obj {
+				0% { transform:translate3d(0,0,0) rotate(0deg); opacity:1;}
+				10% { opacity:1;}
+				80%, 100% { transform:translate3d(0,-100%,0) rotate(180deg); opacity:0; }
+			}
+
+			@keyframes group {
+				0% { transform:rotate(0deg); }
+				100% { transform:rotate(-360deg); }
+			}
+
+			.obj1, .obj2, .obj3, .obj4, .obj5, .obj6, .obj7, .obj8, .obj9, .obj10 { animation:obj 1s cubic-bezier(.39,0.25,.4,.9) infinite; transform-origin:100% 50%; }
+			.obj1 {  }
+			.obj2 { animation-delay:.1s; }
+			.obj3 { animation-delay:.2s; }
+			.obj4 { animation-delay:.3s; }
+			.obj5 { animation-delay:.4s; }
+			.obj6 { animation-delay:.5s; }
+			.obj7 { animation-delay:.6s; }
+			.obj8 { animation-delay:.7s; }
+			.obj9 { animation-delay:.8s; }
+			.obj10 { animation-delay:.9s; }
+
+			.obj-wrap { transform:translate3d(-5px, -5px, 0);}
+			.obj-group { animation:group 1s linear infinite; transform-origin:55px 55px; }
+		]]>
+	</style>
+	<g class="obj-wrap">
+		<g class="obj-group">
+			<circle fill="#000" stroke="none" stroke-width="8" stroke-miterlimit="10" cx="50" cy="50" r="12" class="obj"/>
+			<circle fill="#000" stroke="none" stroke-width="8" stroke-miterlimit="10" cx="50" cy="50" r="12" class="obj1"/>
+			<circle fill="#000" stroke="none" stroke-width="8" stroke-miterlimit="10" cx="50" cy="50" r="12" class="obj2"/>
+			<circle fill="#000" stroke="none" stroke-width="8" stroke-miterlimit="10" cx="50" cy="50" r="12" class="obj3"/>
+			<circle fill="#000" stroke="none" stroke-width="8" stroke-miterlimit="10" cx="50" cy="50" r="12" class="obj4"/>
+			<circle fill="#000" stroke="none" stroke-width="8" stroke-miterlimit="10" cx="50" cy="50" r="12" class="obj5"/>
+			<circle fill="#000" stroke="none" stroke-width="8" stroke-miterlimit="10" cx="50" cy="50" r="12" class="obj6"/>
+			<circle fill="#000" stroke="none" stroke-width="8" stroke-miterlimit="10" cx="50" cy="50" r="12" class="obj7"/>
+			<circle fill="#000" stroke="none" stroke-width="8" stroke-miterlimit="10" cx="50" cy="50" r="12" class="obj8"/>
+			<circle fill="#000" stroke="none" stroke-width="8" stroke-miterlimit="10" cx="50" cy="50" r="12" class="obj9"/>
+			<circle fill="#000" stroke="none" stroke-width="8" stroke-miterlimit="10" cx="50" cy="50" r="12" class="obj10"/>
+		</g>
+	</g>
+</svg>

@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 16.2.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 100 100" enable-background="new 0 0 100 100" xml:space="preserve">
+		<radialGradient id="SVGID_1_" cx="42.2046" cy="226.9229" r="565.414" gradientTransform="matrix(0.8628 0 0 0.8628 6.8582 6.8591)" gradientUnits="userSpaceOnUse">
+			<stop  offset="0" style="stop-color:#FEC053"/>
+			<stop  offset="0.3273" style="stop-color:#F2203E"/>
+			<stop  offset="0.6485" style="stop-color:#B729A8"/>
+			<stop  offset="1" style="stop-color:#5342D6"/>
+		</radialGradient>
+		<path fill="url(#SVGID_1_)" d="M71.538,100H28.461C12.767,100,0,87.232,0,71.539V28.461C0,12.767,12.767,0,28.461,0h43.077C87.232,0,100,12.767,100,28.461v43.078C100,87.232,87.232,100,71.538,100z M28.461,8.573c-10.967,0-19.89,8.921-19.89,19.889v43.078c0,10.967,8.922,19.889,19.89,19.889h43.077c10.968,0,19.891-8.922,19.891-19.889V28.461c0-10.967-8.922-19.889-19.891-19.889H28.461z"/>
+			<radialGradient id="SVGID_2_" cx="42.2046" cy="226.9229" r="565.4139" gradientTransform="matrix(0.8628 0 0 0.8628 6.8582 6.8591)" gradientUnits="userSpaceOnUse">
+			<stop  offset="0" style="stop-color:#FEC053"/>
+			<stop  offset="0.3273" style="stop-color:#F2203E"/>
+			<stop  offset="0.6485" style="stop-color:#B729A8"/>
+			<stop  offset="1" style="stop-color:#5342D6"/>
+		</radialGradient>
+		<path fill="url(#SVGID_2_)" d="M50,75.604c-14.118,0-25.604-11.485-25.604-25.604c0-14.117,11.486-25.605,25.604-25.605c14.119,0,25.605,11.488,25.605,25.605C75.605,64.118,64.119,75.604,50,75.604z M50,32.966c-9.392,0-17.033,7.643-17.033,17.034S40.608,67.032,50,67.032c9.393,0,17.034-7.641,17.034-17.032S59.393,32.966,50,32.966z"/>
+			<radialGradient id="SVGID_3_" cx="42.2065" cy="226.9219" r="565.4102" gradientTransform="matrix(0.8628 0 0 0.8628 6.8582 6.8591)" gradientUnits="userSpaceOnUse">
+			<stop  offset="0" style="stop-color:#FEC053"/>
+			<stop  offset="0.3273" style="stop-color:#F2203E"/>
+			<stop  offset="0.6485" style="stop-color:#B729A8"/>
+			<stop  offset="1" style="stop-color:#5342D6"/>
+		</radialGradient>
+		<circle fill="url(#SVGID_3_)" cx="76.704" cy="22.931" r="6.153"/>
+</svg>

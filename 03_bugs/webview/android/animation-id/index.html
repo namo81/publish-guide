@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+	<meta charset="UTF-8" >
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="user-scalable=yes, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, width=device-width">
+	<meta name="author" content="seonamho - SK MNS" >
+	<meta name="description" content="">
+	<meta name="keywords" content="Site Template">
+	<meta property="og:type" content="website">
+	<meta property="og:title" content="Site Template">
+	<meta property="og:description" content="">
+	<meta property="og:image" content="">
+	<meta property="og:url" content="">
+	<link rel="shortcut icon" href="data:;base64,iVBORwOKGO=" />
+
+	<title>버그 현상 및 해결방법</title>
+
+	<!-- 가이드 관련 -->
+	<link rel="stylesheet" href="../../../../guide/list-guide.css" media="screen, print" />
+	<link rel="stylesheet" href="../../../../guide/vendor/railscasts.css">
+	<script src="../../../../guide/vendor/highlight.pack.js"></script>
+
+</head>
+<body>
+	<div id="work-list">
+		<div class="guide">
+	
+			<section id="guide-basic">
+				<h2 class="guide-sec-tit">애니메이션 + ID 제어 관련 오류</h2>
+	
+				<div class="guide-sec">
+					<h3 class="guide-stit">상세 현상</h3>
+					<p><strong>안드로이드 4.2 버전</strong>에서 발생. 그 이하 버전에서도 동일한 오류가 발생하는지 테스트 필요할 듯.</p>
+<pre><code class="js">$('.stop').click(function(){
+	$('.roulette span img').attr('id','');
+	$('.roulette span img').css({
+		'transform': 'rotate('+evtNum+'deg)',
+		'-webkit-transform': 'rotate('+evtNum+'deg)',
+		'-moz-transform': 'rotate('+evtNum+'deg)',
+		'-ms-transform': 'rotate('+evtNum+'deg)',
+		'-o-transform': 'rotate('+evtNum+'deg)'
+	});
+});</code></pre>
+				<p>위와 같이 id 값에 애니메이션을 지정하고, 오브젝트에 id 값을 통해 애니메이션을 주는 경우. 안드로이드 4.2 버전에서 하나의 오브젝트에 id 값을 빼고, 바로 이어서 css 를 적용하면 애니메이션이 멈추지 않고 계속 작동하는 버그 발생.</p>
+				<p>css 속성 자체가 안되는 것은 아니며, margin, border 등의 기본적인 css 내용이 들어가면 정상작동함. -webkit- 가 붙은 css3 속성이나 opacity 같은, 해당 오브젝트에 변화를 주는 내용이 들어갔을때만 버그가 발생. 정확한 원인 파악이 어렵다.</p>
+				<p><a href="bug-mov.zip">참고영상 다운로드</a></p>
+				</div>
+				<div class="guide-sec">
+					<h3 class="guide-stit">해결 방법</h3>
+					<p><strong>현재 위 상태를 유지하면서 해결하는 방법은 없으며, 위와 같은 기능 실행을 위해서는 초기 애니메이션에 사용되는 오브젝트와, 그 이후 css 가 적용되어야 할 오브젝트를 다르게 지정.</strong></p>
+<pre><code class="css">$('.roulette span img').attr('id','');
+$('.roulette span').css({});</code></pre>
+					<p><strong>이런식으로 한번 더 랩핑하여 랩핑된 태그에 css 속성을 지정. (혹은 그 반대, 랩핑에 애니메이션 / 이미지에 css )</strong></p>
+					<p><strong>차후 모든 css  태그를 통해 발생 유무 확인이 필요할 듯.</strong></p>
+				</div>
+			</section>
+		</div>
+	</div>
+
+	<script>
+		hljs.initHighlightingOnLoad(); 
+	</script>
+</body>
+</html>

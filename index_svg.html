@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+	<meta charset="UTF-8" >
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="user-scalable=yes, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, width=device-width">
+	<meta name="author" content="seonamho - SK MNS" >
+	<meta name="description" content="퍼블리싱 파일 관리 사이트">
+	<meta name="keywords" content="html css javascript 퍼블리셔 퍼블리싱">
+	<meta property="og:type" content="website">
+	<meta property="og:title" content="퍼블리싱 파일 관리 사이트 (for skmns)">
+	<meta property="og:description" content="skmns 사내용 퍼블리싱 파일 관리 사이트">
+	<meta property="og:image" content="">
+	<meta property="og:url" content="10.71.101.60:1900">
+	<link rel="shortcut icon" href="data:;base64,iVBORwOKGO=" />
+
+	<title>svg | msp</title>
+	<link rel="stylesheet" href="guide/list-guide.css" media="screen, print" />
+
+	<style>
+		.view object { max-height:36px; vertical-align:top; }
+	</style>
+</head>
+<body>
+	<div id="work-list">
+		<div class="title">
+			<h1 class="project-title">Guide</h1>
+			<p class="project-info">
+				<span>&bull; 담당자 : 서남호 / 심해란 / 전수영</span>
+			</p>
+		</div>
+
+		<!--#include file="include_menu.html" --> 
+
+		<div class="function">
+			<div class="text-finder func-wrap">
+				<span class="tit">Text 검색</span>
+				<input type="text" name="find-tx" id="find-tx" title="text 검색">
+				<button type="button" class="btn-find-tx">검색</button>
+				<input type="hidden" class="temp">
+			</div>
+			<div class="func-wrap">
+				<span class="tit">미리보기</span>
+				<span class="check">
+					<input type="checkbox" name="" id="view-chk">
+					<label for="view-chk">미리보기</label>
+				</span>
+			</div>
+			<!-- <div class="ing-per">
+				&bull; 진행율 : <span class="end-page"></span> / <span class="total-page"></span> ( <span class="per"></span> %)
+			</div> -->
+		</div>
+
+		<div class="list">
+			<div class="tbl-wrap">
+				<table>
+					<caption>프로젝트 리스트</caption>
+					<colgroup>
+						<col style="width:15%"/>
+						<col style="width:15%"/>
+						<col style="width:15%"/>
+						<col style="width:15%"/>
+						<col style="width:15%"/>
+						<col style="width:auto"/>
+					</colgroup>
+					<thead>
+						<tr>
+							<th scope="col">depth1</th>
+							<th scope="col">depth2</th>
+							<th scope="col">depth3</th>
+							<th scope="col">링크</th>
+							<th scope="col">미리보기</th>
+							<th scope="col">기타</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td class="depth1">가이드</td>
+							<td class="depth2"></td>
+							<td class="depth3"></td>
+							<td class="link"><a href="07_svg/svg_guide.html" target="_blank">guide</a></td>
+							<td class="view"></td>
+							<td class="modify"></td>
+						</tr>
+
+						<!-- input
+						<tr>
+							<td class="depth1">input</td>
+							<td class="depth2">radio</td>
+							<td class="depth3">type1</td>
+							<td><a href="07_svg/svg/radio-type1.svg" class="btn down-svg" target="_blank">download</a></td>
+							<td class="view">
+								<object data="07_svg/svg/radio-type1.svg" type="image/svg+xml"></object>
+							</td>
+							<td class="modify"></td>
+						</tr>
+						<tr>
+							<td class="depth1"></td>
+							<td class="depth2">checkbox</td>
+							<td class="depth3">type1</td>
+							<td><a href="07_svg/svg/checkbox-type1.svg" class="btn down-svg" target="_blank">download</a></td>
+							<td class="view">
+								<object data="07_svg/svg/checkbox-type1.svg" type="image/svg+xml"></object>
+							</td>
+							<td class="modify"></td>
+						</tr> -->
+
+						<!-- sns -->
+						<tr>
+							<td class="depth1">SNS</td>
+							<td class="depth2">facebook</td>
+							<td class="depth3"></td>
+							<td><a href="07_svg/svg/sns-facebook.svg" class="btn down-svg" target="_blank">download</a></td>
+							<td class="view">
+								<object data="07_svg/svg/sns-facebook.svg" type="image/svg+xml"></object>
+							</td>
+							<td class="modify"></td>
+						</tr>
+						<tr>
+							<td class="depth1"></td>
+							<td class="depth2">instagram</td>
+							<td class="depth3">type1</td>
+							<td><a href="07_svg/svg/sns-instagram.svg" class="btn down-svg" target="_blank">download</a></td>
+							<td class="view">
+								<object data="07_svg/svg/sns-instagram.svg" type="image/svg+xml"></object>
+							</td>
+							<td class="modify"></td>
+						</tr>
+						<tr>
+							<td class="depth1"></td>
+							<td class="depth2"></td>
+							<td class="depth3">type2</td>
+							<td><a href="07_svg/svg/sns-instagram2.svg" class="btn down-svg" target="_blank">download</a></td>
+							<td class="view">
+								<object data="07_svg/svg/sns-instagram2.svg" type="image/svg+xml"></object>
+							</td>
+							<td class="modify"></td>
+						</tr>
+						<tr>
+							<td class="depth1"></td>
+							<td class="depth2">kakaotalk</td>
+							<td class="depth3"></td>
+							<td><a href="07_svg/svg/sns-kakaotalk.svg" class="btn down-svg" target="_blank">download</a></td>
+							<td class="view">
+								<object data="07_svg/svg/sns-kakaotalk.svg" type="image/svg+xml"></object>
+							</td>
+							<td class="modify"></td>
+						</tr>
+						<tr>
+							<td class="depth1"></td>
+							<td class="depth2">twitter</td>
+							<td class="depth3">type1</td>
+							<td><a href="07_svg/svg/sns-twitter.svg" class="btn down-svg" target="_blank">download</a></td>
+							<td class="view">
+								<object data="07_svg/svg/sns-twitter.svg" type="image/svg+xml"></object>
+							</td>
+							<td class="modify"></td>
+						</tr>
+						<tr>
+							<td class="depth1"></td>
+							<td class="depth2"></td>
+							<td class="depth3">type1</td>
+							<td><a href="07_svg/svg/sns-twitter2.svg" class="btn down-svg" target="_blank">download</a></td>
+							<td class="view">
+								<object data="07_svg/svg/sns-twitter2.svg" type="image/svg+xml"></object>
+							</td>
+							<td class="modify"></td>
+						</tr>
+						<tr>
+							<td class="depth1"></td>
+							<td class="depth2">youtube</td>
+							<td class="depth3"></td>
+							<td><a href="07_svg/svg/sns-youtube.svg" class="btn down-svg" target="_blank">download</a></td>
+							<td class="view">
+								<object data="07_svg/svg/sns-youtube.svg" type="image/svg+xml"></object>
+							</td>
+							<td class="modify"></td>
+						</tr>
+
+						<!-- Icon -->
+						<tr>
+							<td class="depth1">Icon</td>
+							<td class="depth2">arrow</td>
+							<td class="depth3">type1</td>
+							<td><a href="07_svg/svg/icon_arrow-type1.svg" class="btn down-svg" target="_blank">download</a></td>
+							<td class="view">
+								<object data="07_svg/svg/icon_arrow-type1.svg" type="image/svg+xml"></object>
+							</td>
+							<td class="modify"></td>
+						</tr>
+						<tr>
+							<td class="depth1"></td>
+							<td class="depth2"></td>
+							<td class="depth3">type2</td>
+							<td><a href="07_svg/svg/icon_arrow-type2.svg" class="btn down-svg" target="_blank">download</a></td>
+							<td class="view">
+								<object data="07_svg/svg/icon_arrow-type2.svg" type="image/svg+xml"></object>
+							</td>
+							<td class="modify"></td>
+						</tr>
+						<tr>
+							<td class="depth1"></td>
+							<td class="depth2"></td>
+							<td class="depth3">circle_1</td>
+							<td><a href="07_svg/svg/icon_arrow-circle1.svg" class="btn down-svg" target="_blank">download</a></td>
+							<td class="view">
+								<object data="07_svg/svg/icon_arrow-circle1.svg" type="image/svg+xml"></object>
+							</td>
+							<td class="modify"></td>
+						</tr>
+						<tr>
+							<td class="depth1"></td>
+							<td class="depth2"></td>
+							<td class="depth3">circle_2</td>
+							<td><a href="07_svg/svg/icon_arrow-circle2.svg" class="btn down-svg" target="_blank">download</a></td>
+							<td class="view">
+								<object data="07_svg/svg/icon_arrow-circle2.svg" type="image/svg+xml"></object>
+							</td>
+							<td class="modify"></td>
+						</tr>
+						<tr>
+							<td class="depth1"></td>
+							<td class="depth2">check</td>
+							<td class="depth3"></td>
+							<td><a href="07_svg/svg/icon_check.svg" class="btn down-svg" target="_blank">download</a></td>
+							<td class="view">
+								<object data="07_svg/svg/icon_check.svg" type="image/svg+xml"></object>
+							</td>
+							<td class="modify"></td>
+						</tr>
+						<tr>
+							<td class="depth1"></td>
+							<td class="depth2">search</td>
+							<td class="depth3"></td>
+							<td><a href="07_svg/svg/icon_search.svg" class="btn down-svg" target="_blank">download</a></td>
+							<td class="view">
+								<object data="07_svg/svg/icon_search.svg" type="image/svg+xml"></object>
+							</td>
+							<td class="modify"></td>
+						</tr>
+						<tr>
+							<td class="depth1"></td>
+							<td class="depth2">sidebar</td>
+							<td class="depth3"></td>
+							<td><a href="07_svg/svg/icon_sidebar.svg" class="btn down-svg" target="_blank">download</a></td>
+							<td class="view">
+								<object data="07_svg/svg/icon_sidebar.svg" type="image/svg+xml"></object>
+							</td>
+							<td class="modify"></td>
+						</tr>
+						<tr>
+							<td class="depth1"></td>
+							<td class="depth2">x</td>
+							<td class="depth3"></td>
+							<td><a href="07_svg/svg/icon_x.svg" class="btn down-svg" target="_blank">download</a></td>
+							<td class="view">
+								<object data="07_svg/svg/icon_x.svg" type="image/svg+xml"></object>
+							</td>
+							<td class="modify"></td>
+						</tr>
+						<tr>
+							<td class="depth1"></td>
+							<td class="depth2">home</td>
+							<td class="depth3"></td>
+							<td><a href="07_svg/svg/icon_home.svg" class="btn down-svg" target="_blank">download</a></td>
+							<td class="view">
+								<object data="07_svg/svg/icon_home.svg" type="image/svg+xml"></object>
+							</td>
+							<td class="modify"></td>
+						</tr>
+						<tr>
+							<td class="depth1"></td>
+							<td class="depth2">basket</td>
+							<td class="depth3"></td>
+							<td><a href="07_svg/svg/icon_basket.svg" class="btn down-svg" target="_blank">download</a></td>
+							<td class="view">
+								<object data="07_svg/svg/icon_basket.svg" type="image/svg+xml"></object>
+							</td>
+							<td class="modify"></td>
+						</tr>
+						<tr>
+							<td class="depth1"></td>
+							<td class="depth2">pencil</td>
+							<td class="depth3"></td>
+							<td><a href="07_svg/svg/icon_pencil.svg" class="btn down-svg" target="_blank">download</a></td>
+							<td class="view">
+								<object data="07_svg/svg/icon_pencil.svg" type="image/svg+xml"></object>
+							</td>
+							<td class="modify"></td>
+						</tr>
+						<tr>
+							<td class="depth1"></td>
+							<td class="depth2">user</td>
+							<td class="depth3"></td>
+							<td><a href="07_svg/svg/icon_user.svg" class="btn down-svg" target="_blank">download</a></td>
+							<td class="view">
+								<object data="07_svg/svg/icon_user.svg" type="image/svg+xml"></object>
+							</td>
+							<td class="modify"></td>
+						</tr>
+						
+						<!-- Loading -->
+						<tr>
+							<td class="depth1">Loading</td>
+							<td class="depth2">8circle</td>
+							<td class="depth3"></td>
+							<td><a href="07_svg/svg/loading_8circle.svg" class="btn down-svg" target="_blank">download</a></td>
+							<td class="view">
+								<object data="07_svg/svg/loading_8circle.svg" type="image/svg+xml"></object>
+							</td>
+							<td class="modify">IE : 미지원</td>
+						</tr>
+						<tr>
+							<td class="depth1"></td>
+							<td class="depth2">circle</td>
+							<td class="depth3">type1</td>
+							<td><a href="07_svg/svg/loading_circle1.svg" class="btn down-svg" target="_blank">download</a></td>
+							<td class="view">
+								<object data="07_svg/svg/loading_circle1.svg" type="image/svg+xml"></object>
+							</td>
+							<td class="modify">IE : 미지원</td>
+						</tr>
+						<tr>
+							<td class="depth1"></td>
+							<td class="depth2"></td>
+							<td class="depth3">type2</td>
+							<td><a href="07_svg/svg/loading_circle2.svg" class="btn down-svg" target="_blank">download</a></td>
+							<td class="view">
+								<object data="07_svg/svg/loading_circle2.svg" type="image/svg+xml"></object>
+							</td>
+							<td class="modify">IE : 미지원</td>
+						</tr>
+						<tr>
+							<td class="depth1"></td>
+							<td class="depth2"></td>
+							<td class="depth3">type3</td>
+							<td><a href="07_svg/svg/loading_circle3.svg" class="btn down-svg" target="_blank">download</a></td>
+							<td class="view">
+								<object data="07_svg/svg/loading_circle3.svg" type="image/svg+xml"></object>
+							</td>
+							<td class="modify">IE : 미지원</td>
+						</tr>
+						<!-- <tr>
+							<td class="depth1"></td>
+							<td class="depth2">dot</td>
+							<td class="depth3">type1</td>
+							<td><a href="07_svg/svg/loading_dot1.svg" class="btn down-svg" target="_blank">download</a></td>
+							<td class="view">
+								<object data="07_svg/svg/loading_dot1.svg" type="image/svg+xml"></object>
+							</td>
+							<td class="modify"></td>
+						</tr>
+						<tr>
+							<td class="depth1"></td>
+							<td class="depth2"></td>
+							<td class="depth3">type2</td>
+							<td><a href="07_svg/svg/loading_dot2.svg" class="btn down-svg" target="_blank">download</a></td>
+							<td class="view">
+								<object data="07_svg/svg/loading_dot2.svg" type="image/svg+xml"></object>
+							</td>
+							<td class="modify"></td>
+						</tr> -->
+					</tbody>
+				</table>
+			</div>
+		</div>
+		
+		<div class="iframe">
+			<iframe src="" frameborder="0" scrollbars="yes"></iframe>
+			<button type="button" class="btn-frame-close">닫기</button>
+		</div>
+	</div>
+
+	<script src="js/common.js"></script>
+	<script src="guide/list-guide.js"></script>
+	<script src="js/vendor/jszip.min.js"></script>
+	<script src="js/vendor/FileSaver.js"></script>
+	<script src="js/vendor/jszip-utils.js"></script>
+	<script>
+		guide_menuSet(6);
+
+		
+		function urlToPromise(url) {
+			return new Promise(function (resolve, reject) {
+				JSZipUtils.getBinaryContent(url, function (err, data) {
+					if (err) {
+						reject(err);
+					} else {
+						resolve(data);
+					}
+				});
+			});
+		}
+
+		var downBtns = document.querySelectorAll('.down-svg');
+		Array.prototype.forEach.call(downBtns, function(btn){
+			btn.addEventListener('click', function(e){
+				e.preventDefault();
+				var url 	= this.getAttribute('href'),
+					name	= url.split('/')[2].split('.')[0];
+
+				var zip = new JSZip();
+				zip.file(name + '.svg', urlToPromise(url), { binary: true });
+
+				zip.generateAsync({ type: "blob" }).then(
+					function (blob) {
+						saveAs(blob, name + '.zip');
+					}
+				);
+			});
+		});
+	</script>
+</body>
+</html>

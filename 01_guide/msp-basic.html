@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+	<meta charset="UTF-8" >
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="user-scalable=yes, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, width=device-width">
+	<meta name="author" content="seonamho - SK MNS" >
+	<meta name="description" content="MSP - Total Manage">
+	<meta name="keywords" content="msp mns mnservice html css javascript jquery 퍼블리셔 퍼블리싱">
+	<meta property="og:type" content="website">
+	<meta property="og:title" content="MSP - Total Manage">
+	<meta property="og:description" content="msp(mns 퍼블리셔) 업무 및 퍼블 관련 종합 정보 ">
+	<meta property="og:image" content="">
+	<meta property="og:url" content="10.125.253.31:1200">
+	<link rel="shortcut icon" href="data:;base64,iVBORwOKGO=" />
+
+	<title>퍼블 가이드 | MSP</title>
+
+	<!-- 가이드 관련 -->
+	<link rel="stylesheet" href="../guide/list-guide.css" media="screen, print" />
+	<link rel="stylesheet" href="../guide/vendor/railscasts.css">
+	<script src="../guide/vendor/highlight.pack.js"></script>
+	
+</head>
+<body>
+
+	
+<div id="work-list">
+	<div class="guide">
+		<!-- 기본사항 -->
+		<section>
+			<h2 class="guide-sec-tit">기본 사항</h2>
+			<div class="guide-sec">
+				<h3 class="guide-stit">Doctype</h3>
+				<p>HTML5 마크업 표준을 기본으로 합니다.</p>
+				<pre><code class="hljs html">&lt;!DOCTYPE html&gt;</code></pre>
+			</div>
+			<div class="guide-sec">
+				<h3 class="guide-stit">Charset</h3>
+				<p>UTF-8</p>
+			</div>
+			<div class="guide-sec">
+				<h3 class="guide-stit">Validator</h3>
+				<p>W3C Validator을 오류없이 통과하여야 합니다.</p>
+			</div>
+			<div class="guide-sec">
+				<h3 class="guide-stit">접근성</h3>
+				<ul>
+					<li>최소 기준 : 기계적 검사 OpenWax(Chrome 브라우저 설치 app) 기준 100점</li>
+					<li>tab키를 이용한 키보드 탐색 시 화면 전체 내용을 탐색하는데 무리없는 수준</li>
+				</ul>
+			</div>
+			<div class="guide-sec">
+				<h3 class="guide-stit">Brower Support</h3>
+				<p>최소 아래의 경우를 만족합니다.</p>
+				<div class="tbl">
+					<table>
+						<caption>브라우저 기준</caption>
+						<colgroup>
+							<col style="width:50%"/>
+							<col style="width:50%"/>
+						</colgroup>
+						<thead>
+							<tr>
+								<th scope="col">PC</th>
+								<th scope="col">Mobile</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td>
+									<ul>
+										<li>IE11</li>
+										<li>Chrome (currnte-1) or Chrome</li>
+									</ul>
+								</td>
+								<td>
+									<ul>
+										<li>Android Kitkat(4.4.2+) Default Browser</li>
+										<li>ios 8.0+ Default Browser</li>
+									</ul>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+			<div class="guide-sec">
+				<h3 class="guide-stit">폴더 구조</h3>
+				<h4 class="guide-sstit">신규 프로젝트</h4>
+				<p>html / css / images / js 를 기본으로 합니다.</p>
+				<ul>
+					<li>vendor : 직접 작성하지 않은 외부에서 가져온 모든 라이브러리를 포함합니다.</li>
+					<li>vendor-cust : vendor 폴더에서 조금의 수정이라도 있으면 별도로 분리해서 보관합니다.</li>
+					<li>vendor / vendor-cust 폴더는 css / js 폴더내 각각 관리하며, 각각 파일명은 플러그인 명으로 동일하게 하여 구분될 수 있도록 합니다.
+						<br>ex) slider 플러그인이 js / css 를 포함할 경우, <br>js 파일명은 slider.js / 위치는 js 폴더내 vendor <br>css 파일명은 slider.css / 위치는 css 폴더 내 vendor 
+					</li>
+				</ul>
+				<p>아래 참조</p>
+				<div class="folder-tree">
+					<ul>
+						<li class="on">
+							<button type="button" class="btn-tree">열기</button>
+							<button type="button"><strong>css</strong></button>
+							<ul>
+								<li><button type="button"><strong>vendor</strong> : 외부 플러그인 관련 CSS</button></li>
+								<li><button type="button"><strong>vendor-cust</strong> : 자체 수정된 외부 플러그인 관련 CSS</button></li>
+							</ul>
+						</li>
+						<li><button type="button"><strong>guide</strong> : 퍼블 화면 리스트 및 기타 가이드용 resource 폴더 (프로젝트와 무관한 파일)</button></li>
+						<li><button type="button"><strong>html</strong> : html 파일</button></li>
+						<li><button type="button"><strong>images</strong> : 이미지 파일</button></li>
+						<li class="on">
+							<button type="button" class="btn-tree">열기</button>
+							<button type="button"><strong>js</strong></button>
+							<ul>
+								<li><button type="button"><strong>vendor</strong> : 외부 플러그인 관련 JS</button></li>
+								<li><button type="button"><strong>vendor-cust</strong> : 자체 수정된 외부 플러그인 관련 JS</button></li>
+							</ul>
+						</li>
+					</ul>
+				</div>
+				<h4 class="guide-sstit">운영</h4>
+				<p>운영 업무는 각 업무별 설정에 따릅니다.</p>
+			</div>
+			<div class="guide-sec">
+				<h3 class="guide-stit">기타 공통사항</h3>
+				<p>MNS에서는 아래의 설정을 기본으로 포함 합니다. </p>
+				<h3 class="guide-sstit">meta</h3>
+				<ul>
+					<li>title : '페이지명 | 사이트명' 구조를 각 페이지 depth 에 맞추어 모두 기입 (웹 접근성 이슈)</li>
+					<li>author : 추후 관리를 위하여 작성자 혹은 작성회사명을 기입</li>
+					<li>X-UA-Compatible : IE, Chrome등의 버젼을 상위버젼으로 고정</li>
+					<li>viewport : 1:1 기준으로 기입</li>
+					<li>og(open graph) : SNS 및 메신저에서 사이트 공유 시 사이트 기본정보 표출을 위한 정보 제공</li>
+				</ul>
+				<h3 class="guide-sstit">css</h3>
+				<ul>
+					<li>layout : 기본 reset 및 폰트 설정 / 사이트 레이아웃 설정 / 공통요소 Style 설정 (button, table, input, tabmenu ...)</li>
+					<li>contents : 각 페이지별 컨텐츠 설정 / 기본 요소 변형</li>
+				</ul>
+				<h3 class="guide-sstit">javascript</h3>
+				<ul>
+					<li>순수 javascript 사용을 지향하며, 부득이할 경우 jquery 사용 가능</li>
+					<li>common : 사이트 내 공통적으로 사용되는 기능 작성</li>
+					<li>특정 페이지에서만 사용되는 기능은 해당 페이지 html 상단에 작성<br>
+					(단, 3페이지 이상 사용될 경우 common 으로 이동하며, 타 페이지에 영향을 주지 않도록 each 문 혹은 조건문 처리</li>
+				</ul>
+				<h3 class="guide-sstit">기본 HTML 구조</h3>
+				<pre><code class="hljs html">&lt;!DOCTYPE html&gt;
+&lt;html lang="ko"&gt;
+
+&lt;head&gt;
+	&lt;meta charset="UTF-8" &gt;
+	&lt;meta http-equiv="X-UA-Compatible" content="IE=edge"&gt;
+	&lt;meta name="viewport" content="user-scalable=yes, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, width=device-width"&gt;
+	&lt;meta name="format-detection" content="telephone=no"&gt;
+	&lt;meta name="author" content="작성자명 - SK MNS" &gt;
+	&lt;meta name="description" content=""&gt;
+	&lt;meta name="keywords" content=""&gt;
+	&lt;meta property="og:type" content="website"&gt;
+	&lt;meta property="og:title" content=""&gt;
+	&lt;meta property="og:description" content=""&gt;
+	&lt;meta property="og:image" content=""&gt;
+	&lt;meta property="og:url" content=""&gt;
+	&lt;link rel="shortcut icon" href="data:;base64,iVBORwOKGO=" /&gt;
+
+	&lt;title&gt;페이지명 | 사이트명&lt;/title&gt;
+
+	&lt;link rel="stylesheet" href="css/--.css" media="screen, print" &gt;
+	
+	&lt;/head&gt;
+	&lt;body&gt;
+		&lt;!-- skip Navi  --&gt;
+		&lt;div id="skip"&gt;
+			&lt;a href="#content"&gt;본문 바로가기&lt;/a&gt;
+		&lt;/div&gt;
+
+		&lt;div id="wrap"&gt;
+
+		&lt;/div&gt;
+
+		&lt;script src="js/common.js"&gt;&lt;/script&gt;
+		&lt;script"&gt;
+			&lt;!-- 현재 페이지에서만 사용하는 기능 작성 --&gt;
+		&lt;/script&gt;
+	&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+			</div>
+		</section>
+		
+		<!-- 코드 작성 공통 -->
+		<section>
+			<h2 class="guide-sec-tit">코드 작성 공통</h2>
+			<div class="guide-sec">
+				<h3 class="guide-stit">들여쓰기</h3>
+				<p>tab 방식만 사용 / 스페이스 방식은 사용하지 않습니다.</p>
+			</div>
+			<div class="guide-sec">
+				<h3 class="guide-stit">네이밍 공통</h3>
+				<p>이름이 다소 길어져도 무관하오니 아래 규칙을 가능하면 지켜주세요.</p>
+				<ul>
+					<li>보편적인 이름 지양 / 추상적인 이름 지양</li>
+					<li>이름만으로 기능을 추론할 수 있도록 명칭을 작성합니다.</li>
+				</ul>
+				<div class="tbl">
+					<table>
+						<caption>네이밍 공통</caption>
+						<colgroup>
+							<col style="width:25%"/>
+							<col style="width:25%"/>
+							<col style="width:auto"/>
+						</colgroup>
+						<thead>
+							<tr>
+								<th scope="col">잘못된 예</th>
+								<th scope="col">올바른 예</th>
+								<th scope="col">참고</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td>.box <br>.aBox</td>
+								<td>.box-user</td>
+								<td>보편적인 이름은 사용하지 않음.</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+			<div class="guide-sec">
+				<h3 class="guide-stit">기타</h3>
+				<p>코드 구분을 위한 엔터는 최대 3줄 이상을 넘지 않습니다.</p>
+				<p>minfiy시, 반드시 원본 필요. 파일명에도 'layout.min.js' 와 같이 '.min' 을 표기합니다.</p>
+			</div>
+		</section>
+
+		<!-- CSS -->
+		<section>
+			<h2 class="guide-sec-tit">CSS</h2>
+			<div class="guide-sec">
+				<h3 class="guide-stit">import</h3>
+				<ul>
+					<li>한개의 css(e.g. import.css)에서 전체 모든 css를 import를 하지 않고, 공통 css를 제외한 페이지별 별도 분기하여 처리합니다.</li>
+					<li>50page 이하 : layout.css / contents.css 로 구성</li>
+					<li>50page 이상 : layout.css / 각 섹션별 css 로 구성</li>
+					<li>** page 수가 많으나 단순한 형태 반복일 경우 layout.css / contents.css 로 구성 ( ex : admin )</li>
+				</ul>
+				<pre><code class="html">&lt;!-- (x) --&gt;
+&lt;!-- 한개의 import로 모든 css 파일 처리 --&gt;
+&lt;link rel="stylesheet" href="style.css"&gt;
+				</code></pre>
+				<pre><code class="css">/* style.css */
+@import 'font.css';
+@import 'layout.css';
+@import 'contents.css';
+					...</code></pre>
+				<pre><code class="html">&lt;!-- (o) --&gt;
+&lt;!-- 각 페이지별에 맞는 css만 사용 --&gt;
+&lt;link rel="stylesheet" href="layout.css"&gt;
+&lt;link rel="stylesheet" href="contents.css"&gt;
+&lt;link rel="stylesheet" href="mypage.css"&gt;
+				</code></pre>
+			</div>
+			<div class="guide-sec">
+				<h3 class="guide-stit">CSS 클래스 작성법</h3>
+				<ul>
+					<li>각 단어 사이는 '-' 로 구분합니다.</li>
+					<li>단어 순서는 '형태-의미-순서-상태' 순서로 작성합니다.</li>
+					<li>약어를 사용할 경우 보편적으로 의미 파악이 가능한 약어를 사용하여야 합니다. (ex : service - svc)</li>
+				</ul>
+				<div class="tbl">
+					<table>
+						<caption>CSS 네이밍</caption>
+						<colgroup>
+							<col style="width:25%"/>
+							<col style="width:25%"/>
+							<col style="width:auto"/>
+						</colgroup>
+						<thead>
+							<tr>
+								<th scope="col">잘못된 예</th>
+								<th scope="col">올바른 예</th>
+								<th scope="col">참고</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td>.box</td>
+								<td>.box-user</td>
+								<td>보편적인 이름은 단독 클래스명으로 사용하지 않음.</td>
+							</tr>
+							<tr>
+								<td>.boxUserInfo</td>
+								<td>.box-user-info</td>
+								<td>각 단어 사이는 '-' 로 구분 (카멜 케이스 방식 지양)</td>
+							</tr>
+							<tr>
+								<td>.sch-btn-01-on</td>
+								<td>.btn-sch-01-on</td>
+								<td>네이밍 조합은 '형태-의미-순서-상태' 순서로 작성</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+			<div class="guide-sec">
+				<h3 class="guide-stit">스타일 작성법</h3>
+				<p>작성 표기는 compact 방식을 지향합니다.</p>
+				<pre><code class="css">.huge  { font-size: 10em; font-weight: bold; text-decoration: underline; }
+.table { font-size: 10em; font-weight: bold; text-decoration: underline; }</code></pre>
+				<p>단, 여러 선택자의 공통 스타일 적용시에나, browser prefix 시에는 expanded 방식 사용 가능합니다.</p>
+				<pre><code class="css">.table-my td,
+.table-my th { ... }
+
+.div-my { ...
+-webkit-transition: ...
+-ms-transition: ...
+transition: ... }</code></pre>
+			</div>
+			<div class="guide-sec">
+				<h3 class="guide-stit">스타일 적용</h3>
+				<p>공통으로 적용되는 UI의 경우, 전체 태그에 걸지 않고 클래스로 적용하여 처리합니다.</p>
+				<pre><code class="css">/* (x) */
+div { margin:10px; }
+select { border:1px solid red; background:blue; }
+
+/* (o) */
+.box-my { margin:10px; }
+.select-my { border:1px solid red; background:blue; }</code></pre>
+				<p>단, 태그 전체에 스타일을 작성할 경우, 추후 다른 설정에 영향을 주지 않는 범위 내에서 최소한만 작성합니다.</p>
+				<pre><code class="css">table { table-layout:fixed; width:100%; border-collapse:collapse; }
+button { cursor:pointer; overflow:hidden; }
+</code></pre>
+			</div>
+			<div class="guide-sec">
+				<h3 class="guide-stit">기타</h3>
+				<p>z-index 사용시, 아래의 목록을 참고해주세요.</p>
+				<ul>
+					<li>1000 미만 : 기본 페이지 요소</li>
+					<li>1000 이상 : GNB /  fixed 컨텐츠 등 현재 화면을 덮는 요소</li>
+					<li>3000 이상 : event 적 요소가 화면보다 우선할 경우 ( 인터렉션 요소 / 달력 ui 등 )</li>
+					<li>5000 이상 : layer popup / modal / alert 등과 같이 현재 화면의 흐름에서 벗어나는 요소</li>
+				</ul>
+				<p>** event 요소가 화면 / layer 등에 모두 사용될 경우 각각의 경우에 따라 다르게 설정</p>
+			</div>
+		</section>
+
+		<!-- javascript -->
+		<section>
+			<h2 class="guide-sec-tit">javascript</h2>
+			<div class="guide-sec">
+				<h3 class="guide-stit">변수</h3>
+				<p>상수는 대문자로만 기입합니다.</p>
+				<pre><code class="javascript">var pi = 3.14; // (x)
+var PI = 3.14; // (o)</code></pre>
+				<p>변수에 단위가 포함되어 있으면, 단위도 포함합니다.</p>
+				<pre><code class="javascript">var time    = 300; // (x)
+var time_ms = 300; // (o)</code></pre>
+				<p>javascript DOM은 변수명앞에 '$_' 붙이고, jquery로 선택된 DOM은 변수명앞에 '$' 붙입니다.</p>
+				<pre><code class="javascript">// javascript 선택
+var $_div = document.querySelector( 'div' );
+
+// jquery 선택
+var $div = $( 'div' ); </code></pre>
+			</div>
+			<div class="guide-sec">
+				<h3 class="guide-stit">함수</h3>
+				<p>함수에는 주석을 가능한 표기합니다. <br>단, 함수 안 함수의 경우 약술 형식으로 기입합니다.</p>
+				<pre><code class="javascript">/**
+* @mehotd: 함수 설명, 구체적인 함수명 작성시 기입 안해도 무관
+* @parameter: {인자 타입} 인자 설명
+* @return: {인자 타입} 리턴값 설명
+* @logs: 개발이력을 간단히 "날짜 : [작업자] 내용"의 형식으로 기술
+*/
+function prevSlide( idx ){
+	var str = 're';
+	...
+	return str;
+}</code></pre>
+				<pre><code class="javascript">// example
+/**
+* @mehotd: 슬라이드 이동
+* @parameter:
+* 		{number} 이동하고자 하는 슬라이드 번호
+* 		{number} 몇 초 후 이동
+* @return: {boolean} 이동 성공시 true
+* @logs:
+* 		"0000-00-00: [koo] 최초 작성"
+* 		"0000-00-00: [won] xx 기능 업데이트"
+* 		"0000-00-00: [suga] xx 관련 버그 수정"
+* 		"0000-00-00: [nam] xx 기능 업데이트"
+*/
+function mainSliderMovePage( idx, time_ms ){
+	var str = true;
+	...
+	return str;
+}</code></pre>
+			</div>
+			<div class="guide-sec">
+				<h3 class="guide-stit">jquery plugin 작성</h3>
+				<p>option 인자 혹은 별개 parameter를 통해 인스톨 후 콜백 함수와 이벤트 후 콜백함수를 추가합니다.</p>
+				<pre><code class="javascript">// example
+/**
+* ...
+*/
+$.fn.moveSlider = function( option ){
+	...
+
+	// 어떤 이벤트
+	$a.click( function(){
+		...
+
+		// 이벤트 동작 후 콜백
+		if ( typeof option.activeCallback == 'function' ){
+			option.activeCallback();
+		}
+	});
+
+	...
+
+	// 모든 코드 작성 후(인스톨 후), 콜백
+	if ( typeof option.installCallback == 'function' ){
+		option.installCallback();
+	}
+}</code></pre>
+<pre><code class="javascript">// example
+/**
+ * ...
+ */
+$.fn.moveSlider = function( installCallback, activeCallback ){
+	...
+
+	// 어떤 이벤트
+	$a.click( function(){
+		...
+
+		// 이벤트 동작 후 콜백
+		if ( typeof activeCallback == 'function' ){
+			activeCallback();
+		}
+	});
+
+	...
+
+	// 모든 코드 작성 후(인스톨 후), 콜백
+	if ( typeof installCallback == 'function' ){
+		installCallback();
+	}
+}</code></pre>
+				<p>jquery chain을 처리를 위하여 return this.each를 통하여 처리합니다.</p>
+				<pre><code class="javascript">// example
+/**
+ * ...
+ */
+$.fn.moveSlider = function( option ){
+	return this.each( function(){
+		...
+	});
+}</code></pre>
+			</div>
+			<div class="guide-sec">
+				<h3 class="guide-stit">기타</h3>
+				<p>html에서 제공하는 기본 태그를 사용하지 않고 별도의 스크립트로만 제어할 시, 반드시 기본 속성은 지원해야 합니다. <br>예를 들어 기본 input태그를 사용하지 않고 스크립트의 기본 태그로만 제어시, disabled / maxlength 등 기본 속성 지원되어야 합니다.</p>
+				<p>Jquery 사용 시 페이지 로드 후 실행문은 $(document).ready() 를 사용하지 않고 $(function(){}); 문을 사용합니다.</p>
+				<pre><code class="javascript">// (x)
+$(document).ready(function(){
+	...
+});
+
+//(o)
+$(function(){
+	...
+});</code></pre>
+				<p>공통 스크립트 적용되는 UI의 경우, 전체 태그에 걸지 않고 클래스로 적용하여 처리합니다.</p>
+				<pre><code class="javascript">// (x)
+// select 전체 적용됨.
+$( 'select' ).customSelect()
+
+// (o)
+// .user-select 클래스가 적용된 select 태그에만 적용됨.
+$( '.user-select' ).customSelect()</code></pre>
+				<p>UI 기능은 '$(function(){});' 혹은 'window.onload' 안에서 모두 처리하지 않고, 외부 함수로 분기하여 처리합니다. <br>(개발과정에서 ajax 연동으로 추가 적용할 경우가 있습니다.)</p>
+				<pre><code class="javascript">// (x)
+// 모든 UI 기능을 $(function(){}); 혹은 window.onload 안에서 처리.
+$( function(){
+	...
+	...
+	...
+});
+
+// (o)
+// UI 기능을 함수로 분기 후, $(function(){}); 혹은 window.onload 안에서 처리.
+function customSelect(){
+	...
+}
+
+$( function(){
+	customSelect();
+});</code></pre>
+			</div>
+		</section>
+
+	</div>
+</div>
+
+<script>
+	hljs.initHighlightingOnLoad(); 
+</script>
+
+</body>
+</html>

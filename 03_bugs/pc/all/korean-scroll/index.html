@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+	<meta charset="UTF-8" >
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="user-scalable=yes, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, width=device-width">
+	<meta name="author" content="seonamho - SK MNS" >
+	<meta name="description" content="">
+	<meta name="keywords" content="Site Template">
+	<meta property="og:type" content="website">
+	<meta property="og:title" content="Site Template">
+	<meta property="og:description" content="">
+	<meta property="og:image" content="">
+	<meta property="og:url" content="">
+	<link rel="shortcut icon" href="data:;base64,iVBORwOKGO=" />
+
+	<title>버그 현상 및 해결방법</title>
+
+	<!-- 가이드 관련 -->
+	<link rel="stylesheet" href="../../../../guide/list-guide.css" media="screen, print" />
+	<link rel="stylesheet" href="../../../../guide/vendor/railscasts.css">
+	<script src="../../../../guide/vendor/highlight.pack.js"></script>
+
+</head>
+<body>
+	<div id="work-list">
+		<div class="guide">
+	
+			<section id="guide-basic">
+				<h2 class="guide-sec-tit">textarea, input 에서 한글 입력 중 다른 obj 클릭 시 입력중인 요소로 이동하는 버그</h2>
+	
+				<div class="guide-sec">
+					<h3 class="guide-stit">상세 현상</h3>
+					<p>textarea, input 등에서 한글로 입력하다가 화면 스크롤 하여 다른 버튼, input 등을 클릭했을 경우. 스크롤 위치가 기존 입력하던 textarea, input 이 보이는 위치로 강제이동하는 현상.</p>
+					<p>영문/숫자 등을 입력할 시에는 발생하지 않음.</p>
+					<p>검색해본 결과, 한글이 다른 문자와 다르게 조합을 통한 문자시스템이어서 발생한다고 함.</p>
+				</div>
+				<div class="guide-sec">
+					<h3 class="guide-stit">해결 방법</h3>
+					<p><strong>근본적인 해결책은 없음. </strong></p>
+					<p><strong>MS 사에서도 이 부분은 원래 이렇게 디자인 된 특성이라고 안내만 하고 있음.</strong></p>
+					<p><strong>스크립트로 해당 textarea, input 이외의 영역에 마우스 오버할 경우 강제 blur 시켜주는 방법뿐.</strong></p>
+					<p><strong>강제 blur 시켜주는 방식도 문제점은 있으므로, 별도 해결책 찾을 필요가 있어보임.</strong></p>
+					<p><strong>마우스 오버 실행영역이 아닌 곳에 마우스를 두고 스크롤 한 뒤, 마우스 오버 영역에 이벤트가 실행되면 입력창으로 스크롤되는 현상은 다시 발생함</strong></p>
+					<p><strong>+ 이를 방지하기 위해 textarea, input 이외의 모든 영역에 이벤트를 걸 경우, 입력하다가 마우스가 영역을 조금이라도 벗어나면 입력 불가</strong></p>
+				</div>
+			</section>
+		</div>
+	</div>
+
+</body>
+</html>

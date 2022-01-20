@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+	<meta charset="UTF-8" >
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="user-scalable=yes, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, width=device-width">
+	<meta name="author" content="seonamho - SK MNS" >
+	<meta name="description" content="퍼블리싱 파일 관리 사이트">
+	<meta name="keywords" content="html css javascript 퍼블리셔 퍼블리싱">
+	<meta property="og:type" content="website">
+	<meta property="og:title" content="퍼블리싱 파일 관리 사이트 (for skmns)">
+	<meta property="og:description" content="skmns 사내용 퍼블리싱 파일 관리 사이트">
+	<meta property="og:image" content="">
+	<meta property="og:url" content="10.71.101.60:1900">
+	<link rel="shortcut icon" href="data:;base64,iVBORwOKGO=" />
+
+	<title>msp</title>
+	<link rel="stylesheet" href="guide/list-guide.css" media="screen, print" />
+</head>
+
+<body>
+	<div id="work-list">
+		<div class="title">
+			<h1 class="project-title">Guide</h1>
+			<p class="project-info">
+				<span>&bull; 담당자 : 서남호 / 심해란 / 전수영</span>
+			</p>
+		</div>
+
+		<!--#include file="include_menu.html" --> 
+
+		<div class="function">
+			<div class="text-finder func-wrap">
+				<span class="tit">Text 검색</span>
+				<input type="text" name="find-tx" id="find-tx" title="text 검색">
+				<button type="button" class="btn-find-tx">검색</button>
+				<input type="hidden" class="temp">
+			</div>
+			<div class="func-wrap">
+				<span class="tit">미리보기</span>
+				<span class="check">
+					<input type="checkbox" name="" id="view-chk">
+					<label for="view-chk">미리보기</label>
+				</span>
+			</div>
+			<!-- <div class="ing-per">
+				&bull; 진행율 : <span class="end-page"></span> / <span class="total-page"></span> ( <span class="per"></span> %)
+			</div> -->
+		</div>
+		<div class="list">
+			<div class="tbl-wrap">
+				<table>
+					<caption>프로젝트 리스트</caption>
+					<colgroup>
+						<col style="width:20%"/>
+						<col style="width:20%"/>
+						<col style="width:15%"/>
+						<col style="width:auto"/>
+					</colgroup>
+					<thead>
+						<tr>
+							<th scope="col">depth1</th>
+							<th scope="col">depth2</th>
+							<th scope="col">링크</th>
+							<th scope="col">기타</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td class="depth1">기본 가이드</td>
+							<td class="depth2">프로세스</td>
+							<td class="link"><a href="01_guide/process.html" target="_blank">process</a></td>
+							<td class="modify"></td>
+						</tr>
+						<tr>
+							<td class="depth1"></td>
+							<td class="depth2">msp 포트 리스트</td>
+							<td class="link"><a href="01_guide/msp-port.html" target="_blank">msp-port</a></td>
+							<td class="modify"></td>
+						</tr>
+						<tr>
+							<td class="depth1"></td>
+							<td class="depth2">MSP 퍼블리싱 기본 guide</td>
+							<td class="link"><a href="01_guide/msp-basic.html" target="_blank">msp basic</a></td>
+							<td class="modify"></td>
+						</tr>
+						<tr>
+							<td class="depth1"></td>
+							<td class="depth2">MSP 퍼블리싱 리스트 guide</td>
+							<td class="link"><a href="01_guide/msp-list.html" target="_blank">msp list</a></td>
+							<td class="modify"></td>
+						</tr>
+						<tr>
+							<td class="depth1"></td>
+							<td class="depth2">MSP Git guide</td>
+							<td class="link"><a href="01_guide/msp-git-guide.html" target="_blank">msp git</a></td>
+							<td class="modify"></td>
+						</tr>
+						<tr class="div">
+							<td class="depth1">운영 가이드</td>
+							<td class="depth2">베네피아 guide</td>
+							<td class="link"><a href="http://10.71.101.60:11300" target="_blank">베네피아</a></td>
+							<td class="modify"></td>
+						</tr>
+						<tr>
+							<td class="depth1"></td>
+							<td class="depth2">OK캐쉬백 guide</td>
+							<td class="link"><a href="http://10.71.101.60:13100/webapp/WEB-INF/op-guide/index.html" target="_blank">OK캐쉬백</a></td>
+							<td class="modify"></td>
+						</tr>
+						<tr>
+							<td class="depth1">기타</td>
+							<td class="depth2">MSP 퍼블리싱 기본 guide(기존_1000 포트)</td>
+							<td class="link"><a href="http://10.71.101.60:11000" target="_blank">msp basic_1000</a></td>
+							<td class="modify"></td>
+						</tr>
+						<tr>
+							<td class="depth1"></td>
+							<td class="depth2">MSP media query guide</td>
+							<td class="link"><a href="http://10.71.101.60:11001" target="_blank">MSP media query</a></td>
+							<td class="modify"></td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+		
+		<div class="iframe">
+			<iframe src="" frameborder="0" scrollbars="yes"></iframe>
+			<button type="button" class="btn-frame-close">닫기</button>
+		</div>
+	</div>
+
+	<script src="js/common.js"></script>
+	<script src="guide/list-guide.js"></script>
+
+	<script>
+		guide_menuSet(0);
+	</script>
+</body>
+</html>

@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+	<meta charset="UTF-8" >
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="user-scalable=yes, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, width=device-width">
+	<meta name="author" content="seonamho - SK MNS" >
+	<meta name="description" content="퍼블리싱 파일 관리 사이트">
+	<meta name="keywords" content="html css javascript 퍼블리셔 퍼블리싱">
+	<meta property="og:type" content="website">
+	<meta property="og:title" content="퍼블리싱 파일 관리 사이트 (for skmns)">
+	<meta property="og:description" content="skmns 사내용 퍼블리싱 파일 관리 사이트">
+	<meta property="og:image" content="">
+	<meta property="og:url" content="10.71.101.60:1900">
+	<link rel="shortcut icon" href="data:;base64,iVBORwOKGO=" />
+
+	<title>process guide | guide | msp</title>
+
+	<!-- 가이드 관련 -->
+	<link rel="stylesheet" href="../guide/list-guide.css" media="screen, print" />
+	<link rel="stylesheet" href="../guide/vendor/railscasts.css">
+	<script src="../guide/vendor/highlight.pack.js"></script>
+
+</head>
+
+<div id="work-list">
+	<div class="guide">
+		
+		<section>
+			<h2 class="guide-sec-tit">PROCESS GUIDE <span class="desc">퍼블리싱 업무 프로세스 가이드</span></h2>
+
+			<div class="guide-sec">
+				<h3 class="guide-stit">기본 프로세스</h3>
+				<div class="tbl">
+					<table>
+						<caption></caption>
+						<colgroup>
+							<col style="width:18%"/>
+							<col style="width:20%"/>
+							<col style="width:auto"/>
+							<col style="width:15%"/>
+						</colgroup>
+						<tbody>
+							<tr class="div">
+								<th scope="col" rowspan="4">Step1. 기본 협의</th>
+								<td rowspan="2">최초 업무 인지</td>
+								<td>Communication 채널 확인 (기획/디자인/개발 담당자 및 실무자 / 사업 담당자 확인)</td>
+								<td></td>
+							</tr>
+							<tr>
+								<td>1차 일정 확인 - 대략적인 작업일정 및 회의일정</td>
+								<td></td>
+							</tr>
+							<tr>
+								<td rowspan="2">초기 업무 분석</td>
+								<td>퍼블리싱 내용 파악 및 분석 <br>
+									- 사이트 규모<br>
+									- 구축 채널 (Web / Mobile Web / App Webview )<br>
+									- 사이트 성격 (Front / admin / promotion ...)<br>
+									- 대략적인 페이지 수 및 메인 기능
+								</td>
+								<td></td>
+							</tr>
+							<tr>
+								<td>회의 및 comm. 채널을 통해 퍼블리싱 내용 안내 및 협의 진행 <br>
+									- 퍼블리싱 단계의 기능에 대한 협의 (컨설팅 및 진행여부 등)<br>
+									- 기타 퍼블리싱 작업에 대한 안내
+								</td>
+								<td></td>
+							</tr>
+							
+							
+							<tr class="div">
+								<th scope="col" rowspan="6">Step2. 사전 업무요건 결정</th>
+								<td>업무량 파악</td>
+								<td>기획문서 토대로 전체 작업량 파악 및 일정 산출 - 1차 견적 기준서 작성</td>
+								<td><a href="download/2022_퍼블리싱견적가이드.xlsx" class="btn">견적 기준서 down</a></td>
+							</tr>
+							<tr>
+								<td rowspan="2">퍼블리싱 요건정리</td>
+								<td>퍼블리싱 체크리스트 공유 / 회신 요청 / 수급</td>
+								<td><a href="download/2022_퍼블리싱-체크리스트.xlsx" class="btn">체크리스트 down</a></td>
+							</tr>
+							<tr>
+								<td>업무 진행 시 적용할 기능 및 기타 요건 정리</td>
+								<td></td>
+							</tr>
+							<tr>
+								<td rowspan="2">견적서 작성 및 전달</td>
+								<td>파악된 업무량 기준 - 체크리스트 항목 및 요건 최종확인 후 견적기준서 최종작성</td>
+								<td></td>
+							</tr>
+							<tr>
+								<td>견적기준서에 따른 견적서 작성 및 전달 / 완료된 체크리스트 공유</td>
+								<td><a href="download/2022_퍼블리셔사내견적서.xlsx" class="btn">2017 견적서 down</a></td>
+							</tr>
+							<tr>
+								<td>최종일정 협의 및 확정</td>
+								<td>각 파트별 전체 일정 협의/확정 및 공유</td>
+								<td></td>
+							</tr>
+							
+							<tr class="div">
+								<th scope="col" rowspan="5">Step3. 업무 진행</th>
+								<td rowspan="2">업무 준비</td>
+								<td>퍼블리싱 서버 URL 생성 (10.125.253.31:2000 ~ 2999 포트)</td>
+								<td></td>
+							</tr>
+							<tr>
+								<td>프로젝트 리스트 페이지 제작</td>
+								<td><button type="button" class="btn down_pub-list">리스트파일 down</button></td>
+							</tr>
+							<tr>
+								<td rowspan="2">업무 진행</td>
+								<td>실 작업 진행 및 프로젝트 리스트 업데이트</td>
+								<td></td>
+							</tr>
+							<tr>
+								<td>가이드 파일 작성 - layout / table / input 등</td>
+								<td></td>
+							</tr>
+							<tr>
+								<td>웹 접근성</td>
+								<td>웹 접근성 검수 결과서 작성 (진행할 경우)</td>
+								<td><a href="https://docs.google.com/spreadsheets/d/1I83Yu6zZCHvDjl565L7qw78uYGWvsDibZRhL9AGH3xI/edit#gid=497365702" target="_blank" class="btn">웹 접근성 검수결과서</a></td>
+							</tr>
+							
+							<tr class="div">
+								<th scope="col" rowspan="7">Step4. 최종 산출물 정리</th>
+								<td rowspan="3">최종 산출물 전달</td>
+								<td>프로젝트 리스트 URL 전달</td>
+								<td></td>
+							</tr>
+							<tr>
+								<td>가이드 파일 및 퍼블리싱 제작 파일 전달</td>
+								<td></td>
+							</tr>
+							<tr>
+								<td>웹접근성 검수 결과서 URL 및 excel 파일 전달</td>
+								<td></td>
+							</tr>
+							<tr>
+								<td>개발 F/U</td>
+								<td>개발 요청에 따른 수정 및 프로젝트 리스트 업데이트</td>
+								<td></td>
+							</tr>
+							<tr>
+								<td rowspan="3">산출물 백업</td>
+								<td>최종 산출물 개인 PC 에 백업 (서버 오류 가능성 대비)</td>
+								<td></td>
+							</tr>
+							<tr>
+								<td>추가 수정 및 운영 시 주기적으로 백업(월 1회 이상)</td>
+								<td></td>
+							</tr>
+							<tr>
+								<td>작업 진행 중일 경우에도 주기적 백업을 권고</td>
+								<td></td>
+							</tr>
+							
+							<tr class="div">
+								<th scope="col" rowspan="2">Step5. 사이트 오픈 후</th>
+								<td rowspan="2">운영 진행 시</td>
+								<td>URL 3000 ~ 3999 포트로 변경</td>
+								<td></td>
+							</tr>
+							
+							<tr>
+								<td>comm. 채널 정보 / 구축 일자 / 기타 유의사항을 프로젝트 리스트 가이드에 추가</td>
+								<td></td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</section>
+	</div>
+
+	<script src="/js/vendor/jszip.min.js"></script>
+	<script src="/js/vendor/FileSaver.js"></script>
+	<script src="/js/vendor/jszip-utils.js"></script>
+	<script src="/js/common.js"></script>
+	<script>
+		function urlToPromise(url) {
+			return new Promise(function (resolve, reject) {
+				JSZipUtils.getBinaryContent(url, function (err, data) {
+					if (err) {
+						reject(err);
+					} else {
+						resolve(data);
+					}
+				});
+			});
+		}
+
+		var zipBtn = document.querySelector('.down_pub-list');
+		zipBtn.addEventListener('click', function(){
+			var zip = new JSZip();
+			zip.folder('html', '', { binary: true });
+			zip.folder('images', '', { binary: true });
+			zip.folder('css/vendor', '', { binary: true });
+			zip.folder('js/vendor', '', { binary: true });
+			zip.file('index.html', urlToPromise('../index_base.html'), { binary: true });
+			zip.file('js/common.js', urlToPromise('../js/common.js'), { binary: true });
+			zip.file('guide/list-guide.css', urlToPromise('../guide/list-guide.css'), { binary: true });
+			zip.file('guide/list-guide.js', urlToPromise('../guide/list-guide.js'), { binary: true });
+			zip.file('guide/images/next.png', urlToPromise('../guide/images/next.png'), { binary: true });
+			zip.file('guide/images/tree-btn.png', urlToPromise('../guide/images/tree-btn.png'), { binary: true });
+			zip.file('guide/images/tree-btn-open.png', urlToPromise('../guide/images/tree-btn-open.png'), { binary: true });
+			zip.file('guide/images/tree-line.png', urlToPromise('../guide/images/tree-line.png'), { binary: true });
+			zip.file('guide/images/tree-onoff.png', urlToPromise('../guide/images/tree-onoff.png'), { binary: true });
+			zip.file('guide/vendor/highlight.pack.js', urlToPromise('../guide/vendor/highlight.pack.js'), { binary: true });
+			zip.file('guide/vendor/railscasts.css', urlToPromise('../guide/vendor/railscasts.css'), { binary: true });
+
+			zip.generateAsync({ type: "blob" }).then(
+				function (blob) {
+					saveAs(blob, 'msp_퍼블리스트.zip');
+				}
+			);
+		});
+	</script>
+</body>
+</html>

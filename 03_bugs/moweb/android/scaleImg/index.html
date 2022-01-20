@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+	<meta charset="UTF-8" >
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="user-scalable=yes, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, width=device-width">
+	<meta name="author" content="seonamho - SK MNS" >
+	<meta name="description" content="">
+	<meta name="keywords" content="Site Template">
+	<meta property="og:type" content="website">
+	<meta property="og:title" content="Site Template">
+	<meta property="og:description" content="">
+	<meta property="og:image" content="">
+	<meta property="og:url" content="">
+	<link rel="shortcut icon" href="data:;base64,iVBORwOKGO=" />
+
+	<title>버그 현상 및 해결방법</title>
+
+	<!-- 가이드 관련 -->
+	<link rel="stylesheet" href="../../../../guide/list-guide.css" media="screen, print" />
+	<link rel="stylesheet" href="../../../../guide/vendor/railscasts.css">
+	<script src="../../../../guide/vendor/highlight.pack.js"></script>
+
+</head>
+<body>
+	<div id="work-list">
+		<div class="guide">
+	
+			<section id="guide-basic">
+				<h2 class="guide-sec-tit">transform scale 적용 시 이미지 깨짐 현상</h2>
+	
+				<div class="guide-sec">
+					<h3 class="guide-stit">상세 현상</h3>
+					<p>스케일을 이용한 애니메이션에서 사이즈가 작은 상태에서 크게 키워지는 모션을 사용할 때 이미지가 깨지는 현상.</p>
+					<p>이미지를 감싸는 태그에 애니메이션을 주고, 이미지는 width:100% 을 한 상태일때. <br />이미지를 감싸는 태그에 애니메이션을 주게 되면, 태그의 scale 이 0 일때의 width 값을 이미지에 적용하고 그대로 유지하면서 커지는 버그가 발생. (매우 작은 이미지를 강제로 늘인듯 한 느낌)</p>
+					<p>특정 안드로이드 버전 및 특정 폰에서 발생하는 버그</p>
+				</div>
+				<div class="guide-sec">
+					<h3 class="guide-stit">해결 방법</h3>
+					<p><strong>img 태그에 직접 애니메이션을 적용하면 해결됨.</strong></p>
+				</div>
+			</section>
+		</div>
+	</div>
+
+</body>
+</html>

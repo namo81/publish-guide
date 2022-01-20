@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+	<meta charset="UTF-8" >
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="user-scalable=yes, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, width=device-width">
+	<meta name="author" content="seonamho - SK MNS" >
+	<meta name="description" content="">
+	<meta name="keywords" content="Site Template">
+	<meta property="og:type" content="website">
+	<meta property="og:title" content="Site Template">
+	<meta property="og:description" content="">
+	<meta property="og:image" content="">
+	<meta property="og:url" content="">
+	<link rel="shortcut icon" href="data:;base64,iVBORwOKGO=" />
+
+	<title>버그 현상 및 해결방법</title>
+
+	<!-- 가이드 관련 -->
+	<link rel="stylesheet" href="../../../guide/list-guide.css" media="screen, print" />
+	<link rel="stylesheet" href="../../../guide/vendor/railscasts.css">
+	<script src="../../../guide/vendor/highlight.pack.js"></script>
+
+</head>
+<body>
+	<div id="work-list">
+		<div class="guide">
+	
+			<section id="guide-basic">
+				<h2 class="guide-sec-tit">translate 모션 이동시 반짝이는 현상</h2>
+	
+				<div class="guide-sec">
+					<h3 class="guide-stit">상세 현상</h3>
+					<p>translateX ( or translateY ) 를 사용하여 배너나 페이지 이동시 모션 종료 후 webview 화면에서 번쩍이는 현상이 발생.</p>
+					<p>Y 및 Z 값 설정이 없이 X 만 움직일 경우 (Y만 움직이는 경우도 동일할듯) 모션 종료 시 설정되지 않은 값의 갱신이 발생하는 듯.</p>	
+				</div>
+				<div class="guide-sec">
+					<h3 class="guide-stit">해결 방법</h3>
+					<p><strong>이 부분은 translate3d(0,0,0) 으로 고쳐주고 원하는 x,y 값을 지정해주면 문제 해결.</strong></p>
+					<p><strong>해당 부분은 모션 움직임의 퍼포먼스 향상에도 효과가 있음.</strong></p>
+					<p><strong>모든 이동은 translate3d(0,0,0) 을 사용.</strong></p>	
+				</div>
+			</section>
+		</div>
+	</div>
+
+	<script>		
+		hljs.initHighlightingOnLoad(); 
+	</script>
+</body>
+</html>

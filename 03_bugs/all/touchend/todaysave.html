@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+	<title>오늘의 적립</title>
+	<meta name="author" content="SK MNS" >
+	<meta charset="UTF-8">
+	<meta name="viewport" content="user-scalable=yes, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, width=device-width">
+	<link rel="stylesheet" type="text/css" href="http://event.okcashbag.com/common/css/evt/evt_common_mobile.css?ver=20160610" media="screen, print">
+	<link rel="stylesheet" type="text/css" href="common/css/todaysave.css" media="screen, print">
+	<script type="text/javascript" src="http://code.jquery.com/jquery-latest.min.js"></script>
+	<script src="common/js/namoSwipe-v1.1.js"></script>
+	<script src="common/js/todaysave.js"></script>
+	<script>
+		$(function(){
+			/* 2016-10-25 다수 상품 홍보 추가 */
+			$('.roll1').swipeSlide({
+				bannerWrap : '.roll',
+				nextprevBtn : false,
+				posBtn : false,
+				wsize:0.7
+			});
+			$('.roll2').swipeSlide({
+				bannerWrap : '.roll',
+				nextprevBtn : false,
+				posBtn : false,
+				wsize:0.7
+			});
+
+		});
+	</script>
+</head>
+
+<body>
+<div class="evt-wrap" id="top">
+	<div class="evt-cnt">
+
+		<img src="images/todaysave-top.png" alt=" ">
+		<div class="hide">
+			<p>매일 5P 무조건 적립</p>
+			<h1>오늘의 적립</h1>
+			<p>OK캐쉬백 포인트까지 적립 받아야 진짜 최저가 쇼핑!</p>
+		</div>
+
+	</div>
+
+	<div class="evt-cnt evt-tx-ban">
+
+		<div class="top">
+			<p class="tit">카드 추가할인</p>
+			<p class="page-num"><i>1</i>/<span>5</span></p>
+		</div>
+
+		<!-- 배너가 2개 이상일 경우 -->
+		<div class="ban-wrap">
+			<ul>
+				<li><button type="button" onclick="">
+					<span class="logo"><img src="images/logo_cjmall.png" alt="CJ mall"></span>
+					<span class="tx-wrap">
+						<span class="tx">롯데/현대/BC/우리 <i class="tx-red">최대 7% 할인</i></span>
+						<span class="date">2016.07.11 ~ 2016.08.11</span>
+					</span>
+				</button></li>
+				<li><button type="button" onclick="">
+					<span class="logo"><img src="images/logo_11st.png" alt="11번가"></span>
+					<span class="tx-wrap">
+						<span class="tx">롯데/현대/BC/우리/우리/우리 <i class="tx-red">최대 7% 할인</i></span>
+						<span class="date">2016.07.11 ~ 2016.08.11</span>
+					</span>
+				</button></li>
+				<li><button type="button" onclick="">
+					<span class="logo"><img src="images/logo_cjmall.png" alt="CJ mall"></span>
+					<span class="tx-wrap">
+						<span class="tx">롯데/현대/BC/우리 <i class="tx-red">최대 7% 할인최대 7% 할인</i></span>
+						<span class="date">2016.07.11 ~ 2016.08.11</span>
+					</span>
+				</button></li>
+			</ul>
+		</div>
+		<!-- 배너가 2개 이상일 경우 // -->
+
+		<!-- 배너가 1개일 경우
+		<div class="ban-wrap-1">
+			<button type="button" onclick="">
+				<span class="logo"><img src="images/logo_cjmall.png" alt="CJ mall"></span>
+				<span class="tx-wrap">
+					<span class="tx">롯데/현대/BC/우리 <i class="tx-red">최대 7% 할인</i></span>
+					<span class="date">2016.07.11 ~ 2016.08.11</span>
+				</span>
+			</button>
+		</div>
+		<!-- 배너가 1개일 경우 // -->
+
+	</div>
+
+	<!-- 2016-11-02 수정 -->
+	<div class="evt-cnt evt-top">
+		<div class="top">
+			<span class="tit">오늘의 이벤트 <strong class="tx-red">최대 5P 적립</strong></span>
+			<button type="button" class="btn-info"><img src="images/ico_q.png" alt="자세히보기"></button>			
+			<div class="balloon-info">
+				<div class="f-wrap">
+					<div class="fl">
+						<p class="step">Step1.</p>
+						<p class="tx">마음에 드는 상품 또는 이벤트를 클릭</p>
+					</div>
+					<div class="fr">
+						<p class="step">Step2.</p>
+						<p class="tx">클릭 시 1P적립 받고 구매하러 이동하기 <br /> (1일 1인  최대 5P적립)</p>
+					</div>
+				</div>
+				<div class="btns">
+					<button type="button" class="btn-info-close">닫기</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="evt-cnt evt-top-ban">
+		<div class="ban-list">
+			<button type="button" onclick=""><img src="images/img_banner1.jpg" alt="삼성카드 5% 할인 - 추석한우 선물세트 - 158,000원~"></button>
+			<div class="ball-reg">
+				<strong>1P</strong>적립
+			</div>
+		</div>
+	</div>
+	
+
+	<div class="evt-cnt evt-top-ban">
+		<div class="ban-list">
+			<button type="button" onclick=""><img src="images/img_banner1.jpg" alt="삼성카드 5% 할인 - 추석한우 선물세트 - 158,000원~"></button>
+			<div class="ball-reg">
+				<strong>1P</strong>적립
+			</div>
+		</div>
+	</div>
+	<!-- 2016-11-02 수정 // -->
+
+	<!-- 2016-10-25 후기형 상품 -->
+	<div class="evt-cnt evt-use">
+		<button type="button">
+			<span class="tit">입생로랑 틴트 15호 왜 다들 최고라 하는지 알겠어요</span>
+			<span class="tx-cnt">저는 인터파트 다이나믹 프라이스로 이미 17호를 구매해서 사용하고 있는데요. 정말 왜 다들 입생로랑 틴트 하는지 알겠어요! 부담없이 바르기 편하고 끈적이지 않으면서도 지속도 오래도록 지속되니까 매일 매일 요제품 꼭 바르게 되는거 같아요. </span>
+			<span class="origin">[출처 : 인스타그램 asdfasdfsadf 후기 ]</span>
+			<span class="img">
+				<img src="images/img_use.jpg" alt="">
+				<span class="ball-reg">
+					<strong>1P</strong>적립
+				</span>
+			</span>	
+			<span class="pdt-name">입생로랑 루쥬 뷔르 꾸뛰르 베르니 아 레브르 6ml</span>
+		</button>
+	</div>
+	<!-- 2016-10-25 후기형 상품 // -->
+
+	<!-- 2016-10-25 다수 상품 홍보 -->
+	<div class="evt-cnt pdt-roll roll1">
+		<p class="partner">CJmall</p>
+		<p class="tit">돋보이는 가을 LOOK</p>
+		<p class="desc">가을향기 물씬 나는 내추럴 코디법</p>
+		<div class="roll">
+			<ul>
+				<li><button type="button">
+					<span class="img"><img src="images/img_roll1.jpg" alt=""></span>
+					<span class="ball-reg">
+						<strong>1P</strong>적립
+					</span>
+				</button></li>
+				<li><button type="button">
+					<span class="img"><img src="images/img_roll2.jpg" alt=""></span>
+					<span class="ball-reg">
+						<strong>1P</strong>적립
+					</span>
+				</button></li>
+			</ul>
+		</div>
+	</div>
+	<!-- 2016-10-25 다수 상품 홍보 // -->
+
+	<!-- 2016-09-22 다수 상품 홍보 -->
+	<div class="evt-cnt pdt-roll roll2">
+		<p class="partner">CJmall</p>
+		<p class="tit">돋보이는 가을 LOOK</p>
+		<p class="desc">가을향기 물씬 나는 내추럴 코디법</p>
+		<div class="roll">
+			<ul>
+				<li><button type="button">
+					<span class="img"><img src="images/img_roll1.jpg" alt=""></span>
+					<span class="ball-reg">
+						<strong>1P</strong>적립
+					</span>
+				</button></li>
+				<li><button type="button">
+					<span class="img"><img src="images/img_roll2.jpg" alt=""></span>
+					<span class="ball-reg">
+						<strong>1P</strong>적립
+					</span>
+				</button></li>
+			</ul>
+		</div>
+	</div>
+	<!-- 2016-09-22 다수 상품 홍보 // -->
+
+	<!-- 2016-11-02 수정 -->
+	<div class="evt-cnt pdt-list">
+		<div class="wrap">
+			<p class="imp"><strong>오늘만 이 가격!</strong></p>
+			<button type="button" class="btn-pdt" onclick="">
+				<span class="img">
+					<img src="images/img_pdt1.jpg" alt="">
+					<span class="ball-reg">
+						<strong>1P</strong>적립
+					</span>
+				</span>
+				<span class="store-name">CJmall</span>
+				<span class="f-wrap">
+					<span class="fl">메이크업포에버 절대팩트 프로 피니쉬</span>
+					<span class="fr">
+						<del>634,567원</del>
+						<span class="price">1,534,657원 <i class="tx-red">(255,500P 적립)</i></span>
+					</span>
+				</span>
+				<span class="total-price"><i class="ocb">OK캐쉬백혜택 적용가</i> <strong>1,412,000</strong>원</span>
+			</button>
+		</div>
+	</div>
+
+	<div class="evt-cnt pdt-list">
+		<div class="wrap">
+			<p class="imp"><strong>오늘만 이 가격!</strong></p>
+			<button type="button" class="btn-pdt" onclick="">
+				<span class="img">
+					<img src="images/img_pdt2.jpg" alt="">
+					<span class="ball-reg">
+						<strong>1P</strong>적립
+					</span>
+				</span>
+				<span class="store-name">CJmall</span>
+				<span class="f-wrap">
+					<span class="fl">시슬리/아가타/루이까또즈 창고 대개방!</span>
+					<span class="fr">
+						<del>634,567원</del>
+						<span class="price">1,534,657원 <i class="tx-red">(255,500P 적립)</i></span>
+					</span>
+				</span>
+				<span class="total-price"><i class="ocb">OK캐쉬백혜택 적용가</i> <strong>1,412,000</strong>원</span>
+			</button>
+		</div>
+	</div>
+
+	<div class="evt-cnt pdt-list">		
+		<div class="wrap">
+			<p class="imp"><strong>오늘만 이 가격!</strong></p>
+			<button type="button" class="btn-pdt" onclick="">
+				<span class="img">
+					<img src="images/img_pdt1.jpg" alt="">
+					<span class="ball-reg">
+						<strong>1P</strong>적립
+					</span>
+				</span>
+				<span class="store-name">CJmall</span>
+				<span class="f-wrap">
+					<span class="fl">시슬리/아가타/루이까또즈 창고 대개방!</span>
+					<span class="fr">
+						<del>634,567원</del>
+						<span class="price">1,534,657원 <i class="tx-red">(255,500P 적립)</i></span>
+					</span>
+				</span>
+				<span class="total-price"><i class="ocb">OK캐쉬백혜택 적용가</i> <strong>1,412,000</strong>원</span>
+			</button>
+		</div>
+	</div>
+	<!-- 2016-11-02 수정 // -->
+
+	<div class="evt-cnt evt-notice">
+		<h2>유의사항 및 이용안내</h2>
+		<ul>
+			<li><span class="blet">1. </span> <span class="tx">[오늘의 이벤트 ] 클릭하면  1P 즉시적립!  (1일/1인/최대 5회 참여가능)</span></li>
+			<li><span class="blet">2. </span> <span class="tx">최종 구매금액에 대하여 적립율이 적용되므로 실제 적립금은 차이가 발생할 수 있습니다.</span></li>
+			<li><span class="blet">3. </span> <span class="tx">일부 상품은 제휴사 사정에 따라 조기 품절될 수 있습니다.</span></li>
+			<li>
+				<span class="blet">4. </span> <span class="tx">포인트 적립시점은 배송완료[구매결정] 기준, 익월말에 일괄  적립해  드립니다. <br />(적립이후는 주문일자로 OK캐쉬백 PC와 모바일의 “포인트 조회”에서 확인 가능)</span>
+				<ul class="in-list">
+					<li><span class="blet">- </span><span class="tx">이용하신 제휴몰에 캐쉬백카드번호를 남기셨을 경우에 한하여 포인트를 정상적으로 적립 받으실 수 있습니다.</span></li>
+					<li><span class="blet">- </span><span class="tx">OK캐쉬백 카드번호를 입력하지 않았거나 잘 못 입력 경우, 카드번호가 미등록 카드 이거나 해지된 경우 포인트 적립이 불가합니다.</span></li>
+				</ul>
+			</li>
+			<li><span class="blet">5. </span> <span class="tx">OK캐쉬백 쇼핑 적립은 통신판매중개자로서 상품 주문, 배송 및 환불의 의무와 책임은 각 판매 업체에 있습니다.</span></li>
+		</ul>
+	</div>
+
+	<div class="evt-cnt evt-shair">
+		<h2>친구와 같이 보자!</h2>
+		<ul>
+			<li><button type="button" onclick="">
+				<span class="img"><img src="images/ico_sns-kakao.png" alt=""></span>
+				<span class="tx">카카오톡</span>
+			</button></li>
+			<li><button type="button" onclick="">
+				<span class="img"><img src="images/ico_sns-kas.png" alt=""></span>
+				<span class="tx">카카오스토리</span>
+			</button></li>
+			<li><button type="button" onclick="">
+				<span class="img"><img src="images/ico_sns-facebook.png" alt=""></span>
+				<span class="tx">페이스북</span>
+			</button></li>
+			<li><button type="button" onclick="">
+				<span class="img"><img src="images/ico_sns-twitter.png" alt=""></span>
+				<span class="tx">트위터</span>
+			</button></li>
+		</ul>
+	</div>
+
+	<div class="top-area">
+		<a href="#top" class="btn-top">
+			<div class="paging">
+				<p class="now">2</p>
+				<p class="total">52</p>
+			</div>
+			<span class="top"><img src="images/ico_arrow-top.png" alt="TOP"></span>
+		</a>
+	</div>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+	<meta charset="UTF-8" >
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="user-scalable=yes, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, width=device-width">
+	<meta name="author" content="seonamho - SK MNS" >
+	<meta name="description" content="">
+	<meta name="keywords" content="Site Template">
+	<meta property="og:type" content="website">
+	<meta property="og:title" content="Site Template">
+	<meta property="og:description" content="">
+	<meta property="og:image" content="">
+	<meta property="og:url" content="">
+	<link rel="shortcut icon" href="data:;base64,iVBORwOKGO=" />
+
+	<title>버그 현상 및 해결방법</title>
+
+	<!-- 가이드 관련 -->
+	<link rel="stylesheet" href="../../../../guide/list-guide.css" media="screen, print" />
+	<link rel="stylesheet" href="../../../../guide/vendor/railscasts.css">
+	<script src="../../../../guide/vendor/highlight.pack.js"></script>
+
+</head>
+<body>
+	<div id="work-list">
+		<div class="guide">
+	
+			<section id="guide-basic">
+				<h2 class="guide-sec-tit">레이어팝업 딤드 / 컨텐츠 z-index 오류</h2>
+	
+				<div class="guide-sec">
+					<h3 class="guide-stit">상세 현상</h3>
+					<p>본 페이지 위에 레이어 팝업을 띄우고,</p>
+					<p>레이어 팝업 딤드 배경 속성이 position : fixed 일 경우</p>
+					<p>해당 레이어 팝업을 띄운 상태에서 스크롤을 일정 이상 내릴 경우 딤드 배경이 z-index를 무시하고 컨텐츠 위로 오는 오류 발생.</p>
+				</div>
+				<div class="guide-sec">
+					<h3 class="guide-stit">해결 방법</h3>
+					<p><strong>딤드 배경의 position 을 absolute 로 바꿔준 후, 스크립트로 화면 전체 높이를 추출하여 딤드 배경의 높이값을 설정.</strong></p>
+				</div>
+			</section>
+		</div>
+	</div>
+</body>
+</html>

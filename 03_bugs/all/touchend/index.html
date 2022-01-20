@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+	<meta charset="UTF-8" >
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="user-scalable=yes, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, width=device-width">
+	<meta name="author" content="seonamho - SK MNS" >
+	<meta name="description" content="">
+	<meta name="keywords" content="Site Template">
+	<meta property="og:type" content="website">
+	<meta property="og:title" content="Site Template">
+	<meta property="og:description" content="">
+	<meta property="og:image" content="">
+	<meta property="og:url" content="">
+	<link rel="shortcut icon" href="data:;base64,iVBORwOKGO=" />
+
+	<title>버그 현상 및 해결방법</title>
+
+	<!-- 가이드 관련 -->
+	<link rel="stylesheet" href="../../../guide/list-guide.css" media="screen, print" />
+	<link rel="stylesheet" href="../../../guide/vendor/railscasts.css">
+	<script src="../../../guide/vendor/highlight.pack.js"></script>
+
+</head>
+<body>
+	<div id="work-list">
+		<div class="guide">
+	
+			<section id="guide-basic">
+				<h2 class="guide-sec-tit">안드로이드 4.4 에서 Touchend 버그</h2>
+	
+				<div class="guide-sec">
+					<h3 class="guide-stit">상세 현상</h3>
+					<p>안드로이드 4.4에서 touchend 이벤트가 발생하지 않는 현상</p>	
+					<p>toochstart / touchmove 까지는 문제 없으나, touchmove 에 e.preventDefault 를 주지 않을 경우 touchend 이벤트가 발생하지 않음.</p>
+					<p>touchmove 에서 touchend 로 넘어가는 중간에 기본 스크롤이 실행되면서 touchend 를 차단(?)하는 듯함.</p>
+					<p>좌우 플리킹에서는 touchmove 에 e.preventDefault 를 줌으로써 해결 가능하나, 상하 스크롤 기능일 경우에 문제가 됨.</p>
+				</div>
+				<div class="guide-sec">
+					<h3 class="guide-stit">해결 방법</h3>
+					<p><strong>이 부분은 touch 가 아닌 기본 scroll 에 기능을 넣음으로써 방법을 찾아야함.</strong></p>
+					<p><strong>scroll 에 on 기능을 넣고, off 용 function 을 같이 실행시켜준 다음, off 용 function 에 setTimeout 를 통해 순차적 실행.<br> (scroll 에 clearTimeout 도 같이 넣어주는게 좋음 - 스크롤을 연속으로 할 경우 off 기능 정지)</strong></p>
+					<p><strong>but. 안드로이드 4.4 에서 scroll 에 넣은 on 기능의 동작이 굉장히 느린 경우가 있음. 그럴 경우 on 기능은 touchstart / touchmove 로 설정하고 off 기능만 scroll 으로 적용.</strong></p>
+					<p>예시) <a href="todaysave.html" class="btn" target="_blank">온라인제휴 - 오늘의 적립</a></p>
+				</div>
+			</section>
+		</div>
+	</div>
+
+	<script>		
+		hljs.initHighlightingOnLoad(); 
+	</script>
+</body>
+</html>

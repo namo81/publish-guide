@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+	<meta charset="UTF-8" >
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="user-scalable=yes, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, width=device-width">
+	<meta name="author" content="seonamho - SK MNS" >
+	<meta name="description" content="퍼블리싱 파일 관리 사이트">
+	<meta name="keywords" content="html css javascript 퍼블리셔 퍼블리싱">
+	<meta property="og:type" content="website">
+	<meta property="og:title" content="퍼블리싱 파일 관리 사이트 (for skmns)">
+	<meta property="og:description" content="skmns 사내용 퍼블리싱 파일 관리 사이트">
+	<meta property="og:image" content="">
+	<meta property="og:url" content="10.71.101.60:1900">
+	<link rel="shortcut icon" href="data:;base64,iVBORwOKGO=" />
+
+	<title>Bug Report | msp</title>
+	<link rel="stylesheet" href="guide/list-guide.css" media="screen, print" />
+</head>
+
+<body>
+
+	<div id="work-list">
+		<div class="title">
+			<h1 class="project-title">Bug Report</h1>
+			<p class="project-info">
+				<span>&bull; 담당자 : 서남호 / 심해란 / 전수영</span>
+			</p>
+		</div>
+		
+		<!--#include file="include_menu.html" --> 
+
+		<div class="function">
+			<div class="text-finder func-wrap">
+				<span class="tit">Text 검색</span>
+				<!-- <input type="text" name="find-tx" id="find-tx-id" placeholder="검색 영역 ID"" title="검색 영역 ID"> -->
+				<input type="text" name="find-tx" id="find-tx" title="text 검색">
+				<button type="button" class="btn-find-tx">검색</button>
+				<!-- <div class="temp"></div> -->
+				<input type="hidden" class="temp">
+			</div>
+			<div class="func-wrap">
+				<span class="tit">미리보기</span>
+				<span class="check">
+					<input type="checkbox" name="" id="view-chk">
+					<label for="view-chk">미리보기</label>
+				</span>
+			</div>
+		</div>
+
+		<div class="list">
+			<div class="tbl-wrap">
+				<table>
+					<caption>페이지 리스트</caption>
+					<colgroup>
+						<col style="width:5%">
+						<col style="width:10%">
+						<col style="width:8%">
+						<col style="width:8%">
+						<col style="width:auto">
+						<col style="width:10%">
+						<col style="width:15%">
+					</colgroup>
+					<thead>
+						<tr>
+							<th scope="col">no</th>
+							<th scope="col">1Depth</th>
+							<th scope="col">device</th>
+							<th scope="col">version</th>
+							<th scope="col">버그 설명</th>
+							<th scope="col">링크</th>
+							<th scope="col">기타</th>
+						</tr>
+					</thead>
+					<tbody>
+						<!-- 공통 -->
+						<tr>
+							<td class="no"></td>
+							<td class="depth1">공통</td>
+							<td></td>
+							<td></td>
+							<td>slideUp, slideDown 으로 아코디언 메뉴 구현시 튀는 버그</td>
+							<td class="link"><a href="03_bugs/all/slideupdownMenu/" target="_blank">view</a></td>
+							<td></td>
+						</tr>
+						<tr>
+							<td class="no"></td>
+							<td class="depth1"></td>
+							<td></td>
+							<td></td>
+							<td>테이블 toggle 구현 시 display 관련</td>
+							<td class="link"><a href="03_bugs/all/tableDisplay/" target="_blank">view</a></td>
+							<td></td>
+						</tr>
+						<tr>
+							<td class="no"></td>
+							<td class="depth1"></td>
+							<td></td>
+							<td></td>
+							<td>translate 모션 이동시 반짝이는 현상</td>
+							<td class="link"><a href="03_bugs/all/translateMotion/" target="_blank">view</a></td>
+							<td></td>
+						</tr>
+
+						<!-- PC 브라우저 -->
+						<tr class="div">
+							<td class="no"></td>
+							<td class="depth1">PC 브라우저</td>
+							<td>공통</td>
+							<td></td>
+							<td>textarea, input 한글입력 중 스크롤 이동 후 다른 obj 클릭시 스크롤 되돌아가는 현상</td>
+							<td class="link"><a href="03_bugs/pc/all/korean-scroll/" target="_blank">view</a></td>
+							<td></td>
+						</tr>
+						<tr>
+							<td class="no"></td>
+							<td class="depth1"></td>
+							<td>IE</td>
+							<td>7</td>
+							<td>라운드 있는 디자인 버튼을 button 태그로 만들 경우 width 버그</td>
+							<td class="link"><a href="03_bugs/pc/ie/ie7_buttonwidth/" target="_blank">view</a></td>
+							<td></td>
+						</tr>
+						<tr>
+							<td class="no"></td>
+							<td class="depth1"></td>
+							<td></td>
+							<td>7</td>
+							<td>a 태그 내에 이미지 + 시스템 폰트 조합일 경우 이미지 영역에서 클릭 event 발생하지 않는 현상</td>
+							<td class="link"><a href="03_bugs/pc/ie/ie7_a-imgTx/" target="_blank">view</a></td>
+							<td></td>
+						</tr>
+						<tr>
+							<td class="no"></td>
+							<td class="depth1"></td>
+							<td></td>
+							<td>7,8</td>
+							<td>png 투명도 오류</td>
+							<td class="link"><a href="03_bugs/pc/ie/ie7-8_pngopacity/" target="_blank">view</a></td>
+							<td></td>
+						</tr>
+						<tr>
+							<td class="no"></td>
+							<td class="depth1"></td>
+							<td></td>
+							<td>9</td>
+							<td>overflow-x 영역 내 input, a 태그 이벤트 발생시 여백 발생하는 버그</td>
+							<td class="link"><a href="03_bugs/pc/ie/ie9_overflowxInInput/" target="_blank">view</a></td>
+							<td></td>
+						</tr>
+						<tr>
+							<td class="no"></td>
+							<td class="depth1"></td>
+							<td></td>
+							<td>8,9,10</td>
+							<td>input 내 웹폰트 적용시 폰트 잘림 현상</td>
+							<td class="link"><a href="03_bugs/pc/ie/ie8-9-10_webfont/" target="_blank">view</a></td>
+							<td></td>
+						</tr>
+						<tr>
+							<td class="no"></td>
+							<td class="depth1"></td>
+							<td></td>
+							<td>11</td>
+							<td>background 이미지 흐려지는 현상</td>
+							<td class="link"><a href="03_bugs/pc/ie/ie11_image-blur/" target="_blank">view</a></td>
+							<td></td>
+						</tr>
+						<tr>
+							<td class="no"></td>
+							<td class="depth1"></td>
+							<td></td>
+							<td></td>
+							<td>테이블 td 에 hover 시 라인이 사라지는 현상</td>
+							<td class="link"><a href="03_bugs/pc/ie/ie11_td-hover-line/" target="_blank">view</a></td>
+							<td></td>
+						</tr>
+						<tr>
+							<td class="no"></td>
+							<td class="depth1"></td>
+							<td>Chrome</td>
+							<td></td>
+							<td>border 관련 - style이 dotted인 라인관련 버그</td>
+							<td class="link"><a href="03_bugs/pc/chrome/borderDotted/" target="_blank">view</a></td>
+							<td></td>
+						</tr>
+						<tr>
+							<td class="no"></td>
+							<td class="depth1"></td>
+							<td></td>
+							<td></td>
+							<td>iframe 내 input에 키보드로 focus 했을 경우 위치값 튀는 오류</td>
+							<td class="link"><a href="03_bugs/pc/chrome/iframeInpScroll/" target="_blank">view</a></td>
+							<td></td>
+						</tr>
+						<tr>
+							<td class="no"></td>
+							<td class="depth1"></td>
+							<td>Firefox</td>
+							<td></td>
+							<td></td>
+							<td class="link"><!-- <a href="03_bugs/pc/firefox/" target="_blank">view</a> --></td>
+							<td></td>
+						</tr>
+						<tr>
+							<td class="no"></td>
+							<td class="depth1"></td>
+							<td>etc</td>
+							<td></td>
+							<td></td>
+							<td class="link"><!-- <a href="03_bugs/pc/etc/" target="_blank">view</a> --></td>
+							<td></td>
+						</tr>
+
+						<!-- 모바일 웹 -->
+						<tr class="div">
+							<td class="no"></td>
+							<td class="depth1">모바일 웹</td>
+							<td>공통</td>
+							<td></td>
+							<td>iframe 화면 버그</td>
+							<td class="link"><a href="03_bugs/moweb/all/iframe-bug/" target="_blank">view</a></td>
+							<td></td>
+						</tr>
+						<tr>
+							<td class="no"></td>
+							<td class="depth1"></td>
+							<td>Andoird</td>
+							<td></td>
+							<td>transform scale 적용 시 이미지 깨짐 현상</td>
+							<td class="link"><a href="03_bugs/moweb/android/scaleImg/" target="_blank">view</a></td>
+							<td></td>
+						</tr>
+						<tr>
+							<td class="no"></td>
+							<td class="depth1"></td>
+							<td>Andoird - samsung</td>
+							<td></td>
+							<td></td>
+							<td class="link"><!-- <a href="03_bugs/moweb/android-s/" target="_blank">view</a> --></td>
+							<td></td>
+						</tr>
+						<tr>
+							<td class="no"></td>
+							<td class="depth1"></td>
+							<td>IOS</td>
+							<td></td>
+							<td>폰트 사이즈 오류</td>
+							<td class="link"><a href="03_bugs/moweb/ios/fontsize/" target="_blank">view</a></td>
+							<td></td>
+						</tr>
+						<tr>
+							<td class="no"></td>
+							<td class="depth1"></td>
+							<td></td>
+							<td></td>
+							<td>iframe 컨텐츠 가로 사이즈 오류</td>
+							<td class="link"><a href="03_bugs/moweb/ios/iframe/" target="_blank">view</a></td>
+							<td></td>
+						</tr>
+						<tr>
+							<td class="no"></td>
+							<td class="depth1"></td>
+							<td></td>
+							<td></td>
+							<td>레이어팝업 딤드 / 컨텐츠 z-index 오류</td>
+							<td class="link"><a href="03_bugs/moweb/ios/layerpop/" target="_blank">view</a></td>
+							<td></td>
+						</tr>
+						<tr>
+							<td class="no"></td>
+							<td class="depth1"></td>
+							<td></td>
+							<td></td>
+							<td>레이어팝업 띄울 때 fixed 컨텐츠 위치 오류</td>
+							<td class="link"><a href="03_bugs/moweb/ios/layerpop-fixed/" target="_blank">view</a></td>
+							<td></td>
+						</tr>
+						<tr>
+							<td class="no"></td>
+							<td class="depth1"></td>
+							<td></td>
+							<td></td>
+							<td>상단 메뉴 고정 - 스크롤 시 이벤트 발생시점 관련</td>
+							<td class="link"><a href="03_bugs/moweb/ios/scroll-fixed/" target="_blank">view</a></td>
+							<td></td>
+						</tr>
+						
+						<!-- App webview -->
+						<tr class="div">
+							<td class="no"></td>
+							<td class="depth1">App webview</td>
+							<td>Android &amp; ios</td>
+							<td></td>
+							<td>fixed요소가 있는 페이지 input 포커스 버그</td>
+							<td class="link"><a href="03_bugs/webview/android&ios/fixedinput/" target="_blank">view</a></td>
+							<td></td>
+						</tr>
+						<tr>
+							<td class="no"></td>
+							<td class="depth1"></td>
+							<td>Android</td>
+							<td>4.2</td>
+							<td>애니메이션 설정 관련 - ID 에 따른 설정과 js 로 직접 주는 style 사이의 버그</td>
+							<td class="link"><a href="03_bugs/webview/android/animation-id" target="_blank">view</a></td>
+							<td></td>
+						</tr>
+						<tr>
+							<td class="no"></td>
+							<td class="depth1"></td>
+							<td>IOS</td>
+							<td></td>
+							<td>fixed + 키패드 관련 오류 case</td>
+							<td class="link"><a href="03_bugs/webview/ios/ios-key-fixed" target="_blank">view</a></td>
+							<td></td>
+						</tr>
+						<tr>
+							<td class="no"></td>
+							<td class="depth1"></td>
+							<td></td>
+							<td></td>
+							<td>키패드 관련</td>
+							<td class="link"><a href="03_bugs/webview/ios/ios-key" target="_blank">view</a></td>
+							<td></td>
+						</tr>				
+						
+						<!-- 스크립트 공통 -->	
+						<tr class="div">
+							<td class="no"></td>
+							<td class="depth1">스크립트 공통</td>
+							<td>Andoird 4.4</td>
+							<td></td>
+							<td>touchend 이벤트가 적용되지 않는 현상</td>
+							<td class="link"><a href="03_bugs/all/touchend/" target="_blank">view</a></td>
+							<td></td>
+						</tr>
+
+					</tbody>
+				</table>
+			</div>
+		</div>
+
+		<div class="iframe">
+			<iframe src="" frameborder="0" scrollbars="yes"></iframe>
+			<button type="button" class="btn-frame-close">닫기</button>
+		</div>
+	</div>
+
+	<script src="js/common.js"></script>
+	<script src="guide/list-guide.js"></script>
+
+	<script>
+		guide_menuSet(2);
+	</script>
+</body>
+</html>

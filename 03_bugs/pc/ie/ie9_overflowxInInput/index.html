@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+	<meta charset="UTF-8" >
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="user-scalable=yes, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, width=device-width">
+	<meta name="author" content="seonamho - SK MNS" >
+	<meta name="description" content="">
+	<meta name="keywords" content="Site Template">
+	<meta property="og:type" content="website">
+	<meta property="og:title" content="Site Template">
+	<meta property="og:description" content="">
+	<meta property="og:image" content="">
+	<meta property="og:url" content="">
+	<link rel="shortcut icon" href="data:;base64,iVBORwOKGO=" />
+
+	<title>버그 현상 및 해결방법</title>
+
+	<!-- 가이드 관련 -->
+	<link rel="stylesheet" href="../../../../guide/list-guide.css" media="screen, print" />
+	<link rel="stylesheet" href="../../../../guide/vendor/railscasts.css">
+	<script src="../../../../guide/vendor/highlight.pack.js"></script>
+
+</head>
+<body>
+	<div id="work-list">
+		<div class="guide">
+	
+			<section id="guide-basic">
+				<h2 class="guide-sec-tit">overflow-x 영역 내 input, a 태그 이벤트 발생시 여백 발생하는 버그</h2>
+	
+				<div class="guide-sec">
+					<p class="img"><a href="images/img_ex.jpg"><img src="images/img_ex.jpg" alt=""></a></p>
+					<h3 class="guide-stit">상세 현상</h3>
+					<p>특정 영역이 overflow-x:auto 설정을 통해 좌우로 스크롤될 경우 그 속에 있는 input 나 a 태그에 이벤트가 발생하면 예시 이미지 처럼 아래로 알수없는 영역이 발생하는 버그.</p>
+					<p>IE 9 에서만 발생</p>
+				</div>
+				<div class="guide-sec">
+					<h3 class="guide-stit">해결 방법</h3>
+					<p><strong>overflow-x 값을 가진 영역에 display:inline-block 속성을 주면 해결 됨.</strong></p>
+				</div>
+			</section>
+		</div>
+	</div>
+
+</body>
+</html>

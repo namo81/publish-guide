@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+	<meta charset="UTF-8" >
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="user-scalable=yes, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, width=device-width">
+	<meta name="author" content="seonamho - SK MNS" >
+	<meta name="description" content="">
+	<meta name="keywords" content="Site Template">
+	<meta property="og:type" content="website">
+	<meta property="og:title" content="Site Template">
+	<meta property="og:description" content="">
+	<meta property="og:image" content="">
+	<meta property="og:url" content="">
+	<link rel="shortcut icon" href="data:;base64,iVBORwOKGO=" />
+
+	<title>Inp 디자인 | 가이드</title>
+
+	<!-- 가이드 관련 -->
+	<link rel="stylesheet" href="../guide/list-guide.css" media="screen, print" />
+	<link rel="stylesheet" href="../guide/vendor/railscasts.css">
+	<script src="../guide/vendor/highlight.pack.js"></script>
+
+	<!-- 프로젝트 관련 CSS 및 JS 파일 로드 -->
+	<link rel="stylesheet" href="/css/layout.css" media="screen, print" />
+</head>
+<body>
+<div id="work-list">
+	<div class="guide">
+		
+
+		<!-- input ================================================================ -->
+		<section id="guide-input">
+			<h2 class="guide-sec-tit">input</h2>
+			<div class="guide-sec">
+				<h3 class="guide-stit">Text</h3>
+				<h4 class="guide-sstit">기본형</h3>
+				<div class="guide-show">
+					<input type="text" name="" title="" placeholder="기본형">
+				</div>
+<pre><code class="html">&lt;input type="text" name="" title="" placeholder="기본형"&gt;
+</code></pre>
+				<h4 class="guide-sstit">기본형 + 삭제 + 오류</h3>
+				<p>inp-label 에 'error' 클래스 추가 시 오류 메세지 표출됨</p>
+				<div class="guide-show">
+					<div class="inp-label">
+						<label for="" class="hide">기본형 텍스트</label>
+						<input type="text" name="" placeholder="기본형">
+						<button type="button" class="btn-clear"><span>내용 삭제</span></button>
+						<div class="error-msg">
+							<span class="tx-red">내용을 입력해주세요.</span>
+						</div>
+					</div>
+				</div>
+<pre><code class="html">&lt;div class="inp-label"&gt;
+	&lt;label for="" class="hide"&gt;기본형 텍스트&lt;/label&gt;
+	&lt;input type="text" name="" placeholder="기본형"&gt;
+	&lt;button type="button" class="btn-clear"&gt;&lt;span&gt;내용 삭제&lt;/span&gt;&lt;/button&gt;
+	&lt;div class="error-msg"&gt;
+		&lt;span class="tx-red"&gt;내용을 입력해주세요.&lt;/span&gt;
+	&lt;/div&gt;
+&lt;/div&gt;
+</code></pre>
+<br>
+<pre><code class="js">// 단독요소 설정
+var inptName = new nTextSet('.inp-label');
+
+// 다수 요소 설정
+nText('.inp-label');
+</code></pre>
+			</div>
+
+			<div class="guide-sec">
+				<h3 class="guide-stit">radio 버튼</h3>
+				<h4 class="guide-sstit">일반형 (radio + label)</h3>
+				<p>label 의 for 값과 input radio 의 id 값을 일치 시켜주어야 함.</p>
+				<p>기본적으로 연속 2개를 사용할 경우 2번째 부터 margin-left:15px 가 자동으로 적용</p>
+				<p>.box 의 위치에 따라 checkbox 아이콘 위치 이동 // radio 만 보여야 할 경우 .box 안에 텍스트 입력</p>
+				<p>가장 외곽 div 의 min-height 는 radio 아이콘 사이즈보다 2px 크게 설정</p>
+				<div class="guide-show">
+					<div class="inp-radio">
+						<input type="radio" name="radio-set" id="no" checked>
+						<label for="no"><span class="box"></span> 라디오버튼 - N</label>
+					</div>
+					<div class="inp-radio">
+						<input type="radio" name="radio-set" id="yes">
+						<label for="yes">라디오버튼 - Y <span class="box"></span></label>
+					</div>
+					<div class="inp-radio">
+						<input type="radio" name="radio-set" id="non-tx">
+						<label for="non-tx"><span class="box">라디오버튼 - Y</span></label>
+					</div>
+				</div>
+<pre><code class="html">&lt;div class="inp-radio"&gt;
+	&lt;input type="radio" name="radio-set" id="no" checked&gt;
+	&lt;label for="no"&gt;&lt;span class="box"&gt;&lt;/span&gt; 라디오버튼 - N&lt;/label&gt;
+&lt;/div&gt;
+&lt;div class="inp-radio"&gt;
+	&lt;input type="radio" name="radio-set" id="yes"&gt;
+	&lt;label for="yes"&gt;라디오버튼 - Y &lt;span class="box"&gt;&lt;/span&gt;&lt;/label&gt;
+&lt;/div&gt;
+&lt;div class="inp-radio"&gt;
+	&lt;input type="radio" name="radio-set" id="non-tx"&gt;
+	&lt;label for="non-tx"&gt;&lt;span class="box"&gt;라디오버튼 - Y&lt;/span&gt;&lt;/label&gt;
+&lt;/div&gt;
+</code></pre>
+			</div>
+
+			<div class="guide-sec">
+				<h3 class="guide-stit">checkbox 버튼</h3>
+				<h4 class="guide-sstit">일반형 (checkbox + label)</h3>
+				<p>label 의 for 값과 input radio 의 id 값을 일치 시켜주어야 함.</p>
+				<p>기본적으로 연속 2개를 사용할 경우 2번째 부터 margin-left:15px 가 자동으로 적용</p>
+				<p>.box 의 위치에 따라 checkbox 아이콘 위치 이동</p>
+				<p>가장 외곽 div 의 min-height 는 checkbox 아이콘 사이즈보다 2px 크게 설정</p>
+				<div class="guide-show">
+					<div class="inp-check">
+						<input type="checkbox" name="" id="check1" checked>
+						<label for="check1"><span class="box"></span> 체크박스</label>
+					</div>
+					<div class="inp-check">
+						<input type="checkbox" name="" id="check1-1">
+						<label for="check1-1">체크박스 <span class="box"></span></label>
+					</div>
+				</div>
+<pre><code class="html">&lt;div class="inp-check"&gt;
+	&lt;input type="checkbox" name="" id="check1"&gt;
+	&lt;label for="check1"&gt;&lt;span class="box"&gt;&lt;/span&gt; 체크박스&lt;/label&gt;
+&lt;/div&gt;
+&lt;div class="inp-check"&gt;
+	&lt;input type="checkbox" name="" id="check1-1"&gt;
+	&lt;label for="check1-1"&gt;체크박스 &lt;span class="box"&gt;&lt;/span&gt;&lt;/label&gt;
+&lt;/div&gt;
+</code></pre>
+				<h4 class="guide-sstit">단독형 (checkbox)</h3>
+				<p>checkbox 만 보여야 할 경우 .box 안에 텍스트 입력</p>
+				<div class="guide-show">
+					<div class="inp-check">
+						<input type="checkbox" name="" id="check2">
+						<label for="check2"><span class="box">체크박스</span></label>
+					</div>
+				</div>
+<pre><code class="html">&lt;div class="inp-check"&gt;
+	&lt;input type="checkbox" name="" id="check2"&gt;
+	&lt;label for="check2"&gt;&lt;span class="box"&gt;체크박스&lt;/span&gt;&lt;/label&gt;
+&lt;/div&gt;
+</code></pre>
+			</div>
+
+			<!-- 
+			<div class="guide-sec">
+				<h3 class="guide-stit">IE 구버전 호환</h3>
+				<h4 class="guide-sstit">일반형 (radio + label)</h3>
+				<p>label 의 for 값과 input radio 의 id 값을 일치 시켜주어야 함.</p>
+				<p>기본적으로 연속 2개를 사용할 경우 2번째 부터 margin-left:15px 가 자동으로 적용</p>
+				<p>가장 외곽 div 의 min-height 는 radio 아이콘 사이즈보다 2px 크게 설정</p>
+				<div class="guide-show">
+					<div class="inp-radio old">
+						<input type="radio" name="radio-set-old" id="no-old" checked>
+						<label for="no-old"><span class="box"></span> 라디오버튼 - N</label>
+					</div>
+					<div class="inp-radio old">
+						<input type="radio" name="radio-set-old" id="yes-old">
+						<label for="yes-old">라디오버튼 - Y <span class="box"></span></label>
+					</div>
+					<div class="inp-radio old">
+						<input type="radio" name="radio-set-old" id="non-tx-old">
+						<label for="non-tx-old"><span class="box">라디오버튼 - Y</span></label>
+					</div>
+				</div>
+<pre><code class="html">&lt;div class="inp-radio old"&gt;
+	&lt;input type="radio" name="radio-set-old" id="no-old" checked&gt;
+	&lt;label for="no-old"&gt;&lt;span class="box"&gt;&lt;/span&gt; 라디오버튼 - N&lt;/label&gt;
+&lt;/div&gt;
+&lt;div class="inp-radio old"&gt;
+	&lt;input type="radio" name="radio-set-old" id="yes-old"&gt;
+	&lt;label for="yes-old"&gt;라디오버튼 - Y &lt;span class="box"&gt;&lt;/span&gt;&lt;/label&gt;
+&lt;/div&gt;
+&lt;div class="inp-radio old"&gt;
+	&lt;input type="radio" name="radio-set-old" id="non-tx-old"&gt;
+	&lt;label for="non-tx-old"&gt;&lt;span class="box"&gt;라디오버튼 - Y&lt;/span&gt;&lt;/label&gt;
+&lt;/div&gt;
+</code></pre>
+			</div> -->
+
+			<div class="guide-sec">
+				<h3 class="guide-stit">Select</h3>
+				<p>width 는 100%. 특정 사이즈로 사용할 경우 width 값 설정 필요.</p>
+				<div class="guide-show">
+					<div class="inp-select">
+						<select name="" title="">
+							<option value="direct">직접 선택</option>
+							<option value="nate" disabled>nate.com</option>
+							<option value="daum">daum.net</option>
+						</select>
+					</div>
+				</div>
+<pre><code class="html">&lt;div class="inp-select"&gt;
+	&lt;select name="" title=""&gt;
+		&lt;option value=""&gt;직접 선택&lt;/option&gt;
+		&lt;option value=""&gt;nate.com&lt;/option&gt;
+		&lt;option value=""&gt;daum.net&lt;/option&gt;
+	&lt;/select&gt;
+&lt;/div&gt;
+</code></pre>
+<br>
+<pre><code class="js">// 단독요소 설정
+var selectName = new nSelectSet('.inp-select');
+
+// 다수 요소 설정
+nSelect('.inp-select');
+</code></pre>
+			</div>
+
+			<div class="guide-sec">
+				<h3 class="guide-stit">File</h3>
+				<p>label 값 필수.</p>
+				<p>최소 사이즈 200px</p>
+				<div class="guide-show">
+					<div class="inp-file">
+						<label for="file" class="btn medium">파일첨부</label>
+						<input type="file" class="" id="file">
+						<button type="button" class="btn-clear" title="파일 경로 삭제"><span>X</span></button>
+					</div>
+				</div>
+<pre><code class="html">&lt;div class="inp-file"&gt;
+	&lt;label for="file" class="btn medium"&gt;파일첨부&lt;/label&gt;
+	&lt;input type="file" class="" id="file"&gt;
+	&lt;button type="button" class="btn-clear" title="파일 경로 삭제"&gt;&lt;span&gt;X&lt;/span&gt;&lt;/button&gt;
+&lt;/div&gt;
+</code></pre>
+<br>
+<pre><code class="js">// 단독요소 설정
+var fileName = new nFileSet('.inp-file');
+
+// 다수 요소 설정
+nFile('.inp-file');
+</code></pre>
+			</div>
+		</section>
+
+
+	</div>
+	<a href="#work-list" class="guide-top">Top</a>	
+	
+</div>
+
+<script src="/js/jquery-3.2.1.min.js"></script>
+<script src="/js/common.js"></script>
+
+<!-- input design js -->
+<script src="/js/inpdesign_v2.0.0.js"></script>
+
+<script>
+	hljs.initHighlightingOnLoad();
+
+	var inpName = new nTextSet('.inp-label');
+	var selectName = new nSelectSet('.inp-select');
+	nFile('.inp-file');
+
+</script>
+</body>
+</html>

@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+	<meta charset="UTF-8" >
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="user-scalable=yes, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, width=device-width">
+	<meta name="author" content="seonamho - SK MNS" >
+	<meta name="description" content="">
+	<meta name="keywords" content="Site Template">
+	<meta property="og:type" content="website">
+	<meta property="og:title" content="Site Template">
+	<meta property="og:description" content="">
+	<meta property="og:image" content="">
+	<meta property="og:url" content="">
+	<link rel="shortcut icon" href="data:;base64,iVBORwOKGO=" />
+
+	<title>버그 현상 및 해결방법</title>
+
+	<!-- 가이드 관련 -->
+	<link rel="stylesheet" href="../../../../guide/list-guide.css" media="screen, print" />
+	<link rel="stylesheet" href="../../../../guide/vendor/railscasts.css">
+	<script src="../../../../guide/vendor/highlight.pack.js"></script>
+
+</head>
+<body>
+	<div id="work-list">
+		<div class="guide">
+	
+			<section id="guide-basic">
+				<h2 class="guide-sec-tit">border 관련 - style이 dotted인 라인관련 버그</h2>
+	
+				<div class="guide-sec">
+					<p class="img"><a href="images/img_ex.jpg"><img src="images/img_ex.jpg" alt=""></a></p>
+					<h3 class="guide-stit">상세 현상</h3>
+					<p>크롬에서 border 가 dotted 로 설정되어있을 경우<br />일반적인 테이블 td 에서는 문제 없으나, colspan 으로 합쳐진 td 에서는 dotted 로 설정된 라인이 solid 로 보이는 버그가 있음.</p>
+					<p>(해당 td 에 설정된 라인은 괜찮으나, 해당 td 상단에 colspan 으로 합쳐지지 않은 td 가 있을 경우 해당 td 에 현상이 발생)</p>
+					<p>위 버그는 테이블 가로가 가변적일 경우 가로 사이즈에 따라 계속 오류 td 가 변동됨.</p>
+					<p>위 문제는 크롬에서만 발생.</p>
+				</div>
+				<div class="guide-sec">
+					<h3 class="guide-stit">해결 방법</h3>
+					<h2>&bull; 해결 방법</h2>
+					<p><strong>border-collspse 설정을 collapse 가 아닌 separate 로 설정하면 해당 현상 사라짐</strong></p>
+<pre><code class="css">table{ border-collapse:separate; *border-collapse:collapse; border-spacing:0; width:100%; }</code></pre>
+					<p>BUT!! - separate 로 변경할 경우 IE7 에서 hide 되어야할 caption 부분이 공간을 차지하는 현상이 발생.</p>
+					<p>때문에 *border-collapse:collapse; 로 핵을 사용해 IE 용 설정을 추가해주어야 함.</p>
+				</div>
+			</section>
+		</div>
+	</div>
+
+	<script>
+		hljs.initHighlightingOnLoad(); 
+	</script>
+</body>
+</html>

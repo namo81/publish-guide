@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+	<meta charset="UTF-8" >
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="user-scalable=yes, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, width=device-width">
+	<meta name="author" content="seonamho - SK MNS" >
+	<meta name="description" content="">
+	<meta name="keywords" content="Site Template">
+	<meta property="og:type" content="website">
+	<meta property="og:title" content="Site Template">
+	<meta property="og:description" content="">
+	<meta property="og:image" content="">
+	<meta property="og:url" content="">
+	<link rel="shortcut icon" href="data:;base64,iVBORwOKGO=" />
+
+	<title>msp Git Guide | guide | msp</title>
+
+	<!-- 가이드 관련 -->
+	<link rel="stylesheet" href="../guide/list-guide.css" media="screen, print" />
+	<link rel="stylesheet" href="../guide/vendor/railscasts.css">
+	<script src="../guide/vendor/highlight.pack.js"></script>
+
+</head>
+<div id="work-list">
+	<div class="guide">
+
+		<section id="guide-basic">
+			<h2 class="guide-sec-tit">사내 git 접속</h2>
+
+			<div class="guide-sec">
+				<h3 class="guide-stit">기본</h3>
+				<p>Skmns Git URL : <a href="http://10.125.251.12/" class="btn" target="_blank"><strong>http://10.125.251.12/</strong></a></p>
+				<p>ID : <strong>사번</strong></p>
+				<p>Password : <strong>skmns@사번 뒤 4자리</strong> or <strong>컴퓨터비번</strong></p>
+			</div>
+
+			<div class="guide-sec">
+				<h3 class="guide-stit">Git 생성</h3>
+				<h4 class="guide-sstit">&bull; 생성</h4>
+				<ol>
+					<li>1. 화면 상단 'New project' 클릭 (+ 모양)</li>
+					<li>2. Project owner 에 <strong>publish</strong>입력</li>
+					<li>3. Project name 에 프로젝트 이름 입력</li>
+				</ol>
+				<h4 class="guide-sstit">&bull; 프로젝트 이름(운영)</h4>
+				<p>프로젝트 이름 형식 : <strong>관련팀_프로젝트명_채널</strong></p>
+				<p>ex ) ictcol_total_system_web</p>
+				<div class="tbl">
+					<table>
+						<colgroup>
+							<col style="width:30%">
+							<col style="width:30%">
+							<col style="width:auto">
+						</colgroup>
+						<thead>
+							<tr>
+								<th scope="col">운영 관련팀</th>
+								<th scope="col">팀명 표기</th>
+								<th scope="col">기타 및 참조</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td>OK cashbag</td>
+								<td>ocb_</td>
+								<td></td>
+							</tr>
+							<tr>
+								<td>보험컨텐츠사업팀</td>
+								<td>insu_</td>
+								<td></td>
+							</tr>
+							<tr>
+								<td>모바일상품혁신1팀</td>
+								<td>moGoods_</td>
+								<td>2021년 이전 : ictsol_</td>
+							</tr>
+							<tr>
+								<td>스마트솔루션3팀</td>
+								<td>smartS3_</td>
+								<td></td>
+							</tr>
+							<tr>
+								<td>스마트솔루션5팀</td>
+								<td>smartS5_</td>
+								<td>2021년 이전 : soho_</td>
+							</tr>
+							<tr>
+								<td>Data 인프라팀</td>
+								<td>datainfra_</td>
+								<td></td>
+							</tr>
+							<tr>
+								<td>기업문화팀</td>
+								<td>skmns_</td>
+								<td></td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+				<h4 class="guide-sstit">&bull; 프로젝트 이름(신규)</h4>
+				<p>프로젝트 이름 형식 : <strong>프로젝트명_채널</strong></p>
+				<p>ex ) time_skt_web</p>
+				<p><strong>2021년 이전 작성된 프로젝트일 경우 이름 관련 수정은 하지 않습니다.</strong></p>
+
+			</div>
+			
+			<div class="guide-sec">
+				<h3 class="guide-stit">Git 연결</h3>
+				<h4 class="guide-sstit">&bull; 연결 (vscode 기준)</h4>
+				<ol>
+					<li>1. 해당 프로젝트 GIT 주소 복사</li>
+					<li>2. VS code 실행상태에서 <strong>crtl + shift + p</strong></li>
+					<li>3. Git 복제 (Git clone) 선택</li>
+					<li>4. 1번에서 복사한 git 경로 붙여넣기</li>
+					<li>5. 자동으로 폴더선택창 생성됨 > 해당 프로젝트 관련 폴더 지정</li>
+				</ol>
+			</div>
+			
+			<div class="guide-sec">
+				<h3 class="guide-stit">기타</h3>
+				<p><strong>기존 (2021년 이전) 설정된 git 관련 리스트는 <a href="msp-port.html" target="blank"> msp port list</a> 에서 확인가능</strong></p>
+				<p><strong>추가 상세 정보는 <a href="http://wiki.skmns.co.kr/pages/viewpage.action?pageId=64470566" target="blank">위키 내 git 리스트</a> 에서 확인가능 (2021년 이전까지 정보)</strong></p>
+			</div>
+
+		</section>
+
+	</div>
+</div>
+
+<script src="/js/common.js"></script>
+<script>
+	hljs.initHighlightingOnLoad(); 
+</script>
+
+</body>
+</html>

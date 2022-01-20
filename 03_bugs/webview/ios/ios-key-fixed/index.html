@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+	<meta charset="UTF-8" >
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="user-scalable=yes, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, width=device-width">
+	<meta name="author" content="seonamho - SK MNS" >
+	<meta name="description" content="">
+	<meta name="keywords" content="Site Template">
+	<meta property="og:type" content="website">
+	<meta property="og:title" content="Site Template">
+	<meta property="og:description" content="">
+	<meta property="og:image" content="">
+	<meta property="og:url" content="">
+	<link rel="shortcut icon" href="data:;base64,iVBORwOKGO=" />
+
+	<title>버그 현상 및 해결방법</title>
+
+	<!-- 가이드 관련 -->
+	<link rel="stylesheet" href="../../../../guide/list-guide.css" media="screen, print" />
+	<link rel="stylesheet" href="../../../../guide/vendor/railscasts.css">
+	<script src="../../../../guide/vendor/highlight.pack.js"></script>
+
+</head>
+<body>
+	<div id="work-list">
+		<div class="guide">
+	
+			<section id="guide-basic">
+				<h2 class="guide-sec-tit">모바일 웹뷰 코딩시 fixed 컨텐츠 있는 경우 input 에 따른 위치오류</h2>
+	
+				<div class="guide-sec">
+					<h3 class="guide-stit">상세 현상</h3>
+					<p>IOS 에서 발생</p>
+					<p>레이어 팝업 같이 fixed 된 요소가 있는 상태에서, input, textarea 클릭으로 키패드가 올라오면 화면이 고정되지 않고 스크롤 됨.</p>			
+					<p>해당 부분은 키패드 활성화 시 webview 높이값이 줄어드는게 아니라, 키패트 높이만큼 위로 밀어 올리는 듯 함.</p>
+					<p>추가로, 화면 컨텐츠는 스크롤 되는데, input 내의 채팅 커서( | ) 는 고정되이 있으므로, 화면과 커서간의 이격이 생김. 버튼 클릭 영역도 마찬가지.</p>
+				</div>
+				<div class="guide-sec">
+					<h3 class="guide-stit">해결 방법</h3>
+					<p><strong>근본적인 해결은 불가. 현재로썬 방법이 없음. 두가지 기능 동시 사용은 배제하는게 좋음.</strong></p>
+					<p><strong>채팅 커서 및 버튼 클릭 영역 부분은 레이어 팝업을 fixed 가 아닌 absolute 로 설정하여 배경 화면과 같이 스크롤 되게 하는 수 밖에 없음.</strong></p>
+				</div>
+			</section>
+		</div>
+	</div>
+
+</body>
+</html>

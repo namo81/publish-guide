@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+	<meta charset="UTF-8" >
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="user-scalable=yes, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, width=device-width">
+	<meta name="author" content="seonamho - SK MNS" >
+	<meta name="description" content="">
+	<meta name="keywords" content="Site Template">
+	<meta property="og:type" content="website">
+	<meta property="og:title" content="Site Template">
+	<meta property="og:description" content="">
+	<meta property="og:image" content="">
+	<meta property="og:url" content="">
+	<link rel="shortcut icon" href="data:;base64,iVBORwOKGO=" />
+
+	<title>버그 현상 및 해결방법</title>
+
+	<!-- 가이드 관련 -->
+	<link rel="stylesheet" href="../../../../guide/list-guide.css" media="screen, print" />
+	<link rel="stylesheet" href="../../../../guide/vendor/railscasts.css">
+	<script src="../../../../guide/vendor/highlight.pack.js"></script>
+
+</head>
+<body>
+	<div id="work-list">
+		<div class="guide">
+	
+			<section id="guide-basic">
+				<h2 class="guide-sec-tit">모바일 웹뷰 코딩시 fixed 컨텐츠 있는 경우 input 에 따른 위치오류</h2>
+	
+				<div class="guide-sec">
+					<h3 class="guide-stit">상세 현상</h3>
+					<p>IOS / Android webview 모두에서 발생</p>
+					<p>페이지 내의 input 에 포커스가 가면 스마트폰의 기본 키보드가 올라오면서 화면 높이값이 변동 되는데, 기본 키보드의 완료를 통해 닫지 않고, 키보드가 올라온 상태에서 버튼 등을 클릭하여 강제로 키보드가 닫힐 경우 화면 높이가 원래 높이로 돌아가지 않고 키보드 값 만큼 빼고 계신되는 경우가 발생.</p>
+					<p> ios 의 경우 fixed 된 obj 가 화면 상단에 붙지 않고, 키보드 값만큼 내려와 위치하는 버그. - 100% 발생. - ios8 에서 다소 수정됨.</p>
+					<p>안드로이드의 경우 화면 클릭 등의 기능은 복구되지만, 화면 뷰가 오류 - 화면과 기능이 따로 노는 현상이 발생. - 불규칙하게 발생</p>
+				</div>
+				<div class="guide-sec">
+					<h3 class="guide-stit">해결 방법</h3>
+					<p><strong>ios 의 경우 관련 버튼 클릭 시 화면의 스크롤을 1px 움직여 주는 걸로 해결이 되지만, 안드로이드의 경우 적용 안됨.</strong></p>
+					<p><strong>APP 의 최상단은 네이티브로 개발하던지, fixed 를 사용하지 않는게 좋음.</strong></p>
+				</div>
+				<div class="guide-sec">
+					<h3 class="guide-stit">해결 방법 - 2</h3>
+					<p><strong>스크립트로 input 의 위치를 저장한 후, 다른 input 이나 버튼을 클릭함으로 인해 닫을 경우 해당 위치로 스크롤 시키는 방법.</strong></p>
+					<p><strong>범용적으로 사용하기엔 모든 input 및 button, a 에 적용해야함으로 부담이 큼.</strong></p>
+					<p><strong>오류가 발생하는 페이지에만 적용하는게 좋음.</strong></p>
+					<p><strong>데이터프리존 사용 예시</strong></p>
+<pre><code class="js">var inpChk = 0; // 인풋 포커스 확인용 변수 - input 이 활성화되었는지 체크
+var sc = 0; //화면 스크롤 변수 
+
+$('.inp input').focus(function(){
+	inpChk = 1; // input focus in 
+	sc = $(this).offset().top; // 포커스된 input 의 스크롤 위치
+});
+
+$('#pi-check').click(function(){ // 체크박스
+	scrollSet();
+});
+
+$('.inp-reset').click(function(){ // input X 버튼
+	scrollSet();
+}); 
+
+function scrollSet(){
+	if(inpChk == 1){
+		setTimeout(scrollTo,0,0,sc);
+		inpChk = 0;
+	}
+}</code></pre>
+				</div>
+			</section>
+		</div>
+	</div>
+
+	<script>
+		hljs.initHighlightingOnLoad(); 
+	</script>
+</body>
+</html>

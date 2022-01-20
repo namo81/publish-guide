@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+	<meta charset="UTF-8" >
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="user-scalable=yes, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, width=device-width">
+	<meta name="author" content="seonamho - SK MNS" >
+	<meta name="description" content="MSP - Total Manage">
+	<meta name="keywords" content="msp mns mnservice html css javascript jquery 퍼블리셔 퍼블리싱">
+	<meta property="og:type" content="website">
+	<meta property="og:title" content="MSP - Total Manage">
+	<meta property="og:description" content="msp(mns 퍼블리셔) 업무 및 퍼블 관련 종합 정보 ">
+	<meta property="og:image" content="">
+	<meta property="og:url" content="10.125.253.31:1200">
+	<link rel="shortcut icon" href="data:;base64,iVBORwOKGO=" />
+
+	<title>Nanum Gothic | 폰트 | MSP</title>
+
+	<!-- 가이드 관련 -->
+	<link rel="stylesheet" href="../guide/list-guide.css" media="screen, print" />
+	<link rel="stylesheet" href="../guide/vendor/railscasts.css">
+	<script src="../guide/vendor/highlight.pack.js"></script>
+	
+</head>
+<body>
+
+	
+<div id="work-list">
+	<div class="guide">
+		<!-- 기본사항 -->
+		<section>
+			<h2 class="guide-sec-tit">Nanum Gothic</h2>
+			<div class="guide-sec">
+				<h3 class="guide-stit">Google Webfont Helper</h3>
+				<p><strong>파일 출처 : <a href="https://google-webfonts-helper.herokuapp.com/fonts/nanum-gothic?subsets=korean" class="btn" target="_blank">구글 웹폰트 헬퍼</a></strong></p>
+				<p><strong>폰트 두께 : 400 / 700 / 800</strong></p>
+				<p><strong>폰트 파일 타입 : woff / woff2 / ttf / eot / svg</strong></p>
+				<p>하단 CSS는 참고용 기본 두께(regular) CSS 이며, 각 두께별 설정은 css 파일 내 모두 선언되어 있음.</p>
+				<h4 class="guide-sstit">모든 브라우저(Full)</h4>
+				<p><a href="download/nanum-gothic_g-full.zip" class="btn">구글-나눔고딕_full_down</a> (css + font 파일)</p>
+				<pre><code class="css">@font-face {
+	font-family: 'Nanum Gothic';
+	font-style: normal;
+	font-weight: 400;
+	src: url('nanum-gothic-v17-korean-regular.eot'); /* IE9 Compat Modes */
+	src: local(''),
+		url('nanum-gothic-v17-korean-regular.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+		url('nanum-gothic-v17-korean-regular.woff2') format('woff2'), /* Super Modern Browsers */
+		url('nanum-gothic-v17-korean-regular.woff') format('woff'), /* Modern Browsers */
+		url('nanum-gothic-v17-korean-regular.ttf') format('truetype'), /* Safari, Android, iOS */
+		url('nanum-gothic-v17-korean-regular.svg#NanumGothic') format('svg'); /* Legacy iOS */
+}</code></pre>
+				
+				<h4 class="guide-sstit">최신 브라우저(Modern)</h4>
+				<p><a href="download/nanum-gothic_g-modern.zip" class="btn">구글-나눔고딕_modern_down</a> (css + font 파일)</p>
+				<pre><code class="css">@font-face {
+	font-family: 'Nanum Gothic';
+	font-style: normal;
+	font-weight: 400;
+	src: local(''),
+			url('nanum-gothic-v17-korean-regular.woff2') format('woff2'), /* Chrome 26+, Opera 23+, Firefox 39+ */
+			url('nanum-gothic-v17-korean-regular.woff') format('woff'); /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
+}</code></pre>
+			</div>
+
+			<div class="guide-sec">
+				<h3 class="guide-stit">Naver 나눔폰트</h3>
+				<p><strong>파일 출처 : <a href="https://hangeul.naver.com/2021/fonts/nanum" class="btn" target="_blank">네이버 나눔폰트</a></strong></p>
+				<p><strong>폰트 두께 : Light(200) / Regular(400) / Bold(700) / Extra Bold(900)</strong></p>
+				<p><strong>폰트 파일 타입 : woff / ttf</strong></p>
+				<p><strong>Regular 두께만 eot 타입파일 추가</strong></p>
+				<p>하단 CSS는 참고용 기본 두께(regular) CSS 이며, 각 두께별 설정은 css 파일 내 모두 선언되어 있음.</p>
+				<h4 class="guide-sstit">모든 브라우저(Full)</h4>
+				<p><a href="download/nanum-gothic_n-full.zip" class="btn">네이버-나눔고딕_full_down</a> (css + font 파일)</p>
+				<pre><code class="css">@font-face {
+	font-family: 'NanumGothic';
+	font-style: normal;
+	font-weight: 400;
+	src: url(NanumGothic.eot); /* regular 만 있음. */
+	src: local(''), 
+		url(NanumGothic.woff) format("woff"), 
+		url(NanumGothic.ttf) format("truetype");
+}</code></pre>
+				
+				<h4 class="guide-sstit">최신 브라우저(Modern)</h4>
+				<p><a href="download/nanum-gothic_n-modern.zip" class="btn">네이버-나눔고딕_modern_down</a> (css + font 파일)</p>
+				<pre><code class="css">@font-face {
+	font-family: 'NanumGothic';
+	font-style: normal;
+	font-weight: 400;
+	src: local(''), 
+		url(NanumGothic.woff) format("woff");
+}</code></pre>
+			</div>
+		</section>
+
+	</div>
+</div>
+
+<script>
+	hljs.initHighlightingOnLoad(); 
+</script>
+
+</body>
+</html>

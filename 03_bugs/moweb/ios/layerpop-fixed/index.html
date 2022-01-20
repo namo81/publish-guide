@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+	<meta charset="UTF-8" >
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="user-scalable=yes, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, width=device-width">
+	<meta name="author" content="seonamho - SK MNS" >
+	<meta name="description" content="">
+	<meta name="keywords" content="Site Template">
+	<meta property="og:type" content="website">
+	<meta property="og:title" content="Site Template">
+	<meta property="og:description" content="">
+	<meta property="og:image" content="">
+	<meta property="og:url" content="">
+	<link rel="shortcut icon" href="data:;base64,iVBORwOKGO=" />
+
+	<title>버그 현상 및 해결방법</title>
+
+	<!-- 가이드 관련 -->
+	<link rel="stylesheet" href="../../../../guide/list-guide.css" media="screen, print" />
+	<link rel="stylesheet" href="../../../../guide/vendor/railscasts.css">
+	<script src="../../../../guide/vendor/highlight.pack.js"></script>
+
+</head>
+<body>
+	<div id="work-list">
+		<div class="guide">
+	
+			<section id="guide-basic">
+				<h2 class="guide-sec-tit">레이어팝업 띄울 때 fixed 요소 위치 오류</h2>
+	
+				<div class="guide-sec">
+					<h3 class="guide-stit">상세 현상</h3>
+					<p>T적금 그룹 프로젝트 진행 시 발생한 오류 / 같은 OS 인데도 아이폰 6 이상에서만 발생.</p>
+					<p>화면 상단에 fixed 타이틀 영역이 있는 페이지에서 레이어 팝업을 띄워야 하는 상황 <br>
+					레이어 팝업 스크립트가 기본 페이지의 스크롤을 막기 위해서 기본 페이지의 position 값을 fixed 로 변경하도록 설정되어 있었는데, <br>
+					기본 페이지의 position 값이 fixed 로 변경되면서 원래 fixed 였던 요소의 위치가 화면 중앙으로 튀는 현상이 발생.</p>
+				</div>
+				<div class="guide-sec">
+					<h3 class="guide-stit">해결 방법</h3>
+					<p><strong>레이어 팝업 띄울 시 기본 페이지의 스크롤 방지를 fixed 가 아니라, <br>스크립트로 높이값 계산 후 height 값 설정하고, overflow:hidden 설정하여 진행.</strong></p>
+<pre><code class="js">var winH = $(window).innerHeight();
+$('기본페이지').css({'overflow':'hidden', 'height':''+winH+'px'});
+</code></pre>
+				</div>
+			</section>
+		</div>
+	</div>
+
+	<script>
+		hljs.initHighlightingOnLoad(); 
+	</script>
+</body>
+</html>

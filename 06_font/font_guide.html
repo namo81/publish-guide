@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+	<meta charset="UTF-8" >
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="user-scalable=yes, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, width=device-width">
+	<meta name="author" content="seonamho - SK MNS" >
+	<meta name="description" content="MSP - Total Manage">
+	<meta name="keywords" content="msp mns mnservice html css javascript jquery 퍼블리셔 퍼블리싱">
+	<meta property="og:type" content="website">
+	<meta property="og:title" content="MSP - Total Manage">
+	<meta property="og:description" content="msp(mns 퍼블리셔) 업무 및 퍼블 관련 종합 정보 ">
+	<meta property="og:image" content="">
+	<meta property="og:url" content="10.125.253.31:1200">
+	<link rel="shortcut icon" href="data:;base64,iVBORwOKGO=" />
+
+	<title>폰트 가이드 | MSP</title>
+
+	<!-- 가이드 관련 -->
+	<link rel="stylesheet" href="../guide/list-guide.css" media="screen, print" />
+	<link rel="stylesheet" href="../guide/vendor/railscasts.css">
+	<script src="../guide/vendor/highlight.pack.js"></script>
+	
+</head>
+<body>
+
+	
+<div id="work-list">
+	<div class="guide">
+		<!-- 기본사항 -->
+		<section>
+			<h2 class="guide-sec-tit">설정</h2>
+			<div class="guide-sec">
+				<h3 class="guide-stit">font face 설정</h3>
+				<p>예시 : 나눔고딕</p>
+				<h4 class="guide-sstit">모든 브라우저(Full)</h4>
+				<pre><code class="css">/* nanum-gothic-regular - latin */
+@font-face {
+	font-family: 'Nanum Gothic';
+	font-style: normal;
+	font-weight: 400;
+	src: url('../fonts/nanum-gothic-v17-latin-regular.eot'); /* IE9 Compat Modes */
+	src: local(''),
+		url('../fonts/nanum-gothic-v17-latin-regular.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+		url('../fonts/nanum-gothic-v17-latin-regular.woff2') format('woff2'), /* Super Modern Browsers */
+		url('../fonts/nanum-gothic-v17-latin-regular.woff') format('woff'), /* Modern Browsers */
+		url('../fonts/nanum-gothic-v17-latin-regular.ttf') format('truetype'), /* Safari, Android, iOS */
+		url('../fonts/nanum-gothic-v17-latin-regular.svg#NanumGothic') format('svg'); /* Legacy iOS */
+}</code></pre>
+				
+				<h4 class="guide-sstit">최신 브라우저(Modern)</h4>
+				<pre><code class="css">@font-face {
+	font-family: 'Nanum Gothic';
+	font-style: normal;
+	font-weight: 400;
+	src: local(''),
+		url('../fonts/nanum-gothic-v17-latin-regular.woff2') format('woff2'), /* Chrome 26+, Opera 23+, Firefox 39+ */
+		url('../fonts/nanum-gothic-v17-latin-regular.woff') format('woff'); /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
+}</code></pre>
+				<h4 class="guide-sstit">폰트 두께 설정</h4>
+				<p>동일폰트 - 두께만 다른 폰트 설정할 경우 font-family 는 동일하게 / font-weight 로 조정합니다.</p>
+				<p>폰트 파일에 두께가 숫자로 표기되어 있을 경우 CSS 에서 동일하게 적용하며, 숫자가 아닌 두께표기만 있을 경우는 아래 표를 참고합니다.</p>
+				<p>단, 업무별 별도 설정이 있을 경우 해당 값을 사용합니다.</p>
+				<div class="tbl tc">
+					<table>
+						<caption>브라우저 기준</caption>
+						<colgroup>
+							<col style="width:auto"/>
+							<col style="width:15%"/>
+							<col style="width:15%"/>
+							<col style="width:15%"/>
+							<col style="width:15%"/>
+							<col style="width:15%"/>
+						</colgroup>
+						<thead>
+							<tr>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<th scope="row">폰트파일 두께 명칭</th>
+								<td><strong>Thin</strong></td>
+								<td><strong>light (L)</strong></td>
+								<td><strong>Regular (R)</strong></td>
+								<td><strong>Bold (B)</strong></td>
+								<td><strong>Extra Bold (EB)</strong></td>
+							</tr>
+							<tr>
+								<th scope="row">font-weight 설정</th>
+								<td>100</td>
+								<td>200 ~ 300</td>
+								<td>400 (normal)</td>
+								<td>700 (bold)</td>
+								<td>900</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+			<div class="guide-sec">
+				<h3 class="guide-stit">추가옵션 : font-display</h3>
+				<p><strong>IE 는 전체 미지원</strong></p>
+				<p>FOIT / FOUT 현상 관련 설정</p>
+				<p><strong>FOIT(Flash of Invisible Text)</strong> : 웹폰트가 로드되기 전까진 화면에 텍스트 표출을 하지 않음</p>
+				<p><strong>FOUT(Flash of Unstyled Text)</strong> : 웹폰트가 로드되기 전까진 기본 텍스트로 보여주며, 로드 후 웹폰트로 변경됨</p><br>
+				<p>위 2가지 방식에 대한 css 설정 옵션이 font-display 이며, 아래는 그 설정값</p>
+				<ul>
+					<li><strong>auto</strong> - 브라우저의 기본동작에 맡기는 방식이다.</li>
+					<li><strong>block</strong> - FOIT 즉, 타임아웃까지 텍스트를 보여주지 않음</li>
+					<li><strong>swap</strong> - 응답이 올 때까지 무한정 기다리고 그 전까진 바로 기본폰트를 보여준다. 꼭 적용해야만 하는 중요폰트일 경우에 쓸 수 있다.</li>
+					<li><strong>fallback</strong> - 100ms 내외의 시간 동안만 block을 하고 기본폰트를 보여준다. 응답이 오면 해당 폰트로 swap 하지만 짧은 시간(3s)만 기다린다.</li>
+					<li><strong>optional</strong> - 100ms 내외의 시간 동안만 block을 하고 기본폰트를 보여준다. 그 후에는 대체하지 않는다. => 폰트가 상관이 없을 때</li>
+				</ul>
+				<p>fallback 설정이 foit 를 방지하며 fout 를 최소화 할수 있으나 완벽하진 않음</p>
+				<pre><code class="css">font-display: swap;</code></pre>
+				<p><strong>CSS 외에도 script 등을 통한 좀 더 세밀한 방법들이 있으나 별도 가이드 하지 않음.</strong></p>
+				<p><strong>이 속성은 클라이언트측 요청이 없을 경우 별도 설정하지 않아도 무방함.</strong></p>
+			</div>
+			<div class="guide-sec">
+				<h3 class="guide-stit">추가옵션 : unicode-range</h3>
+				<p><strong>IE 는 전체 미지원</strong></p>
+				<p>설정한 글꼴에서 특정 범위에만 다른 설정을 적용하고자 할 경우 사용</p>
+				<p>특정 점위(ex:숫자, 영문 등) 및 특정 글자에 별도 폰트 적용이 가능</p><br>
+				<p><strong>자주 쓰이는 유니코드</strong></p>
+				<pre><code class="txt">전체 : U+0020-007E
+
+특수문자 : U+0020-002F, U+003A-0040, U+005B-0060, U+007B-007E
+
+영문 : U+0041-005A(대문자), U+0061-007A(소문자)
+
+숫자 : U+0030-0039</code></pre>
+				<p><strong>적용예시</strong></p>
+				<pre><code class="css">@font-face {
+	font-family: "NotoSansKR";
+	src: url("/openconcert/fonts/NotoSansKR-Regular-Hestia.woff") format("woff");
+	font-style: normal;
+}
+	
+@font-face {
+	font-family: "NotoSansKR";
+	src: url("/openconcert/fonts/dancingscript-webfont.woff") format("woff");
+	font-style: normal;
+	unicode-range: U+0041-005A, U+0061-007A;
+}</code></pre>
+				<p>font-family 의 네이밍은 동일하게 설정하며, 범위 지정할 부분의 폰트 경로 지정</p>
+				<p>위와 같이 설정 시, 한글은 notosans 로 보이며, 영문일 경우에만 dancingscript 폰트가 적용됨.</p>
+			</div>
+		</section>
+
+		<section>
+			<h2 class="guide-sec-tit">기타정보</h2>
+			<div class="guide-sec">
+				<h3 class="guide-stit">웹폰트 파일 별 브라우저 지원 정보</h3>
+				<div class="tbl tc">
+					<table>
+						<caption>브라우저별 폰트파일 형식 지원</caption>
+						<colgroup>
+							<col style="width:auto"/>
+							<col style="width:13%"/>
+							<col style="width:13%"/>
+							<col style="width:13%"/>
+							<col style="width:13%"/>
+							<col style="width:13%"/>
+							<col style="width:13%"/>
+							<col style="width:13%"/>
+						</colgroup>
+						<thead>
+							<tr>
+								<th scope="col" rowspan="2">확장자</th>
+								<th scope="col" colspan="3">IE</th>
+								<th scope="col" rowspan="2">chrome</th>
+								<th scope="col" rowspan="2">firefox</th>
+								<th scope="col" rowspan="2">safari</th>
+								<th scope="col" rowspan="2">opera</th>
+							</tr>
+							<tr>
+								<th scope="col">IE8 이하</th>
+								<th scope="col">IE9 ~1 1</th>
+								<th scope="col">Edge</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td>TTF/OTF</td>
+								<td></td>
+								<td>○</td>
+								<td>○</td>
+								<td>○</td>
+								<td>○</td>
+								<td>○</td>
+								<td>○</td>
+							</tr>
+							<tr>
+								<td>WOFF</td>
+								<td></td>
+								<td>○</td>
+								<td>○</td>
+								<td>○</td>
+								<td>○</td>
+								<td>○</td>
+								<td>○</td>
+							</tr>
+							<tr>
+								<td>WOFF2</td>
+								<td></td>
+								<td></td>
+								<td>○</td>
+								<td>○</td>
+								<td>○</td>
+								<td>○</td>
+								<td>○</td>
+							</tr>
+							<tr>
+								<td>EOT</td>
+								<td>○</td>
+								<td>○</td>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+
+			<div class="guide-sec">
+				<h3 class="guide-stit">폰트 두께 설정 시 적용순서</h3>
+				<p>폰트 두께(100~900) 설정 시 설정한 두께의 폰트가 없을 경우 브라우저가 자동 적용하는 두께 우선순위</p><br>
+				<p><strong>설정 font-weight가 600 이상이면, 가능한 큰 font-weight 중 가장 가까운 font-weight가 적용됩니다.(만약 없다면 작은 font-weight 중 가까운 font-weight)</strong></p>
+				<div class="tbl tc">
+					<table>
+						<caption>폰트두께 설정 순서 - 폰트두께 600 이상</caption>
+						<colgroup>
+							<col style="width:10%"/>
+							<col style="width:10%"/>
+							<col style="width:10%"/>
+							<col style="width:10%"/>
+							<col style="width:10%"/>
+							<col style="width:10%"/>
+							<col style="width:10%"/>
+							<col style="width:10%"/>
+							<col style="width:10%"/>
+							<col style="width:10%"/>
+						</colgroup>
+						<tbody>
+							<tr>
+								<td><strong>두께</strong></dh>
+								<td>100</td>
+								<td>200</td>
+								<td>300</td>
+								<td>400</td>
+								<td>500</td>
+								<td>600</td>
+								<td>700</td>
+								<td>800</td>
+								<td>900</td>
+							</tr>
+							<tr>
+								<td><strong>우선순위</strong></td>
+								<td><strong class="tx-red">8</strong></td>
+								<td><strong class="tx-red">7</strong></td>
+								<td><strong class="tx-red">6</strong></td>
+								<td><strong class="tx-red">5</strong></td>
+								<td><strong class="tx-red">4</strong></td>
+								<td><strong class="tx-red">-</strong></td>
+								<td><strong class="tx-red">1</strong></td>
+								<td><strong class="tx-red">2</strong></td>
+								<td><strong class="tx-red">3</strong></td>
+							</tr>
+						</tbody>
+					</table>
+				</div><br>
+				
+				<p><strong>설정 font-weight가 300 이하이면, 가능한 작은 font-weight 중 가장 가까운 font-weight가 적용됩니다(만약 없다면 큰 font-weight 중 가까운 font-weight)</strong></p>
+				<div class="tbl tc">
+					<table>
+						<caption>폰트두께 설정 순서 - 폰트두께 300 이하</caption>
+						<colgroup>
+							<col style="width:10%"/>
+							<col style="width:10%"/>
+							<col style="width:10%"/>
+							<col style="width:10%"/>
+							<col style="width:10%"/>
+							<col style="width:10%"/>
+							<col style="width:10%"/>
+							<col style="width:10%"/>
+							<col style="width:10%"/>
+							<col style="width:10%"/>
+						</colgroup>
+						<tbody>
+							<tr>
+								<td><strong>두께</strong></dh>
+								<td>100</td>
+								<td>200</td>
+								<td>300</td>
+								<td>400</td>
+								<td>500</td>
+								<td>600</td>
+								<td>700</td>
+								<td>800</td>
+								<td>900</td>
+							</tr>
+							<tr>
+								<td><strong>우선순위</strong></td>
+								<td><strong class="tx-red">2</strong></td>
+								<td><strong class="tx-red">1</strong></td>
+								<td><strong class="tx-red">-</strong></td>
+								<td><strong class="tx-red">3</strong></td>
+								<td><strong class="tx-red">4</strong></td>
+								<td><strong class="tx-red">5</strong></td>
+								<td><strong class="tx-red">6</strong></td>
+								<td><strong class="tx-red">7</strong></td>
+								<td><strong class="tx-red">8</strong></td>
+							</tr>
+						</tbody>
+					</table>
+				</div><br>
+				
+				<p><strong>설정 font-weight가 400이면, 500이 적용되고 500이 없으면 300 이하일 때 규칙이 적용됩니다.</strong></p>
+				<div class="tbl tc">
+					<table>
+						<caption>폰트두께 설정 순서 - 폰트두께 400</caption>
+						<colgroup>
+							<col style="width:10%"/>
+							<col style="width:10%"/>
+							<col style="width:10%"/>
+							<col style="width:10%"/>
+							<col style="width:10%"/>
+							<col style="width:10%"/>
+							<col style="width:10%"/>
+							<col style="width:10%"/>
+							<col style="width:10%"/>
+							<col style="width:10%"/>
+						</colgroup>
+						<tbody>
+							<tr>
+								<td><strong>두께</strong></dh>
+								<td>100</td>
+								<td>200</td>
+								<td>300</td>
+								<td>400</td>
+								<td>500</td>
+								<td>600</td>
+								<td>700</td>
+								<td>800</td>
+								<td>900</td>
+							</tr>
+							<tr>
+								<td><strong>우선순위</strong></td>
+								<td><strong class="tx-red">4</strong></td>
+								<td><strong class="tx-red">3</strong></td>
+								<td><strong class="tx-red">2</strong></td>
+								<td><strong class="tx-red">-</strong></td>
+								<td><strong class="tx-red">1</strong></td>
+								<td><strong class="tx-red">5</strong></td>
+								<td><strong class="tx-red">6</strong></td>
+								<td><strong class="tx-red">7</strong></td>
+								<td><strong class="tx-red">8</strong></td>
+							</tr>
+						</tbody>
+					</table>
+				</div><br>
+				
+				<p><strong>설정 font-weight가 500이면, 400이 적용되고 400이 없으면 300 이하일 때 규칙이 적용됩니다.</strong></p>
+				<div class="tbl tc">
+					<table>
+						<caption>폰트두께 설정 순서 - 폰트두께 500</caption>
+						<colgroup>
+							<col style="width:10%"/>
+							<col style="width:10%"/>
+							<col style="width:10%"/>
+							<col style="width:10%"/>
+							<col style="width:10%"/>
+							<col style="width:10%"/>
+							<col style="width:10%"/>
+							<col style="width:10%"/>
+							<col style="width:10%"/>
+							<col style="width:10%"/>
+						</colgroup>
+						<tbody>
+							<tr>
+								<td><strong>두께</strong></dh>
+								<td>100</td>
+								<td>200</td>
+								<td>300</td>
+								<td>400</td>
+								<td>500</td>
+								<td>600</td>
+								<td>700</td>
+								<td>800</td>
+								<td>900</td>
+							</tr>
+							<tr>
+								<td><strong>우선순위</strong></td>
+								<td><strong class="tx-red">4</strong></td>
+								<td><strong class="tx-red">3</strong></td>
+								<td><strong class="tx-red">2</strong></td>
+								<td><strong class="tx-red">1</strong></td>
+								<td><strong class="tx-red">-</strong></td>
+								<td><strong class="tx-red">5</strong></td>
+								<td><strong class="tx-red">6</strong></td>
+								<td><strong class="tx-red">7</strong></td>
+								<td><strong class="tx-red">8</strong></td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+
+			</div>
+
+			<div class="guide-sec">
+				<h3 class="guide-stit">참고 URL</h3>
+				<ul>
+					<li><a href="https://wit.nts-corp.com/2017/02/13/4258" class="btn" target="_blank">웹폰트 설정 참고</a></li>
+					<li><a href="https://jineecode.tistory.com/104" class="btn" target="_blank">unicode-range 참고 추가</a></li>
+				</ul>
+			</div>
+		</section>
+
+	</div>
+</div>
+
+<script>
+	hljs.initHighlightingOnLoad(); 
+</script>
+
+</body>
+</html>

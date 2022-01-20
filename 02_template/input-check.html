@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+	<meta charset="UTF-8" >
+	<meta charset="UTF-8" >
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="user-scalable=yes, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, width=device-width">
+	<meta name="author" content="seonamho - SK MNS" >
+	<meta name="description" content="">
+	<meta name="keywords" content="Site Template">
+	<meta property="og:type" content="website">
+	<meta property="og:title" content="Site Template">
+	<meta property="og:description" content="">
+	<meta property="og:image" content="">
+	<meta property="og:url" content="">
+	<link rel="shortcut icon" href="data:;base64,iVBORwOKGO=" />
+
+	<title>input 데이터 확인 | 기본 가이드</title>
+
+	<!-- 가이드 관련 -->
+	<link rel="stylesheet" href="../guide/list-guide.css" media="screen, print" />
+	<link rel="stylesheet" href="../guide/vendor/railscasts.css">
+	<script src="../guide/vendor/highlight.pack.js"></script>
+
+	<!-- 프로젝트 관련 CSS 및 JS 파일 로드 -->
+	<link rel="stylesheet" href="/css/layout.css" media="screen, print" />
+	<script src="/js/jquery-3.2.1.min.js"></script>
+
+	<!--[if lt IE 9]>
+    <script src="/js/html5shiv.js"></script>
+    <![endif]-->	
+	
+	<script>
+		$(function(){
+			hljs.initHighlightingOnLoad(); 
+			
+			$('.inp-txt.num').on('input propertychange',function(){
+				$(this).val( $(this).val().replace(/[^0-9]/gi,"") );
+			});
+			
+			$('.inp-txt.eng').on('input propertychange',function(){
+				$(this).val( $(this).val().replace(/[0-9]|[^\!-z\s]/gi,"") );
+			});
+			
+			$('.inp-txt.kor').on('input propertychange',function(){
+				$(this).val( $(this).val().replace(/[a-z0-9]|[ \[\]{}()<>?|`~!@#$%^&*-_+=,;:\"\\]/g,"") );
+			});
+
+			function inpChkLogin(wrap){
+				var wrap 	= document.querySelector(wrap),
+					inps 	= wrap.querySelectorAll('input[type=text], input[type=password]'),
+					inpNum 	= inps.length,
+					btn	 	= wrap.querySelector('button');
+				
+				function inpChk(){
+					var chkNum = new Array();
+					for(var i=0; i<inps.length; i++){
+						if(inps[i].value.length > 0) chkNum[i] = 1;
+						else chkNum[i] = 0;
+					}
+					chkNum.indexOf(0) >= 0 ? btn.disabled = true : btn.disabled = false;
+				}
+				for(var i=0; i<inps.length; i++){
+					inps[i].addEventListener('input', inpChk);
+				}
+			}
+
+			inpChkLogin('.login-inp');
+		});
+	</script>
+
+</head>
+<body>
+<div id="work-list">
+	<div class="guide">
+		
+
+		<!-- input ================================================================ -->
+		<section id="guide-input">
+			<h2 class="guide-sec-tit">input 데이터 확인</h2>
+			<div class="guide-sec">
+				<h3 class="guide-stit">기본 text</h3>
+				<div class="guide-show">
+					<input type="text" name="" title="" class="inp-txt num" placeholder="숫자 입력">
+					<input type="text" name="" title="" class="inp-txt eng" placeholder="영문입력">
+					<input type="text" name="" title="" class="inp-txt kor" placeholder="한글입력">
+				</div>
+<pre><code class="html">&lt;input type="text" name="" title="" class="inp-txt num" placeholder="숫자 입력"&gt;
+&lt;input type="text" name="" title="" class="inp-txt eng" placeholder="영문입력"&gt;
+&lt;input type="text" name="" title="" class="inp-txt kor" placeholder="한글입력"&gt;
+</code></pre>
+			</div>
+
+		</section>
+
+		<section id="guide-input">
+			<h2 class="guide-sec-tit">input 로그인</h2>
+			<div class="guide-sec">
+				<h3 class="guide-stit">아이디 / 암호 모두 값이 있을때 버튼 활성화</h3>
+				<div class="guide-show">
+					<div class="login-inp">
+						<input type="text" name="" placeholder="아이디" title="아이디">
+						<input type="password" name="" placeholder="비밀번호" title="비밀번호">	
+						<button type="submit" disabled><span>로그인</span></button>
+					</div>
+				</div>
+<pre><code class="html">&lt;div class="login-inp"&gt;
+	&lt;input type="text" name="" placeholder="아이디" title="아이디"&gt;
+	&lt;input type="password" name="" placeholder="비밀번호" title="비밀번호"&gt;	
+	&lt;button type="submit" disabled&gt;&lt;span&gt;로그인&lt;/span&gt;&lt;/button&gt;
+&lt;/div&gt;
+</code></pre>
+			</div>
+
+		</section>
+
+	</div>
+	<a href="#work-list" class="guide-top">Top</a>	
+</div>
+</body>
+</html>

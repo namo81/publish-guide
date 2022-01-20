@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+	<meta charset="UTF-8" >
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="user-scalable=yes, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, width=device-width">
+	<meta name="author" content="" >
+	<meta name="description" content="">
+	<meta name="keywords" content="">
+	<meta property="og:type" content="website">
+	<meta property="og:title" content="">
+	<meta property="og:description" content="">
+	<meta property="og:image" content="">
+	<meta property="og:url" content="">
+	<link rel="shortcut icon" href="data:;base64,iVBORwOKGO=" />
+
+	<title>프로젝트 이름 | msp</title>
+	<link rel="stylesheet" href="guide/list-guide.css" media="screen, print" />
+</head>
+
+<body>
+	<div id="work-list">
+		<div class="title">
+			<h1 class="project-title">프로젝트 이름</h1>
+			<p class="project-info">
+				<span>&bull; 담당자 : </span>
+			</p>
+		</div>
+		
+		<div class="menu">
+			<ul>
+				<li><a href="#">Front</a></li>
+			</ul>
+		</div>
+
+		<div class="function">
+			<div class="text-finder func-wrap">
+				<span class="tit">Text 검색</span>
+				<input type="text" name="find-tx" id="find-tx" title="text 검색">
+				<button type="button" class="btn-find-tx">검색</button>
+				<input type="hidden" class="temp">
+			</div>
+			<div class="func-wrap">
+				<span class="tit">미리보기</span>
+				<span class="check">
+					<input type="checkbox" name="" id="view-chk">
+					<label for="view-chk">미리보기</label>
+				</span>
+			</div>
+			<div class="ing-per">
+				&bull; 진행율 : <span class="end-page"></span> / <span class="total-page"></span> ( <span class="per"></span> %)
+			</div>
+		</div>
+		<div class="list">
+			<div class="tbl-wrap">
+				<table>
+					<caption>프로젝트 리스트</caption>
+					<colgroup>
+						<col style="width:5%"/>
+						<col style="width:10%"/>
+						<col style="width:10%"/>
+						<col style="width:10%"/>
+						<col style="width:10%"/>
+						<col style="width:8%"/>
+						<col style="width:auto"/>
+						<col style="width:8%"/>
+						<col style="width:auto"/>
+					</colgroup>
+					<thead>
+						<tr>
+							<th scope="col">No.</th>
+							<th scope="col">depth1</th>
+							<th scope="col">depth2</th>
+							<th scope="col">depth3</th>
+							<th scope="col">depth4</th>
+							<th scope="col">진행상태</th>
+							<th scope="col">링크</th>
+							<th scope="col">완료일자</th>
+							<th scope="col">수정 및 참고</th>
+						</tr>
+					</thead>
+					<tbody>
+						<!-- section 구분 -->
+						<tr>
+							<td class="no"></td>
+							<td class="depth1">section01</td>
+							<td class="depth2"></td>
+							<td class="depth3"></td>
+							<td class="depth4"></td>
+							<td class="state"></td>
+							<td class="link"><a href="html/" target="_blank">-</a></td>
+							<td class="end-date"></td>
+							<td class="modify"></td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+		
+		<div class="iframe">
+			<iframe src="" frameborder="0" scrollbars="yes"></iframe>
+			<button type="button" class="btn-frame-close">닫기</button>
+		</div>
+	</div>
+
+	<script src="js/common.js"></script>
+	<script src="guide/list-guide.js"></script>
+</body>
+</html>

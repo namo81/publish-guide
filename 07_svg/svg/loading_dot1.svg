@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 16.2.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 100 100" enable-background="new 0 0 100 100" xml:space="preserve">
+	<style type="text/css">
+		<![CDATA[
+			@keyframes obj1 {
+				0% { transform:translate3d(0,0,0) rotate(0deg); opacity:1;}
+				40% { opacity:1;}
+				80%, 100% { transform:translate3d(0,-100%,0) rotate(180deg); opacity:0; }
+			}
+
+			.obj1 { animation:obj1 1.2s cubic-bezier(.39,0.25,.2,1) infinite; transform-origin:80% 25%; }
+			.obj-group2 { transform:rotate(60deg); transform-origin:50px 50px; }
+			.obj-group3 { transform:rotate(120deg); transform-origin:50px 50px; }
+			.obj-group4 { transform:rotate(180deg); transform-origin:50px 50px; }
+			.obj-group5 { transform:rotate(240deg); transform-origin:50px 50px; }
+			.obj-group6 { transform:rotate(300deg); transform-origin:50px 50px; }
+			.obj-group2 .obj1 { animation-delay:.2s; }
+			.obj-group3 .obj1 { animation-delay:.4s; }
+			.obj-group4 .obj1 { animation-delay:.6s; }
+			.obj-group5 .obj1 { animation-delay:.8s; }
+			.obj-group6 .obj1 { animation-delay:1s; }
+		]]>
+	</style>
+	<circle fill="#000" stroke="none" stroke-width="8" stroke-miterlimit="10" cx="50" cy="50" r="12" class="obj"/>
+	<g class="obj-group1">
+		<circle fill="#000" stroke="none" stroke-width="8" stroke-miterlimit="10" cx="50" cy="50" r="12" class="obj1"/>
+	</g>
+	<g class="obj-group2">
+		<circle fill="#000" stroke="none" stroke-width="8" stroke-miterlimit="10" cx="50" cy="50" r="12" class="obj1"/>
+	</g>
+	<g class="obj-group3">
+		<circle fill="#000" stroke="none" stroke-width="8" stroke-miterlimit="10" cx="50" cy="50" r="12" class="obj1"/>
+	</g>
+	<g class="obj-group4">
+		<circle fill="#000" stroke="none" stroke-width="8" stroke-miterlimit="10" cx="50" cy="50" r="12" class="obj1"/>
+	</g>
+	<g class="obj-group5">
+		<circle fill="#000" stroke="none" stroke-width="8" stroke-miterlimit="10" cx="50" cy="50" r="12" class="obj1"/>
+	</g>
+	<g class="obj-group6">
+		<circle fill="#000" stroke="none" stroke-width="8" stroke-miterlimit="10" cx="50" cy="50" r="12" class="obj1"/>
+	</g>
+</svg>

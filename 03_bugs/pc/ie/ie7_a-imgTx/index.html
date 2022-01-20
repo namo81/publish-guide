@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+	<meta charset="UTF-8" >
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="user-scalable=yes, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, width=device-width">
+	<meta name="author" content="seonamho - SK MNS" >
+	<meta name="description" content="">
+	<meta name="keywords" content="Site Template">
+	<meta property="og:type" content="website">
+	<meta property="og:title" content="Site Template">
+	<meta property="og:description" content="">
+	<meta property="og:image" content="">
+	<meta property="og:url" content="">
+	<link rel="shortcut icon" href="data:;base64,iVBORwOKGO=" />
+
+	<title>버그 현상 및 해결방법</title>
+
+	<!-- 가이드 관련 -->
+	<link rel="stylesheet" href="../../../../guide/list-guide.css" media="screen, print" />
+	<link rel="stylesheet" href="../../../../guide/vendor/railscasts.css">
+	<script src="../../../../guide/vendor/highlight.pack.js"></script>
+
+</head>
+<body>
+	<div id="work-list">
+		<div class="guide">
+	
+			<section id="guide-basic">
+				<h2 class="guide-sec-tit">A 태그 내 이미지+시스템 폰트 구성 클릭버그</h2>
+	
+				<div class="guide-sec">
+					<h3 class="guide-stit">상세 현상</h3>
+					<p>A 태그 내에 이미지 + 시스템 폰트로 구성되어있을 경우</p>
+					<p>IE 7 에서 A 태그 내의 이미지 영역에 클릭 event 가 실행되지 않는 버그. - 시스템폰트 영역은 정상 작동.</p>
+				</div>
+				<div class="guide-sec">
+					<h3 class="guide-stit">해결 방법</h3>
+					<p><strong>A 태그 내 이미지 및 이미지를 감싸는 영역에 width,height 등의 사이즈를 특정하는 CSS 속성을 제거.</strong></p>
+				</div>
+				<div class="guide-sec">
+					<h3 class="guide-stit">해결 방법</h3>
+					<p><strong>width,height 등 사이즈 속성을 사용하여야 할 경우 a 태그 마지막에 클릭용 투명 영역를 넣어서 A 태그 전체 사이즈 만큼 최상단에 배치하여 사용.</strong></p>
+				</div>
+			</section>
+		</div>
+	</div>
+</body>
+</html>

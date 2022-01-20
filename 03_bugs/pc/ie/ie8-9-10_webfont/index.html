@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+	<meta charset="UTF-8" >
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="user-scalable=yes, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, width=device-width">
+	<meta name="author" content="seonamho - SK MNS" >
+	<meta name="description" content="">
+	<meta name="keywords" content="Site Template">
+	<meta property="og:type" content="website">
+	<meta property="og:title" content="Site Template">
+	<meta property="og:description" content="">
+	<meta property="og:image" content="">
+	<meta property="og:url" content="">
+	<link rel="shortcut icon" href="data:;base64,iVBORwOKGO=" />
+
+	<title>버그 현상 및 해결방법</title>
+
+	<!-- 가이드 관련 -->
+	<link rel="stylesheet" href="../../../../guide/list-guide.css" media="screen, print" />
+	<link rel="stylesheet" href="../../../../guide/vendor/railscasts.css">
+	<script src="../../../../guide/vendor/highlight.pack.js"></script>
+
+</head>
+<body>
+	<div id="work-list">
+		<div class="guide">
+	
+			<section id="guide-basic">
+				<h2 class="guide-sec-tit">input 내 웹폰트 적용시 폰트 잘림 현상</h2>
+	
+				<div class="guide-sec">
+					<p class="img"><a href="images/img_ex.jpg"><img src="images/img_ex.jpg" alt=""></a></p>
+					<h3 class="guide-stit">상세 현상</h3>
+					<p>input 에 숫자로 value 값이 적용되어 있고, 사이트 전체에 웹폰트가 설정되어 input 에도 웹폰트가 적용될 경우.</p>
+					<p>위와 같이 텍스트가 잘리는 현상.</p>
+					<p>input 텍스트 폰트가 기본 폰트에서 웹폰트로 적용되는 과정에서 기본 폰트보다 웹 폰트의 가로가 길 경우 길어진 만큼 폰트가 잘리는 현상인듯.</p>
+					<p>IE 8,9,10 에서만 발생</p>
+				</div>
+				<div class="guide-sec">
+					<h3 class="guide-stit">해결 방법</h3>
+					<p><strong>css 설정에서 letter-spacing:0 을 적용해주면 해결.</strong></p>
+				</div>
+			</section>
+		</div>
+	</div>
+
+</body>
+</html>

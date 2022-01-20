@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+	<meta charset="UTF-8" >
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="user-scalable=yes, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, width=device-width">
+	<meta name="author" content="seonamho - SK MNS" >
+	<meta name="description" content="">
+	<meta name="keywords" content="Site Template">
+	<meta property="og:type" content="website">
+	<meta property="og:title" content="Site Template">
+	<meta property="og:description" content="">
+	<meta property="og:image" content="">
+	<meta property="og:url" content="">
+	<link rel="shortcut icon" href="data:;base64,iVBORwOKGO=" />
+
+	<title>버튼 | 가이드</title>
+
+	<!-- 가이드 관련 -->
+	<link rel="stylesheet" href="../guide/list-guide.css" media="screen, print" />
+	<link rel="stylesheet" href="../guide/vendor/railscasts.css">
+	<script src="../guide/vendor/highlight.pack.js"></script>
+
+	<!-- 프로젝트 관련 CSS 및 JS 파일 로드 -->
+	<link rel="stylesheet" href="/css/layout.css" media="screen, print" />
+	<script src="/js/jquery-3.2.1.min.js"></script>
+
+	<!--[if lt IE 9]>
+    <script src="/js/html5shiv.js"></script>
+	<![endif]-->
+	
+	<script>
+		$(function(){ 
+			hljs.initHighlightingOnLoad(); 
+		});
+	</script>
+</head>
+<body>
+<div id="work-list">
+	<div class="guide">
+
+		<section id="guide-basic">
+			<h2 class="guide-sec-tit">버튼</h2>
+			<div class="guide-sec">
+				<h3 class="guide-stit">버튼 사이즈</h3>
+				<p>기본은 회색 배경에 흰색 텍스트</p>
+				<p>사이즈 추가 시 xxl / xxs 등 클래스 지정</p>
+				<p>버튼 너비는 텍스트 길이에 맞춰서 변경(inline-block)</p>
+				<p>높이 : XL (50px) / L (40px) / M (34px) / S (26px) / XS (20px) </p>
+				<p>너비 및 높이는 디자인에 따라 layout.css 변경</p>
+				<h4 class="guide-sstit">a 태그 사용 시</h4>
+				<div class="guide-show">
+				<!-- 코드 작성 -->
+					<a href="#" class="btn xlarge">버튼 XL 사이즈</a>
+					<a href="#" class="btn large">버튼 L 사이즈</a>
+					<a href="#" class="btn medium">버튼 M 사이즈</a>
+					<a href="#" class="btn small">버튼 S 사이즈</a>
+					<a href="#" class="btn xsmall">버튼 XS 사이즈</a>
+				<!-- // 코드 작성 -->
+				</div>
+<pre><code class="html">&lt;a href="#" class="btn xlarge"&gt;버튼 XL 사이즈&lt;/a&gt;
+&lt;a href="#" class="btn large"&gt;버튼 L 사이즈&lt;/a&gt;
+&lt;a href="#" class="btn medium"&gt;버튼 M 사이즈&lt;/a&gt;
+&lt;a href="#" class="btn small"&gt;버튼 S 사이즈&lt;/a&gt;
+&lt;a href="#" class="btn xsmall"&gt;버튼 XS 사이즈&lt;/a&gt;
+</code></pre>
+
+				<h4 class="guide-sstit">button 태그 사용 시</h4>
+				<p>IE 에서 버튼 눌리는 effect 제거를 위해 button 태그 내 span 태그 추가</p>
+				<div class="guide-show">
+				<!-- 코드 작성 -->
+					<button type="button" class="btn xlarge" onclick=""><span>버튼 XL 사이즈</span></button>
+					<button type="button" class="btn large" onclick=""><span>버튼 L 사이즈</span></button>
+					<button type="button" class="btn medium" onclick=""><span>버튼 M 사이즈</span></button>
+					<button type="button" class="btn small" onclick=""><span>버튼 S 사이즈</span></button>
+					<button type="button" class="btn xsmall" onclick=""><span>버튼 XS 사이즈</span></button>
+				<!-- // 코드 작성 -->
+				</div>
+<pre><code class="html">&lt;button type="button" class="btn xlarge" onclick=""&gt;&lt;span&gt;버튼 XL 사이즈&lt;/span&gt;&lt;/button&gt;
+&lt;button type="button" class="btn large" onclick=""&gt;&lt;span&gt;버튼 L 사이즈&lt;/span&gt;&lt;/button&gt;
+&lt;button type="button" class="btn medium" onclick=""&gt;&lt;span&gt;버튼 M 사이즈&lt;/span&gt;&lt;/button&gt;
+&lt;button type="button" class="btn small" onclick=""&gt;&lt;span&gt;버튼 S 사이즈&lt;/span&gt;&lt;/button&gt;
+&lt;button type="button" class="btn xsmall" onclick=""&gt;&lt;span&gt;버튼 XS 사이즈&lt;/span&gt;&lt;/button&gt;
+</code></pre>
+			</div>
+
+			<div class="guide-sec">
+				<h3 class="guide-stit">버튼 색상</h3>
+				<p>색상 추가 시 'btn-컬러명' 으로 클래스 지정</p>
+				<div class="guide-show">
+				<!-- 코드 작성 -->
+					<a href="#" class="btn medium red">버튼 Red</a>
+					<a href="#" class="btn medium white">버튼 White</a>
+					<a href="#" class="btn medium gray">버튼 Gray</a>
+				<!-- // 코드 작성 -->
+				</div>
+<pre><code class="html">&lt;a href="#" class="btn medium red"&gt;버튼 Red&lt;/a&gt;
+&lt;a href="#" class="btn medium white"&gt;버튼 White&lt;/a&gt;
+&lt;a href="#" class="btn medium gray"&gt;버튼 Gray&lt;/a&gt;
+</code></pre>
+			</div>
+
+			<div class="guide-sec">
+				<h3 class="guide-stit">아이콘 요소 추가</h3>
+				<p>텍스트 앞뒤로 아이콘 이미지가 추가될 경우 ico-btn 클래스를 가진 inline 태그를 활용하여 img 직접 추가</p>
+				<p>ico-btn 과 텍스트 사이 띄어쓰기 필수 ( or 추후 CSS 로 간격 조정 )</p>
+				<div class="guide-show">
+				<!-- 코드 작성 -->
+					<a href="#" class="btn medium white"><i class="ico-btn"><img src="../images/ico_list.png" alt=""></i> 버튼 Red</a>
+					<a href="#" class="btn medium">버튼 Red <i class="ico-btn"><img src="../images/ico_file.png" alt=""></i></a>
+					<button type="button" class="btn medium white"><span><i class="ico-btn"><img src="../images/ico_list.png" alt=""></i> 버튼 Red</span></button>
+				<!-- // 코드 작성 -->
+				</div>
+<pre><code class="html">&lt;a href="#" class="btn medium white"&gt;&lt;i class="ico-btn"&gt;&lt;img src="../images/ico_list.png" alt=""&gt;&lt;/i&gt; 버튼 Red&lt;/a&gt;
+&lt;a href="#" class="btn medium"&gt;버튼 Red &lt;i class="ico-btn"&gt;&lt;img src="../images/ico_file.png" alt=""&gt;&lt;/i&gt;&lt;/a&gt;
+&lt;button type="button" class="btn medium white"&gt;&lt;span&gt;&lt;i class="ico-btn"&gt;&lt;img src="../images/ico_list.png" alt=""&gt;&lt;/i&gt; 버튼 Red&lt;/span&gt;&lt;/button&gt;
+</code></pre>
+			</div>
+		</section>
+	</div>
+	<a href="#work-list" class="guide-top">Top</a>	
+</div>
+</body>
+</html>

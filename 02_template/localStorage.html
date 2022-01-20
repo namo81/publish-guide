@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+	<meta charset="UTF-8" >
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="user-scalable=yes, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, width=device-width">
+	<meta name="author" content="seonamho - SK MNS" >
+	<meta name="description" content="">
+	<meta name="keywords" content="Site Template">
+	<meta property="og:type" content="website">
+	<meta property="og:title" content="Site Template">
+	<meta property="og:description" content="">
+	<meta property="og:image" content="">
+	<meta property="og:url" content="">
+	<link rel="shortcut icon" href="data:;base64,iVBORwOKGO=" />
+
+	<title>localStorage | 기본 가이드</title>
+
+	<!-- 가이드 관련 -->
+	<link rel="stylesheet" href="../guide/list-guide.css" media="screen, print" />
+	<link rel="stylesheet" href="../guide/vendor/railscasts.css">
+	<script src="../guide/vendor/highlight.pack.js"></script>
+
+	<!-- 프로젝트 관련 CSS 및 JS 파일 로드 -->
+	<link rel="stylesheet" href="/css/layout.css" media="screen, print" />
+	<script src="/js/common.js"></script>
+
+	<!--[if lt IE 9]>
+    <script src="/js/html5shiv.js"></script>
+    <![endif]-->	
+
+
+	<script src="/js/js_plug-base.js"></script>
+	<script>
+		window.onload = function(){
+			var inp 	= document.querySelector('.inp'),
+				result  = document.querySelector('.result'),
+				btn_set = document.querySelector('.btn.set'),
+				btn_get = document.querySelector('.btn.get'),
+				btn_del = document.querySelector('.btn.del');
+			
+			var dataArr = new Array();
+			
+			var localData = JSON.parse(localStorage.getItem('testValue'));
+				result.innerText = localData;
+				if(localData != null) dataArr = localData;
+
+			btn_set.addEventListener('click', function(){
+				if(inp.value.length > 0) {
+					var today = new Date(),
+						date  = 'date:' + today.getFullYear() + '-' + today.getMonth() + '-' + today.getDate();
+					var newObj = new Object;
+					newObj.date = date;
+					newObj.val  = inp.value;
+					dataArr.push(newObj);
+					inpData = JSON.stringify(dataArr);
+					localStorage.setItem('testValue', inpData);
+					console.log(localStorage)
+				}
+			});
+
+			btn_get.addEventListener('click', function(){
+				result.innerText = localData;
+			});
+
+			btn_del.addEventListener('click', function(){
+				localStorage.clear();
+				dataArr = '';
+			});
+		}
+	</script>
+
+</head>
+<body>
+<div id="work-list">
+	<div class="guide">
+		
+
+		<!-- input ================================================================ -->
+		<section id="guide-input">
+			<h2 class="guide-sec-tit">localStorage Test</h2>
+
+			<div class="guide-sec">
+				<h3 class="guide-stit">기본형</h3>
+				<div class="guide-show">
+					<input type="text" name="" placeholder="" class="inp"/>
+					<span class="result"></span>
+					<button type="button" class="btn medium red set">입력</button>
+					<button type="button" class="btn medium get">출력</button>
+					<button type="button" class="btn medium white del">삭제</button>
+				</div>
+			</div>
+		</section>
+	</div>
+</div>
+</body>
+</html>

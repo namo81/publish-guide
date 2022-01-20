@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 16.2.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 100 100" enable-background="new 0 0 100 100" xml:space="preserve">
+	<style type="text/css">
+		<![CDATA[
+			@keyframes strokeSize {
+				0%, 25%,100% { stroke-dasharray:20 300; stroke-dashoffset:-15; }
+				60% { stroke-dasharray:110 300; stroke-dashoffset:0; stroke:#000; }
+			}
+			@keyframes strokeRotate {
+				0% { transform:rotate(50deg) }
+				100% { transform:rotate(-310deg); }
+			}
+
+			.obj1 { animation:strokeSize 1s cubic-bezier(.39,0.25,.2,1) infinite; }
+			.obj-group { animation:strokeRotate 1s cubic-bezier(.57,0,.2,1) infinite; transform-origin:50% 50%; }
+		]]>
+	</style>
+	<circle fill="none" stroke="#aaa" stroke-width="8" stroke-miterlimit="10" cx="50" cy="50" r="37" />
+	<g class="obj-group">
+		<circle fill="none" stroke="#444" stroke-width="8" stroke-miterlimit="10" cx="50" cy="50" r="37" class="obj1" stroke-linecap="round" stroke-dasharray="30 300"/>
+	</g>
+</svg>

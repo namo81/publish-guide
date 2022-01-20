@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+	<meta charset="UTF-8" >
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="user-scalable=yes, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, width=device-width">
+	<meta name="author" content="seonamho - SK MNS" >
+	<meta name="description" content="퍼블리싱 파일 관리 사이트">
+	<meta name="keywords" content="html css javascript 퍼블리셔 퍼블리싱">
+	<meta property="og:type" content="website">
+	<meta property="og:title" content="퍼블리싱 파일 관리 사이트 (for skmns)">
+	<meta property="og:description" content="skmns 사내용 퍼블리싱 파일 관리 사이트">
+	<meta property="og:image" content="">
+	<meta property="og:url" content="10.71.101.60:1900">
+	<link rel="shortcut icon" href="data:;base64,iVBORwOKGO=" />
+
+	<title>msp</title>
+	<link rel="stylesheet" href="../guide/list-guide.css" media="screen, print" />
+	
+	<link rel="stylesheet" href="css/font-viewer.css" media="screen, print" />
+</head>
+
+<body>
+
+	<div id="work-list" class="full">
+
+		<div class="guide">
+		
+			<section>
+				<h2 class="guide-sec-tit">폰트 미리보기</h2>
+				<div class="guide-sec">
+					<div class="input-wrap">
+						<textarea name="" class="inputBox" placeholder="텍스트를 입력해주세요."></textarea>
+						<input type="submit" id="inBtn" value="미리보기"/>
+					</div>
+					<div class="set-area">
+
+						<div class="set-box">
+							<span class="tit">폰트사이즈</span>
+							<input type="submit" class="big" value="크게"/>
+							<input type="submit" class="small" value="작게"/>
+							<input type="submit" class="baseSize" value="size reset (12px)"/>
+						</div>
+						
+						<div class="set-box">
+							<span class="tit">폰트두께</span>
+							<select name="" id="font-w">
+								<option value="100">100</option>
+								<option value="200">200</option>
+								<option value="300">300</option>
+								<option value="400" selected>400(normal)</option>
+								<option value="500">500</option>
+								<option value="600">600</option>
+								<option value="700">700(bold)</option>
+								<option value="800">800</option>
+								<option value="900">900</option>
+							</select>
+						</div>
+						
+						<div class="set-box">
+							<span class="tit">자간</span>
+							<input type="submit" class="ls_minus" value="자간좁게"/>
+							<input type="submit" class="ls_plus" value="자간넓게"/>
+						</div>
+						
+						<div class="set-box">
+							<span class="tit">색상</span>
+							<input type="text" class="colorInp" name="" value="#000000" />
+							<input type="submit" class="colorSet" value="색상적용"/>
+						</div>
+						<div class="set-box">
+							<input type="submit" id="delBtn" value="지우기"/>
+						</div>
+					</div>
+				</div>
+
+				<div class="guide-sec">
+					<p class="now">
+						font-size : <span class="f_size">12</span> px <em>|</em> 
+						두께 <strong class="f_weight">400</strong> <em>|</em> 
+						자간 <span class="f_ls">0</span> px <em>|</em> 
+						<span class="color"> <i class="colorBox"></i> : <span class="colorNum">#000000</span></span>
+					</p>
+					<div id="mobile">
+						<p class="secTitle">모바일용</p>
+
+						<div class="viewTxt f_dserif">
+							<h2>droid - serif(android)</h2>
+							<p></p>
+						</div>
+						<div class="viewTxt f_dsans">
+							<h2>droid - sans(android)</h2>
+							<p></p>
+						</div>
+					</div>
+
+					<div id="web">
+						<p class="secTitle">웹용</p>
+						<div class="viewTxt f_dotum">
+							<h2>돋움체</h2>
+							<p></p>
+						</div>
+
+						<div class="viewTxt f_gulim">
+							<h2>굴림</h2>
+							<p></p>
+						</div>
+
+						<div class="viewTxt f_malgun">
+							<h2>맑은고딕</h2>
+							<p></p>
+						</div>
+
+						<div class="viewTxt f_nanum">
+							<h2>나눔 고딕</h2>
+							<p></p>
+						</div>
+
+						<div class="viewTxt f_arial">
+							<h2>Arial</h2>
+							<p></p>
+						</div>
+
+						<div class="viewTxt f_tahoma">
+							<h2>Tahoma</h2>
+							<p></p>
+						</div>
+
+						<div class="viewTxt f_Century">
+							<h2>Century gothic</h2>
+							<p></p>
+						</div>
+
+						<div class="viewTxt f_microsoft">
+							<h2>Microsoft PhagsPa</h2>
+							<p></p>
+						</div>
+
+						<div class="viewTxt f_sserif">
+							<h2>sans serif</h2>
+							<p></p>
+						</div>
+
+						<div class="viewTxt f_Calisto">
+							<h2>Calisto MT</h2>
+							<p></p>
+						</div>
+						<div class="viewTxt f_TimesNR">
+							<h2>Times New Roman</h2>
+							<p></p>
+						</div>
+						<div class="viewTxt f_Trebuchet">
+							<h2>Trebuchet MS</h2>
+							<p></p>
+						</div>
+						<div class="viewTxt f_NewTaiLue">
+							<h2>Microsoft New Tai Lue</h2>
+							<p></p>
+						</div>
+						<div class="viewTxt f_Verdana">
+							<h2>Verdana</h2>
+							<p></p>
+						</div>
+						<div class="viewTxt f_helveticaLT">
+							<h2>Helvetica LT 47</h2>
+							<p></p>
+						</div>
+						<div class="viewTxt f_Courier">
+							<h2>Courier</h2>
+							<p></p>
+						</div>
+					</div>
+				</div>
+			</section>
+		</div>
+
+	</div>
+
+	<script src="../js/common.js"></script>
+	<script src="js/font-viewer.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+	<meta charset="UTF-8" >
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="user-scalable=yes, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, width=device-width">
+	<meta name="author" content="seonamho - SK MNS" >
+	<meta name="description" content="">
+	<meta name="keywords" content="Site Template">
+	<meta property="og:type" content="website">
+	<meta property="og:title" content="Site Template">
+	<meta property="og:description" content="">
+	<meta property="og:image" content="">
+	<meta property="og:url" content="">
+	<link rel="shortcut icon" href="data:;base64,iVBORwOKGO=" />
+
+	<title>버그 현상 및 해결방법</title>
+
+	<!-- 가이드 관련 -->
+	<link rel="stylesheet" href="../../../../guide/list-guide.css" media="screen, print" />
+	<link rel="stylesheet" href="../../../../guide/vendor/railscasts.css">
+	<script src="../../../../guide/vendor/highlight.pack.js"></script>
+
+</head>
+<body>
+	<div id="work-list">
+		<div class="guide">
+	
+			<section id="guide-basic">
+				<h2 class="guide-sec-tit">iframe 내 input에 키보드로 focus 했을 경우 위치값 튀는 오류</h2>
+	
+				<div class="guide-sec">
+					<p class="img"><a href="images/img_ex.jpg"><img src="images/img_ex.jpg" alt=""></a></p>
+					<h3 class="guide-stit">상세 현상</h3>
+					<p>iframe 내에 있는 input 를 탭키로 포커싱 할때, 해당 input 내에 유저가 입력한 값이 존재할 경우 해당 input 에 포커싱 되는 순간 iframe 전체의 scroll 이 좌상단으로 강제 이동되는 버그</p>
+					<p>위 버그 발생으로 인해 iframe 를 포함하는 영역의 상위 영역의 화면 이동 버그도 발생</p>
+					<p>(position:absolute나 fixed 를 사용후 top,left 값을 주든, margin-left 값을 주든 모두 버그 발생)</p>
+					<p>위 이미지는 이 버그가 있던 페이지 - 로그인 영역에 탭키로 포커싱 할 때 발생했었음.</p>
+					<p><strong>!! - chrome 업데이트로 인해 현재는 발생하지 않는 듯.</strong></p>
+				</div>
+				<div class="guide-sec">
+					<h3 class="guide-stit">해결 방법</h3>
+					<p><strong>iframe 를 감싸는 태그에</strong></p>
+<pre><code class="css">-webkit-transform: translate3d(0,0,0);</code></pre>
+					<p><strong>를 넣어주면 iframe 내의 scroll 이동은 확인못했지만, iframe 를 감싸는 태그에 iframe 버그의 영향이 미치진 않음.</strong></p>
+				</div>
+			</section>
+		</div>
+	</div>
+
+	<script>
+		hljs.initHighlightingOnLoad(); 
+	</script>
+</body>
+</html>

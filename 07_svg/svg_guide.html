@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+	<meta charset="UTF-8" >
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="user-scalable=yes, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, width=device-width">
+	<meta name="author" content="seonamho - SK MNS" >
+	<meta name="description" content="MSP - Total Manage">
+	<meta name="keywords" content="msp mns mnservice html css javascript jquery 퍼블리셔 퍼블리싱">
+	<meta property="og:type" content="website">
+	<meta property="og:title" content="MSP - Total Manage">
+	<meta property="og:description" content="msp(mns 퍼블리셔) 업무 및 퍼블 관련 종합 정보 ">
+	<meta property="og:image" content="">
+	<meta property="og:url" content="10.125.253.31:1200">
+	<link rel="shortcut icon" href="data:;base64,iVBORwOKGO=" />
+
+	<title>SVG 가이드 | MSP</title>
+
+	<!-- 가이드 관련 -->
+	<link rel="stylesheet" href="../guide/list-guide.css" media="screen, print" />
+	<link rel="stylesheet" href="../guide/vendor/railscasts.css">
+	<script src="../guide/vendor/highlight.pack.js"></script>
+	
+</head>
+<body>
+
+	
+<div id="work-list">
+	<div class="guide">
+		<!-- 기본사항 -->
+		<section>
+			<h2 class="guide-sec-tit">SVG 가이드</h2>
+			<div class="guide-sec">
+				<h3 class="guide-stit">svg 기본구조</h3>
+				<h4 class="guide-sstit">svg 파일 별도 생성</h4>
+				<pre><code class="svg">&lt;?xml version="1.0" encoding="utf-8"?&gt;
+&lt;!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"&gt;
+&lt;svg version="1.1" id="Layer_2" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 100 100"&gt;
+	&lt;!-- svg 요소 추가 --&gt;
+&lt;/svg&gt;</code></pre>
+				<h4 class="guide-sstit">inline 으로 직접 넣을 경우</h4>
+				<pre><code class="svg">&lt;svg width="100" height="100"&gt;
+	&lt;!-- svg 요소 추가 --&gt;
+&lt;/svg&gt;</code></pre>
+			</div>
+			<div class="guide-sec">
+				<h3 class="guide-stit">단순 이미지 사용</h3>
+				<p>단순 이미지 형식으로 사용할 경우 img 태그 / background 설정 등으로 사용 가능</p>
+				<p>기본적인 width / height 설정 가능</p>
+				<p>벡터 형식이므로, 이미지 깨짐 현상 없음 - 모바일 / 웹 모두 1개 파일로 사용 가능</p>
+
+				<h4 class="guide-sstit">img 태그</h4>
+				<div class="guide-show">
+					<img src="svg/icon_arrow-type1.svg" style="width:50px;">
+				</div>
+				<pre><code class="html">&lt;img src="svg/icon_arrow-type1.svg"&gt;</code></pre>
+				
+				<h4 class="guide-sstit">background 설정</h4>
+				<div class="guide-show">
+					<div class="svg-box"></div>
+					<style scoped>
+						.svg-box { width:50px; height:50px; background:url(svg/icon_arrow-type1.svg) no-repeat left top; }
+					</style>
+				</div>
+				<pre><code class="html">&lt;div class="svg-box&gt;&lt;/div&gt;</code></pre>
+				<pre><code class="css">.svg-box { width:50px; height:50px; background:url(svg/icon_arrow-type1.svg) no-repeat left top; }</code></pre>
+			</div>
+
+			<div class="guide-sec">
+				<h3 class="guide-stit">inline 사용</h3>
+				<p>html 파일 내 직접 코드 작성</p>
+				<p>일반적인 html 태그처럼 사용 가능하며, CSS 로 조작이 자유로움</p>
+				<p>단, 그려진 요소가 svg 의 width / height 에 대응하지 않는 고정값이므로, 크기 조정 등의 작업이 번거로움</p>
+				<div class="guide-show">
+					<svg width="100" height="100">
+						<polyline fill-rule="evenodd" clip-rule="evenodd" fill="none" stroke="#000000" stroke-width="10" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" points="32.279,12.497 69.958,50.174 32.258,87.873 "/>
+					</svg>
+				</div>
+				<pre><code class="svg">&lt;svg width="100" height="100"&gt;
+	&lt;polyline fill-rule="evenodd" clip-rule="evenodd" fill="none" stroke="#000000" stroke-width="10" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" points="32.279,12.497 69.958,50.174 32.258,87.873 "/&gt;
+&lt;/svg&gt;</code></pre>
+			</div>
+
+			<div class="guide-sec">
+				<h3 class="guide-stit">Object 사용</h3>
+				<p>css 로 svg 요소에 대한 추가제어가 필요할 경우 사용 (color 등)</p>
+				<p>단, svg 용 CSS 를 따로 만들어야 하며, 해당 svg 파일에서 css 파일을 로드하여야 함</p>
+				<div class="guide-show">
+					<object data="svg/icon_arrow-type1.svg" type="image/svg+xml"></object>
+				</div>
+				<style scoped>
+					object { width:50px; height:50px; }
+				</style>
+				<pre><code class="html">&lt;object data="svg/icon_arrow-type1.svg" type="image/svg+xml"&gt;&lt;/object&gt;</code></pre>
+				<pre><code class="svg">&lt;?xml version="1.0" encoding="utf-8"?&gt;
+&lt;!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"&gt;
+&lt;?xml-stylesheet type="text/css" href="style.css"?&gt;
+&lt;svg version="1.1" id="Layer_2" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 100 100" enable-background="new 0 0 100 100" xml:space="preserve"&gt;
+	&lt;polyline fill-rule="evenodd" clip-rule="evenodd" fill="none" stroke="#000000" stroke-width="10" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" points="32.279,12.497 69.958,50.174 32.258,87.873 "/&gt;
+&lt;/svg&gt;</code></pre>
+			</div>
+			
+			<div class="guide-sec">
+				<h3 class="guide-stit">기타</h3>
+				<p><strong class="tx-red">단순 이미지 사용은 괜찮으나, 모션이 들어갈 경우 IE 에서 작동되지 않음.</strong></p>
+			</div>
+		</section>
+
+	</div>
+</div>
+
+<script>
+	hljs.initHighlightingOnLoad(); 
+</script>
+
+</body>
+</html>

@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+	<meta charset="UTF-8" >
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="user-scalable=yes, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, width=device-width">
+	<meta name="author" content="seonamho - SK MNS" >
+	<meta name="description" content="">
+	<meta name="keywords" content="Site Template">
+	<meta property="og:type" content="website">
+	<meta property="og:title" content="Site Template">
+	<meta property="og:description" content="">
+	<meta property="og:image" content="">
+	<meta property="og:url" content="">
+	<link rel="shortcut icon" href="data:;base64,iVBORwOKGO=" />
+
+	<title>버그 현상 및 해결방법</title>
+
+	<!-- 가이드 관련 -->
+	<link rel="stylesheet" href="../../../guide/list-guide.css" media="screen, print" />
+	<link rel="stylesheet" href="../../../guide/vendor/railscasts.css">
+	<script src="../../../guide/vendor/highlight.pack.js"></script>
+
+</head>
+<body>
+	<div id="work-list">
+		<div class="guide">
+	
+			<section id="guide-basic">
+				<h2 class="guide-sec-tit">테이블 toggle 구현 시 display 관련</h2>
+	
+				<div class="guide-sec">
+					<h3 class="guide-stit">상세 현상</h3>
+					<p>테이블 자체에 toggle 기능을 display 속성을 통해 구현할 경우</p>
+					<p>td 및 tr 에 display 설정을 하게 되면 table 자체 레이아웃이 깨지는 현상이 발생.</p>
+					<p>display:table-row 로 설정하면 ie7 에서 먹히지 않음.</p>
+				</div>
+				<div class="guide-sec">
+					<h3 class="guide-stit">해결 방법</h3>
+					<p><strong>CSS 에 display 설정을 하지 않고, hide 될 때는 display:none / 다시 show 시킬 때는 display: 으로 설정.</strong></p>
+					<p><strong>아래 예시 참고</strong></p>	
+<pre><code class="js">$('클래스').css('display','none');
+$('클래스').click(function(){
+	$(this).css('display','');
+});
+
+Object.style.display = 'none';
+Object.style.display = '';
+</code></pre>
+				</div>
+			</section>
+		</div>
+	</div>
+
+	<script>
+		hljs.initHighlightingOnLoad(); 
+	</script>
+</body>
+</html>

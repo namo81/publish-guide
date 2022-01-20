@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+	<meta charset="UTF-8" >
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="user-scalable=yes, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, width=device-width">
+	<meta name="author" content="seonamho - SK MNS" >
+	<meta name="description" content="퍼블리싱 파일 관리 사이트">
+	<meta name="keywords" content="html css javascript 퍼블리셔 퍼블리싱">
+	<meta property="og:type" content="website">
+	<meta property="og:title" content="퍼블리싱 파일 관리 사이트 (for skmns)">
+	<meta property="og:description" content="skmns 사내용 퍼블리싱 파일 관리 사이트">
+	<meta property="og:image" content="">
+	<meta property="og:url" content="10.71.101.60:1900">
+	<link rel="shortcut icon" href="data:;base64,iVBORwOKGO=" />
+
+	<title>font | msp</title>
+	<link rel="stylesheet" href="guide/list-guide.css" media="screen, print" />
+</head>
+
+<body>
+	<div id="work-list">
+		<div class="title">
+			<h1 class="project-title">Font</h1>
+			<p class="project-info">
+				<span>&bull; 담당자 : 서남호 / 심해란 / 전수영</span>
+			</p>
+		</div>
+
+		<!--#include file="include_menu.html" --> 
+
+		<div class="function">
+			<div class="text-finder func-wrap">
+				<span class="tit">Text 검색</span>
+				<input type="text" name="find-tx" id="find-tx" title="text 검색">
+				<button type="button" class="btn-find-tx">검색</button>
+				<input type="hidden" class="temp">
+			</div>
+			<div class="func-wrap">
+				<span class="tit">미리보기</span>
+				<span class="check">
+					<input type="checkbox" name="" id="view-chk">
+					<label for="view-chk">미리보기</label>
+				</span>
+			</div>
+			<!-- <div class="ing-per">
+				&bull; 진행율 : <span class="end-page"></span> / <span class="total-page"></span> ( <span class="per"></span> %)
+			</div> -->
+		</div>
+		<div class="list">
+			<div class="tbl-wrap">
+				<table>
+					<caption>프로젝트 리스트</caption>
+					<colgroup>
+						<col style="width:20%"/>
+						<col style="width:20%"/>
+						<col style="width:15%"/>
+						<col style="width:auto"/>
+					</colgroup>
+					<thead>
+						<tr>
+							<th scope="col">depth1</th>
+							<th scope="col">depth2</th>
+							<th scope="col">링크</th>
+							<th scope="col">기타</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td class="depth1">기본 가이드</td>
+							<td class="depth2">Web font 설정 가이드</td>
+							<td class="link"><a href="06_font/font_guide.html" target="_blank">font_guide</a></td>
+							<td class="modify"></td>
+						</tr>
+						<tr>
+							<td class="depth1">기타</td>
+							<td class="depth2">폰트 미리보기</td>
+							<td class="link"><a href="06_font/font_viewer.html" target="_blank">font_viewer</a></td>
+							<td class="modify"></td>
+						</tr>
+						<tr>
+							<td class="depth1"></td>
+							<td class="depth2">구글 웹폰트 헬퍼</td>
+							<td class="link"><a href="https://google-webfonts-helper.herokuapp.com/fonts" target="_blank">google-webfonts-helper</a></td>
+							<td class="modify"></td>
+						</tr>
+						<tr>
+							<td class="depth1">폰트별 설정 및 파일</td>
+							<td class="depth2">나눔고딕</td>
+							<td class="link"><a href="06_font/font_nanum-gothic.html" target="_blank">nanum-gothic</a></td>
+							<td class="modify">출처 : 구글 웹폰트 헬퍼 &amp; 네이버 나눔폰트</td>
+						</tr>
+						<tr>
+							<td class="depth1"></td>
+							<td class="depth2">나눔 스퀘어</td>
+							<td class="link"><a href="06_font/font_nanum-square.html" target="_blank">nanum-square</a></td>
+							<td class="modify">출처 : 네이버 나눔폰트</td>
+						</tr>
+						<tr>
+							<td class="depth1"></td>
+							<td class="depth2">Noto Sans Kr</td>
+							<td class="link"><a href="06_font/font_noto-sans-kr.html" target="_blank">noto-sans-Kr</a></td>
+							<td class="modify">출처 : 구글 웹폰트 헬퍼</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+		
+		<div class="iframe">
+			<iframe src="" frameborder="0" scrollbars="yes"></iframe>
+			<button type="button" class="btn-frame-close">닫기</button>
+		</div>
+	</div>
+
+	<script src="js/common.js"></script>
+	<script src="guide/list-guide.js"></script>
+
+	<script>
+		guide_menuSet(5);
+	</script>
+</body>
+</html>
