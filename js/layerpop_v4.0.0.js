@@ -4,11 +4,11 @@
 
 // !! common.js 필수
 
-var clsLayer		= '.layer', 	// 레이어 팝업 공통 클래스
-	clsOn			= 'now-open', 	// 레이어 팝업 오픈 시킨 버튼에 지정될 임시 클래스
-	clslayerCnt		= '.layer-cnt', // 레이어 팝업 내 컨텐츠 영역 클래스
-	clsCloseBtn		= '.close-layer',
-	clsShow			= 'showOn';
+var clsLayer		= '.layer', 		// 레이어 팝업 공통 클래스
+	clsOn			= 'now-open', 		// 레이어 팝업 오픈 시킨 버튼에 지정될 임시 클래스
+	clslayerCnt		= '.layer-cnt', 	// 레이어 팝업 내 컨텐츠 영역 클래스
+	clsCloseBtn		= '.close-layer',	// 레이어 팝업 닫기버튼 클래스
+	clsShow			= 'showOn';			// 레이어 show 용 상태 클래스
 
 var nlayer = {
 	// 모 페이지 설정 함수 - tab 키 요소 제어 및 화면 높이 설정
@@ -36,6 +36,8 @@ var nlayer = {
 
 		bodyStyle.overflow = '';	
 	},
+
+	// 레이어 닫기
 	layerHide : function(tg){
 		var tg_layer	= typeof tg === 'string' ? document.getElementById(tg) : tg,
 			on_layer 	= document.querySelectorAll(clsLayer + '.' + clsShow);
@@ -47,6 +49,8 @@ var nlayer = {
 		tg_layer.showBtn.classList.remove(clsOn);
 		tg_layer.showBtn.focus();
 	},
+
+	// 오픈된 레이어 전체 닫기
 	layerHideAll : function(){
 		var tg_layers 	= document.querySelectorAll(clsLayer),
 			openBtns = document.querySelectorAll('.' + clsOn);
@@ -54,6 +58,8 @@ var nlayer = {
 		Array.prototype.forEach.call(tg_layers, function(tg){ nlayer.layerHide(tg); });
 		Array.prototype.forEach.call(openBtns, function(obtn){ obtn.classList.remove(clsOn); });
 	},	
+
+	// 레이어 보기
 	layerShow : function(tg, opBtn){
 		var tg_layer 	= typeof tg === 'string' ? document.getElementById(tg) : tg;
 		
@@ -64,6 +70,7 @@ var nlayer = {
 		tg_layer.focus();
 	},
 
+	// 레이어 닫기 버튼 설정
 	closeBtnSet : function(tg, onceChk){
 		var tg_layer 	= typeof tg === 'string' ? document.getElementById(tg) : tg,
 			btnCloses 	= tg_layer.querySelectorAll(clsCloseBtn);
@@ -78,6 +85,8 @@ var nlayer = {
 			}, { once: onceChk });
 		});
 	},
+
+	// 버튼으로 레이어 팝업 열기
 	showBtn : function(e){
 		var btns = document.querySelectorAll(e);
 		Array.prototype.forEach.call(btns, function(btn){
@@ -90,6 +99,8 @@ var nlayer = {
 			nlayer.closeBtnSet(tg, false);
 		});
 	},
+
+	// 함수 실행으로 레이어 팝업 열기
 	showFunc : function(e){
 		nlayer.layerShow(e);
 		nlayer.closeBtnSet(e, true);

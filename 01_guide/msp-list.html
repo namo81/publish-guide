@@ -36,7 +36,7 @@
 				<h3 class="guide-stit">개요</h3>
 				<p>프로젝트 진행 시 작업된 화면에 대한 관리 및 미리보기 화면 제공을 위한 리스트를 작성해야 합니다.</p>
 				<p>파일 다운로드 및 작성방법을 참고하여 작성해주세요.</p>
-				<p><button type="button" class="btn down_pub-list">파일 다운로드</button></p>
+				<p><button type="button" class="wl_btn down_pub-list">파일 다운로드</button></p>
 				<p>파일 내에 <strong>신규 프로젝트 기준 폴더 구조 및 화면 리스트 파일</strong>이 포함되어 있습니다.</p>
 			</div>
 
@@ -99,6 +99,11 @@
 					<li>5. 단순 텍스트 수정 제외, 화면 레이아웃 변경 등의 수정이 있을 경우 '수정 및 참고' 칸에 수정 날짜 / 수정 내역 기입</li>
 					<li>* 페이지가 특정 페이지에 포함되어 있을 경우, 페이지명은 작성하되 a 버튼은 생성하지 않습니다. 단, '수정 및 참고' 항목에 포함된 페이지 안내를 표시합니다.</li>
 				</ol>
+				<br><br>
+				<ul>
+					<li>페이지가 삭제될 경우 tr 에 'del' 클래스 추가 : 전체 텍스트 취소선 / 진행상태 '삭제' 로 변경</li>
+					<li>페이지가 삭제까진 아니고, 미사용 단계일 경우 'notuse' 클래스 추가 : 전체 텍스트 색상 변경 / 배경색 추가 / 진행상태 '참고용' 으로 변경</li>
+				</ul>
 				<pre><code class="html">// 일반 페이지
 &lt;tr&gt;
 	&lt;td class="no"&gt;&lt;/td&gt;
@@ -118,6 +123,32 @@
 &lt;/tr&gt;
 // 종속된 페이지 (3depth 페이지에 종속된 4depth 페이지)
 &lt;tr&gt;
+	&lt;td class="no"&gt;&lt;/td&gt;
+	&lt;td class="depth1"&gt;&lt;/td&gt;
+	&lt;td class="depth2"&gt;&lt;/td&gt;
+	&lt;td class="depth3"&gt;&lt;/td&gt;
+	&lt;td class="depth4"&gt;4 depth 페이지명&lt;/td&gt;
+	&lt;td class="state"&gt;&lt;/td&gt;
+	&lt;td class="link"&gt;&lt;/td&gt;
+	&lt;td class="end-date"&gt;완료일자&lt;/td&gt;
+	&lt;td class="modify"&gt;포함된 페이지 지정&lt;/td&gt;
+&lt;/tr&gt;
+
+// 삭제된 페이지
+&lt;tr class="del"&gt;
+	&lt;td class="no"&gt;&lt;/td&gt;
+	&lt;td class="depth1"&gt;&lt;/td&gt;
+	&lt;td class="depth2"&gt;&lt;/td&gt;
+	&lt;td class="depth3"&gt;&lt;/td&gt;
+	&lt;td class="depth4"&gt;4 depth 페이지명&lt;/td&gt;
+	&lt;td class="state"&gt;&lt;/td&gt;
+	&lt;td class="link"&gt;&lt;/td&gt;
+	&lt;td class="end-date"&gt;완료일자&lt;/td&gt;
+	&lt;td class="modify"&gt;포함된 페이지 지정&lt;/td&gt;
+&lt;/tr&gt;
+
+// 미사용 페이지
+&lt;tr class="notuse"&gt;
 	&lt;td class="no"&gt;&lt;/td&gt;
 	&lt;td class="depth1"&gt;&lt;/td&gt;
 	&lt;td class="depth2"&gt;&lt;/td&gt;

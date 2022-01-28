@@ -28,7 +28,7 @@ body { width:100%; height:100%; /*background:linear-gradient(180deg, #fff 70px, 
 
 #work-list .tx-red { color:#ff0000 !important; }
 
-#work-list .btn { display:inline-block; padding:3px 8px; background:#333; color:#fff; border-radius:3px; font-size:12px; line-height:14px; vertical-align:baseline; }
+#work-list .wl_btn { display:inline-block; padding:3px 8px; background:#333; color:#fff; border-radius:3px; font-size:12px; line-height:14px; vertical-align:baseline; }
 
 #work-list .title { width:100%; max-width:1200px; margin:0 auto; padding:10px 0 6px; box-sizing:border-box; text-align:left; background-color:#fff; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
 #work-list .title:before { content:''; position:fixed; width:100%; height:68px; top:0; left:0; background:#fff; z-index:-1; }
@@ -91,6 +91,9 @@ body { width:100%; height:100%; /*background:linear-gradient(180deg, #fff 70px, 
 #work-list .list td.modify dd { display:block; overflow:hidden;  }
 #work-list .list tr.del td, #work-list .list tr.del td a { color:#aaa; text-decoration: line-through; background-image:none; }
 #work-list .list tr.del td.state.end:after { content:'삭제'; background:#ccc; }
+#work-list .list tr.notuse td { color:#999; background:#f6f6f6; }
+#work-list .list tr.notuse td a { opacity:.5; }
+#work-list .list tr.notuse td.state.end:after { content:'참고용'; opacity:.5; }
 
 #work-list .iframe { position:fixed; display:none; width:1200px; height:1600px; top:50%; left:10%; z-index:200; background:#fff; transform:scale(.5) translateY(-50%); -webkit-transform:scale(.5) translateY(-50%); transform-origin:0 0;-webkit-transform-origin:0 0; box-sizing:border-box; box-shadow:2px 2px 20px rgba(0,0,0,.8); }
 #work-list .iframe iframe { width:100%; height:calc(100% - 84px); }
