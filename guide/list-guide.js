@@ -54,6 +54,7 @@ function guide_tblSet(tbl){
 
 	Array.prototype.forEach.call(trDivs, function(div){
 		divArr.push(div);
+		if(div.nextElementSibling.classList.contains('div')) div.querySelector('.btn-tr-tgl').disabled = true;
 	});
 
 	window.addEventListener('keydown', function(e){
