@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+	<meta charset="UTF-8" >
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="user-scalable=yes, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, width=device-width">
+	<meta name="author" content="seonamho - SK MNS" >
+	<meta name="description" content="">
+	<meta name="keywords" content="Site Template">
+	<meta property="og:type" content="website">
+	<meta property="og:title" content="Site Template">
+	<meta property="og:description" content="">
+	<meta property="og:image" content="">
+	<meta property="og:url" content="">
+	<link rel="shortcut icon" href="data:;base64,iVBORwOKGO=" />
+
+	<title>버그 현상 및 해결방법</title>
+
+	<!-- 가이드 관련 -->
+	<link rel="stylesheet" href="../../../../guide/list-guide.css" media="screen, print" />
+	<link rel="stylesheet" href="../../../../guide/vendor/railscasts.css">
+	<script src="../../../../guide/vendor/highlight.pack.js"></script>
+
+</head>
+<body>
+	<div id="work-list">
+		<div class="guide">
+	
+			<section id="guide-basic">
+				<h2 class="guide-sec-tit">Editor 등에서 inline-block 영역에 한글 입력 시 '자음' 2중입력 현상</h2>
+	
+				<div class="guide-sec">
+					<h3 class="guide-stit">상세 현상</h3>
+					<p>CKEditor / summernote 같은 html Editor 입력 플러그인을 사용할 때, 입력폼이 display:inline-block 요소 하위일 경우 라인마다 최초 입력 시 한글 자음이 2번 들어가는 현상</p>
+					<p>ex ) ㅇ안녕하세요.  / ㄱ감사합니다.</p>
+					<p>editor 에서 ul / ol 등의 태그로 문구 서식 추가할 경우 해당 태그에 display가 inline-block 일 때 발생하였음.</p>
+				</div>
+				<div class="guide-sec">
+					<h3 class="guide-stit">해결 방법</h3>
+					<p><strong>IE11 만의 독특한 버그로 해당 inline-block 요소를 block 로 변경 시 해결 됨.</strong></p>
+				</div>
+			</section>
+		</div>
+	</div>
+
+</body>
+</html>
