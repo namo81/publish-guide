@@ -1,3 +1,11 @@
+var clickEvt;
+try { // chrome / edge 용
+	clickEvt = new Event('click', { bubbles: true, cancelable: true });
+} catch (error) { // IE 용
+    clickEvt = document.createEvent('Event');
+    clickEvt.initEvent('click', true, true);
+}
+
 function getIndex( elm ){ 
     var c = elm.parentNode.children, i = 0;
     for(; i < c.length; i++ )
@@ -97,6 +105,11 @@ function guide_tblSet(tbl){
 					btn.classList.contains('open') ? btn.classList.remove('open') : btn.classList.add('open');
 				}
 			});
+
+			// 미사용 화면 리스트 닫기
+			if(btn.parentNode.parentNode.classList.contains('notuse')) {
+				btn.dispatchEvent(clickEvt);
+			}
 		});
 	}
 

@@ -37,12 +37,10 @@
 	<pre><code class="css ">/* layer-pop - v4.0 용*/
 .layer-pop,
 .layer { position:fixed; display:none; width:100%; height:100%; top:0; left:0; background:rgba(0,0,0,.8); overflow-x:hidden; overflow-y:auto; z-index:1000; }
-.layer > .inbox { display:flex; align-items:center; min-height:calc(100% - 60px); margin:30px; }
-.layer-cnt { position:relative; width:700px; margin:auto; padding:25px; background:#fff; box-sizing:border-box;}
+.layer > .inbox { display:flex; align-items:center; height:calc(100% - 60px); margin:30px; }
+.layer-cnt { position:relative; display:flex; flex-direction:column; width:700px; max-height:100%; margin:auto; padding:25px; background:#fff; box-sizing:border-box;}
 .layer-top { position:relative; height:50px; flex-basis:50px; flex-shrink:0; }
-.layer > .inbox.in-scroll { min-height:unset; height:100%; margin:0; }
-.in-scroll .layer-cnt { display:flex; flex-direction:column; max-height:calc(100% - 60px); }
-.in-scroll .layer-mid { flex:1 1 auto; overflow-y:auto; }
+.layer-mid { flex:1 1 auto; overflow-y:auto; }
 .layer.showOn { display:block; }
 </code></pre>
 				</div>
@@ -67,8 +65,8 @@ nlayer.showFunc('호출할 레이어 ID'); // 함수형 호출 - 대상 팝업 i
 	</code></pre>
 					<h4 class="guide-sstit">레이어팝업 컨텐츠</h4>
 					<p>디테일한 스타일은 css 로 설정</p>
-					<p>기본형 : 컨텐츠 중앙정렬 / 컨텐츠가 길 경우 화면 전체 scroll</p>
-					<p>내부스크롤형 : inbox 에 'in-scroll' 클래스 추가 시 'layer-mid' 내부 스크롤 생성</p>
+					<p>'layer-mid' 는 기본적으로 화면 최대사이즈 기준으로 내부 scroll 자동생성</p>
+					<p>내부 scroll 미사용 시 layer-mid 클래스 제거</p>
 					<p>닫기버튼 클래스 'close-layer' 사용</p>
 					<p>show 된 레이어가 여러개일 경우 - 모두 닫고자 할 때 close-layer 에 'all' 클래스 추가</p>
 	<pre><code class="html">&lt;div class="layer" id="layer2"&gt;

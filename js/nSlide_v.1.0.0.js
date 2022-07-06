@@ -1,34 +1,35 @@
 /*
     nSlide
-    2022-04-15 : v.1.0.0 Á¦ÀÛ start
+    2022-04-15 : v.1.0.0 ì œì‘ start
  */
 
 /* 
-    wrap : ÀüÃ¼ ¿µ¿ª - string / dom ¿ä¼Ò
-    container : ½ÇÁ¦ ¿òÁ÷ÀÌ´Â ¹è³Ê ¿µ¿ª - string
-    slidePos : ÇöÀç ¹è³Ê Ç¥±â ¿µ¿ª - string
-    posType : ÇöÀç ¹è³Ê Ç¥±â Å¸ÀÔ ('bullet' / 'number') ±âº»Àº bullet
-    autoplay : ÀÚµ¿ Àç»ı ¿©ºÎ boolean - ±âº»Àº false
-    contWidth : ¹è³Ê¿µ¿ª width
-    contHeight : ¹è³Ê¿µ¿ª height
+    wrap : ì „ì²´ ì˜ì—­ - string / dom ìš”ì†Œ
+    container : ì‹¤ì œ ì›€ì§ì´ëŠ” ë°°ë„ˆ ì˜ì—­ - string
+    slidePos : ë°°ë„ˆ ê°¯ìˆ˜ ë° í™œì„±í™” í‘œê¸° ì˜ì—­ - string
+    posType : ë°°ë„ˆ ê°¯ìˆ˜ ë° í™œì„±í™” í‘œê¸° íƒ€ì… ('bullet' / 'number') ê¸°ë³¸ì€ bullet
+    autoplay : ìë™ ì¬ìƒ ì—¬ë¶€ - 100 ì´í•˜ê±°ë‚˜ null ì¼ ê²½ìš° ìë™ì¬ìƒX / 100 ì´ìƒì¼ ê²½ìš° í•´ë‹¹ ì‹œê°„ë§ˆë‹¤ ìë™ì¬ìƒ
+    contWidth : ë°°ë„ˆì˜ì—­ width
+    contHeight : ë°°ë„ˆì˜ì—­ height
+    viewCount : í•œ í™”ë©´ì— ë³´ì—¬ì•¼ í•  ë°°ë„ˆ ê°¯ìˆ˜
 
-    ctrlBtn : ÀÌÀü/´ÙÀ½ ¹öÆ° »ç¿ë ¿©ºÎ boolean - ±âº»Àº true
-    ctrlBtnPrev : ÀÌÀü ¹öÆ°
-    ctrlBtnNext : ´ÙÀ½¹öÆ°
-    ctrlBtnPs : play / stop ¹öÆ°
+    ctrlBtn : ì´ì „/ë‹¤ìŒ ë²„íŠ¼ ì‚¬ìš© ì—¬ë¶€ boolean - ê¸°ë³¸ì€ true
+    ctrlBtnPrev : ì´ì „ ë²„íŠ¼
+    ctrlBtnNext : ë‹¤ìŒë²„íŠ¼
+    ctrlBtnPs : play / stop ë²„íŠ¼
 
-    activeInit : ±â´É ÃÊ±â ¼³Á¤ ½Ã Äİ¹éÇÔ¼ö
-    activeStart : ¹è³Ê ÀÌµ¿ ½ÃÀÛ ½Ã Äİ¹éÇÔ¼ö
-    activeEnd : ¹è³Ê ÀÌµ¿ ÈÄ Äİ¹éÇÔ¼ö
+    activeInit : ê¸°ëŠ¥ ì´ˆê¸° ì„¤ì • ì‹œ ì½œë°±í•¨ìˆ˜
+    activeStart : ë°°ë„ˆ ì´ë™ ì‹œì‘ ì‹œ ì½œë°±í•¨ìˆ˜
+    activeEnd : ë°°ë„ˆ ì´ë™ í›„ ì½œë°±í•¨ìˆ˜
  */
 
 function nSlide(option){
     var wrap        = typeof option.wrap === 'string' ? document.querySelector(option.wrap) : option.wrap,
+        mobile      = option.mobile ? option.mobile : false,
         container   = option.container ? wrap.querySelector(option.container) : wrap.querySelector('.slide-container'),
-        slidePos    = wrap.querySelector(option.slidePos),
+        slidePos    = option.slidePos ? wrap.querySelector(option.slidePos) : null,
         posType     = option.posType ? option.posType : 'bullet',
-        autoplay    = option.autoplay ? option.autoplay : false,
-        delay       = option.delay ? option.delay : 3000,
+        autoplay    = option.autoplay ? option.autoplay : null,
         loop        = option.loop ? option.loop : false,
         viewCount   = option.viewCount ? option.viewCount : 1,
         width       = option.width ? option.width : '100%',
@@ -42,29 +43,61 @@ function nSlide(option){
         activeEnd  	= option.activeEnd;
 
     var items       = wrap.querySelectorAll('.slide-item'),
-        itemLen     = items.length;
+        itemLen     = items.length,
+        allItems    = items;
 
-    var nowNum      = 0, // ÇöÀç È°¼ºÈ­ item index
-        wrapWidth   = wrap.offsetWidth,
-        contWidth   = 0; // container ³Êºñ
+    var nowNum      = 0, // í™œì„±í™” item index - dummy í¬í•¨ (ìœ„ì¹˜ ì¡°ì • ìš©)
+        itemNum     = 0, // í™œì„±í™” item index - dummy ì œì™¸ (item idx í˜¸ì¶œìš©)
+        targetX,         // ë°°ë„ˆ ì´ë™ ëª©í‘œ ìœ„ì¹˜
+        wrapWidth   = wrap.clientWidth,
+        itemWidth   = wrapWidth / viewCount,
+        wrapRect    = wrap.getBoundingClientRect(),
+        countGap    = itemWidth * viewCount,
+        contWidth   = 0; // container ë„ˆë¹„
+    
+    var autoSliding; // ìë™ë¡¤ë§ ë³€ìˆ˜
 
-    // item ¿¡ idx ¼Ó¼º Ãß°¡
+    var posItems, nowNumTx; // ë°°ë„ˆ ê°¯ìˆ˜ ë° í™œì„±í™” í‘œê¸° ê´€ë ¨ ë³€ìˆ˜
+
+    // í˜„ì¬ ìƒíƒœ ì €ì¥ìš© object ìƒì„± ë° ì„¤ì •
+    var slideArr   = new Object();
+    function objDataSet(){
+        slideArr.now = itemNum;
+        slideArr.wrapWidth = wrapWidth;
+    }
+    objDataSet();
+
+    // nowNum ë³€ê²½ ì‹œ ì‹¤í–‰
+    Object.defineProperty(slideArr, 'changeNum', {
+        set: function(val) {
+            this.now = val;
+            if(slidePos != null) setPos();
+        }
+    });
+
+    // item ì— idx ì†ì„± ì¶”ê°€
     function itemIdxSet(){
-        Array.prototype.forEach.call(items, function(item, idx){
+        items.forEach(function(item, idx){
             item.setAttribute('data-idx', idx);
         });
     }
 
-    // container / item ³Êºñ ¼³Á¤
+    // container / item ë„ˆë¹„ ì„¤ì •
     function widthInit(){
-        contWidth = wrapWidth * itemLen;
+        contWidth = itemWidth * allItems.length;
         container.style.width = contWidth + 'px';
-        Array.prototype.forEach.call(items, function(item){
-            item.style.width = wrapWidth + 'px';
+        loop == true ? countGap = itemWidth * viewCount : countGap = 0;
+        allItems.forEach(function(item){
+            item.style.width = itemWidth + 'px';
         });
+        targetX = (itemWidth * nowNum) + countGap;
+        container.style.transform = 'translate3d(-'+ targetX +'px, 0, 0)';
     }
 
+    // ë²„íŠ¼ ì„¤ì • ----------------------------------------------------------------------------------------------------
     var btnPrev, btnNext, btnPs;
+
+    // ì´ì „/ë‹¤ìŒ ë²„íŠ¼ ì„¤ì •
     function btnSet(){
         btnPrev = wrap.querySelector(ctrlBtnPrev),
         btnNext = wrap.querySelector(ctrlBtnNext);
@@ -75,63 +108,217 @@ function nSlide(option){
         } else {
             btnPrev.addEventListener('click', function(){ banMoveLoop('prev'); });
             btnNext.addEventListener('click', function(){ banMoveLoop('next'); });
+            btnPrev.addEventListener('mousedown', banMoveResetLast);
+            btnNext.addEventListener('mousedown', banMoveResetFirst);
         }
     }
-    
-    function createDummy(){
 
+    // ë°°ë„ˆ ìœ„ì¹˜ í‘œê¸° ì„¤ì • ----------------------------------------------------------------------------------------------------
+    function banPosSet(){
+        if(posType == 'bullet'){
+            var piHtml = '<ul>';
+            for(var p=0; p<itemLen; p++){
+                piHtml += '<li><span class="pos-item" data-num="'+p+'">'+ (p + 1) + 'ë²ˆì§¸ ë°°ë„ˆ' +'</span></li>';
+            }
+            piHtml += '</ul>';
+            slidePos.insertAdjacentHTML('afterbegin', piHtml);
+            posItems = slidePos.querySelectorAll('li');
+        } else {
+            var piHtml = '<p><span class="now">'+(nowNum + 1)+'</span> / <span>'+itemLen+'</span></p>';
+            slidePos.insertAdjacentHTML('afterbegin', piHtml);
+            nowNumTx = slidePos.querySelector('.now');
+        }
+    }
+    function setPos(){
+        if(posType == 'bullet'){
+            posItems.forEach(function(item){
+                item.classList.remove('on');
+            });
+            posItems[itemNum].classList.add('on');
+        } else nowNumTx.innerText = itemNum + 1;
+    }
+    if(slidePos != null) {
+        banPosSet();
+        setPos();
+    }
+    
+    // loop ì¼ ê²½ìš° ì•/ë’¤ dummy ìƒì„± ----------------------------------------------------------------------------------------------------
+    function createDummy(){
+        for(var s=0; s<viewCount; s++){
+           var cNode = items[s].cloneNode(true);
+           container.appendChild(cNode);
+        }
+        for(var e=itemLen - 1; e>itemLen - viewCount - 1; e--){
+            var cNode = items[e].cloneNode(true);
+            container.insertBefore(cNode, container.firstChild);
+        }
+        container.style.transform = 'translate3d(-'+ countGap + 'px, 0,0)';
+        allItems = wrap.querySelectorAll('.slide-item');
     }
 
-    // ÀÌÀü/´ÙÀ½ ¸ğ¼Ç ÇÔ¼ö - loop false
+    // ì´ì „/ë‹¤ìŒ ì›€ì§ì„ ê´€ë ¨ ----------------------------------------------------------------------------------------------------
+    // ì‹¤ì œ ëª¨ì…˜
+    function motionRun(){
+        container.style.transform = 'translate3d(-'+ targetX +'px, 0, 0)';
+        container.style.transitionDuration = '.5s';
+    }
+
+    // ì´ì „/ë‹¤ìŒ ëª¨ì…˜ í•¨ìˆ˜ - loop false
     function banMove(direc){
         if(direc == 'next') {
             if(nowNum < itemLen - 1) nowNum++;
+            else {
+                if(autoplay != null) clearInterval(autoSliding);
+            }
         } else {
             if(nowNum > 0) nowNum--;
         }
-        container.style.transform = 'translate(-'+ wrapWidth * nowNum +'px, 0)';
-        container.style['msTransform'] = 'translate(-'+ wrapWidth * nowNum +'px, 0)';
-        container.style.transitionDuration = '.5s';
-        container.style['transition'] = '.5s';
-        slideActiveChk();
+        targetX = (itemWidth * nowNum) + countGap;
+        motionRun();
     }
-    // ÀÌÀü/´ÙÀ½ ¸ğ¼Ç ÇÔ¼ö - loop true
+
+    // ì´ì „/ë‹¤ìŒ ëª¨ì…˜ í•¨ìˆ˜ - loop true
     function banMoveLoop(direc){
-        if(direc == 'next') {
-            if(nowNum < itemLen - 1) nowNum++;
-        } else {
-            if(nowNum > 0) nowNum--;
+        direc == 'next' ? nowNum < itemLen ? nowNum++ : nowNum = 1 : nowNum > -viewCount ? nowNum-- : nowNum = itemLen - viewCount - 1;       
+        targetX = (itemWidth * nowNum) + countGap;
+        motionRun();
+    }
+    // ë²„íŠ¼ mousedown ì‹œ ìœ„ì¹˜ ì´ˆê¸°í™” ì„¤ì • - loop true ì¼ ê²½ìš°
+    function banMoveResetFirst(){
+        if(nowNum == itemLen) {
+            container.style.transform = 'translate3d(-'+ countGap + 'px, 0,0)';
+            targetX = countGap;
         }
-        container.style.transform = 'translate(-'+ wrapWidth * nowNum +'px, 0)';
-        container.style.transitionDuration = '.5s';
-        slideActiveChk();
+    }
+    function banMoveResetLast(){
+        if(nowNum == -viewCount) {
+            container.style.transform = 'translate3d(-'+ (itemWidth * itemLen) + 'px, 0,0)';
+            targetX = itemWidth * itemLen;
+        }
+    }
+    
+    // ëª¨ì…˜ ì‹œì‘ ì´ë²¤íŠ¸
+    container.addEventListener('transitionstart', moveStartFunc);
+    function moveStartFunc(){
+        if(typeof activeStart === 'function') activeStart(itemNum, nowNum);
     }
 
-
-    // ¸ğ¼Ç Á¾·á ÀÌº¥Æ®
+    // ëª¨ì…˜ ì¢…ë£Œ ì´ë²¤íŠ¸
     container.addEventListener('transitionend', moveEndFunc);
     function moveEndFunc(){
-        if(typeof activeEnd === 'function') activeEnd(nowNum);
         container.style.transitionDuration = '0s';
+        slideActiveChk();
+        if(typeof activeEnd === 'function') activeEnd(itemNum, nowNum);
     }
 
-    // ÇöÀç È°¼ºÈ­ ¹è³Ê active Å¬·¡½º Á¦¾î
-    function slideActiveChk(){
-        Array.prototype.forEach.call(items, function(item, idx){
-            //idx == nowNum ? item.classList.add('active') : item.classList.remove('active');
-            idx == nowNum ? funcAddClass(item, 'active') : funcRemoveClass(item, 'active');
+    // ë°°ë„ˆì˜ì—­ drag ë° swiper ê´€ë ¨ ----------------------------------------------------------------------------------------------------
+    var touchSX, touchEX;
+    if(mobile) {
+        container.addEventListener('touchstart', function(e){
+            e.stopPropagation();
+            var touch = e.touches[0] || e.changedTouches[0];
+            touchSX = touch.pageX;
+    
+            if(loop == true) {
+                if(nowNum == itemLen) {
+                    banMoveResetFirst();
+                    nowNum = 0;
+                }
+                else if(nowNum == -viewCount) {
+                    banMoveResetLast();
+                    nowNum = itemLen - viewCount;
+                }
+            }
+            
+            container.onEvent('touchmove', function(e){
+                var touch = e.touches[0] || e.changedTouches[0],
+                    gapX = touchSX - touch.pageX;
+                container.style.transitionDuration = '0s';
+                container.style.transform = 'translate3d(-'+ (targetX + gapX) +'px, 0, 0)';
+            });
+        });
+    
+        container.addEventListener('touchend', function(e){
+            container.removeListeners('touchmove');
+            var touch = e.touches[0] || e.changedTouches[0];
+            touchEX = touch.pageX;
+            if(Math.abs(touchEX - touchSX) > 20) {
+                if((touchEX - touchSX) < 0) {
+                    loop == true ? banMoveLoop('next') : banMove('next');
+                } else {
+                    loop == true ? banMoveLoop('prev') : banMove('prev');
+                }
+            } 
+            motionRun();
+        });
+    } else {
+        container.addEventListener('mousedown', function(e){
+            e.preventDefault();
+            touchSX = e.layerX;
+    
+            if(loop == true) {
+                if(nowNum == itemLen) {
+                    banMoveResetFirst();
+                    nowNum = 0;
+                }
+                else if(nowNum == -viewCount) {
+                    banMoveResetLast();
+                    nowNum = itemLen - viewCount;
+                }
+            }
+            
+            container.onEvent('mousemove', function(e){
+                var gapX = touchSX - e.layerX;
+                container.style.transitionDuration = '0s';
+                container.style.transform = 'translate3d(-'+ (targetX + gapX) +'px, 0, 0)';
+            });
+        });
+    
+        container.addEventListener('mouseup', function(e){
+            container.removeListeners('moustmove');
+            touchEX = e.layerX;
+            if(Math.abs(touchEX - touchSX) > 20) {
+                if((touchEX - touchSX) < 0) {
+                    loop == true ? banMoveLoop('next') : banMove('next');
+                } else {
+                    loop == true ? banMoveLoop('prev') : banMove('prev');
+                }
+            } 
+            motionRun();
         });
     }
 
+    // í˜„ì¬ í™œì„±í™” ë°°ë„ˆ active í´ë˜ìŠ¤ ì œì–´
+    function slideActiveChk(){
+        allItems.forEach(function(item){
+            var thisRect = item.getBoundingClientRect();
+            console.log(thisRect, wrapRect);
+            if (thisRect.left >= wrapRect.left && thisRect.right <= wrapRect.right) {
+                item.classList.add('active');
+                itemNum = item.getAttribute('data-idx');
+                slideArr.changeNum = itemNum;
+            } else item.classList.remove('active');
+        });
+    }
+
+    // ë¸Œë¼ìš°ì € resize ëŒ€ì‘
     window.addEventListener('resize', resizeSet);
     function resizeSet(){
-        wrapWidth    = wrap.offsetWidth;
+        wrapWidth   = wrap.offsetWidth;
+        itemWidth   = wrapWidth / viewCount;
+        wrapRect    = wrap.getBoundingClientRect();
         widthInit();
     }
 
-    // ÃÊ±â ¼³Á¤
+    // ì´ˆê¸° ì„¤ì •
     itemIdxSet();
+    if(loop == true) createDummy();
     widthInit();
     if(ctrlBtn) btnSet();
-    if(loop == true) createDummy();
+
+    if(autoplay != null) {
+        autoSliding = setInterval(function(){
+            loop == true ? banMoveLoop('next') : banMove('next');
+        }, autoplay);
+    }
 }

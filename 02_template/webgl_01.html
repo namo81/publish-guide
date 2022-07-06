@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+	<meta charset="UTF-8" >
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="user-scalable=yes, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, width=device-width">
+	<meta name="author" content="seonamho - SK MNS" >
+	<meta name="description" content="">
+	<meta name="keywords" content="Site Template">
+	<meta property="og:type" content="website">
+	<meta property="og:title" content="Site Template">
+	<meta property="og:description" content="">
+	<meta property="og:image" content="">
+	<meta property="og:url" content="">
+	<link rel="shortcut icon" href="data:;base64,iVBORwOKGO=" />
+
+	<title>WebGL Test</title>
+
+	<!-- 가이드 관련 -->
+	<link rel="stylesheet" href="../guide/list-guide.css" media="screen, print" />
+	<link rel="stylesheet" href="../guide/vendor/railscasts.css">
+	<script src="../guide/vendor/highlight.pack.js"></script>
+
+	<!-- 프로젝트 관련 CSS 및 JS 파일 로드 -->
+	<link rel="stylesheet" href="/css/layout.css" media="screen, print" />
+	<script src="/js/jquery-3.2.1.min.js"></script>
+	
+</head>
+<body>
+<div id="work-list">
+	<div class="guide">
+
+		<section id="guide-basic">
+			<h2 class="guide-sec-tit">Flex</h2>
+			<div class="guide-sec">
+				<h3 class="guide-stit">Flex 기본</h3>
+				<p>block 타입의 다양한 배열 시 사용 (div, p 등)</p>
+				<div class="guide-show">
+				<!-- 코드 작성 -->
+					<div class="wegbl">
+						<canvas id="glcanvas" width="640" height="480"></canvas>
+					</div>
+				<!-- // 코드 작성 -->
+				</div>
+<pre><code class="html">
+</code></pre>
+			</div>
+		</section>
+	</div>
+	<a href="#work-list" class="guide-top">Top</a>	
+</div>
+
+<script>
+
+	var gl; 
+
+	function start() {
+		var canvas = document.getElementById("glcanvas");
+		gl = initWebGL(canvas);
+
+		if (gl) {
+			gl.clearColor(0.0, 0.0, 0.0, 1.0);                      // Set clear color to black, fully opaque
+			gl.enable(gl.DEPTH_TEST);                               // Enable depth testing
+			gl.depthFunc(gl.LEQUAL);                                // Near things obscure far things
+			gl.clear(gl.COLOR_BUFFER_BIT|gl.DEPTH_BUFFER_BIT);      // Clear the color as well as the depth buffer.
+		}
+	}
+
+	function initWebGL(canvas) {
+		gl = null;
+
+		try {
+			gl = canvas.getContext("webgl") || canvas.getContext("experimental-webgl");
+		}
+		catch(e) {}
+
+		if (!gl) {
+			alert("Unable to initialize WebGL. Your browser may not support it.");
+			gl = null;
+		}
+		return gl;
+	}
+
+	function getShader(gl, id) {
+		var shaderScript, theSource, currentChild, shader;
+
+		shaderScript = document.getElementById(id);
+
+		if (!shaderScript) {
+			return null;
+		}
+
+		theSource = "";
+		currentChild = shaderScript.firstChild;
+
+		while(currentChild) {
+			if (currentChild.nodeType == currentChild.TEXT_NODE) {
+				theSource += currentChild.textContent;
+			}
+
+			currentChild = currentChild.nextSibling;
+		}
+		if (shaderScript.type == "x-shader/x-fragment") {
+			shader = gl.createShader(gl.FRAGMENT_SHADER);
+		} else if (shaderScript.type == "x-shader/x-vertex") {
+			shader = gl.createShader(gl.VERTEX_SHADER);
+		} else {
+			// Unknown shader type
+			return null;
+		}
+		gl.shaderSource(shader, theSource);
+
+		// Compile the shader program
+		gl.compileShader(shader);
+
+		// See if it compiled successfully
+		if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) {
+			alert("An error occurred compiling the shaders: " + gl.getShaderInfoLog(shader));
+			return null;
+		}
+
+		return shader;
+	}
+
+	function initShaders() {
+		var fragmentShader = getShader(gl, "shader-fs");
+		var vertexShader = getShader(gl, "shader-vs");
+
+		// Create the shader program
+
+		shaderProgram = gl.createProgram();
+		gl.attachShader(shaderProgram, vertexShader);
+		gl.attachShader(shaderProgram, fragmentShader);
+		gl.linkProgram(shaderProgram);
+
+		// If creating the shader program failed, alert
+
+		if (!gl.getProgramParameter(shaderProgram, gl.LINK_STATUS)) {
+			alert("Unable to initialize the shader program.");
+		}
+
+		gl.useProgram(shaderProgram);
+
+		vertexPositionAttribute = gl.getAttribLocation(shaderProgram, "aVertexPosition");
+		gl.enableVertexAttribArray(vertexPositionAttribute);
+	}
+
+
+
+	window.onload = function(){
+		start();
+	}
+	
+</script>
+</body>
+</html>

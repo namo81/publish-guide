@@ -25,11 +25,17 @@
 	<!-- 프로젝트 관련 CSS 및 JS 파일 로드 -->
 	<link rel="stylesheet" href="/css/layout.css" media="screen, print" />
 	<style>
-		.slide-wrap { position:relative; width:100%; height:250px; overflow:hidden; }
+		.slide-wrap { position:relative; width:100%; overflow:hidden;}
 		.slide-wrap .btn-slide-ctrl { position:absolute; top:50%; width:30px; height:30px; margin-top:-15px; left:10px; z-index:1; }
 		.slide-wrap .btn-slide-ctrl.next { left:auto; right:10px; }
-		.slide-wrap .slide-container .slide-item { float:left; }
-		.slide-wrap .slide-pos { position:absolute; width:100%; height:30px; bottom:10px; z-index:1; }
+		.slide-wrap .slide-container { display:flex; }
+		.slide-wrap .slide-container .slide-item a, 
+		.slide-wrap .slide-container .slide-item button { display:block; }
+		.slide-wrap .slide-pos { position:absolute; width:100%; height:30px; bottom:0; z-index:1; }
+		.slide-wrap .slide-pos ul { display:flex; height:100%; justify-content:center; align-items:center;}
+		.slide-wrap .slide-pos li { display:inline-block; margin:0 5px; }
+		.slide-wrap .slide-pos .pos-item { display:block; width:8px; height:8px; text-indent:-9999px; border:1px solid #888; border-radius:5px; }
+		.slide-wrap .slide-pos li.on .pos-item { background-color:#888; }
 	</style>
 </head>
 <body>
@@ -42,11 +48,11 @@
 			<h2 class="guide-sec-tit">Slide 배너</h2>
 			<div class="guide-sec">
 				<h3 class="guide-stit">기본형</h3>
-				<div class="guide-show">
+				<div class="guide-show" style="position:static; padding:0; padding-top:30px; box-sizing:border-box;">
 					<div class="slide-wrap">
 						<button type="button" class="btn-slide-ctrl prev">이전</button>
 						<ul class="slide-container">
-							<li class="slide-item"><a href="#"><img src="../images/exImg01.jpg" alt=""></a></li>
+							<li class="slide-item" style="background-color:#eee;"><a href="#"><img src="../images/exImg01.jpg" alt=""></a></li>
 							<li class="slide-item"><a href="#"><img src="../images/exImg02.jpg" alt=""></a></li>
 							<li class="slide-item"><a href="#"><img src="../images/exImg03.jpg" alt=""></a></li>
 							<li class="slide-item"><a href="#"><img src="../images/exImg04.jpg" alt=""></a></li>
@@ -73,11 +79,16 @@
 
 <script>
 	hljs.initHighlightingOnLoad();
-
+	
 	var testSlide = new nSlide({
 		wrap : '.slide-wrap',
-		activeEnd : function(num){
-			console.log(num);
+		slidePos : '.slide-pos',
+		loop : true,
+		activeStart : function(num, num2){
+			console.log('start:' + num + num2)
+		},
+		activeEnd : function(num, num2){
+			console.log('end:' + num + num2);
 		}
 	});
 </script>

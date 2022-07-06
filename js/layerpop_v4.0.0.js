@@ -12,12 +12,11 @@ var clsLayer		= '.layer', 		// 레이어 팝업 공통 클래스
 
 var nlayer = {
 	// 모 페이지 설정 함수 - tab 키 요소 제어 및 화면 높이 설정
-	pageSet : function(set) {
+	pageSet : function() {
 		var tabEle		= document.querySelectorAll('a, button, input'),
-			tabEleLen	= tabEle.length,
 			bodyStyle	= document.querySelector('body').style;
 
-		Array.prototype.forEach.call(tabEleLen, function(ele){
+		tabEle.forEach(function(ele){
 			if(!ele.closest(clsLayer)) ele.setAttribute('tabindex','-1');
 		});
 		
@@ -27,10 +26,9 @@ var nlayer = {
 	// 모 페이지 설정 해제
 	pageUnset : function(){
 		var tabEle		= document.querySelectorAll('a, button, input'),
-			tabEleLen	= tabEle.length,
 			bodyStyle	= document.querySelector('body').style;
 		
-		Array.prototype.forEach.call(tabEleLen, function(ele){
+		tabEle.forEach(function(ele){
 			if(!ele.closest(clsLayer)) ele.removeAttribute('tabindex');
 		});
 
@@ -55,8 +53,8 @@ var nlayer = {
 		var tg_layers 	= document.querySelectorAll(clsLayer),
 			openBtns = document.querySelectorAll('.' + clsOn);
 
-		Array.prototype.forEach.call(tg_layers, function(tg){ nlayer.layerHide(tg); });
-		Array.prototype.forEach.call(openBtns, function(obtn){ obtn.classList.remove(clsOn); });
+		tg_layers.forEach(function(tg){ nlayer.layerHide(tg); });
+		openBtns.forEach(function(obtn){ obtn.classList.remove(clsOn); });
 	},	
 
 	// 레이어 보기
@@ -75,7 +73,7 @@ var nlayer = {
 		var tg_layer 	= typeof tg === 'string' ? document.getElementById(tg) : tg,
 			btnCloses 	= tg_layer.querySelectorAll(clsCloseBtn);
 
-		Array.prototype.forEach.call(btnCloses, function(cbtn){
+		btnCloses.forEach(function(cbtn){
 			if(cbtn.classList.contains('all')) {
 				cbtn.addEventListener('click', nlayer.layerHideAll, { once: onceChk });
 				return;
@@ -89,7 +87,7 @@ var nlayer = {
 	// 버튼으로 레이어 팝업 열기
 	showBtn : function(e){
 		var btns = document.querySelectorAll(e);
-		Array.prototype.forEach.call(btns, function(btn){
+		btns.forEach(function(btn){
 			var tg 		= document.getElementById(btn.getAttribute('data-target'));
 
 			btn.addEventListener('click', function(){
