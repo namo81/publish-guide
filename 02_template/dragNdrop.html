@@ -33,50 +33,13 @@
 
 	<!-- calendar 관련 설정 -->
 	<link rel="stylesheet" href="../css/nCalendar.css" media="screen, print" />
-	<script src="../js/nDragnDrop_v1.0.0.js"></script>
-	<script>
-		$(function(){
-			hljs.initHighlightingOnLoad(); 
-			
-			var dragTest = new nDragnDrop({
-				wrap 		: '.drag-test1',
-				objWrap		: '.drag-list',
-				obj  		: 'li',
-				func 		: 'sequence',
-				active      : function(tgItem){
-					console.log(tgItem);
-				}
-			});
-
-			var dragTest2 = new nDragnDrop({
-				wrap 		: '.drag-test2',
-				objWrap		: '.drag-list',
-				obj  		: 'li',
-				func 		: 'dnd',
-				area 		: '.drop-area',
-				active      : function(tgItem, area){
-					console.log(tgItem, area);
-					/*if(area) {
-						var clo = tgItem.cloneNode(true),
-							list;
-						if(!area.querySelector('ul')) {
-							area.insertAdjacentHTML('beforeend','<ul></ul>');
-							list = area.querySelector('ul');
-						} else list = area.querySelector('ul');
-						list.insertBefore(clo, null);
-					}*/
-				}
-			});
-
-		});
-	</script>
 	<style type="text/css">
 		.drag-list { display:block; width:300px; }
 		.drag-list li { position:relative; display:block; width:100%; padding:5px; border:1px solid #aaa; box-sizing:border-box; -webkit-user-select:none; user-select:none; -ms-user-select:none; background:#fff; opacity:1; transition:opacity .3s; }
 		.drag-list li:nth-child(2) { padding:20px 5px; }
 		.drag-list li + li { margin-top:5px; }
 		.drag-list li.over { background-color:#eee; }
-		.drag-list li.ghost { opacity:.2;  }
+		.drag-list li.ghost { opacity:.2; }
 		.drag-list li .list-title { display:block; }
 		.drag-list li.motion:not(.ghost) { animation:dragMotion .5s 1; }
 		.drag-list li .drag-item { position:absolute; top:0; right:0; width:50px; height:100%; background:#eee; }
@@ -286,5 +249,40 @@ var 이름 = new nDragnDrop({
 	</div>
 	<a href="#work-list" class="guide-top">Top</a>	
 </div>
+
+<script src="../js/nDragnDrop_v1.0.0.js"></script>
+<script>
+	hljs.initHighlightingOnLoad(); 
+	
+	var dragTest = new nDragnDrop({
+		wrap 		: '.drag-test1',
+		objWrap		: '.drag-list',
+		obj  		: 'li',
+		func 		: 'sequence',
+		active      : function(tgItem){
+			console.log(tgItem);
+		}
+	});
+
+	var dragTest2 = new nDragnDrop({
+		wrap 		: '.drag-test2',
+		objWrap		: '.drag-list',
+		obj  		: 'li',
+		func 		: 'dnd',
+		area 		: '.drop-area',
+		active      : function(tgItem, area){
+			console.log(tgItem, area);
+			/*if(area) {
+				var clo = tgItem.cloneNode(true),
+					list;
+				if(!area.querySelector('ul')) {
+					area.insertAdjacentHTML('beforeend','<ul></ul>');
+					list = area.querySelector('ul');
+				} else list = area.querySelector('ul');
+				list.insertBefore(clo, null);
+			}*/
+		}
+	});
+</script>
 </body>
 </html>

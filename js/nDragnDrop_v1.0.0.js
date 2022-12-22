@@ -181,6 +181,10 @@ function nDragnDrop(option){
 
 		wrap.scrollTop = wrapScrollT; // wrap 에 scroll 이 있을 경우, 현재의 scroll 값 유지용
 		wrap.scrollLeft = wrapScrollL; // wrap 에 scroll 이 있을 경우, 현재의 scroll 값 유지용
+		
+		// 드래그 on 상태에서 휠로 scroll 이동 시 document 의 현재 scroll값 다시 계산
+		docScrollL = document.documentElement.scrollLeft;
+		docScrollT = document.documentElement.scrollTop;
 
 		mouseEX = e.pageX - docScrollL,
 		mouseEY = e.pageY - docScrollT;

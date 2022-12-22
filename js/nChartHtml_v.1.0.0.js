@@ -10,7 +10,7 @@ direction   : vertical(세로막대) = 기본값 / horison(가로막대)
 labels      : 데이터 구분 문구
 dataset     : 차트 데이터
     name        : 데이터명
-    data        : 실제 데이터 값
+    data        : 실제 데이터 배열
     color       : 색상값
 chart       : area 내 차트 영역
     width       : 너비 설정(미 설정 시 100%)

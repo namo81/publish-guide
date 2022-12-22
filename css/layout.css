@@ -156,6 +156,15 @@ input::-ms-clear {display:none; width:0; height:0;}
 .inp-set.address .post-num { overflow:hidden; }
 .inp-set.address .post-num > span { float:left; width:120px; margin-right:5px; }
 
+/* checkbox / radio - IE제외 */
+input.radio { position:relative; display:inline-block; width:18px; height:18px; border:1px solid #bbb; border-radius:50%; }
+input.radio:disabled { opacity:.5; }
+input.radio::after { content:''; position:absolute; width:10px; height:10px; top:50%; left:50%; margin:-5px 0 0 -5px; background-color:transparent; border-radius:50%; transition:background-color .2s; }
+input.radio:checked::after { background-color:#f54615; }
+
+input.checkbox { position:relative; display:inline-block; width:18px; height:18px; border:1px solid #bbb; border-radius:2px; }
+input.checkbox::after { content:''; position:absolute; width:8px; height:4px; top:3px; left:3px; border-left:2px solid transparent; border-bottom:2px solid transparent; transition:border-color .2s; transform:rotate(-45deg);}
+input.checkbox:checked::after { border-color:#f54615; }
 
 /* checkbox / radio 디자인 적용 - 기본형,  IE9 이상 적용 : 스크립트 사용 X */
 .inp-check, .inp-radio { position:relative; display:inline-block; overflow:hidden; min-height:18px; vertical-align:middle; }
@@ -178,7 +187,10 @@ input::-ms-clear {display:none; width:0; height:0;}
 
 .inp-check.non-tx label, .inp-radio.non-tx label { width:18px; padding-left:0; text-indent:-10000px; }*/
 
-/* select 디자인 적용 - 미사용시 주석 처리 */
+/* select 디자인 적용 - IE제외 */
+select { -webkit-appearance:none; appearance:none; display:inline-block; padding:0 9px; width:100%; height:34px; border:1px solid #aaa; border-radius:4px; text-align:left; background:#fff url(/images/bg_select.png) no-repeat right 50%; }
+
+/* select 디자인 적용 + js (IE대응) - 미사용시 주석 처리 */
 .inp-select { position:relative; height:34px; z-index:100; } /* 너비 및 높이는 직접 설정 */
 .inp-select > select { display:none; }
 .inp-select .btn-select { display:block; padding:0 9px; width:100%; height:100%; border:1px solid #aaa; border-radius:4px; text-align:left; background:#fff url(/images/bg_select.png) no-repeat right 50%; }
@@ -187,6 +199,7 @@ input::-ms-clear {display:none; width:0; height:0;}
 .inp-select.on .select-list { display:block; }
 .inp-select .select-list li.hidden { display:none; }
 .inp-select .select-list li button { display:block; width:100%; padding:6px 10px; color:#666; text-align:left; }
+.inp-select .select-list li button:disabled { opacity:.5; }
 
 .inp-select.double-line .select-list { width:200%; }
 .inp-select.double-line li { float:left; width:50%; }

@@ -126,6 +126,12 @@ function getIndex( elm ){
 }
 // ex : getIndex(object)
 
+// dom요소 style값 가져오기(타켓요소, 가져올 style, 가상요소) - 가상요소는 없을 경우 무시 가능
+function getStyle(target, value, pseudo){
+	return window.getComputedStyle(target, pseudo).getPropertyValue(value);	
+}
+// ex : getStyle(dom요소, 'position', ':after');
+
 // html node 복사 - IE 대응용
 function cloneNode(node) {
     var clone = node.nodeType == 3 ? document.createTextNode(node.nodeValue) : node.cloneNode(false);

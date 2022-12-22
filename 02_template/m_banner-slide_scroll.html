@@ -28,9 +28,12 @@
 		.slide-wrap { position:relative; width:100%; overflow:hidden;}
 		.slide-wrap .btn-slide-ctrl { position:absolute; top:50%; width:30px; height:30px; margin-top:-15px; left:10px; z-index:1; }
 		.slide-wrap .btn-slide-ctrl.next { left:auto; right:10px; }
-		.slide-wrap .slide-container { display:flex; }
-		.slide-wrap .slide-container .slide-item a, 
-		.slide-wrap .slide-container .slide-item button { display:inline-block; }
+		.slide-wrap .slide-container { overflow-x:auto; overflow-y:hidden; }
+		.slide-wrap .slide-container::-webkit-scrollbar { display:none; }
+		.slide-wrap .slide-area { display:flex; }
+		.slide-wrap .slide-area .slide-item a, 
+		.slide-wrap .slide-area .slide-item button { display:block; }
+		.slide-wrap .slide-area a > img { width:250px; }
 		.slide-wrap .slide-pos { position:absolute; width:100%; height:30px; bottom:0; z-index:1; }
 		.slide-wrap .slide-pos ul { display:flex; height:100%; justify-content:center; align-items:center;}
 		.slide-wrap .slide-pos li { display:inline-block; margin:0 5px; }
@@ -39,7 +42,7 @@
 	</style>
 </head>
 <body>
-<div id="work-list">
+<div id="work-list" class="mobile">
 	<div class="guide">
 		
 
@@ -48,19 +51,18 @@
 			<h2 class="guide-sec-tit">Slide 배너</h2>
 			<div class="guide-sec">
 				<h3 class="guide-stit">기본형</h3>
-				<div class="guide-show" style="position:static; padding:0; padding-top:30px; box-sizing:border-box;">
+				<div class="guide-show">
 					<div class="slide-wrap">
 						<button type="button" class="btn-slide-ctrl prev">이전</button>
-						<ul class="slide-container">
-							<li class="slide-item" style="background-color:#eee;">
-								<a href="#"><img src="../images/exImg01.jpg" alt=""></a>
-								<a href="#"><img src="../images/exImg03.jpg" alt=""></a>
-							</li>
-							<li class="slide-item"><a href="#"><img src="../images/exImg02.jpg" alt=""></a></li>
-							<li class="slide-item"><a href="#"><img src="../images/exImg03.jpg" alt=""></a></li>
-							<li class="slide-item"><a href="#"><img src="../images/exImg04.jpg" alt=""></a></li>
-							<li class="slide-item"><a href="#"><img src="../images/exImg05.jpg" alt=""></a></li>
-						</ul>
+						<div class="slide-container">
+							<ul class="slide-area">
+								<li class="slide-item" style="background-color:#eee;"><a href="#"><img src="../images/exImg01.jpg" alt=""></a></li>
+								<li class="slide-item"><a href="#"><img src="../images/exImg02.jpg" alt=""></a></li>
+								<li class="slide-item"><a href="#"><img src="../images/exImg03.jpg" alt=""></a></li>
+								<li class="slide-item"><a href="#"><img src="../images/exImg04.jpg" alt=""></a></li>
+								<li class="slide-item"><a href="#"><img src="../images/exImg05.jpg" alt=""></a></li>
+							</ul>
+						</div>
 						<div class="slide-pos"></div>
 						<button type="button" class="btn-slide-ctrl next">다음</button>
 					</div>
@@ -78,19 +80,16 @@
 
 <script src="/js/common.js"></script>
 <!-- nSlide js -->
-<script src="/js/nSlide_v.1.0.0.js"></script>
+<script src="/js/nSlideScroll_v.1.0.0.js"></script>
 
 <script>
 	hljs.initHighlightingOnLoad();
 	
-	var testSlide = new nSlide({
+	var testSlide = new nSlideScroll({
 		wrap : '.slide-wrap',
 		slidePos : '.slide-pos',
-		mobile : true,
-		loop : true,
-		width : 0.8,
 		activeStart : function(num, num2){
-			console.log('start:' + num + num2);
+			console.log('start:' + num + num2)
 		},
 		activeEnd : function(num, num2){
 			console.log('end:' + num + num2);

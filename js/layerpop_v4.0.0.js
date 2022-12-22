@@ -85,8 +85,8 @@ var nlayer = {
 	},
 
 	// 버튼으로 레이어 팝업 열기
-	showBtn : function(e){
-		var btns = document.querySelectorAll(e);
+	showBtn : function(cls){
+		var btns = document.querySelectorAll(cls);
 		btns.forEach(function(btn){
 			var tg 		= document.getElementById(btn.getAttribute('data-target'));
 
@@ -99,9 +99,9 @@ var nlayer = {
 	},
 
 	// 함수 실행으로 레이어 팝업 열기
-	showFunc : function(e){
-		nlayer.layerShow(e);
-		nlayer.closeBtnSet(e, true);
+	showFunc : function(cls){
+		nlayer.layerShow(cls);
+		nlayer.closeBtnSet(cls, true);
 	}
 }
 

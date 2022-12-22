@@ -32,8 +32,8 @@ function nSlide(option){
         autoplay    = option.autoplay ? option.autoplay : null,
         loop        = option.loop ? option.loop : false,
         viewCount   = option.viewCount ? option.viewCount : 1,
-        width       = option.width ? option.width : '100%',
-        height      = option.height ? option.height : '100%',
+        width       = option.width ? option.width : 1,
+        height      = option.height ? option.height : 1,
         ctrlBtn     = option.ctrlBtn ? option.ctrlBtn : true,
         ctrlBtnPrev = option.ctrlBtnPrev ? option.ctrlBtnPrev : '.btn-slide-ctrl.prev',
         ctrlBtnNext = option.ctrlBtnNext ? option.ctrlBtnNext : '.btn-slide-ctrl.next',
@@ -50,15 +50,16 @@ function nSlide(option){
         itemNum     = 0, // 활성화 item index - dummy 제외 (item idx 호출용)
         targetX,         // 배너 이동 목표 위치
         wrapWidth   = wrap.clientWidth,
-        itemWidth   = wrapWidth / viewCount,
+        wrapOffLeft = wrap.offsetLeft,
+        itemWidth   = Math.floor((wrapWidth * width) / viewCount),
         wrapRect    = wrap.getBoundingClientRect(),
-        countGap    = itemWidth * viewCount,
+        countGap    = width < 1 ? itemWidth * (viewCount + 1) : itemWidth * viewCount,
         contWidth   = 0; // container 너비
     
     var autoSliding; // 자동롤링 변수
 
     var posItems, nowNumTx; // 배너 갯수 및 활성화 표기 관련 변수
-
+    
     // 현재 상태 저장용 object 생성 및 설정
     var slideArr   = new Object();
     function objDataSet(){
@@ -86,7 +87,9 @@ function nSlide(option){
     function widthInit(){
         contWidth = itemWidth * allItems.length;
         container.style.width = contWidth + 'px';
-        loop == true ? countGap = itemWidth * viewCount : countGap = 0;
+        if(loop == true) {
+            countGap = width < 1 ? itemWidth * (viewCount + 1) : itemWidth * viewCount;
+        } else countGap = 0;
         allItems.forEach(function(item){
             item.style.width = itemWidth + 'px';
         });
@@ -144,11 +147,12 @@ function nSlide(option){
     
     // loop 일 경우 앞/뒤 dummy 생성 ----------------------------------------------------------------------------------------------------
     function createDummy(){
-        for(var s=0; s<viewCount; s++){
+        var addNum = width < 1 ? viewCount + 1 : viewCount; // width가 1 이하여서 이전,다음 배너가 보일 경우 추가 dummy 필요
+        for(var s=0; s<addNum; s++){
            var cNode = items[s].cloneNode(true);
            container.appendChild(cNode);
         }
-        for(var e=itemLen - 1; e>itemLen - viewCount - 1; e--){
+        for(var e=itemLen - 1; e>itemLen - addNum - 1; e--){
             var cNode = items[e].cloneNode(true);
             container.insertBefore(cNode, container.firstChild);
         }
@@ -179,7 +183,8 @@ function nSlide(option){
 
     // 이전/다음 모션 함수 - loop true
     function banMoveLoop(direc){
-        direc == 'next' ? nowNum < itemLen ? nowNum++ : nowNum = 1 : nowNum > -viewCount ? nowNum-- : nowNum = itemLen - viewCount - 1;       
+        if(direc == 'next') nowNum < itemLen ? nowNum++ : nowNum = 1;
+        else nowNum > -viewCount ? nowNum-- : nowNum = itemLen - viewCount - 1;   
         targetX = (itemWidth * nowNum) + countGap;
         motionRun();
     }
@@ -192,8 +197,8 @@ function nSlide(option){
     }
     function banMoveResetLast(){
         if(nowNum == -viewCount) {
-            container.style.transform = 'translate3d(-'+ (itemWidth * itemLen) + 'px, 0,0)';
-            targetX = itemWidth * itemLen;
+            container.style.transform = 'translate3d(-'+ (contWidth - countGap - itemWidth) + 'px, 0,0)';
+            targetX = contWidth - countGap - itemWidth;
         }
     }
     
@@ -249,7 +254,6 @@ function nSlide(option){
                     loop == true ? banMoveLoop('prev') : banMove('prev');
                 }
             } 
-            motionRun();
         });
     } else {
         container.addEventListener('mousedown', function(e){
@@ -284,7 +288,6 @@ function nSlide(option){
                     loop == true ? banMoveLoop('prev') : banMove('prev');
                 }
             } 
-            motionRun();
         });
     }
 
@@ -292,8 +295,7 @@ function nSlide(option){
     function slideActiveChk(){
         allItems.forEach(function(item){
             var thisRect = item.getBoundingClientRect();
-            console.log(thisRect, wrapRect);
-            if (thisRect.left >= wrapRect.left && thisRect.right <= wrapRect.right) {
+            if (thisRect.left >= wrapRect.left && thisRect.right <= Math.ceil((wrapRect.right / viewCount) + wrapOffLeft)) {
                 item.classList.add('active');
                 itemNum = item.getAttribute('data-idx');
                 slideArr.changeNum = itemNum;
@@ -305,7 +307,7 @@ function nSlide(option){
     window.addEventListener('resize', resizeSet);
     function resizeSet(){
         wrapWidth   = wrap.offsetWidth;
-        itemWidth   = wrapWidth / viewCount;
+        itemWidth   = Math.floor((wrapWidth * width) / viewCount);
         wrapRect    = wrap.getBoundingClientRect();
         widthInit();
     }
@@ -320,5 +322,11 @@ function nSlide(option){
         autoSliding = setInterval(function(){
             loop == true ? banMoveLoop('next') : banMove('next');
         }, autoplay);
+    }
+
+    // 외부 호출 함수
+    this.goPos = function(num){
+        targetX = (itemWidth * num) + countGap;
+        motionRun();
     }
 }

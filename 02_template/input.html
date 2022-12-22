@@ -72,8 +72,16 @@ nText('.inp-label');
 			</div>
 
 			<div class="guide-sec">
-				<h3 class="guide-stit">radio 버튼</h3>
-				<h4 class="guide-sstit">일반형 (radio + label)</h3>
+				<h3 class="guide-stit">radio 버튼</h3>				
+				<h4 class="guide-sstit">일반형</h3>
+					<div class="guide-show">
+						<input type="radio" name="radio-inps" id="" class="radio">
+						<input type="radio" name="radio-inps" id="" class="radio">
+					</div>
+<pre><code class="html">&lt;input type="radio" name="radio-inps" id="" class="radio"&gt;
+&lt;input type="radio" name="radio-inps" id="" class="radio"&gt;
+</code></pre>
+				<h4 class="guide-sstit">IE대응 (radio + label)</h3>
 				<p>label 의 for 값과 input radio 의 id 값을 일치 시켜주어야 함.</p>
 				<p>기본적으로 연속 2개를 사용할 경우 2번째 부터 margin-left:15px 가 자동으로 적용</p>
 				<p>.box 의 위치에 따라 checkbox 아이콘 위치 이동 // radio 만 보여야 할 경우 .box 안에 텍스트 입력</p>
@@ -108,12 +116,19 @@ nText('.inp-label');
 			</div>
 
 			<div class="guide-sec">
-				<h3 class="guide-stit">checkbox 버튼</h3>
-				<h4 class="guide-sstit">일반형 (checkbox + label)</h3>
+				<h3 class="guide-stit">checkbox</h3>
+				<h4 class="guide-sstit">일반형</h3>
+					<div class="guide-show">
+						<input type="checkbox" name="" id="" class="checkbox">
+					</div>
+<pre><code class="html">&lt;input type="checkbox" name="" id="" class="checkbox"&gt;
+</code></pre>
+				<h4 class="guide-sstit">IE대응 (radio + label)</h3>
 				<p>label 의 for 값과 input radio 의 id 값을 일치 시켜주어야 함.</p>
 				<p>기본적으로 연속 2개를 사용할 경우 2번째 부터 margin-left:15px 가 자동으로 적용</p>
 				<p>.box 의 위치에 따라 checkbox 아이콘 위치 이동</p>
 				<p>가장 외곽 div 의 min-height 는 checkbox 아이콘 사이즈보다 2px 크게 설정</p>
+				<p>checkbox 만 보여야 할 경우 .box 안에 텍스트 입력</p>
 				<div class="guide-show">
 					<div class="inp-check">
 						<input type="checkbox" name="" id="check1" checked>
@@ -122,6 +137,10 @@ nText('.inp-label');
 					<div class="inp-check">
 						<input type="checkbox" name="" id="check1-1">
 						<label for="check1-1">체크박스 <span class="box"></span></label>
+					</div>
+					<div class="inp-check">
+						<input type="checkbox" name="" id="check2">
+						<label for="check2"><span class="box">체크박스</span></label>
 					</div>
 				</div>
 <pre><code class="html">&lt;div class="inp-check"&gt;
@@ -132,20 +151,12 @@ nText('.inp-label');
 	&lt;input type="checkbox" name="" id="check1-1"&gt;
 	&lt;label for="check1-1"&gt;체크박스 &lt;span class="box"&gt;&lt;/span&gt;&lt;/label&gt;
 &lt;/div&gt;
-</code></pre>
-				<h4 class="guide-sstit">단독형 (checkbox)</h3>
-				<p>checkbox 만 보여야 할 경우 .box 안에 텍스트 입력</p>
-				<div class="guide-show">
-					<div class="inp-check">
-						<input type="checkbox" name="" id="check2">
-						<label for="check2"><span class="box">체크박스</span></label>
-					</div>
-				</div>
-<pre><code class="html">&lt;div class="inp-check"&gt;
+&lt;div class="inp-check"&gt;
 	&lt;input type="checkbox" name="" id="check2"&gt;
 	&lt;label for="check2"&gt;&lt;span class="box"&gt;체크박스&lt;/span&gt;&lt;/label&gt;
 &lt;/div&gt;
 </code></pre>
+				
 			</div>
 
 			<!-- 
@@ -186,6 +197,24 @@ nText('.inp-label');
 
 			<div class="guide-sec">
 				<h3 class="guide-stit">Select</h3>
+				<h4 class="guide-sstit">기본</h4>
+				<p>일반 select</p>
+				<div class="guide-show">
+					<select name="" title="">
+						<option value="direct">직접 선택</option>
+						<option value="nate" disabled>nate.com</option>
+						<option value="daum">daum.net</option>
+					</select>
+				</div>
+<pre><code class="html">&lt;select name="" title=""&gt;
+	&lt;option value=""&gt;직접 선택&lt;/option&gt;
+	&lt;option value=""&gt;nate.com&lt;/option&gt;
+	&lt;option value=""&gt;daum.net&lt;/option&gt;
+&lt;/select&gt;
+</code></pre>
+				<h4 class="guide-sstit">dropdown 방식</h4>
+				<p>js 적용 버전</p>
+				<p>IE대응 / option 영역까지 디자인을 적용하여야 할 때 사용</p>
 				<p>width 는 100%. 특정 사이즈로 사용할 경우 width 값 설정 필요.</p>
 				<div class="guide-show">
 					<div class="inp-select">
