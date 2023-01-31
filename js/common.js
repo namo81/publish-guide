@@ -132,6 +132,36 @@ function getStyle(target, value, pseudo){
 }
 // ex : getStyle(dom요소, 'position', ':after');
 
+// padding, margin 값을 분류하여 top / right / bottom / left 의 object로 반환
+function getStyleArr(val){
+	var regex 		= /[^0-9]/g,
+		valArr 		= val.split(' '),
+		styleArr 	= new Object();
+	valArr.forEach(function(val, idx){
+		valArr[idx] = Number(val.replace(regex, ''));
+	});
+	styleArr.top = valArr[0];
+	if(valArr.length == 1) {
+		styleArr.right 	= valArr[0];
+		styleArr.bottom = valArr[0];
+		styleArr.left 	= valArr[0];
+	} else if(valArr.length == 2){
+		styleArr.right 	= valArr[1];
+		styleArr.bottom = valArr[0];
+		styleArr.left 	= valArr[1];
+	} else if(valArr.length == 3){
+		styleArr.right 	= valArr[1];
+		styleArr.bottom = valArr[2];
+		styleArr.left 	= valArr[1];
+	} else {
+		styleArr.right 	= valArr[1];
+		styleArr.bottom = valArr[2];
+		styleArr.left 	= valArr[3];
+	}
+	return styleArr;
+}
+// ex : getStyleArr('20px') / getStyleArr('20px 20px') ...
+
 // html node 복사 - IE 대응용
 function cloneNode(node) {
     var clone = node.nodeType == 3 ? document.createTextNode(node.nodeValue) : node.cloneNode(false);
@@ -415,62 +445,28 @@ function animateScroll(scrollObj, targetVal, duration, direction, gap){
 // ex : animateScroll(스크롤될 영역, 목표 스크롤값, 애니메이션 시간, 방향, 목표 스크롤값에 적용된 gap);
 
 /* ease func */
-function easeInSine(x) {
-	return 1 - Math.cos((x * Math.PI) / 2);
-}
-function easeOutSine(x) {
-	return Math.sin((x * Math.PI) / 2);
-}
-function easeInOutSine(x) {
-	return -(Math.cos(Math.PI * x) - 1) / 2;
-}
+function easeInSine(x) { return 1 - Math.cos((x * Math.PI) / 2); }
+function easeOutSine(x) { return Math.sin((x * Math.PI) / 2); }
+function easeInOutSine(x) {	return -(Math.cos(Math.PI * x) - 1) / 2; }
 
-function easeInQuad(x) {
-	return x * x;
-}
-function easeOutQuad(x) {
-	return 1 - (1 - x) * (1 - x);
-}
-function easeInOutQuad(x){
-	return x < 0.5 ? 2 * x * x : 1 - Math.pow(-2 * x + 2, 2) / 2;
-}
+function easeInQuad(x) { return x * x; }
+function easeOutQuad(x) { return 1 - (1 - x) * (1 - x); }
+function easeInOutQuad(x){ return x < 0.5 ? 2 * x * x : 1 - Math.pow(-2 * x + 2, 2) / 2; }
 
-function easeInCubic(x) {
-	return x * x * x;
-}
-function easeOutCubic(x) {
-	return 1 - Math.pow(1 - x, 3);
-}
-function easeInOutCubic(x) {
-	return x < 0.5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2;
-}
+function easeInCubic(x) { return x * x * x; }
+function easeOutCubic(x) { return 1 - Math.pow(1 - x, 3); }
+function easeInOutCubic(x) { return x < 0.5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2; }
 
-function easeInQuart(x) {
-	return x * x * x * x;
-}
-function easeOutQuart(x) {
-	return 1 - Math.pow(1 - x, 4);
-}
-function easeInOutQuart(x) {
-	return x < 0.5 ? 8 * x * x * x * x : 1 - Math.pow(-2 * x + 2, 4) / 2;
-}
+function easeInQuart(x) { return x * x * x * x; }
+function easeOutQuart(x) { return 1 - Math.pow(1 - x, 4); }
+function easeInOutQuart(x) { return x < 0.5 ? 8 * x * x * x * x : 1 - Math.pow(-2 * x + 2, 4) / 2; }
 
-function easeInQuint(x) {
-	return x * x * x * x * x;
-}
-function easeOutQuint(x) {
-	return 1 - Math.pow(1 - x, 5);
-}
-function easeInOutQuint(x) {
-	return x < 0.5 ? 16 * x * x * x * x * x : 1 - Math.pow(-2 * x + 2, 5) / 2;
-}
+function easeInQuint(x) { return x * x * x * x * x; }
+function easeOutQuint(x) { return 1 - Math.pow(1 - x, 5); }
+function easeInOutQuint(x) { return x < 0.5 ? 16 * x * x * x * x * x : 1 - Math.pow(-2 * x + 2, 5) / 2; }
 
-function easeInExpo(x) {
-	return x === 0 ? 0 : Math.pow(2, 10 * x - 10);
-}
-function easeOutExpo(x) {
-	return x === 1 ? 1 : 1 - Math.pow(2, -10 * x);
-}
+function easeInExpo(x) { return x === 0 ? 0 : Math.pow(2, 10 * x - 10); }
+function easeOutExpo(x) { return x === 1 ? 1 : 1 - Math.pow(2, -10 * x); }
 function easeInOutExpo(x) {
 	return x === 0
 		? 0
@@ -480,12 +476,8 @@ function easeInOutExpo(x) {
 		: (2 - Math.pow(2, -20 * x + 10)) / 2;
 }
 
-function easeInCirc(x) {
-	return 1 - Math.sqrt(1 - Math.pow(x, 2));
-}
-function easeOutCirc(x) {
-	return Math.sqrt(1 - Math.pow(x - 1, 2));
-}
+function easeInCirc(x) { return 1 - Math.sqrt(1 - Math.pow(x, 2)); }
+function easeOutCirc(x) { return Math.sqrt(1 - Math.pow(x - 1, 2)); }
 function easeInOutCirc(x) {
 	return x < 0.5
 	  ? (1 - Math.sqrt(1 - Math.pow(2 * x, 2))) / 2
