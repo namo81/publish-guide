@@ -38,6 +38,10 @@ body { width:100%; height:100%; /*background:linear-gradient(180deg, #fff 70px, 
 #work-list .project-info > span { display:inline-block; margin-right:2px; padding:1px 5px; font-size:12px; background:#fff; border:1px solid #aaa; border-radius:3px; letter-spacing:-0.03em; }
 #work-list.full .title { width:100%; min-width:320px; box-sizing:border-box;}
 
+#work-list .related-links { position:absolute; width:50%; top:20px; left:50%; padding-right:10px; box-sizing:border-box; text-align:right; }
+#work-list .related-links .tit { display:inline-block; font-size:12px; line-height:29px; vertical-align:top; }
+#work-list .related-links select { padding:5px; font-size:13px; line-height:19px; border-color:#aaa; }
+
 #work-list .menu { position:sticky; top:0; width:100%; padding:5px 0 0; background:#333; box-sizing:border-box; text-align:center; z-index:101;}
 #work-list .menu ul { display:inline-block; width:100%; max-width:1200px; }
 #work-list .menu li { float:left; margin-right:2px; }
@@ -71,9 +75,9 @@ body { width:100%; height:100%; /*background:linear-gradient(180deg, #fff 70px, 
 #work-list .sub-link > a,
 #work-list .sub-link > button { display:inline-block; margin-right:5px; padding:0 5px; font-size:12px; line-height:18px; color:#666; border:1px solid #aaa; border-radius:2px; }
 
-
-#work-list .list { width:100%; max-width:1200px; margin:10px auto 10px; padding:0; box-sizing:border-box; background-color:#fff; box-shadow:0 0 5px rgba(0,0,0,.1); }
-#work-list .list .tbl-wrap { border-bottom:1px solid #ddd; }
+#work-list .list { width:100%; max-width:1200px; margin:10px auto 10px; padding:0; box-sizing:border-box; }
+#work-list .list .site-title { margin:15px 0 5px; padding:0 10px; font-size:13px; line-height:19px; font-weight:bold; color:#444; }
+#work-list .list .tbl-wrap { border-bottom:1px solid #ddd; background-color:#fff; box-shadow:0 0 5px rgba(0,0,0,.1); }
 #work-list .list table { width:100%; }
 #work-list .list th { padding:8px 5px; color:#666; border:1px solid #aaa; background:#e5e5e5; }
 #work-list .list td { padding:5px; border:1px solid #ddd; line-height:20px; border-bottom:none; color:#666; text-align:center; }
@@ -178,8 +182,3 @@ body { width:100%; height:100%; /*background:linear-gradient(180deg, #fff 70px, 
 #work-list .folder-tree li { position:relative; width:100%; min-height:22px; background:url(images/tree-line.png) repeat-y 5px top; }
 #work-list .folder-tree .btn-tree { position:absolute; width:11px; height:11px; padding-left:0; background:url(images/tree-onoff.png) no-repeat left top; text-indent:-10000px; top:4px; left:0; }
 #work-list .folder-tree li.on > .btn-tree { background-position:left bottom; }
-
-@media (max-width:1200px) {
-    #work-list .function { display:flex; justify-content:flex-end; align-items:center; }
-    #work-list .function > .func-wrap { position:relative; margin:0 10px; top:0; left:0; }
-}

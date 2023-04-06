@@ -162,6 +162,7 @@ function nChartSvgPie(option){
         pieCenter, 
         radArr = new Array(), // 각 그래프 값별 합산으로 점점 커지는 배열 - 각 값의 각도
         txRadArr = new Array(); // 각 그래프 텍스트 위치를 위한 배열
+        
     function calcMaxMin(){
         radArr = [];
         txRadArr = [];

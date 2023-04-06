@@ -113,6 +113,8 @@ nlayerAlert('내용', '타이틀', 확인 후 실행할 함수, '버튼 텍스�
 function nlayerAlert(ment, title, active, btn) {
 	var body = document.querySelector('body');
 
+	if (ment.split("\n").length>1) ment = ment.replace(/\n/gi,'<br>'); //줄바꿈 삽입
+
 	var btnTx = btn == null ? '확인' : btn;
 	var layerCnt = '<div class="layer alert" id="nAlert">';
 		layerCnt += '<div class="inbox">';
@@ -147,6 +149,8 @@ function nlayerConfirm(ment, active, title, btn1, btn2) {
 
 	var btnCancel = btn1 == null ? '취소' : btn1,
 		btnOk = btn2 == null ? '확인' : btn2;
+
+	if (ment.split("\n").length>1) ment = ment.replace(/\n/gi,'<br>'); //줄바꿈 삽입
 
 	var layerCnt = '<div class="layer confirm" id="nConfirm">';
 		layerCnt += '<div class="inbox">';

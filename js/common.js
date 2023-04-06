@@ -414,6 +414,72 @@ function nBalloonTgls(selector) {
 // ex 단독 : nBalloonTgl('css 선택자' or element);
 // ex 다수 : nBalloonTgls('css 선택자');
 
+
+// 좌우 스크롤 메뉴 기능 (뷰가드ai 적용)
+function scrollMenuSet(area, gap){
+	var wrap	= typeof area === 'string' ? document.querySelector(area) : area,
+		list 	= wrap.querySelector('ul'),
+		items	= wrap.querySelectorAll('li'),
+		listW 	= 0,
+		gap 	= gap ? gap : 0;
+
+	var moveChk		= false, // pc일 경우 mousemove 여부 체크
+		clickChk 	= true,  // pc일 경우 mousemove 에 따른 click 기능 제어용 변수
+		nowScLeft	= 0;
+	
+	Array.prototype.forEach.call(items, function(item){
+		listW += item.offsetWidth;
+		item.addEventListener('click', btnClick);
+	});
+	list.style.width = listW + 'px'; 
+
+	var classOff = function(){
+		Array.prototype.forEach.call(items, function(item){
+			item.classList.remove('on');
+		});
+	}
+
+	function btnClick(e){
+		if(clickChk == false) {
+			clickChk = true;
+			return;
+		}
+		if(e.target.tagName != 'BUTTON' && e.target.tagName != 'A' ) return;
+		var tgLi = e.target.parentNode;
+		classOff();
+		tgLi.classList.add('on');
+		var tgL = tgLi.offsetLeft - (wrap.offsetWidth / 2) + (tgLi.offsetWidth / 2) - gap;
+		animateScroll(wrap, tgL, 300);
+		nowScLeft = tgL;
+	}
+
+	function scrollInit(){
+		var tgLi = list.querySelector('li.on'),
+			tgL = tgLi.offsetLeft - (wrap.offsetWidth / 2) + (tgLi.offsetWidth / 2) - gap;
+		wrap.scrollLeft = tgL;
+	}
+	scrollInit();
+
+	// pc 일 경우
+	if ( !navigator.userAgent.match(/Android/i) && !navigator.userAgent.match(/iPhone/i) ){
+		var startX;
+		wrap.addEventListener('mousedown', function(e){
+			moveChk = false;
+			startX = e.pageX;			
+			wrap.onEvent('mousemove', function(e){
+				moveChk = true;
+				wrap.scrollTo(nowScLeft + (startX - e.pageX), 0);
+			});
+		});
+		wrap.addEventListener('mouseup', function(e){
+			moveChk ? clickChk = false : clickChk = true;
+			wrap.removeListeners('mousemove');
+			nowScLeft = wrap.scrollLeft;
+		});
+	}
+}
+
+
 /* scroll animation */
 function animateScroll(scrollObj, targetVal, duration, direction, gap){
 	var scrollEle 	= typeof scrollObj === 'string' ? document.querySelector(scrollObj) : scrollObj,

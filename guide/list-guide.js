@@ -210,14 +210,40 @@ function guide_menuSet(num){
 	});
 }
 
-window.onload = function(){
-	var body 		= document.querySelector('body'),
-		tbl 		= document.querySelector('.list table');
+/* 관련사이트 기능 추가 : 불가 - 서버간 파일 로드 시 https 로 하여야 하는데 iis 는 추가 설정 필요
+function relatedFunc(area){
+	var wrap		= typeof area === 'string' ? document.querySelector(area) : area,
+		sel 		= wrap.querySelector('select'),
+		dataFile	= wrap.getAttribute('data-json'),
+		nowIP 		= document.location.href.split('//')[1].split(':')[0],
+		dataUrl 	= 'https://' + nowIP + ':11900/include/' + dataFile;
+	
+	var json = new XMLHttpRequest();
+	json.open("GET", dataUrl);
+	json.responseType = 'json';
+	json.send();
 
-	if(tbl && !tbl.classList.contains('info')) {
-		guide_tblSet(tbl);
+	json.onload = function(){
+		var jsonData = json.response;
+		console.log(jsonData);
 	}
 	
+}
+relatedFunc('.related-links');
+*/
+
+// 조직도관련(가이드화면)
+window.onload = function(){
+	var body 		= document.querySelector('body'),
+		tbls 		= document.querySelectorAll('.list table');
+
+	if(tbls) {
+		tbls.forEach(function(tbl){
+			if(!tbl.classList.contains('info')) {
+				guide_tblSet(tbl);
+			}
+		})
+	}
 	
 	// 조직도 관련
 	var fldTree = document.querySelector('.folder-tree');
