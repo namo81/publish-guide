@@ -10,7 +10,7 @@
 
 function srchMember(option) {
     var wrap	= typeof option.wrap === 'string' ? document.querySelector(option.wrap) : option.wrap,
-        keyFunc = option.keyFunc,
+        //keyFunc = option.keyFunc,
         data    = option.data;
 
     var body    = document.querySelector('body');
