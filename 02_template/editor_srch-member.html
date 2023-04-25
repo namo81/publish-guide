@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+	<meta charset="UTF-8" >
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="user-scalable=yes, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, width=device-width">
+	<meta name="author" content="seonamho - SK MNS" >
+	<meta name="description" content="">
+	<meta name="keywords" content="Site Template">
+	<meta property="og:type" content="website">
+	<meta property="og:title" content="Site Template">
+	<meta property="og:description" content="">
+	<meta property="og:image" content="">
+	<meta property="og:url" content="">
+	<link rel="shortcut icon" href="data:;base64,iVBORwOKGO=" />
+
+	<title>Editor</title>
+
+	<!-- 가이드 관련 -->
+	<link rel="stylesheet" href="../guide/list-guide.css" media="screen, print" />
+	<link rel="stylesheet" href="../guide/vendor/railscasts.css">
+	<script src="../guide/vendor/highlight.pack.js"></script>
+
+	<!-- 프로젝트 관련 CSS 및 JS 파일 로드 -->
+	<link rel="stylesheet" href="/css/layout.css" media="screen, print" />
+
+	<style>
+		.editor-wrap .edit-cnt { min-height:300px; padding:15px; font-size:14px; border:1px solid #eee; }
+		.editor-wrap u { text-decoration:underline; }
+		.editor-wrap i { font-style:italic; }
+		.editor-wrap ul, .editor-wrap ol { display:block; width:auto; padding-inline-start:40px; }
+		.editor-wrap ul li { list-style:disc; }
+		.editor-wrap ol li { list-style:auto; }
+		.editor-wrap .srch-input { display:inline-block; padding:0 3px; }
+
+		.modal-srch { position:absolute; padding:5px 10px; border:1px solid #999; background-color:#eee;}
+		.modal-srch .srch-list button.active { background-color:#ddd; }
+
+		.editor-wrap .sel-member { vertical-align:top; color:#096dd7; }
+	</style>
+</head>
+<body>
+<div id="work-list">
+	<div class="guide">
+
+		<section id="guide-basic">
+			<h2 class="guide-sec-tit">Editor</h2>
+			<div class="guide-sec">
+				<h3 class="guide-stit">Editor 기본</h3>
+				<div class="guide-show">
+				<!-- 코드 작성 -->
+					<div class="editor-wrap">
+						<div class="edit-cnt" contenteditable="true">
+							<div><br></div>
+						</div>
+					</div>
+				<!-- // 코드 작성 -->
+				</div>
+<pre><code class="html">
+</code></pre>
+
+			</div>
+		</section>
+	</div>
+	<a href="#work-list" class="guide-top">Top</a>	
+</div>
+
+<script src="../js/common.js"></script>
+<script src="../js/nAutoComplete_v1.0.0.js"></script>
+<script>
+	hljs.initHighlightingOnLoad();
+
+	var mamberData = {
+		company : 'SKMNS',
+		member : [
+			{
+				name : 'smith',
+				cNumber : "201010110"
+			},{
+				name : 'kelly',
+				cNumber : "201010112"
+			},{
+				name : 'smithey',
+				cNumber : "201210110"
+			},{
+				name : '유재석',
+				cNumber : "201410241"
+			},{
+				name : '이이경',
+				cNumber : "201310160"
+			},{
+				name : '이미주',
+				cNumber : "200910001"
+			},{
+				name : '서장훈',
+				cNumber : "201810124"
+			},
+		]
+	};
+
+	/*  옵션 안내
+		wrap     : contentEditable 영역
+		keyFunc  : 이름 입력 시 실행할 콜백함수
+		data     : 구성원 데이터 (json 및 배열형식)
+	*/
+
+	var srchM = new srchMember({
+		wrap : '.edit-cnt',
+		data : mamberData.member
+	});
+</script>
+</body>
+</html>

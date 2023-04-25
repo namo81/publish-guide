@@ -227,7 +227,7 @@ function outSideClick(area, target, cls){
 		var tg = e.target;
 		if( !tg.closest(area)) {
 			target.classList ? target.classList.remove(cls) : funcRemoveClass(target, cls);
-			this.removeEventListener('mousedown', arguments.callee);
+			body.removeEventListener('mousedown', arguments.callee);
 		}
 	});
 }
