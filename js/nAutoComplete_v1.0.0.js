@@ -17,9 +17,10 @@ function srchMember(option) {
 
     var selection, 
         nowRange,   // 초기 @ 입력 시 range 
+        srchRange,  // 입력 중 srchInp 의 range
         prtNode,    // range 가 포함된 부모요소
         nowNode,    // 초기 @ 가 입력된 node
-        caretIdx;
+        caretIdx;   // @ 실행 전 마지막 커서위치 idx (커서포함 노드 기준)
 
     // 입력 영역 관련 dom 설정
     var srchItem 	= document.createElement('span'),
@@ -63,20 +64,21 @@ function srchMember(option) {
         });
 
         wrap.onEvent('keydown', function(e){
-            if(srchInp.textContent.length == 1 && e.keyCode == 8) { // esc 키로 영역 삭제할 경우
+            if(srchInp.textContent.length == 1 && e.keyCode == 8 || srchRange.startOffset == 1 && e.keyCode == 37 || e.keyCode == 27) { // esc 키로 영역 삭제할 경우
                 e.preventDefault(); // 필수 : 영역 삭제 시 @ 앞의 문구에서 마지막 글자 제거 방지
-                prtNode.removeChild(srchItem);
-                funcKeyOff();
-                modalOff();
+                cancelSrchMember();
             }
-            if(e.keyCode == 38 || e.keyCode == 40) e.preventDefault();
+            if(e.keyCode == 38 || e.keyCode == 40 || e.keyCode == 13) e.preventDefault();
         });
+        wrap.addEventListener('focusout', cancelSrchMember);
     }
 
     function funcKeyOff(){
         wrap.removeListeners();
+        wrap.removeEventListener('focusout', cancelSrchMember);
     }
 
+    // @ 제거 후 node 에 item 추가하는 함수
     function insertSrchInpNode(node, idx, item){
         var newRange = document.createRange();
         newRange.setStart(node, idx - 1);
@@ -87,6 +89,7 @@ function srchMember(option) {
         newRange.detach();
     }
 
+    // contentEditable 영역 에서 shift + @ 입력 시 실행함수
     function triggerChk(e){
         if(!e.shiftKey || e.keyCode != 50) return;
 
@@ -94,13 +97,14 @@ function srchMember(option) {
         nowRange 	= selection.getRangeAt(0);
         prtNode 	= nowRange.endContainer.parentNode;
 
+        if(prtNode.tagName == 'A') return;
         var nodes   = prtNode.childNodes;
         
         if(nodes.length == 1) setInputNode(nodes[0]);
         else nodes.forEach(function(node){ if(node == nowRange.endContainer) setInputNode(node); return; });
-
     }
     
+    // shift + @ 입력 시 검색 영역 생성 및 modal 호출
     function setInputNode(node){
         var nodeTxt = node.textContent,
             txIdx   = nowRange.endOffset,
@@ -123,7 +127,7 @@ function srchMember(option) {
         modalOn();
     }
 
-    // 검색 modal 기능
+    // 검색 modal 열기
     function modalOn(){
         var inpRect = srchItem.getBoundingClientRect();
         body.appendChild(srchModal);
@@ -131,22 +135,24 @@ function srchMember(option) {
         srchModal.style.left = inpRect.left + 'px';
     }
 
+    // 검색 modal 닫기
     function modalOff(){
         body.removeChild(srchModal);
     }
 
-    var nameArr = new Array(),      // 구성원 이름 배열
+    var nameArr = new Array(),      // 구성원 이름(사번) 배열
         resultArr = new Array();    // 입력값과 일치하는 구성원 배열
     for(var d=0; d<Object.keys(data).length; d++){
         nameArr.push(data[d].name);
     }
 
+    // 입력된 이름으로 data 검색 후 일치하는 값 추출하여 resultArr 생성
     function srchInputValueCheck(val){
         removeMemberList();
         resultArr = [];
         for(var o=0; o<nameArr.length; o++){
             if(val.length > 0 && nameArr[o].match(val)) {
-                resultArr.push(data[o].name + ' ('+ data[o].cNumber +')');
+                resultArr.push(data[o].name + '('+ data[o].cNumber +')');
             }
         }
         makeMemberList();
@@ -156,6 +162,7 @@ function srchMember(option) {
         while (srchList.firstChild) srchList.removeChild(srchList.firstChild);
     }
 
+    // resultArr 기준으로 리스트 생성 / 없을 경우 '없음' 문구 출력
     function makeMemberList(){
         if(resultArr.length < 1) {
             var liTag   = document.createElement('li');
@@ -174,14 +181,17 @@ function srchMember(option) {
             listBtns = srchList.querySelectorAll('button');
             if(resultArr.length > 0) selectMember();
         }
+        srchRange = selection.getRangeAt(0);
     }
 
+    // 검색된 대상버튼 active 클래스 전체 제거
     function listBtnReset(){
         listBtns.forEach(function(btn){
             btn.classList.remove('active');
         });
     }
 
+    // modal 에서 방향키 위/아래로 대상 고르기
     function selectMember(dir){
         if(resultArr.length < 1) return;
         if(dir == 'up') {
@@ -193,11 +203,28 @@ function srchMember(option) {
         listBtns[nowSelNum].classList.add('active');
     }
 
+    // 검색 상태에서 esc / left 방향키 / back space 키로 취소할 경우 - @ 문자만 남기기
+    function cancelSrchMember(){
+        var txAt    = document.createTextNode('@'),
+            ccRange = document.createRange();
+
+        ccRange.setStart(nowNode, caretIdx - 1);
+        selection.addRange(ccRange);
+        prtNode.removeChild(srchItem);
+        ccRange.insertNode(txAt);
+        ccRange.detach();
+        funcKeyOff();
+        modalOff();
+        selection.collapse(txAt, 1);
+    }
+
+    // 검색 후 대상 선택 시
     function memberSelectConfirm(name){
         var aTag        = document.createElement('a'),
             nextSpace   = document.createTextNode('\ufeff');
         aTag.textContent = name.split('(')[0];
         aTag.classList.add('sel-member');
+        aTag.setAttribute('href', '#'); // href 속성이 없을 경우 일반 tag 로 인식되어, 삭제 시 a 태그의 style 이 잔존함.
 
         var instRange = document.createRange();
 
