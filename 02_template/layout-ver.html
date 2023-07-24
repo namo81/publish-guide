@@ -23,7 +23,7 @@
 	<!-- 프로젝트 관련 CSS 및 JS 파일 로드 -->
 	<link rel="stylesheet" href="/css/layout.css" media="screen, print" />
 	<script src="/js/jquery-3.2.1.min.js"></script>
-	<script src="/js/gnbmenu_v2.0.0.js"></script>
+	<script src="/js/gnbmenu_v3.0.0.js"></script>
 	<script src="/js/common.js"></script>
 
 	<!--[if lt IE 9]>
@@ -51,7 +51,7 @@
 			</div>
 			
 			<!-- gnb -->
-			<div class="gnb-wrap">
+			<nav class="gnb-wrap">
 				<h1 class="logo">LOGO</h1>
 				<div class="gnb-menu">
 					<ul class="depth1">
@@ -104,34 +104,28 @@
 						</li>
 					</ul>
 				</div>
-				<button type="button" class="btn-all-menu">전체보기</button>
-			</div>
-
-			<!-- 전체메뉴 -->
-			<div class="all-menu same-gnb"> <!-- same-gnb 클래스가 있을 경우 gnb-menu 를 그대로 가져옴. 레이아웃 구조가 다를 경우 클래스 삭제 후 직접 코드 작성. -->
-				<div class="inbox">
-					<!-- 메뉴 로딩될 영역 -->
-					<button type="button" class="btn-all-close">메뉴닫기</button>
-				</div>
-			</div>
+			</nav>
 		</header>
 		
 		<!-- mid -->
-		<div id="mid">			
-			<div class="contents">
+		<main id="mid">
+			<section class="test__cnt">
 				<p>
 				기본형 레이아웃 type1 <br />
 				gnb + content area + footer<br />
 				height 100%
 				</p>
-			</div>
-		</div>
+			</section>
+		</main>
 		
 		<!-- btm -->
-		<div id="btm">
-			<footer>COPYRIGHT &copy; 2017 msp admin template. All right reserved.</footer>
-		</div>
+		<footer id="btm">
+			<p class="copy">COPYRIGHT &copy; 2017 msp admin template. All right reserved.</p>
+		</footer>
 	</div>
 
+	<script>
+		nGnb('.gnb-menu');
+	</script>
 </body>
 </html>

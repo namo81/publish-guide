@@ -11,6 +11,36 @@ try { // chrome / edge 용
     changeEvt.initEvent('change', true, true);
 }
 
+// closest 기능 함수 설정 // IE 용
+if (window.Element && !Element.prototype.closest) {
+    Element.prototype.closest =
+    function(s) {
+        var matches = (this.document || this.ownerDocument).querySelectorAll(s),
+            i,
+            el = this;
+        do {
+            i = matches.length;
+            while (--i >= 0 && matches.item(i) !== el) {};
+        } while ((i < 0) && (el = el.parentElement));
+        return el;
+    };
+}
+// ex : object.closest(target)
+
+// parents 기능 함수 - 부모요소 배열 반환
+Element.prototype.parents = function(selector) {
+	var elements = [];
+	var elem = this;
+	var ishaveselector = selector !== undefined;
+ 
+	while ((elem = elem.parentElement) !== null) {
+		if (elem.nodeType !== Node.ELEMENT_NODE) continue;  
+		if (!ishaveselector || elem.matches(selector)) elements.push(elem);
+	} 
+	return elements;
+};
+// ex : object.parents(selector)
+
 // 이벤트 리스트 관련 함수 - 이벤트 추가 시 listener 를 별도 배열로 보관 - 추후 삭제 가능하도록.
 HTMLElement.prototype.onEvent = function (eventType, callBack, useCapture) {
 	this.addEventListener(eventType, callBack, useCapture);
@@ -31,6 +61,46 @@ HTMLElement.prototype.removeListeners = function () {
 	};
 };
 // ex : object.removeListeners()
+
+// class 관련 (IE9 이하 대응)
+// hasClass 대체 - obj 가 특정 class 를 가지고 있는지 확인 - boolean 값 리턴
+function funcHasClass(obj, cls){
+	var objCls = obj.className;
+	return new RegExp('(^|\\s)'+cls+'(\\s|$)').test(objCls);
+}
+// ex : funcHasClass(object, class);
+
+// addClass 대체 - obj 에 특정 class 추가 - funcHasClass 함수 필요
+function funcAddClass(obj, cls){
+	var hasChk = funcHasClass(obj, cls);
+	if(!hasChk) {
+		if(obj.className.length == 0) obj.className += cls;
+		else obj.className += " "+cls;
+	}
+}
+// ex : funcAddClass(object, class);
+
+// removeClass 대체 - obj 에서 특정 class 제거 - funcHasClass 함수 필요
+function funcRemoveClass(obj, cls){
+	var hasChk = funcHasClass(obj, cls);
+	if(hasChk) {
+		obj.className = obj.className.replace(new RegExp('(^|\\s)'+cls+'(\\s|$)'), '');
+		
+	}
+}
+// ex : funcRemoveClass(object, class);
+
+// toggleClass 대체 - obj 에서 특정 class 토글 - funcHasClass 필요 (IE 용)
+function funcToggleClass(obj, cls){
+	var hasChk = funcHasClass(obj, cls);
+	if(!hasChk) {
+		if(obj.className.length == 0) obj.className += cls;
+		else obj.className += " "+cls;
+	} else {
+		obj.className = obj.className.replace(new RegExp('(^|\\s)'+cls+'(\\s|$)'), '');
+	} 
+}
+// ex : funcToggleClass(object, class);
 
 // offset 함수.
 function offset(elem) {
@@ -92,6 +162,21 @@ function getStyleArr(val){
 }
 // ex : getStyleArr('20px') / getStyleArr('20px 20px') ...
 
+// html node 복사 - IE 대응용
+function cloneNode(node) {
+    var clone = node.nodeType == 3 ? document.createTextNode(node.nodeValue) : node.cloneNode(false);
+ 
+    // Recurse     
+    var child = node.firstChild;
+    while(child) {
+        clone.appendChild(cloneNode(child));
+        child = child.nextSibling;
+	}
+    return clone;
+}
+// 크롬일 경우 기본 javascript 함수인 object.cloneNode(boolean);
+// IE일 구버전(9 이하?) 경우 ex : cloneNode(object);
+
 //콤마 넣기
 function comma(str) {
 	str = String(str);
@@ -141,7 +226,7 @@ function outSideClick(area, target, cls){
 	body.addEventListener('mousedown', function(e){
 		var tg = e.target;
 		if( !tg.closest(area)) {
-			target.classList.remove(cls);
+			target.classList ? target.classList.remove(cls) : funcRemoveClass(target, cls);
 			body.removeEventListener('mousedown', arguments.callee);
 		}
 	});
@@ -156,7 +241,7 @@ function outSideClick(area, target, cls){
 function nTab(selector){
 	var nTabEle = document.querySelectorAll(selector);
 	if(nTabEle.length > 1) {
-		nTabEle.forEach(function(el, index, array){
+		Array.prototype.forEach.call(nTabEle, function(el, index, array){
 			nTabSet(el);
 		});
 	} 
@@ -180,7 +265,7 @@ function nTabSet(Ele){
 
 	// 화면 로드 시 활성화된 버튼에 맞는 컨텐츠 show
 	for(i=0; i<tabLi.length; i++){
-		if(tabLi[i].classList.contains('on')) showNum = i;
+		if(funcHasClass(tabLi[i], 'on')) showNum = i;
 	}
 	tabCntHide();
 	tabCnt[showNum].style.display = 'block';
@@ -193,9 +278,9 @@ function nTabSet(Ele){
 
 		tgCnt = btn.getAttribute('href');
 		for(i=0; i<tabLi.length; i++){
-			tabLi[i].classList.remove('on');
+			funcRemoveClass(tabLi[i], 'on');
 		}
-		btn.parentElement.classList.add('on');
+		funcAddClass(btn.parentElement, 'on');
 		tabCntHide();
 		tabWrap.querySelector(tgCnt).style.display = 'block';
 	}
@@ -229,7 +314,7 @@ function nTabMenu(option){
 
 	// 화면 로드 시 활성화된 버튼에 맞는 컨텐츠 show
 	for(i=0; i<tabLi.length; i++){
-		if(tabLi[i].classList.contains('on')) showNum = i;
+		if(funcHasClass(tabLi[i], 'on')) showNum = i;
 	}
 	tabCntHide();
 	tabCnt[showNum].style.display = 'block';
@@ -242,9 +327,9 @@ function nTabMenu(option){
 
 		tgCnt = btn.getAttribute('href');
 		for(i=0; i<tabLi.length; i++){
-			tabLi[i].classList.remove('on');
+			funcRemoveClass(tabLi[i], 'on');
 		}
-		btn.parentElement.classList.add('on');
+		funcAddClass(btn.parentElement, 'on');
 		tabCntHide();
 		tabWrap.querySelector(tgCnt).style.display = 'block';
 	}
@@ -253,6 +338,55 @@ function nTabMenu(option){
 		tabBtn[i].addEventListener('click', tabClick);
 	}	
 }
+
+
+// 말풍선 요소 = 구버전 - 사용X / 참고용 -- 말풍선 1개 / 버튼 다수일 경우 case 개발 참고
+/*
+function nBalloon(selector) {
+	var nBallEle = document.querySelectorAll(selector);
+
+	if(nBallEle.length > 1) {
+		Array.prototype.forEach.call(nBallEle, function(el, index, array){
+			nBalloonSet(el);
+		});
+	} 
+	else if (nBallEle.length == 1) nBalloonSet(nBallEle[0]);
+	else null;
+}
+
+// 실제 말풍선 관련 기능 함수
+function nBalloonSet(Ele){
+	var ballWrap	= Ele,
+		btn			= ballWrap.querySelector('.btn-balloon'),
+		cnt			= ballWrap.querySelector('.cnt-balloon'),
+		btnClose	= ballWrap.querySelector('.btn-ball-close'),
+		wrapTop		= Number(ballWrap.offsetTop + btn.offsetHeight),
+		wrapLeft	= Number(ballWrap.offsetLeft),
+		setTop		= Number(btn.getAttribute('data-top')),
+		setLeft		= Number(btn.getAttribute('data-left'));
+
+	var cntShow = function() {
+		cnt.style.top = wrapTop + setTop +'px';
+		cnt.style.left = wrapLeft + setLeft +'px';
+		funcAddClass(cnt, 'on');
+	}, cntHide = function(){
+		cnt.style.top = '';
+		cnt.style.left = '';
+		funcRemoveClass(cnt, 'on');
+	}, cntCtrl = function() {
+		funcHasClass(cnt, 'on') ? cntHide() : cntShow();
+	}
+	
+	if(funcHasClass(ballWrap, 'hover')){
+		btn.addEventListener('mouseover', cntShow);
+		btn.addEventListener('mouseleave', cntHide);
+	} else {
+		btn.addEventListener('click', cntCtrl);
+	}
+
+	if(btnClose != null) btnClose.addEventListener('click', cntHide);
+}*/
+
 
 // 말풍선 요소 - 단일 사용
 function nBalloonTgl(area) {
@@ -270,7 +404,7 @@ function nBalloonTgls(selector) {
 	var nBallEle = document.querySelectorAll(selector);
 
 	if(nBallEle.length > 1) {
-		nBallEle.forEach(function(el, index, array){
+		Array.prototype.forEach.call(nBallEle, function(el, index, array){
 			nBalloonTgl(el);
 		});
 	} 
@@ -293,14 +427,14 @@ function scrollMenuSet(area, gap){
 		clickChk 	= true,  // pc일 경우 mousemove 에 따른 click 기능 제어용 변수
 		nowScLeft	= 0;
 	
-	items.forEach(function(item){
+	Array.prototype.forEach.call(items, function(item){
 		listW += item.offsetWidth;
 		item.addEventListener('click', btnClick);
 	});
 	list.style.width = listW + 'px'; 
 
 	var classOff = function(){
-		items.forEach(function(item){
+		Array.prototype.forEach.call(items, function(item){
 			item.classList.remove('on');
 		});
 	}

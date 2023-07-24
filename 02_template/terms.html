@@ -46,35 +46,35 @@
 			<div class="guide-sec">
 				<h3 class="guide-stit">CSS</h3>
 <pre><code class="css">/* 약관 =============================================================== */
-.article-wrap .aw-tit { margin-bottom:25px; font-size:20px; line-height:24px; color:#333; font-weight:bold; }
-.article-wrap .article-cnt { margin-bottom:20px; }
-.article-wrap .ac-tit { margin-bottom:10px; font-size:16px; line-height:20px; color:#333; font-weight:bold; } 
-.article-wrap p, .article-wrap li { margin:3px 0; font-size:13px; line-height:18px; color:#666; }
-.article-wrap ul, .article-wrap ol { width:100%; }
-.article-wrap ul > li { padding-left:0.6em; text-indent:-0.6em; }
-.article-wrap ul.star > li { padding-left:1em; text-indent:-1em; }
-.article-wrap ol > li { padding-left:1em; text-indent:-1em; }
-.article-wrap ol.tx-kor > li { padding-left:1.5em; text-indent:-1.5em; }
-.article-wrap ol.tx-alpha > li { padding-left:1.1em; text-indent:-1.1em; }
-.article-wrap ol.tx-circle > li { padding-left:1.3em; text-indent:-1.3em; }
-.article-wrap li > ol, .article-wrap li > ul { margin:3px 0; }
-.article-wrap .tbl { margin:15px 0; border-top:1px solid #666; font-size:12px; line-height:1.4em; color:#666;}
-.article-wrap th, .article-wrap td { padding:10px; text-align:left; font-size:13px; line-height:18px; color:#666; border-bottom:1px solid #ddd; }
-.article-wrap th { background:#f2f2f2; text-align:center;}
-.article-wrap .tbl-desc + .tbl { margin-top:5px; }
-.article-wrap .tbl + .tbl-desc { margin:-10px 0 10px; }
+.terms-wrap .aw-tit { margin-bottom:25px; font-size:20px; line-height:24px; color:#333; font-weight:bold; }
+.terms-wrap .terms-cnt { margin-bottom:20px; }
+.terms-wrap .ac-tit { margin-bottom:10px; font-size:16px; line-height:20px; color:#333; font-weight:bold; } 
+.terms-wrap p, .terms-wrap li { margin:3px 0; font-size:13px; line-height:18px; color:#666; }
+.terms-wrap ul, .terms-wrap ol { width:100%; }
+.terms-wrap ul > li { padding-left:0.6em; text-indent:-0.6em; }
+.terms-wrap ul.star > li { padding-left:1em; text-indent:-1em; }
+.terms-wrap ol > li { padding-left:1em; text-indent:-1em; }
+.terms-wrap ol.tx-kor > li { padding-left:1.5em; text-indent:-1.5em; }
+.terms-wrap ol.tx-alpha > li { padding-left:1.1em; text-indent:-1.1em; }
+.terms-wrap ol.tx-circle > li { padding-left:1.3em; text-indent:-1.3em; }
+.terms-wrap li > ol, .terms-wrap li > ul { margin:3px 0; }
+.terms-wrap .tbl { margin:15px 0; border-top:1px solid #666; font-size:12px; line-height:1.4em; color:#666;}
+.terms-wrap th, .terms-wrap td { padding:10px; text-align:left; font-size:13px; line-height:18px; color:#666; border-bottom:1px solid #ddd; }
+.terms-wrap th { background:#f2f2f2; text-align:center;}
+.terms-wrap .tbl-desc + .tbl { margin-top:5px; }
+.terms-wrap .tbl + .tbl-desc { margin:-10px 0 10px; }
 </code></pre>
 			</div>
 
 			<div class="guide-sec">
 				<h3 class="guide-stit">약관 기본</h3>
-				<p>article-wrap 내에 내용 작성</p>
-				<p>article-cnt 로 각 내용 구분 (약관 타이틀 번호별)</p>
+				<p>terms-wrap 내에 내용 작성</p>
+				<p>terms-cnt 로 각 내용 구분 (약관 타이틀 번호별)</p>
 				<div class="guide-show">
 				<!-- 코드 작성 -->
-					<div class="article-wrap">
+					<div class="terms-wrap">
 						<h1 class="aw-tit">약관 전체 타이틀</h1>
-						<div class="article-cnt">
+						<div class="terms-cnt">
 							<h2 class="ac-tit">약관 내 항목 타이틀</h2>
 							<p>기본 p 태그용 내용</p>
 							<ul>
@@ -90,16 +90,16 @@
 								<li>b. 기본 ol / li 구조 영역 입니다.</li>
 							</ol>
 						</div>
-						<div class="article-cnt">
+						<div class="terms-cnt">
 							<h2 class="ac-tit">약관 내 항목 타이틀</h2>
 							<p>기본 p 태그용 내용</p>
 						</div>
 					</div>
 				<!-- // 코드 작성 -->
 				</div>
-<pre><code class="html">&lt;div class="article-wrap"&gt;
+<pre><code class="html">&lt;div class="terms-wrap"&gt;
 	&lt;h1 class="aw-tit"&gt;약관 전체 타이틀&lt;/h1&gt;
-	&lt;div class="article-cnt"&gt;
+	&lt;div class="terms-cnt"&gt;
 		&lt;h2 class="ac-tit"&gt;약관 내 항목 타이틀&lt;/h2&gt;
 		&lt;p&gt;기본 p 태그용 내용&lt;/p&gt;
 		&lt;ul&gt;
@@ -115,7 +115,7 @@
 			&lt;li&gt;b. 기본 ol / li 구조 영역 입니다.&lt;/li&gt;
 		&lt;/ol&gt;
 	&lt;/div&gt;
-	&lt;div class="article-cnt"&gt;
+	&lt;div class="terms-cnt"&gt;
 		&lt;h2 class="ac-tit"&gt;약관 내 항목 타이틀&lt;/h2&gt;
 		&lt;p&gt;기본 p 태그용 내용&lt;/p&gt;
 	&lt;/div&gt;
@@ -126,12 +126,12 @@
 				<h3 class="guide-stit">리스트 스타일</h3>
 				<p>ul 에 '※' 사용 시 'star' 클래스 추가</p>
 				<p>ol 에 '가,나,다' 형식 사용 시 'tx-kor' 클래스 추가 (가 뒤에 . 필수)</p>
-				<p>ol 에 'A,B,C' 형식(알파벳 대문자) 사용 시 'tx-eng' 클래스 추가 (가 뒤에 . 필수) <br>알파벳 소문자는 클래스 없이 사용 가능</p>
+				<p>ol 에 'A,B,C' 형식(알파벳 대문자) 사용 시 'tx-alpha' 클래스 추가 (가 뒤에 . 필수) <br>알파벳 소문자는 클래스 없이 사용 가능</p>
 				<p>ol 에 '①, ②' 형식(원형 숫자) 사용 시 'tx-circle' 클래스 추가 (숫자 뒤에 . 제거)</p>
 				<div class="guide-show">
 				<!-- 코드 작성 -->
-					<div class="article-wrap">
-						<div class="article-cnt">
+					<div class="terms-wrap">
+						<div class="terms-cnt">
 							<p>기본 p 태그용 내용</p>
 							<ul class="star">
 								<li>※ ul - 변형구조 1</li>
@@ -153,8 +153,8 @@
 					</div>
 				<!-- // 코드 작성 -->
 				</div>
-<pre><code class="html">&lt;div class="article-wrap"&gt;
-	&lt;div class="article-cnt"&gt;
+<pre><code class="html">&lt;div class="terms-wrap"&gt;
+	&lt;div class="terms-cnt"&gt;
 		&lt;p&gt;기본 p 태그용 내용&lt;/p&gt;
 		&lt;ul class="star"&gt;
 			&lt;li&gt;※ ul - 변형구조 1&lt;/li&gt;
@@ -181,8 +181,8 @@
 				<p>li 태그 내에 ul , ol 추가 사용하여 중첩</p>
 				<div class="guide-show">
 				<!-- 코드 작성 -->
-					<div class="article-wrap">
-						<div class="article-cnt">
+					<div class="terms-wrap">
+						<div class="terms-cnt">
 							<p>기본 p 태그용 내용</p>
 							<ul class="star">
 								<li>※ 리스트 내용 1</li>
@@ -208,8 +208,8 @@
 					</div>
 				<!-- // 코드 작성 -->
 				</div>
-<pre><code class="html">&lt;div class="article-wrap"&gt;
-	&lt;div class="article-cnt"&gt;
+<pre><code class="html">&lt;div class="terms-wrap"&gt;
+	&lt;div class="terms-cnt"&gt;
 		&lt;p&gt;기본 p 태그용 내용&lt;/p&gt;
 		&lt;ul class="star"&gt;
 			&lt;li&gt;※ 리스트 내용 1&lt;/li&gt;
@@ -238,11 +238,11 @@
 			
 			<div class="guide-sec">
 				<h3 class="guide-stit">테이블 및 테이블 주변</h3>
-				<p>li 태그 내에 ul , ol 추가 사용하여 중첩</p>
+				<p>tbl-desc 클래스 - 테이블 위/아래 위치 시 일정 간격유지</p>
 				<div class="guide-show">
 				<!-- 코드 작성 -->
-					<div class="article-wrap">
-						<div class="article-cnt">
+					<div class="terms-wrap">
+						<div class="terms-cnt">
 							<p class="tbl-desc">테이블 안내문구</p>
 							<div class="tbl">
 								<table>
@@ -270,8 +270,8 @@
 					</div>
 				<!-- // 코드 작성 -->
 				</div>
-<pre><code class="html">&lt;div class="article-wrap"&gt;
-	&lt;div class="article-cnt"&gt;
+<pre><code class="html">&lt;div class="terms-wrap"&gt;
+	&lt;div class="terms-cnt"&gt;
 		&lt;p class="tbl-desc"&gt;테이블 안내문구&lt;/p&gt;
 		&lt;div class="tbl"&gt;
 			&lt;table&gt;

@@ -30,6 +30,11 @@
 		.tbl.th-sticky thead { position:sticky; top:0; left:0; }
 		.tbl.th-sticky th + th, 
 		.tbl.th-sticky td + td { border:none; border-left:1px solid #ddd; }
+		.tbl.th-sticky::-webkit-scrollbar { width:10px; border:none; background:transparent; }
+		.tbl.th-sticky::-webkit-scrollbar-button:start:decrement {display:none;}
+		.tbl.th-sticky::-webkit-scrollbar-button:end:increment {display:none;}
+		.tbl.th-sticky::-webkit-scrollbar-track {background:transparent; -webkit-border-radius: 0px; border-radius:0px; border:none; }
+		.tbl.th-sticky::-webkit-scrollbar-thumb { border-radius:5px; background:#b8b8b8; border:3px solid #fff; }
 
 		.tbl.th-fixed table { border-collapse:separate; border-spacing:0; }
 		.tbl.th-fixed { position:relative; border:1px solid #ccc; }
@@ -136,7 +141,7 @@
 					<li>가로스크롤 발생 시 th-fixed 영역에 적용할 수 있으나, tbl-cnt 영역이 세로 스크롤의 우측에 있으므로 가로스크롤을 우측 끝으로 이동하지 않으면 보이지 않음</li>
 					<li>전체를 감싸는 외곽 테두리는 tbl-fixed 에 주어야 함.</li>
 					<li>col 너비 설정 시 px 단위 사용.</li>
-					<li>타이틀-컨텐츠 테이블의 colgroup 값을 동일하게 넣되, <strong>컨텐츠 테이블의 마지막 column 너비가 타이틀 테이블 마지막 column 보다 -17px 작아야함.</strong></li>
+					<li>타이틀-컨텐츠 테이블의 colgroup 값을 동일하게 넣되, <strong>컨텐츠 테이블의 마지막 column 너비가 타이틀 테이블 마지막 column 보다 -17px(scrollbar 너비) 작아야함.</strong></li>
 				</ul>
 				<div class="guide-show">
 				<!-- 코드 작성 -->

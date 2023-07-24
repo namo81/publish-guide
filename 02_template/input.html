@@ -266,7 +266,20 @@ var fileName = new nFileSet('.inp-file');
 // 다수 요소 설정
 nFile('.inp-file');
 </code></pre>
+				<h4 class="guide-sstit">style (not js)</h4>
+				<p>script 를 사용하지 않는 버전</p>
+				<p>파일 경로 표기 방식 및 input 기본 문구(선택된 파일 없음) 교체 불가</p>
+				<div class="guide-show">
+					<div class="inp-file-n">
+						<input type="file" class="" id="file2" placeholder="파일첨부">
+						<label for="file2" class="btn medium">파일첨부</label>
+					</div>
+				</div>
 			</div>
+			<style>
+				.inp-file-n input { position:relative; padding:3px 20px 3px 5px; border:1px solid #ccc; border-radius:3px; line-height:27px; box-sizing:border-box; }
+				.inp-file-n input::file-selector-button { position:absolute; width:1px; height:1px; opacity:0; overflow:hidden; }
+			</style>
 		</section>
 
 

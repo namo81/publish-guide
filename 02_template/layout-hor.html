@@ -26,9 +26,6 @@
 	<script src="/js/gnbmenu_v2.0.0.js"></script>
 	<script src="/js/common.js"></script>
 
-	<!--[if lt IE 9]>
-    <script src="/js/html5shiv.js"></script>
-    <![endif]-->
 </head>
 <body>
 	<div id="skip-navi">
@@ -52,40 +49,38 @@
 		</header>
 		
 		<!-- mid -->
-		<div id="mid">			
-			<div class="contents">
-				<!-- side 메뉴 -->
-				<aside class="side-wrap">
-					<ul class="depth1">
-						<li><a href="#">서브메뉴 depth1</a></li>
-						<li>
-							<a href="#">서브메뉴 depth2</a>
-							<ul class="depth2"> 
-								<li><a href="#">서브메뉴 depth2-1</a></li>
-								<li><a href="#">서브메뉴 depth2-2</a></li>
-								<li><a href="#">서브메뉴 depth2-3</a></li>
-							</ul>
-						</li>
-						<li><a href="#">서브메뉴 depth3</a></li>
-						<li><a href="#">서브메뉴 depth4</a></li>
-					</ul>
-				</aside>
+		<main id="mid">
+			<!-- side 메뉴 -->
+			<aside class="side-wrap">
+				<ul class="depth1">
+					<li><a href="#">서브메뉴 depth1</a></li>
+					<li>
+						<a href="#">서브메뉴 depth2</a>
+						<ul class="depth2"> 
+							<li><a href="#">서브메뉴 depth2-1</a></li>
+							<li><a href="#">서브메뉴 depth2-2</a></li>
+							<li><a href="#">서브메뉴 depth2-3</a></li>
+						</ul>
+					</li>
+					<li><a href="#">서브메뉴 depth3</a></li>
+					<li><a href="#">서브메뉴 depth4</a></li>
+				</ul>
+			</aside>
 
-				<!-- 컨텐츠 영역 -->
-				<div class="cnt-wrap">
-					<p>
-					기본형 레이아웃 type1 <br />
-					gnb + content area + footer<br />
-					height 100%
-					</p>
-				</div>
+			<!-- 컨텐츠 영역 -->
+			<div class="cnt-wrap">
+				<p>
+				기본형 레이아웃 type1 <br />
+				gnb + content area + footer<br />
+				height 100%
+				</p>
 			</div>
-		</div>
+		</main>
 		
 		<!-- btm -->
-		<div id="btm">
-			<footer>COPYRIGHT &copy; 2017 msp admin template. All right reserved.</footer>
-		</div>
+		<footer id="btm">
+			<p class="copy">COPYRIGHT &copy; 2017 msp admin template. All right reserved.</p>
+		</footer>
 	</div>
 
 </body>

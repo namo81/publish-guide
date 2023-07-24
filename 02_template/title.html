@@ -48,29 +48,29 @@
 				<h3 class="guide-stit">페이지 타이틀</h3>
 				<p>h1, h2, h3 등의 태그와 상관없이 class 에만 스타일 적용됨.</p>
 				<div class="guide-show">
-					<h2 class="title-dep1">타이틀1 <span class="desc">타이틀 옆 안내문구</span></h2>
+					<h2 class="page__title">타이틀1 <span class="desc">타이틀 옆 안내문구</span></h2>
 				</div>
-<pre><code class="html">&lt;h2 class="title-dep1"&gt;타이틀1 &lt;span class="desc"&gt;타이틀 옆 안내문구&lt;/span&gt;&lt;/h2&gt;
+<pre><code class="html">&lt;h2 class="page__title"&gt;타이틀1 &lt;span class="desc"&gt;타이틀 옆 안내문구&lt;/span&gt;&lt;/h2&gt;
 </code></pre>
 			</div>
 			<div class="guide-sec">				
 				<h3 class="guide-stit">페이지 내 영역 타이틀</h3>
 				<div class="guide-show">
-					<h2 class="title-dep2">타이틀2 <span class="desc">타이틀 옆 안내문구</span></h2>
+					<h2 class="cnt__title">타이틀2 <span class="desc">타이틀 옆 안내문구</span></h2>
 				</div>
-<pre><code class="html">&lt;h2 class="title-dep2"&gt;타이틀2 &lt;span class="desc"&gt;타이틀 옆 안내문구&lt;/span&gt;&lt;/h2&gt;
+<pre><code class="html">&lt;h2 class="cnt__title"&gt;타이틀2 &lt;span class="desc"&gt;타이틀 옆 안내문구&lt;/span&gt;&lt;/h2&gt;
 </code></pre>
 			</div>
 			<div class="guide-sec">	
 				<h3 class="guide-stit">영역 타이틀 내 우측 컨텐츠 있을 경우</h3>
 				<p>타이틀 영역이 기본적으로 after 을 통해 clear:both 를 적용하고 있으므로 float 컨텐츠 사용가능.</p>
 				<div class="guide-show">
-					<h2 class="title-dep2">
-						타이틀2 <span class="desc">타이틀 옆 안내문구</span>
-						<div class="fr"><a href="#" class="btn-s">우측 버튼</a></div>
-					</h2>
+					<div class="flex-wrap">
+						<h2 class="cnt__title">타이틀2 <span class="desc">타이틀 옆 안내문구</span></h2>
+						<a href="#" class="btn-s">우측 버튼</a>
+					</div>
 				</div>
-<pre><code class="html">&lt;h2 class="title-dep2"&gt;
+<pre><code class="html">&lt;h2 class="cnt__title"&gt;
 	타이틀2 &lt;span class="desc"&gt;타이틀 옆 안내문구&lt;/span&gt;
 	&lt;div class="fr"&gt;&lt;a href="#" class="btn-s"&gt;우측 버튼&lt;/a&gt;&lt;/div&gt;
 &lt;/h2&gt;

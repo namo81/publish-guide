@@ -43,18 +43,18 @@
 		<section id="guide-basic">
 			<h2 class="guide-sec-tit">컨텐츠 box</h2>
 			<div class="guide-sec">
-				<h3 class="guide-stit">기본</h3>
+				<h3 class="guide-stit">기본</h3> 
 				<p>페이지 내 컨텐츠간 구분용 클래스</p>
-				<p>cnt-box 가 연속될 경우 margin-top 으로 간격 조정하여 구분.</p>
-				<p>페이지 내 기본적인 구분(margin / padding / bg / border 등)은 cnt-box 로 하고, 별도 클래스 지정하여 특정 style 사용</p>
+				<p>클래스 끝이 '__cnt' 로 끝나는 컨텐츠가 연속될 경우, 2번째 이후 컨텐츠 margin-top 설정</p>
+				<p>tit__cnt / text__cnt 처럼 '__cnt' 앞에 컨텐츠 성격을 포함한 단어를 설정하여 구분</p>
 				<div class="guide-show">
 				<!-- 코드 작성 -->
-					<div class="cnt-box">컨텐츠 1</div>
-					<div class="cnt-box">컨텐츠 2</div>
+					<div class="tit__cnt">컨텐츠 1</div>
+					<div class="text__cnt">컨텐츠 2</div>
 				<!-- // 코드 작성 -->
 				</div>
-<pre><code class="html">&lt;div class="cnt-box"&gt;컨텐츠 1&lt;/div&gt;
-&lt;div class="cnt-box"&gt;컨텐츠 2&lt;/div&gt;
+<pre><code class="html">&lt;div class="tit__cnt"&gt;컨텐츠 1&lt;/div&gt;
+&lt;div class="text__cnt"&gt;컨텐츠 2&lt;/div&gt;
 </code></pre>
 			</div>
 

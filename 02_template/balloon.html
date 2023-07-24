@@ -36,20 +36,22 @@
 			<div class="guide-sec">
 				<h3 class="guide-stit">CSS</h3>
 <pre><code class="css">/* 말풍선 =============================================================== */
-.balloon-wrap { position:relative; display:inline-block; z-index:0;}
-.balloon-wrap:hover { z-index:1; }
-.balloon-wrap .balloon { position:absolute; visibility:hidden; padding:10px; top:calc(100% + 5px); left:0; background:#aaa; white-space:nowrap; opacity:0; transition:opacity .3s, visibility .3s; }
-.balloon-wrap .balloon.center { transform:translate3d(-50%, 0, 0); margin-left:50%; }
-.balloon-wrap .balloon.center:after { left:50%; margin-left:-5px; }
-.balloon-wrap .balloon.top { top:auto; bottom:calc(100% + 5px); }
-.balloon-wrap .balloon.top:after { top:auto; bottom:-10px; transform:rotate(180deg); }
-.balloon-wrap .balloon.right { top:50%; left:calc(100% + 10px); transform:translate3d(0, -50%, 0); }
-.balloon-wrap .balloon.right:after { top:50%; left:-10px; margin-top:-5px; transform:rotate(-90deg); }
-.balloon-wrap .balloon.left { top:50%; left:auto; right:calc(100% + 10px); transform:translate3d(0, -50%, 0); }
-.balloon-wrap .balloon.left:after { top:50%; left:auto; right:-10px; margin-top:-5px; transform:rotate(90deg); }
-.balloon-wrap.on .balloon,
-.balloon-wrap:not(.click) .btn-bln:hover + .balloon { visibility:visible; opacity:1; }
-.balloon-wrap .balloon:after { content:''; position:absolute; width:0; height:0; top:-10px; left:5px; border:5px solid transparent; border-bottom-color:#aaa; }
+.bln-wrap { position:relative; display:inline-block; z-index:0;}
+.bln-wrap:hover { z-index:1; }
+.bln-wrap .bln { position:absolute; visibility:hidden; padding:10px; top:calc(100% + 5px); left:0; background:#aaa; white-space:nowrap; opacity:0; transition:opacity .3s, visibility .3s; }
+.bln-wrap .bln.center { transform:translate3d(-50%, 0, 0); margin-left:50%; }
+.bln-wrap .bln.center:after { left:50%; margin-left:-5px; }
+.bln-wrap .bln.align-r { left:auto; right:0; }
+.bln-wrap .bln.align-r:after { left:auto; right:5px; }
+.bln-wrap .bln.top { top:auto; bottom:calc(100% + 5px); }
+.bln-wrap .bln.top:after { top:auto; bottom:-10px; transform:rotate(180deg); }
+.bln-wrap .bln.right { top:50%; left:calc(100% + 10px); transform:translate3d(0, -50%, 0); }
+.bln-wrap .bln.right:after { top:50%; left:-10px; margin-top:-5px; transform:rotate(-90deg); }
+.bln-wrap .bln.left { top:50%; left:auto; right:calc(100% + 10px); transform:translate3d(0, -50%, 0); }
+.bln-wrap .bln.left:after { top:50%; left:auto; right:-10px; margin-top:-5px; transform:rotate(90deg); }
+.bln-wrap.on .bln,
+.bln-wrap:not(.click) .btn-bln:hover + .bln { visibility:visible; opacity:1; }
+.bln-wrap .bln:after { content:''; position:absolute; width:0; height:0; top:-10px; left:5px; border:5px solid transparent; border-bottom-color:#aaa; }
 </code></pre>
 			</div>
 
@@ -58,55 +60,63 @@
 				<h4 class="guide-sstit">기본형</h4>
 				<p>스타일은 css 에서 별도 설정</p>
 				<p>기본 - 버튼 좌측 기준 하단으로 정렬되어 표출</p>
-				<p>balloon 에 추가클래스 (top / center / left / right) 추가로 위치 변경 가능<br> (* center 와 top 은 중복사용 가능)</p>
+				<p>bln 에 추가클래스 (top / center / left / right) 추가로 위치 변경 가능<br> (* center 와 top 은 중복사용 가능)</p>
 				<p>기타 위치의 경우 css 로 직접 제어</p>
 				<p>** 버튼영역은 반드시 a / button 태그일 필요는 없음. p, div, span 등 기타 클래스 가능 <br>단, 'btn-bln' 클래스 필수</p>
 				<div class="guide-show">
 				<!-- 코드 작성 -->
-					<div class="balloon-wrap">
-						<button type="button" class="btn-bln btn small"><span>버튼_기본</span></button>
-						<div class="balloon">
+					<div class="bln-wrap">
+						<button type="button" class="btn-bln btn small">버튼_기본</button>
+						<div class="bln">
 							<div class="cnt">
 								말풍선 내용이 들어가는 영역입니다.
 							</div>
 						</div>
 					</div>
-					<div class="balloon-wrap">
-						<button type="button" class="btn-bln btn small"><span>버튼_center</span></button>
-						<div class="balloon center">
+					<div class="bln-wrap">
+						<button type="button" class="btn-bln btn small">버튼_center</button>
+						<div class="bln center">
 							<div class="cnt">
 								말풍선 내용이 들어가는 영역입니다.
 							</div>
 						</div>
 					</div>
-					<div class="balloon-wrap">
-						<button type="button" class="btn-bln btn small"><span>버튼_top</span></button>
-						<div class="balloon top">
+					<div class="bln-wrap">
+						<button type="button" class="btn-bln btn small">버튼_align-r</button>
+						<div class="bln align-r">
+							<div class="cnt">
+								말풍선 내용이 들어가는 영역입니다.
+							</div>
+						</div>
+					</div>
+					<div class="bln-wrap">
+						<button type="button" class="btn-bln btn small">버튼_top</button>
+						<div class="bln top">
 							<div class="cnt">
 								말풍선 내용이 들어가는 영역입니다.
 							</div>
 						</div>
 					</div>					
-					<div class="balloon-wrap">
-						<button type="button" class="btn-bln btn small"><span>버튼_top + center</span></button>
-						<div class="balloon center top">
+					<div class="bln-wrap">
+						<button type="button" class="btn-bln btn small">버튼_top + center</button>
+						<div class="bln center top">
 							<div class="cnt">
 								말풍선 내용이 들어가는 영역입니다.
 							</div>
 						</div>
 					</div>
 
-					<div class="balloon-wrap">
-						<button type="button" class="btn-bln btn small"><span>버튼_right</span></button>
-						<div class="balloon right">
+					<div class="bln-wrap">
+						<button type="button" class="btn-bln btn small">버튼_right</button>
+						<div class="bln right">
 							<div class="cnt">
 								말풍선 내용이 들어가는 영역입니다.
 							</div>
 						</div>
 					</div>
-					<div class="balloon-wrap">
-						<button type="button" class="btn-bln btn small"><span>버튼_left</span></button>
-						<div class="balloon left">
+					<div class="bln-wrap">
+						<button type="button" class="btn-bln btn small">버튼_left</button>
+						<div class="bln left">
 							<div class="cnt">
 								말풍선 내용이 들어가는 영역입니다.
 							</div>
@@ -114,9 +124,9 @@
 					</div>
 				<!-- // 코드 작성 -->
 				</div>
-<pre><code class="html">&lt;div class="balloon-wrap"&gt;
-	&lt;button type="button" class="btn-bln"&gt;&lt;span&gt;버튼&lt;/span&gt;&lt;/button&gt;
-	&lt;div class="balloon"&gt; &lt;!-- center / top / left / right 클래스 지정 영역 --&gt;
+<pre><code class="html">&lt;div class="bln-wrap"&gt;
+	&lt;button type="button" class="btn-bln"&gt;버튼&lt;/button&gt;
+	&lt;div class="bln"&gt; &lt;!-- center / top / left / right 클래스 지정 영역 --&gt;
 		&lt;div class="cnt"&gt;
 			말풍선 내용이 들어가는 영역입니다.
 		&lt;/div&gt;
@@ -125,14 +135,14 @@
 </code></pre>
 				<h4 class="guide-sstit">클릭형</h4>
 				<p>기본형에 'click' 클래스 추가 ( hover 기능 작동 X )</p>
-				<p>balloon 에 추가클래스 (top / center / left / right) 추가로 위치 변경 가능<br> (* center 와 top 은 중복사용 가능)</p>
-				<p>btn-bln 클릭 시 'balloon-wrap 에 'on' 클래스 토글 기능이 common.js 에 포함되어 있음. (nBalloonTgl 함수)</p>
+				<p>bln 에 추가클래스 (top / center / left / right) 추가로 위치 변경 가능<br> (* center 와 top 은 중복사용 가능)</p>
+				<p>btn-bln 클릭 시 'bln-wrap 에 'on' 클래스 토글 기능이 common.js 에 포함되어 있음. (nBalloonTgl 함수)</p>
 				<p>btn-bln-close 버튼은 닫기 기능용 - 추가옵션으로 없어도 무관함</p>
 				<div class="guide-show">
 				<!-- 코드 작성 -->
-					<div class="balloon-wrap click">
-						<button type="button" class="btn-bln btn small"><span>버튼</span></button>
-						<div class="balloon">
+					<div class="bln-wrap click">
+						<button type="button" class="btn-bln btn small">버튼</button>
+						<div class="bln">
 							<div class="cnt">
 								말풍선 내용이 들어가는 영역입니다.
 							</div>
@@ -141,9 +151,9 @@
 					</div>
 				<!-- // 코드 작성 -->
 				</div>
-<pre><code class="html">&lt;div class="balloon-wrap click"&gt;
-	&lt;button type="button" class="btn-bln"&gt;&lt;span&gt;버튼&lt;/span&gt;&lt;/button&gt;
-	&lt;div class="balloon"&gt;
+<pre><code class="html">&lt;div class="bln-wrap click"&gt;
+	&lt;button type="button" class="btn-bln"&gt;버튼&lt;/button&gt;
+	&lt;div class="bln"&gt;
 		&lt;div class="cnt"&gt;
 			말풍선 내용이 들어가는 영역입니다.
 		&lt;/div&gt;
@@ -152,12 +162,14 @@
 &lt;/div&gt;
 </code></pre> <br>
 <pre><code class="js">// 특정 말풍선 1개 실행
-nBalloonTgl('.balloon-wrap.click');
+nBalloonTgl('.bln-wrap.click');
 
 // 페이지 내 다수 말풍선 공통적용
 nBalloonTgls('class 선택자');
 </code></pre>
-			<button type="button" class="btn medium btn-download">zip 다운로드</button>
+
+				<h4 class="guide-sstit">파일 다운로드</h4>
+				<button type="button" class="btn medium btn-download">zip 다운로드</button>
 			</div>
 
 		</section>
@@ -173,7 +185,7 @@ nBalloonTgls('class 선택자');
 <script>
 	hljs.initHighlightingOnLoad(); 
 	
-	nBalloonTgl('.balloon-wrap.click');
+	nBalloonTgl('.bln-wrap.click');
 
 	function urlToPromise(url) {
 		return new Promise(function (resolve, reject) {
@@ -190,7 +202,7 @@ nBalloonTgls('class 선택자');
 	var zipBtn = document.querySelector('.btn-download');
 	zipBtn.addEventListener('click', function(){
 		var zip = new JSZip();
-		zip.file('html/balloon.html', urlToPromise('../html/balloon.html'), { binary: true });
+		zip.file('html/balloon.html', urlToPromise('../02_template/balloon.html'), { binary: true });
 		zip.file('css/layout.css', urlToPromise('../css/layout.css'), { binary: true });
 		zip.file('js/common.js', urlToPromise('../js/common.js'), { binary: true });
 		console.log(zip);

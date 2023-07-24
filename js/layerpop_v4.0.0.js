@@ -123,7 +123,7 @@ function nlayerAlert(ment, title, active, btn) {
 		layerCnt += '<div class="layer-mid">';
 		layerCnt += '<p class="ment">'+ment+'</p>';
 		layerCnt += '<div class="btn-group">';
-		layerCnt += '<button type="button" class="btn close-layer"><span>'+btnTx+'</span></button>';
+		layerCnt += '<button type="button" class="btn medium close-layer">'+btnTx+'</button>';
 		layerCnt += '</div></div></div></div></div>';
 
 	body.insertAdjacentHTML('beforeend', layerCnt);
@@ -141,10 +141,10 @@ function nlayerAlert(ment, title, active, btn) {
 }
 
 /* 컨펌 기능 =========================================================================================================
-nlayerAlert('내용', 확인 시 실행할 함수, '타이틀', '취소버튼 텍스트', '확인버튼 텍스트');
+nlayerAlert('내용', '타이틀', '확인 시 실행할 함수, '취소버튼 텍스트', '확인버튼 텍스트');
 - 내용은 필수
 */
-function nlayerConfirm(ment, active, title, btn1, btn2) {
+function nlayerConfirm(ment, title, active, btn1, btn2) {
 	var body = document.querySelector('body');
 
 	var btnCancel = btn1 == null ? '취소' : btn1,
@@ -159,8 +159,8 @@ function nlayerConfirm(ment, active, title, btn1, btn2) {
 		layerCnt += '<div class="layer-mid">';
 		layerCnt += '<p class="ment">'+ment+'</p>';
 		layerCnt += '<div class="btn-group">';
-		layerCnt += '<button type="button" class="btn close-layer"><span>'+ btnCancel +'</span></button>';
-		layerCnt += '<button type="button" class="btn close-layer btn-ok"><span>'+ btnOk +'</span></button>';
+		layerCnt += '<button type="button" class="btn medium close-layer">'+ btnCancel +'</button>';
+		layerCnt += '<button type="button" class="btn medium red close-layer btn-ok">'+ btnOk +'</button>';
 		layerCnt += '</div></div></div></div></div>';
 
 	body.insertAdjacentHTML('beforeend', layerCnt);

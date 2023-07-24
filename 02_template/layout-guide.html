@@ -46,107 +46,72 @@
 			<h2 class="guide-sec-tit">Layout</h2>
 
 			<div class="guide-sec">
-				<h3 class="guide-stit">가로형</h3>
-				<p>가로 1000px 기준 (기준 변경 시 CSS 수정)</p>
-				<p>height 100% 설정 - footer 가 항상 브라우저 하단에.</p>
-				<p>가로 100% 일 경우 #wrap 에 full 클래스 추가</p>
+				<h3 class="guide-stit">기본형 (GNB 상단)</h3>
+				<p>가로 1000px 기준 (기준 변경 시 '--cnt-width' 변수 수정)</p>
+				<p>flex를 통한 height 100% 설정 - footer 가 항상 브라우저 하단에.</p>
 				<a href="layout-ver.html" class="guide-link">예시화면</a>
 <pre><code class="html">&lt;div id="wrap"&gt;
-&lt;!-- &lt;div id="wrap" class="full"&gt; 가로 100%일 경우 --&gt;
 	&lt;header id="top"&gt;
 		&lt;div class="top-menu"&gt;
 			최 상단 메뉴
 		&lt;/div&gt;
-		&lt;div class="gnb-wrap"&gt;
+		&lt;nav class="gnb-wrap"&gt;
 			&lt;h1 class="logo"&gt;LOGO&lt;/h1&gt;
 			&lt;div class="gnb-menu"&gt;
 				GNB 영역
 			&lt;/div&gt;
-		&lt;/div&gt;
+		&lt;/nav&gt;
 		&lt;div class="all-menu"&gt;
 			전체 메뉴 보기 영역
 		&lt;/div&gt;
 	&lt;/header&gt;
 
-	&lt;div id="mid"&gt;
-		&lt;div class="contents"&gt;
+	&lt;main id="mid"&gt;
+		&lt;section class="{임의클래스}__cnt"&gt;
 			컨텐츠 영역
-		&lt;/div&gt;
-	&lt;/div&gt;
+		&lt;/section&gt;
+	&lt;/main&gt;
 
-	&lt;div id="btm"&gt;
+	&lt;footer id="btm"&gt;
 		footer 컨텐츠
-	&lt;/div&gt;
+	&lt;/footer&gt;
 &lt;/div&gt;
 </code></pre>
 			</div>
 
 			<div class="guide-sec">
-				<h3 class="guide-stit">세로형</h3>
-				<p>#wrap 에 layout-hor 클래스 추가</p>
-				<p>height 100% 설정 - footer 가 항상 브라우저 하단에.</p>
-				<a href="layout-hor.html" class="guide-link">예시화면</a>
-<pre><code class="html">&lt;div id="wrap" class="layout-hor"&gt;
-	&lt;header id="top"&gt;
-		&lt;div class="top-menu"&gt;
-			최 상단 메뉴
-		&lt;/div&gt;
-	&lt;/header&gt;
-
-	&lt;div id="mid"&gt;
-		&lt;div class="contents"&gt;
-			&lt;aside class="side-wrap"&gt;
-				사이드 메뉴 영역
-			&lt;/aside&gt;
-			&lt;div class="cnt-wrap"&gt;
-				컨텐츠 영역
-			&lt;/div&gt;
-		&lt;/div&gt;
-	&lt;/div&gt;
-
-	&lt;div id="btm"&gt;
-		footer 컨텐츠
-	&lt;/div&gt;
-&lt;/div&gt;
-</code></pre>
-			</div>
-
-			<div class="guide-sec">
-				<h3 class="guide-stit">가로+세로형</h3>
-				<p>가로 1000px 기준 (기준 변경 시 CSS 수정)</p>
-				<p>height 100% 설정 - footer 가 항상 브라우저 하단에.</p>
-				<p>가로 100% 일 경우 #wrap 에 full 클래스 추가</p>
+				<h3 class="guide-stit">LNB 추가형</h3>
+				<p>가로 1000px 기준 (기준 변경 시 '--cnt-width' 변수 수정)</p>
+				<p>LNB 영역 sticky 기능 필요 시 side-wrap 내부에 추가 태그로 한번 더 감싸준 후 설정</p>
 				<a href="layout-mix.html" class="guide-link">예시화면</a>
 <pre><code class="html">&lt;div id="wrap"&gt;
 	&lt;header id="top"&gt;
 		&lt;div class="top-menu"&gt;
 			최 상단 메뉴
 		&lt;/div&gt;
-		&lt;div class="gnb-wrap"&gt;
+		&lt;nav class="gnb-wrap"&gt;
 			&lt;h1 class="logo"&gt;LOGO&lt;/h1&gt;
 			&lt;div class="gnb-menu"&gt;
 				GNB 영역
 			&lt;/div&gt;
-		&lt;/div&gt;
+		&lt;/nav&gt;
 		&lt;div class="all-menu"&gt;
 			전체 메뉴 보기 영역
 		&lt;/div&gt;
 	&lt;/header&gt;
 
-	&lt;div id="mid"&gt;
-		&lt;div class="contents"&gt;
-			&lt;aside class="side-wrap"&gt;
-				사이드 메뉴 영역
-			&lt;/aside&gt;
-			&lt;div class="cnt-wrap"&gt;
-				컨텐츠 영역
-			&lt;/div&gt;
+	&lt;main id="mid"&gt;
+		&lt;aside class="side-wrap"&gt;
+			사이드 메뉴 영역
+		&lt;/aside&gt;
+		&lt;div class="cnt-wrap"&gt;
+			컨텐츠 영역
 		&lt;/div&gt;
-	&lt;/div&gt;
+	&lt;/main&gt;
 
-	&lt;div id="btm"&gt;
+	&lt;footer id="btm"&gt;
 		footer 컨텐츠
-	&lt;/div&gt;
+	&lt;/footer&gt;
 &lt;/div&gt;
 </code></pre>
 			</div>

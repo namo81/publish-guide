@@ -117,7 +117,8 @@
 				<ul>
 					<li>- 크롬 : 최신버전</li>
 					<li>- 파이어폭스 : 최신버전</li>
-					<li>- IE11 이상 (요청 시 IE9 까지 가능)</li>
+					<li>- IE Edge</li>
+					<li>- 요청 시 : IE11 까지</li>
 				</ul>
 			</div>
 
@@ -133,21 +134,21 @@
 			<div class="guide-sec">
 				<h3 class="guide-stit">js 리스트</h3>
 				<h4 class="guide-sstit">라이브러리</h4>
-				<p>- <strong>jquery-3.2.1.min.js</strong> - 기본 Jquery</p>
+				<p>- <strong>jquery-3.2.1.min.js</strong> - (3.2 이상 버전 사용 무관)</p>
 				<h4 class="guide-sstit">자체 제작 Plug-in</h4>
 				<ul>
-					<li>- <strong>gnbmenu_v1.0.js</strong> - gnb 및 lnb 기능</li>
+					<li>- <strong class="tx-red">common.js</strong> - 공통 js ( 공용함수 / tabmenu 기능 / toggle 기능 / 말풍선 기능 )</li>
+					<li>- <strong>gnbmenu_v2.0.js</strong> - gnb 및 lnb 기능</li>
 					<li>- <strong>layerpop_v4.0.0.js</strong> - 레이어 팝업 기능</li>
-					<li>- <strong>inpdesign_v2.0.0.js</strong> - checkbox / radio / select / file - 디자인 적용</li>
+					<li>- <strong>inpdesign_v2.0.0.js</strong> - select 디자인 적용 / file 디자인적용 / input + del 버튼 구조</li>
 					<li>- <strong>nCalendar_v2.2.0.js</strong> - 달력 - 기본형</li>
 					<li>- <strong>nCalendarWeek_v2.0.0.js</strong> - 달력 - 주간</li>
 					<li>- <strong>nCalendarPage_v2.0.0.js</strong> - 달력 - 페이지 고정형</li>
 					<li>- <strong>nCalendarRange_v2.1.0.js</strong> - 달력 - 기간설정</li>
 					<li>- <strong>nDragnDrop_v1.0.0.js</strong> - Drag N Drop 기능</li>
 					<li>- <strong>nTimePicker_v1.0.0.js</strong> - 시간 - timepicker</li>
-					<li>- <strong>common.js</strong> - 공통 js ( gnb 및 lnb 적용 / tabmenu 기능 / toggle 기능 / 말풍선 기능 )</li>
 				</ul>				
-				<h4 class="guide-sstit">외부 Plug-in</h4>
+				<h4 class="guide-sstit">외부 Plug-in (IE미지원사 사용X)</h4>
 				<ul>
 					<li>- <strong>html5shiv.js</strong> - IE 호환성(IE9 이하 지원시)</li>
 					<li>- <strong>placeholder.js</strong> - placeholder - ie7 까지 지원</li>
@@ -180,219 +181,6 @@
 			</div>
 		</section>
 
-		<!-- Tab 메뉴 ================================================================ -->
-		<section id="guide-tab">
-			<h2 class="guide-sec-tit">Tab 메뉴</h2>
-			<div class="guide-sec">
-				<h3 class="guide-stit">메뉴만</h3>
-				<p>기본형 탭 메뉴.</p>
-				<p>3개 ~ 5개 까지 class 를 통해 설정가능 (count3 ~ count5)</p>
-				<div class="guide-show">
-					<div class="tab-menu">
-						<ul>
-							<li class="on"><a href="#tab-cnt1">탭메뉴 1</a></li>
-							<li><a href="#tab-cnt2">탭메뉴 2</a></li>
-						</ul>
-					</div>
-					<div class="tab-menu count4">
-						<ul>
-							<li class="on"><a href="#tab-cnt1">탭메뉴 1</a></li>
-							<li><a href="#tab-cnt2">탭메뉴 2</a></li>
-							<li><a href="#tab-cnt2">탭메뉴 3</a></li>
-							<li><a href="#tab-cnt2">탭메뉴 4</a></li>
-						</ul>
-					</div>
-				</div>
-<pre><code class="html">&lt;div class="tab-menu count3"&gt;
-	&lt;ul&gt;
-		&lt;li class="on"&gt;&lt;a href="#tab-cnt1"&gt;탭메뉴 1&lt;/a&gt;&lt;/li&gt;
-		&lt;li&gt;&lt;a href="#tab-cnt2"&gt;탭메뉴 2&lt;/a&gt;&lt;/li&gt;
-		&lt;li&gt;&lt;a href="#tab-cnt3"&gt;탭메뉴 3&lt;/a&gt;&lt;/li&gt;
-	&lt;/ul&gt;
-&lt;/div&gt;
-&lt;div class="tab-menu count4"&gt;
-	&lt;ul&gt;
-		&lt;li class="on"&gt;&lt;a href="#tab-cnt1"&gt;탭메뉴 1&lt;/a&gt;&lt;/li&gt;
-		&lt;li&gt;&lt;a href="#tab-cnt2"&gt;탭메뉴 2&lt;/a&gt;&lt;/li&gt;
-		&lt;li&gt;&lt;a href="#tab-cnt2"&gt;탭메뉴 3&lt;/a&gt;&lt;/li&gt;
-		&lt;li&gt;&lt;a href="#tab-cnt2"&gt;탭메뉴 4&lt;/a&gt;&lt;/li&gt;
-	&lt;/ul&gt;
-&lt;/div&gt;
-</code></pre>
-			</div>
-
-			<div class="guide-sec">
-				<h3 class="guide-stit">컨텐츠 포함</h3>
-				<p>컨텐츠와 묶어서 사용할 경우</p>
-				<p>탭메뉴 버튼의 href 값을 통해 해당 컨텐츠 hide / show</p>
-				<p>탭메뉴의 갯수와 컨텐츠 갯수는 일치시켜야 함.</p>
-				<div class="guide-show">
-					<div class="tab-wrap">
-						<div class="tab-menu count3">
-							<ul>
-								<li class="on"><a href="#tab-cnt1">탭메뉴 1</a></li>
-								<li><a href="#tab-cnt2">탭메뉴 2</a></li>
-								<li><a href="#tab-cnt3">탭메뉴 3</a></li>
-							</ul>
-						</div>
-
-						<!-- 탭 컨텐츠 1 -->
-						<div class="tab-cnt" id="tab-cnt1">
-							탭 컨텐츠 111
-						</div>
-
-						<!-- 탭 컨텐츠 2 -->
-						<div class="tab-cnt" id="tab-cnt2">
-							탭 컨텐츠 222
-						</div>
-
-						<!-- 탭 컨텐츠 3 -->
-						<div class="tab-cnt" id="tab-cnt3">
-							탭 컨텐츠 333
-						</div>
-					</div>
-				</div>
-<pre><code class="html">&lt;div class="tab-wrap"&gt;
-	&lt;div class="tab-menu count3"&gt;
-		&lt;ul&gt;
-			&lt;li class="on"&gt;&lt;a href="#tab-cnt1"&gt;탭메뉴 1&lt;/a&gt;&lt;/li&gt;
-			&lt;li&gt;&lt;a href="#tab-cnt2"&gt;탭메뉴 2&lt;/a&gt;&lt;/li&gt;
-			&lt;li&gt;&lt;a href="#tab-cnt3"&gt;탭메뉴 3&lt;/a&gt;&lt;/li&gt;
-		&lt;/ul&gt;
-	&lt;/div&gt;
-
-	&lt;!-- 탭 컨텐츠 1 --&gt;
-	&lt;div class="tab-cnt" id="tab-cnt1"&gt;
-		탭 컨텐츠 111
-	&lt;/div&gt;
-
-	&lt;!-- 탭 컨텐츠 2 --&gt;
-	&lt;div class="tab-cnt" id="tab-cnt2"&gt;
-		탭 컨텐츠 222
-	&lt;/div&gt;
-
-	&lt;!-- 탭 컨텐츠 3 --&gt;
-	&lt;div class="tab-cnt" id="tab-cnt3"&gt;
-		탭 컨텐츠 333
-	&lt;/div&gt;
-&lt;/div&gt;
-</code></pre>
-			</div>
-		</section>
-
-		<!-- toggle 컨텐츠 ================================================================ -->
-		<section id="guide-toggle">
-			<h2 class="guide-sec-tit">toggle 컨텐츠</h2>
-			<div class="guide-sec">
-				<h3 class="guide-stit">단독형</h3>
-				<p>버튼인 'btn-tgl' + 컨텐츠인 'tgl-cnt' 구조.</p>
-				<p>버튼 클릭시 버튼에 'on' 클래스가 토글 됨.</p>
-				<p>버튼에 'on' 클래스 있을 경우 해당 컨텐츠 show.</p>
-				<div class="guide-show">
-					<button type="button" class="btn-tgl btn-s"><span>토글 버튼 - 단독</span></button>
-					<div class="tgl-cnt">
-						토글 컨텐츠 영역
-					</div>
-				</div>
-<pre><code class="html">&lt;button type="button" class="btn-tgl btn-s"&gt;&lt;span&gt;토글 버튼 - 단독&lt;/span&gt;&lt;/button&gt;
-&lt;div class="tgl-cnt"&gt;
-	토글 컨텐츠 영역
-&lt;/div&gt;
-</code></pre>
-			</div>			
-			<div class="guide-sec">
-				<h3 class="guide-stit">리스트 타입</h3>
-				<div class="guide-show">
-					<div class="tgl-wrap">
-						<ul>
-							<li>
-								<button type="button" class="btn-tgl"><span>토글 버튼1</span></button>
-								<div class="tgl-cnt">
-									토글 컨텐츠 영역1
-								</div>
-							</li>
-							<li>
-								<button type="button" class="btn-tgl"><span>토글 버튼2</span></button>
-								<div class="tgl-cnt">
-									토글 컨텐츠 영역2
-								</div>
-							</li>
-							<li>
-								<button type="button" class="btn-tgl on"><span>토글 버튼3</span></button>
-								<div class="tgl-cnt">
-									토글 컨텐츠 영역3
-								</div>
-							</li>
-							<li>
-								<button type="button" class="btn-tgl"><span>토글 버튼4</span></button>
-								<div class="tgl-cnt">
-									토글 컨텐츠 영역4
-								</div>
-							</li>
-						</ul>
-					</div>
-				</div>
-<pre><code class="html">&lt;div class="tgl-wrap"&gt;
-	&lt;ul&gt;
-		&lt;li&gt;
-			&lt;button type="button" class="btn-tgl"&gt;&lt;span&gt;토글 버튼1&lt;/span&gt;&lt;/button&gt;
-			&lt;div class="tgl-cnt"&gt;
-				토글 컨텐츠 영역1
-			&lt;/div&gt;
-		&lt;/li&gt;
-		&lt;li&gt;
-			&lt;button type="button" class="btn-tgl"&gt;&lt;span&gt;토글 버튼2&lt;/span&gt;&lt;/button&gt;
-			&lt;div class="tgl-cnt"&gt;
-				토글 컨텐츠 영역2
-			&lt;/div&gt;
-		&lt;/li&gt;
-		&lt;li&gt;
-			&lt;button type="button" class="btn-tgl on"&gt;&lt;span&gt;토글 버튼3&lt;/span&gt;&lt;/button&gt;
-			&lt;div class="tgl-cnt"&gt;
-				토글 컨텐츠 영역3
-			&lt;/div&gt;
-		&lt;/li&gt;
-		&lt;li&gt;
-			&lt;button type="button" class="btn-tgl"&gt;&lt;span&gt;토글 버튼4&lt;/span&gt;&lt;/button&gt;
-			&lt;div class="tgl-cnt"&gt;
-				토글 컨텐츠 영역4
-			&lt;/div&gt;
-		&lt;/li&gt;
-	&lt;/ul&gt;
-&lt;/div&gt;
-</code></pre>
-			</div>
-		</section>
-
-		<!-- etc ================================================================ -->
-		<section id="guide-etc">
-			<h2 class="guide-sec-tit">etc</h2>
-			<div class="guide-sec">
-				<h3 class="guide-stit">말풍선</h3>
-				<p>버튼(btn-balloon) + 말풍선 컨텐츠(cnt-balloon) 구조</p>
-				<p>컨텐츠는 버튼 하단에 맞추어 자동으로 조정</p>
-				<p>버튼의 속성값 중 data-top / data-left 값을 추가하면 컨텐츠 위치 조정됨.</p>
-				<p>말풍선 위쪽 화살표는 after 요소에 border 로 생성. 디자인 변경시 CSS 수정 및 제거.</p>
-				
-				<div class="guide-show">
-					<button type="button" class="btn-balloon btn-s btn-white" data-top="10" data-left="0"><span>말풍선 띄우기</span></button>
-					<div class="cnt-balloon">
-						<div class="cnt">
-							말풍선 내용 입니다.
-						</div>
-						<button type="button" class="btn-balloon-close">말풍선 닫기</button>
-					</div>
-				</div>
-<pre><code class="html">&lt;button type="button" class="btn-balloon btn-s btn-white" data-top="10" data-left="0"&gt;&lt;span&gt;말풍선 띄우기&lt;/span&gt;&lt;/button&gt;
-&lt;div class="cnt-balloon"&gt;
-	&lt;div class="cnt"&gt;
-		말풍선 내용 입니다.
-	&lt;/div&gt;
-	&lt;button type="button" class="btn-balloon-close"&gt;말풍선 닫기&lt;/button&gt;
-&lt;/div&gt;
-</code></pre>
-			</div>
-		</section>
 
 	</div>
 	<a href="#work-list" class="guide-top">Top</a>	

@@ -12,15 +12,15 @@ function nGnb(selector){
 
 function nGnbSet(Ele){
 	var gnbWrap		= Ele,
-		dep1		= gnbWrap.querySelectorAll('.dep1 > li > a'),
-		dep1Li		= gnbWrap.querySelectorAll('.dep1 > li'),
-		dep2		= gnbWrap.querySelectorAll('.dep2 > li > a');
+		dep1Li		= gnbWrap.querySelectorAll('.depth1 > li'),
+		dep1		= gnbWrap.querySelectorAll('.depth1 > li > a'),
+		dep2		= gnbWrap.querySelectorAll('.depth2 > li > a');
 
 	// 2dep 마지막 li 에 last 클래스 추가
 	for(i=0; i<dep1Li.length; i++){
-		var dep2Li		= dep1Li[i].querySelectorAll('.dep2 > li'),
+		var dep2Li		= dep1Li[i].querySelectorAll('.depth2 > li'),
 			dep2Len		= dep2Li.length;
-		if(dep2Len > 0)	funcAddClass(dep2Li[dep2Len - 1], 'last');
+		if(dep2Len > 0)	dep2Li[dep2Len - 1].classList.add('last');
 	}
 
 	var dep1Focus = function(event){
@@ -29,11 +29,11 @@ function nGnbSet(Ele){
 			key = event.keyCode || event.which;
 		
 		if(dep2 != null) {
-			if(event.type == 'focus') funcAddClass(btn.parentElement, 'show');
-			if(event.type == 'mouseleave') funcRemoveClass(btn.parentElement, 'show');
-			if(key == 9 && event.shiftKey) funcRemoveClass(btn.parentElement, 'show');
+			if(event.type == 'focus') btn.parentElement.classList.add('show');
+			if(event.type == 'mouseleave') btn.parentElement.classList.remove('show');
+			if(key == 9 && event.shiftKey) btn.parentElement.classList.remove('show');
 		} else {
-			if(key == 9 && !event.shiftKey) funcRemoveClass(btn.parentElement, 'show');
+			if(key == 9 && !event.shiftKey) btn.parentElement.classList.remove('show');
 		}
 	}, dep2Focus = function(event){
 		var btn2 	= event.target,
@@ -41,7 +41,7 @@ function nGnbSet(Ele){
 			gParent = parent.parentNode.parentNode,
 			key		= event.keyCode || event.whick;
 		if(key == 9 && !event.shiftKey){
-			if(funcHasClass(parent, 'last')) funcRemoveClass(gParent, 'show');
+			if(parent.classList.contains('last')) gParent.classList.remove('show');
 		}
 	}
 
