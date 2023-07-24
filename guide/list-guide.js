@@ -1,11 +1,3 @@
-var clickEvt;
-try { // chrome / edge 용
-	clickEvt = new Event('click', { bubbles: true, cancelable: true });
-} catch (error) { // IE 용
-    clickEvt = document.createEvent('Event');
-    clickEvt.initEvent('click', true, true);
-}
-
 function getIndex( elm ){ 
     var c = elm.parentNode.children, i = 0;
     for(; i < c.length; i++ )
@@ -62,7 +54,6 @@ function guide_tblSet(tbl){
 
 	Array.prototype.forEach.call(trDivs, function(div){
 		divArr.push(div);
-		if(div.nextElementSibling.classList.contains('div')) div.querySelector('.btn-tr-tgl').disabled = true;
 	});
 
 	window.addEventListener('keydown', function(e){
@@ -105,11 +96,6 @@ function guide_tblSet(tbl){
 					btn.classList.contains('open') ? btn.classList.remove('open') : btn.classList.add('open');
 				}
 			});
-
-			// 미사용 화면 리스트 닫기
-			if(btn.parentNode.parentNode.classList.contains('notuse')) {
-				btn.dispatchEvent(clickEvt);
-			}
 		});
 	}
 
@@ -210,29 +196,6 @@ function guide_menuSet(num){
 	});
 }
 
-/* 관련사이트 기능 추가 : 불가 - 서버간 파일 로드 시 https 로 하여야 하는데 iis 는 추가 설정 필요
-function relatedFunc(area){
-	var wrap		= typeof area === 'string' ? document.querySelector(area) : area,
-		sel 		= wrap.querySelector('select'),
-		dataFile	= wrap.getAttribute('data-json'),
-		nowIP 		= document.location.href.split('//')[1].split(':')[0],
-		dataUrl 	= 'https://' + nowIP + ':11900/include/' + dataFile;
-	
-	var json = new XMLHttpRequest();
-	json.open("GET", dataUrl);
-	json.responseType = 'json';
-	json.send();
-
-	json.onload = function(){
-		var jsonData = json.response;
-		console.log(jsonData);
-	}
-	
-}
-relatedFunc('.related-links');
-*/
-
-// 조직도관련(가이드화면)
 window.onload = function(){
 	var body 		= document.querySelector('body'),
 		tbls 		= document.querySelectorAll('.list table');
@@ -244,6 +207,7 @@ window.onload = function(){
 			}
 		})
 	}
+	
 	
 	// 조직도 관련
 	var fldTree = document.querySelector('.folder-tree');

@@ -1,0 +1,5 @@
+/* svg 설정 */
+.namo { width:100%; }
+.name { fill:#ff00ff; }
+.name:hover { fill:#00ff00; }
+.name .name-1 { fill:#ff0000; }

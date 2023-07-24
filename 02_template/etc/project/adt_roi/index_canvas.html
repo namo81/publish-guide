@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+	<meta charset="UTF-8" >
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="user-scalable=yes, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, width=device-width">
+	<meta name="author" content="snamo - SK MNS" >
+	<meta name="description" content="">
+	<meta name="keywords" content="">
+	<meta property="og:type" content="website">
+	<meta property="og:title" content="">
+	<meta property="og:description" content="">
+	<meta property="og:image" content="">
+	<meta property="og:url" content="">
+
+	<script src="js/common.js"></script>
+
+	<title>canvas test</title>
+	<style type="text/css">
+		html,body,p,h1,h2,h3,h4,h5,h6,menu,ul,ol,li,dl,dt,dd,table,th,td,form,fieldset,legend,input,textarea,button,select,hr { margin:0;padding:0; }
+		body { background-color:#fff; font-size:0.75em; font-family:'돋움',Dotum,AppleGothic,sans-serif; }
+		input,textarea,select,button,table{ font-size:1em; }
+		img,fieldset,button{ border:0; }
+		img, input, select { vertical-align:middle; }
+		ul,ol { display:inline-block; list-style:none; }
+		em,address,i { font-style:normal; }
+		a { text-decoration:none; vertical-align:middle; }
+		a:hover,a:active,a:focus { text-decoration:none; }
+		button { display:inline-block;overflow:hidden;border:0;background:none;cursor:pointer; }
+		table{ border-collapse:collapse;border-spacing:0; width:100%; }
+		.hide { position:absolute; top:0; left:0; width:100%; height:100%; opacity:0; filter:alpha(opacity=0); zoom:1; text-indent:-9999px; z-index:0; overflow:hidden; }
+		caption { height: 1px; overflow: hidden; line-height: 0; margin-top: -1px; color: transparent; }
+		textarea { resize:none; vertical-align:middle; }
+
+		.board { position:relative; width:100%; height:100%; }
+		canvas { border:1px solid #666; }
+		.arrow { position:absolute; display:block; width:5px; height:5px; top:-1000px; }
+		.arrow > img { position:absolute; top:50%; left:50%; transform:translate(-50%, -50%); }
+		.arrow-dir { position:absolute; display:block; top:-1000px; }
+		.board .btn { position:absolute; top:5px; right:10px; }
+		.board .btn-reverse { right:70px; }
+
+		.btn { display:inline-block; margin-top:10px; padding:5px 10px; font-size:14px; line-height:1em; border:1px solid #666; border-radius:3px;}
+	</style>
+</head>
+<body>
+
+	<div id="wrap">
+		<div class="layer-pop">
+			<input type="text" placeholder="카메라명">
+			<div class="board">
+				<canvas id="artboard"></canvas>
+				<span class="arrow"><img src="images/arrow.png" alt=""></span>
+				<span class="arrow-dir">reverse[<i>0</i>]</span>
+				<button type="button" class="btn btn-set">삭제</button>
+				<button type="button" class="btn btn-reverse">방향 반대</button>
+			</div>
+
+			<div class="inp-area">
+				<button type="button">설정버튼</button>
+				<select name="" >
+					<option value="">값1</option>
+					<option value="">값1</option>
+					<option value="">값1</option>
+				</select>
+			</div>
+		</div>
+	</div>	
+	
+	<script>
+		window.onload = (function(){
+
+			var defaultArr = new Array([294,171], [449,180], [509,380], [262,547], 1), // 기존 데이터용 배열
+				valueArr 	= new Array(); // 최종 데이터용 배열;
+			//var defaultArr = new Array();
+
+			function cameraBoxSet(target){
+				// 전체 공통 변수
+				var wrap		= document.querySelector(target),
+					canvasWrap	= wrap.querySelector('.board'),
+					canvas		= canvasWrap.querySelector("#artboard"),
+					num			= 0,
+					maxNum		= 7,
+					ctx			= canvas.getContext('2d'),
+					pointArr 	= new Array();
+
+				canvas.width = 800;
+				canvas.height = 600;
+
+				// 캔버스 점/라인 생성 실행함수 - 0 ~ 8번의 클릭회수에 따른 함수 실행
+				function drawCanvas(e){ 
+					var posX = e.layerX,
+						posY = e.layerY;
+					
+					if(num > 0) {
+					 	drawLine(posX, posY);
+					 }
+					drawDot(posX, posY);
+					pointArr[num] = new Array();
+					pointArr[num][0] = posX;
+					pointArr[num][1] = posY;
+					num++;
+					document.addEventListener('keydown', keyCheck);
+				}
+				
+				// 점 그리기 함수
+				function drawDot(pX, pY){ 
+					ctx.save();
+					ctx.beginPath();
+					ctx.arc(pX, pY, 3, 0, 2 * Math.PI);
+					ctx.fillStyle = '#ff0000';
+					ctx.fill();
+				}
+
+				// 선 그리기 함수	
+				function drawLine(pX, pY){
+					ctx.save();
+					ctx.beginPath();
+					ctx.moveTo(pointArr[num - 1][0], pointArr[num - 1][1]);
+					ctx.lineTo(pX, pY);
+					ctx.stroke();
+				}
+
+				// box 그리기 함수
+				function drawBox(){
+					var arrLen = pointArr.length;
+					ctx.beginPath();
+					ctx.moveTo(pointArr[0][0], pointArr[0][1]);
+					for(var i=1; i<arrLen; i++){
+						ctx.lineTo(pointArr[i][0], pointArr[i][1]);
+					}
+					ctx.fillStyle = '#000000';
+					ctx.fill();
+				}
+
+				function keyCheck(e){ // esc 키 관련 함수
+					if (e.keyCode == 27) {
+						drawBox();
+						canvas.removeEventListener('click',drawCanvas);
+					}
+				}
+
+				canvas.addEventListener('click',drawCanvas);
+			}
+
+			cameraBoxSet('.layer-pop');
+		});
+	</script>
+
+</body>
+</html>

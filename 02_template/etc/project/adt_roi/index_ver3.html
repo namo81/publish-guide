@@ -1,0 +1,698 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+	<meta charset="UTF-8" >
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="user-scalable=yes, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, width=device-width">
+	<meta name="author" content="snamo - SK MNS" >
+	<meta name="description" content="">
+	<meta name="keywords" content="">
+	<meta property="og:type" content="website">
+	<meta property="og:title" content="">
+	<meta property="og:description" content="">
+	<meta property="og:image" content="">
+	<meta property="og:url" content="">
+
+	<script src="js/common.js"></script>
+
+	<title>svg test</title>
+	<style type="text/css">
+		html,body,p,h1,h2,h3,h4,h5,h6,menu,ul,ol,li,dl,dt,dd,table,th,td,form,fieldset,legend,input,textarea,button,select,hr { margin:0;padding:0; }
+		body { background-color:#fff; font-size:0.75em; font-family:'돋움',Dotum,AppleGothic,sans-serif; }
+		input,textarea,select,button,table{ font-size:1em; }
+		img,fieldset,button{ border:0; }
+		img, input, select { vertical-align:middle; }
+		ul,ol { display:inline-block; list-style:none; }
+		em,address,i { font-style:normal; }
+		a { text-decoration:none; vertical-align:middle; }
+		a:hover,a:active,a:focus { text-decoration:none; }
+		button { display:inline-block;overflow:hidden;border:0;background:none;cursor:pointer; }
+		table{ border-collapse:collapse;border-spacing:0; width:100%; }
+		.hide { position:absolute; top:0; left:0; width:100%; height:100%; opacity:0; filter:alpha(opacity=0); zoom:1; text-indent:-9999px; z-index:0; overflow:hidden; }
+		caption { height: 1px; overflow: hidden; line-height: 0; margin-top: -1px; color: transparent; }
+		textarea { resize:none; vertical-align:middle; }
+
+		#wrap { min-width:1600px; }
+		#wrap:after { content:''; display:block; clear:both; }
+		.draw-wrap { float:left; width:1280px; }
+		.list-area { float:left; width:300px; }
+
+		.board { position:relative; width:1280px; height:720px; background:url(images/@temp_bg.jpg) no-repeat left top / 100% 100%; }
+		.board svg { width:100%; height:100%; border:1px solid #666; box-sizing:border-box; }
+		.arrow { position:absolute; display:block; width:5px; height:5px; top:-1000px; }
+		.arrow > img { position:absolute; top:50%; left:50%; transform:translate(-50%, -50%); }
+		.arrow-dir { position:absolute; display:block; top:-1000px; }
+		.board .btn { position:absolute; top:5px; right:10px; }
+		.board .btn-reverse { right:70px; }
+
+		.board circle { fill:#ff0000; }
+		.board polygon { fill:rgba(0,0,0,.3); stroke:#f7ee01; stroke-width:1px; }
+		.board polyline { fill:none; stroke:#f7ee01; stroke-width:1px; }
+		.board .except polygon { stroke:#1ae200; }
+		.board .obj polygon { fill:#000; stroke:rgb(53, 51, 2); }
+		.board .sel polygon { fill:rgba(86, 125, 252, 0.3) !important; }
+		.board .obj.sel polygon { fill:rgba(2, 23, 92, 1) !important; }
+		.board .sel polyline { stroke:#06a1df; }
+		.board .sel circle { r:5px; }
+		.board .arrow { position:absolute; width:40px; height:80px; transform-origin:50% 50%; }
+		.board .arrow polyline, .board .arrow line { stroke:#f7ee01; }
+		.board .arrow text { fill:#fff; font-size:14px; font-family:tahoma; }
+		.inp-area { width:1280px; text-align: center; }
+		.btn { display:inline-block; margin-top:10px; padding:5px 10px; font-size:14px; line-height:1em; border:1px solid #666; border-radius:3px;}
+		.btn.del, .btn.reset { background:#666; color:#fff; }
+
+		.nameTx { display:none; }
+		.focus .nameTx { display:block; }
+		.nameTx rect { width:100px; height:20px; fill:#000; }
+		.nameTx text { fill:#fff; font-size:13px; }
+
+		.list-area { padding:10px; }
+		.obj-list { width:100%; border:1px solid #ddd; box-sizing:border-box; }
+		.obj-list li { width:100%; padding:5px; font-size:14px; line-height:18px; box-sizing:border-box; }
+		.obj-list li + li { border-top:1px solid #ddd; }
+		.obj-list li.sel { background:#eee; }
+
+		.list-modify .inp-name { display:flex; align-items:center; margin-top:30px; }
+		.inp-name .title { width:80px; font-size:14px; line-height:26px; }
+		.inp-name input { flex:1; font-size:14px; line-height:26px; border:1px solid #ddd; }
+		.inp-name .btn { width:60px; margin:0 0 0 5px; }
+	</style>
+</head>
+<body>
+
+	<div id="wrap">
+		<div class="draw-wrap">
+			<div class="board">
+				<svg version="1.1" xmlns="http://www.w3.org/2000/svg">
+				</svg>
+			</div>
+
+			<div class="inp-area">
+				<button type="button" class="btn draw" data-draw="line" data-type="focus">주시 라인</button>
+				<button type="button" class="btn draw" data-draw="poly" data-type="focus">주시 다각형</button>
+				<i>|</i>
+				<button type="button" class="btn draw" data-draw="poly" data-type="except">제외 다각형</button>
+				<i>|</i>
+				<button type="button" class="btn draw" data-draw="poly" data-type="obj">객체제외 다각형</button>
+				<i>|</i>
+				<button type="button" class="btn reset">그리기 초기화</button>
+			</div>
+		</div>
+
+		<div class="list-area">
+			<ul class="obj-list">
+			</ul>
+			<div class="list-modify">
+				<div class="inp-name">
+					<p class="title">이름변경</p>
+					<input type="text" id="inp_name">				
+					<button type="button" class="btn btn-confirm">확인</button>
+				</div>
+			</div>
+		</div>
+	</div>	
+	
+	
+	<script src="js/common.js"></script>
+	<script>
+		window.onload = (function(){
+
+			/* valueArr - 값 기준
+				type 	: 도형 타입 (rect : 사각형 / poly : 다각형)
+				area 	: 영역 구분 ( focus : 주시영역 / except : 제외 / obj : 객체제외 )
+				points  : 각 위치값 배열
+			*/
+
+			// 최종 데이터용 Object
+			var defaultArr = {
+				0 : {
+					name : 'test-Area01',
+					type : "line",
+					area : 'focus',
+					points : [
+						[296,240],[506,240],[506,578],[296,578]
+					],					
+					direction : 1
+				}, 
+				1 : {
+					name : 'test-Area02',
+					type : "poly",
+					area : 'except',
+					points : [
+						[272,161],[814,161],[814,364],[272,364]
+					]
+				}, 
+				2 : {
+					name : 'test-Area03',
+					type : "poly",
+					area : 'obj',
+					points : [
+						[1272,5],[1100,4],[1031,712],[1274,715],[1266,295]
+					]
+				}
+			};
+
+			// 임시 데이터용 Object
+			var valueArr 	= new Object();
+			
+
+			function cameraBoxSet(target){
+				/* ===== 변수 ========================================================== */
+				// 리스트 관련 변수
+				var listWrap 	= document.querySelector('.obj-list'),
+					listItems,
+					nowList,
+					selectNum;
+				
+				var modifyWrap  = document.querySelector('.list-modify'),
+					nameInp 	= modifyWrap.querySelector('input#inp_name'),
+					modifyBtn 	= modifyWrap.querySelector('.btn-confirm');
+
+				// SVG 변수
+				var wrap		= document.querySelector(target),
+					svgWrap		= wrap.querySelector('.board'),
+					svg			= svgWrap.querySelector("svg"),
+					svgBox		= svg.getBoundingClientRect(),
+					num			= 0, 	// 그리기 시 클릭 횟수
+					maxPolyNum	= 12,	// poly 그리기 시 최대 제한 횟수
+					maxLineNum	= 6, 	// line 그리기 시 최대 제한 횟수
+					pointArr 	= new Array(), // 도형 그리기 시 임시 배열
+					btnDraw		= document.querySelectorAll('.btn.draw'),
+					btnReset	= document.querySelector('.btn.reset');
+
+				// 그리기 관련 변수
+				var nowDraw,
+					drawState = false,
+					drawObjType, 	 // 그리기 요소 타입 구분(poly/line)
+					drawAreaType, 	 // 그리기 영역 타입 구분 (주시/제외/객체)
+					svgObjs, 	 	 // 화면에 그려진 svg g 요소 관련 배열
+					direction, 		 // 라인일 경우 - 화살표 방향관련 변수
+					drawNum = 0; 	 // 화면 내 그려진 요소관련 Num (화면 로드 후 계속 증가함)
+								
+
+				// 타입별 카운트용 변수
+				var countLimit = 5,  // 영역별 최대 갯수
+					countFocus = 0,  // 화면 내 침탐 영역 갯수
+					countExc   = 0,  // 화면 내 무시 영역 갯수
+					countObj   = 0;  // 화면 내 객체무시 영역 갯수
+
+
+				// 각 타입별 카운트 추가/삭제 함수
+				var typeCountPlus = function(type){
+					switch (type) {
+						case 'focus' : 
+							countFocus++; 
+							break;
+						case 'except' : 
+							countExc++; 
+							break;
+						case 'obj' :
+							countObj++; 
+							break;
+					}
+				}, typeCountMinus = function(type){
+					switch (type) {
+						case 'focus' : 
+							countFocus--; 
+							break;
+						case 'except' : 
+							countExc--; 
+							break;
+						case 'obj' :
+							countObj--; 
+							break;
+					}
+				}
+
+				// 도형 / 리스트 삭제 기능
+				function deleteObj(e){
+					e.stopPropagation();
+					var tg 		= svg.querySelector('[data-num="'+ selectNum +'"]'),
+						tgList  = listWrap.querySelector('[data-num="'+ selectNum +'"]');
+					tg.parentNode.removeChild(tg);
+					tgList.parentNode.removeChild(tgList);
+					typeCountMinus(valueArr[selectNum].area);
+					delete valueArr[selectNum];
+
+					listUpdate();
+					defaultArr = valueArr;
+					console.log(valueArr);
+				}
+
+				// 이름 변경 시 리스트/obj 내 텍스트 변경
+				var listNameSet = function(){
+					var tg 		= svg.querySelector('[data-num="'+ selectNum +'"]').querySelector('text'),
+						tgList  = listWrap.querySelector('[data-num="'+ selectNum +'"]').querySelector('.obj-name');
+					tg.textContent = valueArr[selectNum].name;
+					tgList.innerText = valueArr[selectNum].name;					
+				},
+				// svg 및 리스트 항목 변경 확인
+				listUpdate = function(){
+					svgObjs = svgWrap.querySelectorAll('svg > g');
+					listItems = listWrap.querySelectorAll('li');
+				}
+
+				// 문구에서 숫자만 추출(문구 내 연결된 숫자 1개만 추출가능)
+				var getNum = function(tx){
+					var val = Number(tx.replace(/[^0-9]/g, ''));
+					return val;
+				}
+
+
+				/* ===== 리스트 ========================================================== */
+				var listHtml = '<p class="obj-name"></p>';
+					listHtml += '<p class="obj-area"></p>';
+					listHtml += '<p class="obj-type"></p>';
+					listHtml += '<button type="button">삭제</button>';
+
+				var listClick = function(e){
+					var tg;
+					e.target.tagName != 'LI' ? tg = e.target.parentNode : tg = e.target;
+					selectNum = Number(tg.getAttribute('data-num'));
+					objSel(selectNum);
+					listSel(selectNum);
+				},
+				listSel = function(num){
+					Array.prototype.forEach.call(listItems, function(item){
+						item.getAttribute('data-num') == num ? item.classList.add('sel') : item.classList.remove('sel');
+					});
+					selectNum = num;
+					nameInp.value = valueArr[selectNum].name;
+				},
+				listAdd = function(idx, name, area, type){
+					var newLi = document.createElement("li");
+					listWrap.appendChild(newLi);
+					nowList = newLi;
+					nowList.insertAdjacentHTML('beforeend', listHtml);
+					nowList.setAttribute('data-num', idx);
+
+					var nameTx = nowList.querySelector('.obj-name'),
+						areaTx = nowList.querySelector('.obj-area'),
+						typeTx = nowList.querySelector('.obj-type'),
+						delBtn = nowList.querySelector('button');
+
+					name == null ? nameTx.innerTx = 'new Area' + drawNum : nameTx.innerText = name;
+					areaTx.innerText = area;
+					typeTx.innerText = type;
+
+					listUpdate();
+					nowList.addEventListener('click', listClick);
+					delBtn.classList.add('btn');
+					delBtn.classList.add('del');
+					delBtn.addEventListener('click', deleteObj);
+					
+					nameChange(valueArr[drawNum], drawNum);
+				},
+				listConfirm = function(){
+					valueArr[selectNum].changeName = nameInp.value;
+				}
+
+				modifyBtn.addEventListener('click', listConfirm);
+
+				// valueArr 내 설정 변경 시 실행
+				function nameChange(tgObj, idx){
+					Object.defineProperty(tgObj, 'changeName', {
+						set: function(val) {
+							this.name = val;
+							listNameSet(idx);
+						}
+					});
+				}
+				// valueArr 내 영역 종류 변경 시 실행
+				function areaChange(tgObj, idx){
+					Object.defineProperty(tgObj, 'changeArea', {
+						set: function(val) {
+							this.area = val;
+						}
+					});
+				}
+
+				/* ===== SVG 영역 ========================================================== */
+
+				// 꼭지점 이동 관련
+				/*var dotMove = function(e, obj, tgPoly, idx){
+					var tgX = e.pageX,
+						tgY = e.pageY;
+					obj.setAttribute('cx', tgX);
+					obj.setAttribute('cy', tgY);
+					tgPoly.points[idx].x = tgX;
+					tgPoly.points[idx].y = tgY;
+					
+				}, dotUp = function(obj, tgPoly){
+					if(tgPoly.tagName == 'polyline')
+					obj.removeEventListener('mousemove', dotMove);
+				}
+				var dotOn = function(obj){
+					var dots 		= obj.querySelectorAll('circle'),
+						poly 		= obj.querySelector('polygon') ? obj.querySelector('polygon') : obj.querySelector('polyline');
+					
+					Array.prototype.forEach.call(dots, function(dot, idx){
+						var downChk = false;
+
+					 	dot.onEvent('mousedown', function(e){
+							downChk = true;
+							dot.onEvent('mousemove', function(e){dotMove(e, this, poly, idx)});
+							dot.onEvent('mouseup', function(){dotUp(this, poly)});
+					 	});
+					});
+
+				}, dotOff = function(){
+					var cirs = svg.querySelectorAll('circle');
+					Array.prototype.forEach.call(cirs, function(cir){
+						cir.removeListeners();
+					});
+				}*/
+
+				// svg 에 name 요소 추가
+				var nameAdd = function(tgObj, name, x, y){
+					tgObj.insertAdjacentHTML('beforeend', '<g class="nameTx"><rect x="0" y="0"></rect><text x="4" y="14">'+name+'</text></g>');
+					var newText = tgObj.querySelector('.nameTx'),
+						txX 	= x > (svgBox.width - 100) ? x - 100 : x;
+						txY 	= y > (svgBox.height - 20) ? y - 20 : y;
+					newText.setAttribute('transform', 'translate('+txX+','+txY+')');
+				}
+
+				// 도형 선택 시 클래스 제어
+				var objSel = function(num){
+					Array.prototype.forEach.call(svgObjs, function(obj){
+						if(obj.getAttribute('data-num') == num){
+							obj.classList.add('sel');
+							svg.appendChild(obj);
+						} else obj.classList.remove('sel');
+						//dotOff();
+					});
+					//dotOn(obj);
+				}, 
+				// 도형 선택 기능 부여
+				objClick = function(obj){
+					obj.addEventListener('click', function(){
+						if(drawState == true) return;
+						selectNum = obj.getAttribute('data-num');
+						objSel(selectNum);
+						listSel(selectNum); // 리스트에 선택 표기
+					});
+				}
+				// 도형 그리기 완료 시 valueArr 에 값 넣기
+				var valuePush = function(objType){ 
+					var dumObj = new Object();
+					dumObj.name = 'new Object' + drawNum;
+					dumObj.type = drawObjType;
+					dumObj.area = drawAreaType;
+					dumObj.points = pointArr;
+					if(objType == 'line') dumObj.direction = direction;
+
+					valueArr[drawNum] = dumObj;
+				}
+
+				// svg 내 신규 그룹 생성
+				var drawGroup = function(){
+					var newElement = document.createElementNS("http://www.w3.org/2000/svg", 'g');
+					nowDraw = newElement;
+					nowDraw.classList.add(drawAreaType);
+					svg.appendChild(nowDraw);
+				},
+				// 그리기 취소 함수
+				drawReset = function (){
+					num = 0;
+					svg.removeEventListener('click',drawPolyStart);
+					svg.removeEventListener('click',drawLineStart);
+					pointArr = [];
+				},
+				// 그리기 종료 함수
+				drawEnd = function (){
+					if(drawObjType == 'line') {
+						if(num < 2) { // 라인 포인트 갯수가 2개 이하일 때 리셋
+							drawReset();
+							svg.removeChild(nowDraw);
+							return;
+						} else {
+							addArrow(nowDraw, pointArr);
+						}
+					} else {
+						if(num < 3) { // 폴리곤 포인트 갯수가 3개 이하일 때 리셋
+							drawReset();
+							svg.removeChild(nowDraw);
+							return;
+						}
+					}
+					nowDraw.setAttribute('data-num', drawNum); // 현재 그리기 요소에 num 추가
+					objClick(nowDraw); // 현재 그리기 요소에 클릭 기능 추가
+					valuePush(drawObjType); // 최종 결과함수(valueArr)에 해당 도형관련 값 추가
+					typeCountPlus(drawAreaType); // 타입별 카운트 변수 ++
+					
+					var newName = 'new Object' + drawNum;
+					nameAdd(nowDraw, newName, pointArr[0][0], pointArr[0][1]); // 이름 text 추가
+					listAdd(drawNum, valueArr[drawNum].name, valueArr[drawNum].area, valueArr[drawNum].type); // list 추가
+
+					drawReset(); // 그리기 리셋
+					listUpdate(); // svg 내 요소 리스트 업데이트
+					drawNum++;
+					drawState = false;
+
+					defaultArr = valueArr;
+
+					console.log(valueArr);
+				},
+				// 점 그리기 함수
+				drawPolyDot = function(pX, pY){
+					var newDot = document.createElementNS("http://www.w3.org/2000/svg", 'circle');
+					newDot.setAttribute('r', 3);
+					newDot.setAttribute('cx',pX);
+					newDot.setAttribute('cy',pY);
+					nowDraw.appendChild(newDot);
+				},
+				// 라인 그리기 함수	
+				drawPolyStroke = function(obj){
+					var pathVal = '';
+					pathVal += pointArr[0][0] +','+ pointArr[0][1];
+					for(var i=1; i<pointArr.length; i++){
+						pathVal += ' ' + pointArr[i][0] +','+ pointArr[i][1];
+					}
+					obj.setAttribute('points', pathVal);
+				},
+				// esc 키 관련 함수
+				keyCheck = function(e){ 
+					if (e.keyCode == 27) {
+						num != 0 ? drawEnd() : drawReset();
+					}
+				}
+
+				// 화살표 ----------------------------------------------------
+
+				// 화살표 추가
+				var arrowReverse = function(tgObj){
+					var rotateObj = tgObj.querySelector('g'),
+						rotateVal = getNum(rotateObj.style.transform) + 180;
+					rotateObj.style.transform = 'rotate('+rotateVal+'deg)';
+				},
+				//화살표 위치 및 각도 설정
+				setArrow = function(obj, x, y, a){
+					var rotateObj = obj.querySelector('g'),
+						dirTx 	  = obj.querySelector('text');
+					obj.setAttribute('transform', 'translate('+x+','+y+')');
+					rotateObj.style.transform = 'rotate('+a+'deg)';
+					obj.style.display = 'block';
+				},
+				// 각도 구하기 함수
+				getAngle = function(x1, y1, x2, y2) {
+					var rad = Math.atan2(y2 - y1, x2 - x1);
+					return (rad*180)/Math.PI ;
+				}, 
+				// 화살표 위치 및 각도를 위한 배열값 추출
+				arrowPosSet = function(arr, obj, dir){
+					var startX, startY, endX, endY, aPosX, aPosY,
+						len = arr.length;
+						dir == null ? direction = 0 : direction = dir;
+					if(len % 2 == 0){
+						startX = arr[len / 2 - 1][0],
+						startY = arr[len / 2 - 1][1],
+						endX = arr[len / 2][0],
+						endY = arr[len / 2][1];
+						aPosX = ((endX - startX)/2) + startX;
+						aPosY = ((endY - startY)/2) + startY;
+					} else {
+						var len2 = Math.floor(len / 2);
+						startX = arr[len2 - 1][0],
+						startY = arr[len2 - 1][1],
+						endX = arr[len2 + 1][0],
+						endY = arr[len2 + 1][1],
+						aPosX = arr[len2][0],
+						aPosY = arr[len2][1];
+					}
+					aAngle = getAngle(startX, startY, endX, endY) + 180;
+					setArrow(obj, aPosX, aPosY, aAngle);
+				},
+				addArrow = function(tg, array, dir){
+					var dirTx = dir == null ? 0 : dir;
+					tg.insertAdjacentHTML('beforeend', '<g class="arrow"><g><polyline points="0,20 20,0 40,20" transform="translate(-20 -40)" fill="none" stroke="#ff0000"></polyline><line x1="20" y1="0" x2="20" y2="80" transform="translate(-20 -40)" stroke="#ff0000"></line></g><text x="-10" y="55">('+dirTx+')</text></g>');
+					var tgArrow = tg.querySelector('.arrow');
+					arrowPosSet(array, tgArrow);
+					if(dir == 1) arrowReverse(tgArrow);
+				};
+
+				// 그리기 관련 실행 ----------------------------------------------------
+
+				// 기존 데이터 그리기
+				function dataDraw(){
+					var dataDrawPoly = function(arr, type, name, dir){ // polygon or polyline 생성
+						var newPoly;
+						type == 'line' ? newPoly = document.createElementNS("http://www.w3.org/2000/svg", 'polyline') : newPoly = document.createElementNS("http://www.w3.org/2000/svg", 'polygon');
+						nowDraw.appendChild(newPoly);
+						
+						var pathVal = '';
+						pathVal += arr[0][0] +','+ arr[0][1];
+						drawPolyDot(arr[0][0], arr[0][1]);
+						for(var i=1; i<arr.length; i++){
+							pathVal += ' ' + arr[i][0] +','+ arr[i][1];
+							drawPolyDot(arr[i][0], arr[i][1]);
+						}
+						newPoly.setAttribute('points', pathVal);
+
+						nameAdd(nowDraw, name, arr[0][0], arr[0][1]); // 이름 text 추가
+
+						if(type == 'line') {
+							addArrow(nowDraw, arr, dir);
+						}
+
+					}, objData = function(obj){ // svg 에 그룹 생성
+						var type = obj.type,
+							name = obj.name;
+
+						var newElement = document.createElementNS("http://www.w3.org/2000/svg", 'g');
+						nowDraw = newElement;
+						nowDraw.classList.add(obj.area);
+						svg.appendChild(nowDraw);
+						nowDraw.setAttribute('data-num', drawNum);
+						listAdd(drawNum, valueArr[drawNum].name, valueArr[drawNum].area, valueArr[drawNum].type);
+						typeCountPlus(obj.area);
+						
+						listUpdate();
+						drawNum++;
+
+						type == 'line' ? dataDrawPoly(obj.points, type, name, obj.direction) : dataDrawPoly(obj.points, type, name);
+					}
+					
+					valueArr = defaultArr;
+
+					var keys = Object.keys(valueArr),
+					keysLen = Object.keys(valueArr).length;
+					for(var d=0; d<keysLen; d++){
+						objData(valueArr[d]);
+					}
+
+					Array.prototype.forEach.call(svgObjs, function(obj){
+						objClick(obj);
+					});
+
+				}
+				dataDraw();
+
+
+				// poly 기능 실행
+				function drawPolyStart(e){ 
+					var posX = e.layerX,
+						posY = e.layerY;
+
+					drawState = true;
+					if(num < 1) {
+						drawGroup();
+
+						var newPoly = document.createElementNS("http://www.w3.org/2000/svg", 'polygon');
+						nowDraw.appendChild(newPoly);
+					}
+					pointArr[num] = new Array();
+					pointArr[num][0] = posX;
+					pointArr[num][1] = posY;
+					num++;
+					if(num < maxPolyNum + 1) {
+						drawPolyStroke(nowDraw.querySelector('polygon'));
+						drawPolyDot(posX, posY);
+						document.addEventListener('keydown', keyCheck);
+						if(num == maxPolyNum) drawEnd();
+					}
+				}
+				
+				// line 기능 실행
+				function drawLineStart(e){ 
+					var posX = e.layerX,
+						posY = e.layerY;
+					
+					drawState = true;
+					if(num < 1) {
+						drawGroup();
+						
+						var newPoly = document.createElementNS("http://www.w3.org/2000/svg", 'polyline');
+						nowDraw.appendChild(newPoly);
+					}
+					pointArr[num] = new Array();
+					pointArr[num][0] = posX;
+					pointArr[num][1] = posY;
+					num++;
+					if(num < maxLineNum + 1) {
+						drawPolyStroke(nowDraw.querySelector('polyline'));
+						drawPolyDot(posX, posY);
+						document.addEventListener('keydown', keyCheck);
+						if(num == maxLineNum) drawEnd();
+					}
+				}
+				
+				// 그리기 버튼 설정
+				Array.prototype.forEach.call(btnDraw, function(btn){
+					btn.addEventListener('click', function(){
+						drawReset();
+						drawAreaType = this.getAttribute('data-type');
+						drawObjType  = this.getAttribute('data-draw');
+
+						switch (drawAreaType) {
+							case 'focus' : 
+								if(countFocus >= countLimit){
+									alert('갯수 초과!');
+									return;
+								}
+								break;
+							case 'except' : 
+								if(countExc >= countLimit){
+									alert('갯수 초과!');
+									return;
+								}
+								break;
+							case 'obj' :
+								if(countObj >= countLimit){
+									alert('갯수 초과!');
+									return;
+								}
+								break;
+						}
+						drawObjType == 'line' ? svg.onEvent('click',drawLineStart) : svg.onEvent('click',drawPolyStart);
+						
+					});
+				});
+				
+				svg.addEventListener('click', function(e){
+					if(e.target == svg) {
+						Array.prototype.forEach.call(svgObjs, function(svg){
+							svg.classList.remove('sel');
+							//dotOff();
+						});
+						Array.prototype.forEach.call(listItems, function(item){
+							item.classList.remove('sel');
+						});
+					}
+				});
+
+				btnReset.addEventListener('click', function(){
+					if(drawState == true){
+						nowDraw.parentNode.removeChild(nowDraw);
+						drawState = false;
+					}
+					drawReset();
+				})
+			}
+
+			var cameraPoly = new cameraBoxSet('.draw-wrap');
+		});
+	</script>
+
+</body>
+</html>

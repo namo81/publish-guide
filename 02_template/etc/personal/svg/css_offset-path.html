@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+	<meta charset="UTF-8" >
+	<meta name="author" content="SK MNS" >
+	<title></title>
+	<style type="text/css">	
+		html,body,p,h1,h2,h3,h4,h5,h6,menu,ul,ol,li,dl,dt,dd,table,th,td,form,fieldset,legend,input,textarea,button,select,hr { margin:0;padding:0; }
+		body { background-color:#fff; font-size:0.75em; font-family:'돋움',Dotum,AppleGothic,sans-serif; }
+		input,textarea,select,button,table{ font-size:1em; }
+		img,fieldset,button{ border:0; }
+		img, input, select { vertical-align:middle; }
+		ul,ol { display:inline-block; list-style:none; }
+		em,address,i { font-style:normal; }
+		a { text-decoration:none; vertical-align:middle; }
+		a:hover,a:active,a:focus { text-decoration:none; }
+		button { display:inline-block;overflow:hidden;border:0;background:none;cursor:pointer; }
+		table{ border-collapse:collapse;border-spacing:0; width:100%; }
+		.hide { position:absolute; overflow:hidden; top:0; left:0; width:100%; height:1px; text-indent:-10000px; }
+		caption { height: 1px; overflow: hidden; line-height: 0; margin-top: -1px; color: transparent; }
+		textarea { resize:none; vertical-align:middle; }
+		
+		svg { position:absolute; }
+		.ball { display:block; width:50px; height:50px; background-color:#f142da; border-radius:50%; offset-path:path('m528,88c-31,1 -96,11 -88,37c8,26 246,1 245,60c-1,59 -340,19 -340,116c0,97 501,30 500,148c-1,118 -516,106 -594,234'); offset-distance:0%; animation:pathMove 5s infinite ease-in-out;}
+		.text { animation:pathMove 5s infinite ease-in-out; }
+		@keyframes pathMove {
+			0%, 100% { offset-distance:0%; transform:scale(.2); }
+			50% { offset-distance:100%; transform:scale(1);}
+		}
+	</style>
+</head>
+<body>
+	<div class="wrap">
+		<svg id="svg-line" width="800" height="600" xmlns="http://www.w3.org/2000/svg">
+			<defs>
+				<path id="svg_1" d="m528,88c-31,1 -96,11 -88,37c8,26 246,1 245,60c-1,59 -340,19 -340,116c0,97 501,30 500,148c-1,118 -516,106 -594,234" opacity="NaN" stroke="#fff" fill="#fff"/>
+			</defs>
+			<g>
+				<text>
+					<textpath xlink:href="#svg_1" class="text">
+					  Text laid out along a path.
+					</textpath>
+				</text>
+			</g>
+		</svg>
+		<p class="ball"></p>
+	</div>
+</body>
+</html>

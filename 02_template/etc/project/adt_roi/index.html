@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+	<meta charset="UTF-8" >
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="user-scalable=yes, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, width=device-width">
+	<meta name="author" content="snamo - SK MNS" >
+	<meta name="description" content="">
+	<meta name="keywords" content="">
+	<meta property="og:type" content="website">
+	<meta property="og:title" content="">
+	<meta property="og:description" content="">
+	<meta property="og:image" content="">
+	<meta property="og:url" content="">
+
+	<script src="js/common.js"></script>
+
+	<title>svg test</title>
+	<style type="text/css">
+		html,body,p,h1,h2,h3,h4,h5,h6,menu,ul,ol,li,dl,dt,dd,table,th,td,form,fieldset,legend,input,textarea,button,select,hr { margin:0;padding:0; }
+		body { background-color:#fff; font-size:0.75em; font-family:'돋움',Dotum,AppleGothic,sans-serif; }
+		input,textarea,select,button,table{ font-size:1em; }
+		img,fieldset,button{ border:0; }
+		img, input, select { vertical-align:middle; }
+		ul,ol { display:inline-block; list-style:none; }
+		em,address,i { font-style:normal; }
+		a { text-decoration:none; vertical-align:middle; }
+		a:hover,a:active,a:focus { text-decoration:none; }
+		button { display:inline-block;overflow:hidden;border:0;background:none;cursor:pointer; }
+		table{ border-collapse:collapse;border-spacing:0; width:100%; }
+		.hide { position:absolute; top:0; left:0; width:100%; height:100%; opacity:0; filter:alpha(opacity=0); zoom:1; text-indent:-9999px; z-index:0; overflow:hidden; }
+		caption { height: 1px; overflow: hidden; line-height: 0; margin-top: -1px; color: transparent; }
+		textarea { resize:none; vertical-align:middle; }
+
+		#wrap { min-width:1600px; }
+		#wrap:after { content:''; display:block; clear:both; }
+		.draw-wrap { float:left; width:1280px; }
+		.list-area { float:left; width:300px; }
+
+		label, .label { font-size:13px; line-height:26px; vertical-align:middle; font-weight:bold; color:#666;}
+		input { border:1px solid #ddd; font-size:14px; line-height:24px; vertical-align:middle;}
+		.inp-set { display:inline-block; margin-right:15px; }
+		
+		.btn { display:inline-block; padding:5px 10px; font-size:14px; line-height:1em; background:#fff; border:1px solid #666; border-radius:3px; vertical-align:middle;}
+		.btn.del, .btn.reset { background:#666; color:#fff; }
+
+		.board { position:relative; width:1280px; height:720px; background:url(images/@temp_bg.jpg) no-repeat left top / 100% 100%; }
+		.board svg { width:100%; height:100%; border:1px solid #666; box-sizing:border-box; }
+		.arrow { position:absolute; display:block; width:5px; height:5px; top:-1000px; }
+		.arrow > img { position:absolute; top:50%; left:50%; transform:translate(-50%, -50%); }
+		.arrow-dir { position:absolute; display:block; top:-1000px; }
+		.board .btn { position:absolute; top:5px; right:10px; }
+		.board .btn-reverse { right:70px; }
+
+		.board circle { fill:#ff0000; }
+		.board polygon { fill:rgba(0,0,0,.3); stroke:#f7ee01; stroke-width:1px; }
+		.board polyline { fill:none; stroke:#f7ee01; stroke-width:1px; }
+		.board .except polygon { stroke:#1ae200; }
+		.board .ignore polygon { fill:#000; stroke:rgb(53, 51, 2); }
+		.board .sel polygon { fill:rgba(86, 125, 252, 0.3) !important; }
+		.board .ignore.sel polygon { fill:rgba(2, 23, 92, 1) !important; }
+		.board .sel polyline { stroke:#06a1df; }
+		.board .arrow { position:absolute; width:40px; height:80px; transform-origin:50% 50%; }
+		.board .arrow polyline, .board .arrow line { stroke:#f7ee01; }
+		.board .arrow text { fill:#fff; font-size:14px; font-family:tahoma; }
+
+		.nameTx { display:none; }
+		.focus .nameTx { display:block; }
+		.nameTx rect { width:100px; height:20px; fill:#000; }
+		.nameTx text { fill:#fff; font-size:13px; }
+
+		.list-area { position:relative; height:720px; padding:10px; box-sizing:border-box; }
+		.set-obj { position:absolute; display:none; width:100%; height:100%; top:0; left:0; padding:10px; background:#fff; text-align:center; box-sizing:border-box; }
+		.set-obj .sec { display:flex; margin-bottom:20px; }
+		.set-obj .sec .label { flex-basis:80px; text-align:left; }
+		.set-obj .title { margin:10px 0; font-size:15px; line-height:21px; font-weight:bold; text-align:left; }
+				
+		.obj-list { width:100%; border:1px solid #ddd; box-sizing:border-box; }
+		.obj-list li { width:100%; padding:5px; font-size:14px; line-height:18px; box-sizing:border-box; }
+		.obj-list li + li { border-top:1px solid #ddd; }
+		.obj-list li.sel { background:#eee; }
+
+		.list-modify > div { margin:10px 0; }
+		.list-modify .inp-name { display:flex; align-items:center; margin-top:30px; }
+		.inp-name .title { width:80px; font-size:14px; line-height:26px; }
+		.inp-name input { flex:1; }
+		.inp-name .btn { width:60px; margin:0 0 0 5px; }
+		.set-area > span { display:inline-block; margin-right:10px; }
+		.set-area label { font-size:14px; line-height:20px; vertical-align:middle; }
+
+		.btn-group { padding:15px 0; text-align:center; }
+	</style>
+</head>
+<body>
+
+	<div id="wrap">
+		<div class="draw-wrap">
+			<div class="board">
+				<svg version="1.1" xmlns="http://www.w3.org/2000/svg">
+				</svg>
+			</div>
+
+		</div>
+
+		<div class="list-area">
+			<ul class="obj-list">
+			</ul>
+			<div class="btn-group">
+				<button type="button" class="btn add">+ 추가</button>
+			</div>
+
+			<div class="set-obj add">
+				<p class="title">추가</p>
+				<div class="sec">
+					<label for="obj-name" class="label">영역 이름</label>
+					<input type="text" id="obj-name" maxlength="7">
+				</div>
+				<div class="sec">
+					<p class="label">탐지 종류</p>
+					<span class="inp-set">
+						<input type="radio" name="set-area" id="set-inout" value="focus">
+						<label for="set-area-focus">침탐</label>
+					</span>
+					<span class="inp-set">
+						<input type="radio" name="set-area" id="set-area-except" value="except">
+						<label for="set-area-except">침탐제외</label>
+					</span>
+				</div>
+				<button type="button" class="btn draw" data-type="poly" data-area="focus">그리기</button>
+				<!-- <button type="button" class="btn draw" data-type="poly" data-area="except">다각형 그리기</button>
+				<button type="button" class="btn draw" data-type="poly" data-area="ignore">객체제외 다각형</button> -->
+				<button type="button" class="btn reset">그리기 초기화</button>
+				<button type="button" class="btn inout">in / out</button>
+				<button type="button" class="btn confirm">확인</button>
+				<button type="button" class="btn cancel">취소</button>
+			</div>
+
+			<div class="set-obj modify">
+				<p class="title">수정</p>
+				<div class="sec">
+					<label for="inp_name" class="label">이름변경</label>
+					<input type="text" id="inp_name" maxlength="7">
+				</div>
+				<div class="sec">
+					<p class="label">탐지 종류</p>
+					<span class="inp-set">
+						<input type="radio" name="modify-area" id="modify-area-focus" value="focus">
+						<label for="modify-area-focus">침탐</label>
+					</span>
+					<span class="inp-set">
+						<input type="radio" name="modify-area" id="modify-area-except" value="except">
+						<label for="modify-area-except">침탐제외</label>
+					</span>
+				</div>
+				<div class="sec">
+					<p class="label">방향</p>
+					<span class="inp-set">
+						<input type="radio" name="modify-inout" id="modify-in" value="0">
+						<label for="modify-in">IN</label>
+					</span>
+					<span class="inp-set">
+						<input type="radio" name="modify-inout" id="modify-out" value="1">
+						<label for="modify-out">OUT</label>
+					</span>
+				</div>
+				<button type="button" class="btn confirm">확인</button>
+				<button type="button" class="btn cancel">취소</button>
+			</div>
+		</div>
+	</div>	
+	
+	
+	<script src="js/common.js"></script>
+	<script src="js/nRoi_v.1.0.js"></script>
+	<script>
+
+		/* inputDataArr - 값 기준
+			name 		: 영역 이름
+			type 		: 영역의 그리기 타입 (line : 라인 / poly : 다각형)
+			area 		: 영역 구분 ( focus : 주시영역 / except : 제외 / obj : 객체제외 )
+			points  	: 각 꼭지점 위치값 배열
+			direction 	: 라인일 경우 in / out 방향 (0 = in / 1 = out)
+		*/
+
+		// 데이터 Object
+		var inputDataArr = {
+			0 : {
+				name : 'test-Area01',
+				objType : "line",
+				areaType : 'focus',
+				points : [
+					[296,240],[506,240],[506,578],[296,578]
+				],					
+				direction : 1
+			}, 
+			1 : {
+				name : 'test-Area02',
+				objType : "poly",
+				areaType : 'except',
+				points : [
+					[272,161],[814,161],[814,364],[272,364]
+				]
+			}, 
+			2 : {
+				name : 'test-Area03',
+				objType : "poly",
+				areaType : 'ignore',
+				points : [
+					[1272,5],[1100,4],[1031,712],[1274,715],[1266,295]
+				]
+			}
+		};
+		
+		// 공통 변수
+		var drawNum, selectNum;
+
+		var listWrap 		= document.querySelector('.obj-list'),
+			listItems		= listWrap.querySelectorAll('li'),
+			btnAdd 			= document.querySelector('.btn.add');
+
+		var addWrap 		= document.querySelector('.set-obj.add'),
+			btnDraw 		= addWrap.querySelector('.btn.draw'),
+			btnReset 		= addWrap.querySelector('.btn.reset'),
+			btnAddConfirm 	= addWrap.querySelector('.btn.confirm'),
+			btnAddCancel 	= addWrap.querySelector('.btn.cancel'),
+			btnAddArrow 	= addWrap.querySelector('.btn.inout'),
+			inpNameAdd 		= addWrap.querySelector('input[type=text]');
+
+		var modWrap			= document.querySelector('.set-obj.modify'),
+			btnModConfirm	= modWrap.querySelector('.btn.confirm'),
+			btnModCancel 	= modWrap.querySelector('.btn.cancel'),
+			inpNameMod 		= modWrap.querySelector('#inp_name'),
+			modName, modArea, modType, modDir;
+				
+		/* ===== svg 관련 함수 및 실행문 ========================================================== */
+		// svg 내 도형 클릭 시 실행
+		function logNum(num){
+			num != null ? methodList.listSel(num) : methodList.listSelClear();
+		}
+		
+		// svg 영역 선언
+		var cameraPoly = new nRoiSvg({
+			target : '.draw-wrap',
+			defaultArr : inputDataArr,
+			objSelChk : logNum
+		});
+
+		
+		/* ===== 영역 추가 ========================================================== */
+		function addFunc(){
+			var addName, addType, addArea;
+			var areaRadios = addWrap.querySelectorAll('[name="set-area"]');
+
+			for(var a=0; a<areaRadios.length; a++){
+				areaRadios[a].addEventListener('click', function(){
+					btnDraw.setAttribute('data-area', this.value);
+				});
+			}
+
+			var drawFunc = function(e){
+				var btn = e.target;
+				addType = btn.getAttribute('data-type');
+				addArea = btn.getAttribute('data-area');
+				addName = inpNameAdd.value.length < 1 ? 'new Object' + drawNum : inpNameAdd.value;
+
+				cameraPoly.drawStart(addArea, addType, addName);
+			}, drawConfirm = function(){
+				if(cameraPoly.getDrawState() == false) return;
+				cameraPoly.addConfirm();
+				methodList.listAdd(cameraPoly.getAllCount() - 1, addName, addArea, addType);
+				addClose();
+				drawNum = cameraPoly.getAllCount();
+				inputDataArr = cameraPoly.getData();
+			}, drawCancel = function(){
+				cameraPoly.addCancel();
+				addClose();
+			},
+			arrowSet = function(){
+				cameraPoly.setLineDirIng(1);
+			}
+
+			function addinit(){
+				btnDraw.addEventListener('click', drawFunc);
+				btnAddConfirm.addEventListener('click', drawConfirm);
+				btnAddCancel.addEventListener('click', drawCancel);
+			}
+			function addClose(){
+				addWrap.style.display = 'none';
+				btnDraw.removeEventListener('click', drawFunc);
+				btnAddConfirm.removeEventListener('click', drawConfirm);
+				btnAddCancel.removeEventListener('click', drawCancel);
+			}
+
+			btnReset.addEventListener('click', function(){
+				cameraPoly.addCancel();
+			});
+
+			btnAddArrow.addEventListener('click', arrowSet);
+
+			btnAdd.addEventListener('click', function(){
+				addWrap.style.display = 'block';
+				addinit();
+			});
+
+		}
+		addFunc();
+
+		/* ===== 영역 수정 ========================================================== */
+		function modifyFunc(e){
+			var btn 		= e.target,
+				list		= btn.parentNode,
+				nowNameTx 	= list.querySelector('.obj-name'),
+				nowAreaTx  	= list.querySelector('.obj-area'),
+				nowTypeTx  	= list.querySelector('.obj-type'),
+				idx 		= list.getAttribute('data-num'),
+				radios  	= modWrap.querySelectorAll('input[name=modify-area]'),
+				tempArea, tempDir;
+			
+			var radiosChk = function(objs, val){
+				Array.prototype.forEach.call(objs, function(obj){
+					if(obj.value == val) obj.checked = true;
+				});
+			}, radiosClick = function(){
+				Array.prototype.forEach.call(radios, function(radio){
+					radio.addEventListener('click', function(){
+						tempArea = this.value;
+					});
+				});
+			}
+			radiosClick();
+
+			modArea = inputDataArr[idx].areaType,
+			tempArea = modArea,
+			modType = inputDataArr[idx].objType,
+			modName = inputDataArr[idx].name;
+			inpNameMod.value = modName;
+			radiosChk(radios, modArea);
+			
+			if(modType == 'line'){
+				var radiosArrow	= modWrap.querySelectorAll('input[name=modify-inout]');
+				modDir = inputDataArr[idx].direction;
+				tempDir = modDir;
+				radiosChk(radiosArrow, modDir);
+				Array.prototype.forEach.call(radiosArrow, function(radio){
+					radio.addEventListener('click', function(){
+						tempDir = this.value;
+						cameraPoly.setLineDir(tempDir);
+					});
+				});
+			}
+
+			modWrap.style.display = 'block';
+
+			var modConfirm = function(){
+				cameraPoly.modifyName(inpNameMod.value);
+				nowNameTx.innerText = inpNameMod.value;
+				cameraPoly.modifyArea(tempArea);
+				cameraPoly.updateTypeNum(); // 영역 타입별 갯수 업데이트
+				if(modType == 'line') cameraPoly.setLineDir(tempDir);
+				modClose();
+				inputDataArr = cameraPoly.getData();
+			}, modCancel = function(){
+				cameraPoly.modifyName(modName);
+				cameraPoly.modifyArea(modArea);
+				if(modType == 'line') cameraPoly.setLineDir(modDir);
+				modClose();
+			}
+
+			function modInit(){
+				btnModConfirm.addEventListener('click', modConfirm);
+				btnModCancel.addEventListener('click', modCancel);
+			}
+
+			function modClose(){
+				modWrap.style.display = 'none';
+				btnModConfirm.removeEventListener('click', modConfirm);
+				btnModCancel.removeEventListener('click', modCancel);
+			}
+
+			modInit();
+		}
+
+		/* ===== 리스트 기능 ========================================================== */
+		var listHtml = '<p class="obj-name"></p>';
+			listHtml += '<p class="obj-area"></p>';
+			listHtml += '<p class="obj-type"></p>';
+			listHtml += '<button type="button" class="btn modify">수정</button>';
+			listHtml += '<button type="button" class="btn del">삭제</button>';
+
+		var methodList = {
+			listUpdate : function(){
+				listItems = listWrap.querySelectorAll('li');
+			},
+			listDel : function(e){
+				e.stopPropagation();
+				var tg 	= e.target.parentNode,
+					num = tg.getAttribute('data-num');
+				listWrap.removeChild(tg);
+				cameraPoly.objectDelete(num);
+			},
+			listSelClear : function(){
+				Array.prototype.forEach.call(listItems, function(item){
+					item.classList.remove('sel');
+				});
+				selectNum = null;
+				cameraPoly.objectSelClear();
+			},
+			listSel : function(num){
+				Array.prototype.forEach.call(listItems, function(item){
+					item.getAttribute('data-num') == num ? item.classList.add('sel') : item.classList.remove('sel');
+				});
+				selectNum = num;
+				cameraPoly.objectSelect(selectNum);
+			},
+			listClick : function(e){
+				var tg;
+				e.target.tagName != 'LI' ? tg = e.target.parentNode : tg = e.target;
+				selectNum = Number(tg.getAttribute('data-num'));
+				methodList.listSel(selectNum);
+			},
+			listAdd : function(idx, name, area, type){
+				var newLi = document.createElement("li");
+				listWrap.appendChild(newLi);
+				nowList = newLi;
+				nowList.insertAdjacentHTML('beforeend', listHtml);
+				nowList.setAttribute('data-num', idx);
+
+				var nameTx = nowList.querySelector('.obj-name'),
+					areaTx = nowList.querySelector('.obj-area'),
+					typeTx = nowList.querySelector('.obj-type'),
+					modBtn = nowList.querySelector('.modify');
+					delBtn = nowList.querySelector('.del');
+
+				nameTx.innerText = name;
+				areaTx.innerText = area;
+				typeTx.innerText = type;
+
+				methodList.listUpdate();
+				nowList.addEventListener('click', this.listClick);
+				delBtn.classList.add('btn');
+				delBtn.classList.add('del');
+				modBtn.addEventListener('click', modifyFunc); // 수정버튼 기능 적용
+				delBtn.addEventListener('click', this.listDel);
+			},
+			createListItems : function(){
+				var keyLen = Object.keys(inputDataArr).length;
+				drawNum = cameraPoly.getAllCount();
+				for(var k=0; k<keyLen; k++){
+					this.listAdd(k, inputDataArr[k].name, inputDataArr[k].areaType, inputDataArr[k].objType);
+				}
+			}
+		}
+
+		methodList.createListItems();
+
+		
+		
+		/*btnArrow.addEventListener('click', function(){
+			cameraPoly.serLineDir();
+		});*/
+	</script>
+
+</body>
+</html>

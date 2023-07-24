@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+	<meta charset="UTF-8" >
+	<meta name="author" content="SK MNS" >
+	<title>드래그 테스트</title>
+	<style type="text/css">
+		html,body,p,h1,h2,h3,h4,h5,h6,menu,ul,ol,li,dl,dt,dd,table,th,td,form,fieldset,legend,input,textarea,button,select,hr { margin:0;padding:0; }
+		body { background-color:#fff; font-size:0.75em; font-family:'돋움',Dotum,AppleGothic,sans-serif; }
+		input,textarea,select,button,table{ font-size:1em; }
+		img,fieldset,button{ border:0; }
+		img, input, select { vertical-align:middle; }
+		ul,ol { display:inline-block; list-style:none; }
+		em,address,i { font-style:normal; }
+		a { text-decoration:none; vertical-align:middle; }
+		a:hover,a:active,a:focus { text-decoration:none; }
+		button { display:inline-block;overflow:hidden;border:0;background:none;cursor:pointer; }
+		table{ border-collapse:collapse;border-spacing:0; width:100%; }
+		.hide { position:absolute; top:0; left:0; width:100%; height:100%; opacity:0; filter:alpha(opacity=0); zoom:1; text-indent:-9999px; z-index:0; overflow:hidden; }
+		caption { height: 1px; overflow: hidden; line-height: 0; margin-top: -1px; color: transparent; }
+		textarea { resize:none; vertical-align:middle; }
+
+		.drag-sel { position:relative; width:800px; margin:20px; overflow:hidden; }
+		.drag-sel > ul { display:flex; justify-content:space-between; align-items:flex-start; box-sizing:border-box; border-top:1px solid #999;}
+		.drag-sel > ul + ul { border-top:none; }
+		.drag-sel li { flex:1; height:30px; border-bottom:1px solid #999; border-left:1px solid #999; text-indent:-10000px; }
+		.drag-sel li.chk { background:#777; }
+		.drag-sel li.chk + .chk { background:#aaa; }
+		.drag-sel li.chk:nth-child(0) { background-color:#777; }
+		.drag-sel ul li:last-child { border-right:1px solid #999; }
+		.drag-sel .select { position:absolute; display:none; background:rgba(0,0,0,.1); z-index:100;}
+	</style>
+</head>
+<body>
+
+<div id="wrap">
+	<p style="margin-bottom:30px">5</p>
+	<div class="drag-sel">
+		<p class="select"></p>
+	</div>
+</div>
+
+<script>
+	var dataRoom = {
+		0 : {
+			r_name : '15층 소회의실 1',
+			r_id : 's1_15f',
+			r_floor : 15,
+			res_data : [ 
+				['홍길동M', '스마트솔루션1팀', '09:30', '10:30'], // 예약자 / 예약자 소속팀 / 회의 시작시간 / 회의 종료시간
+				['김길동M', '스마트솔루션2팀', '12:30', '14:30']
+			]
+		},
+		1 : {
+			r_name : '15층 소회의실 2',
+			r_id : 's2_15f',
+			r_floor : 15
+		},
+		2 : {
+			r_name : '16층 소회의실 1',
+			r_id : 's1_16f',
+			r_floor : 16
+		}
+	};
+
+	function dragsel(option){
+		var wrap			= typeof option.wrap === 'string' ? document.querySelector(option.wrap) : option.wrap,
+			r_data 			= option.data,
+			r_lenth 		= Object.keys(r_data).length;
+
+		var time_gap 		= option.time_gap ? time_gap : 30,
+			time_range		= option.time ? option.time : '08:00~20:30',
+			time_s_tx 		= time_range.split('~')[0],
+			time_e_tx 		= time_range.split('~')[1],
+			time_s 			= (Number(time_s_tx.split(':')[0]) * 60) + Number(time_s_tx.split(':')[1]),
+			time_e 			= (Number(time_e_tx.split(':')[0]) * 60) + Number(time_e_tx.split(':')[1]),
+			time_total_m 	= time_e - time_s,
+			time_count  	= time_total_m / time_gap;
+
+		function addList(){
+			for(var n=0; n<r_lenth; n++) {
+				var newUl = document.createElement('ul');
+				for(var t=0; t<time_count; t++){
+					var tempH = Math.floor((time_s + (time_gap * t)) / 60),
+						tempM = (time_s + (time_gap * t)) % 60;
+					var tagLi = '<li data-hour="'+tempH+'" data-min="'+tempM+'">';
+						tagLi += '</li>';
+					newUl.insertAdjacentHTML('beforeend', tagLi);
+				}
+				newUl.setAttribute('data-room-name', r_data[n].r_name);
+				newUl.setAttribute('data-room-id', r_data[n].r_id);
+				wrap.appendChild(newUl);
+			}
+		}
+		addList();
+
+		var allLis 			= wrap.querySelectorAll('li'),
+			lis, startX, startY, endX, endY, gapX, gapY, boxRect,
+			box_sel 		= wrap.querySelector('.select'),
+			mouseDown 		= false;
+
+		wrap.addEventListener('mousedown', function(e){
+			boxRemoveCls();
+			lis = e.target.parentNode.querySelectorAll('li');
+			mouseDown = true;
+			startX = e.offsetX + e.target.offsetLeft;
+			startY = e.offsetY + e.target.offsetTop;
+			box_sel.style.display = 'block';
+			box_sel.style.top = startY + 'px';
+			box_sel.style.left = startX + 'px';
+		});
+
+		wrap.addEventListener('mousemove', function(e){
+			if(mouseDown == false) return;
+			endX = e.offsetX + e.target.offsetLeft;
+			endY = e.offsetY + e.target.offsetTop;
+			gapX = endX - startX;
+			gapY = endY - startY;
+			
+			if(gapX > 0) {
+				box_sel.style.width = gapX + 'px';
+			} else {
+				box_sel.style.left = endX + 'px';
+				box_sel.style.width = (gapX * -1) + 'px';
+			}
+			box_sel.style.height = gapY + 'px';
+			boxRect = box_sel.getBoundingClientRect();
+			boxCheck(boxRect);
+			chkBoxVal();
+		});
+
+		wrap.addEventListener('mouseup', function(){
+			mouseDown = false;
+
+			box_sel.style.top = 0;
+			box_sel.style.left = 0;
+			box_sel.style.width = 0;
+			box_sel.style.height = 0;
+			box_sel.style.display = 'none';
+		});
+
+		// li 영역 chk 클래스 추가
+		function boxCheck(box){
+			Array.prototype.forEach.call(lis, function(li){
+				var rect = li.getBoundingClientRect();
+				rect.bottom > box.top && rect.top < box.bottom && rect.right > box.left && rect.left < box.right ? li.classList.add('chk') : li.classList.remove('chk');
+			});
+		}
+
+		function chkBoxVal(){			
+			var chkLis 	= wrap.querySelectorAll('li.chk'),
+				startH 	= Number(chkLis[0].getAttribute('data-hour')),
+				startM 	= Number(chkLis[0].getAttribute('data-min')),
+				endH	= Number(chkLis[chkLis.length - 1].getAttribute('data-hour')),
+				endM 	= Number(chkLis[chkLis.length - 1].getAttribute('data-min'));
+			
+			startH = startH < 10 ? '0' + startH : startH;
+			startM = startM < 10 ? '0' + startM : startM;
+			endH = endH < 10 ? '0' + endH : endH;
+			endM = endM < 10 ? '0' + endM : endM;
+
+			console.log(startH+':'+startM+'~'+endH+':'+endM);
+		}
+
+		// 모든 li chk 클래스 제거
+		function boxRemoveCls(){
+			Array.prototype.forEach.call(allLis, function(li){
+				li.classList.remove('chk');
+			});
+		}
+	}
+
+	var roomRes = new dragsel({
+		wrap : '.drag-sel',
+		data : dataRoom
+	});
+</script>
+</body>
+</html>

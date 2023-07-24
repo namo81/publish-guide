@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+	<meta charset="UTF-8" >
+	<meta name="author" content="SK MNS" >
+	<title></title>
+	<style type="text/css">	
+		html,body,p,h1,h2,h3,h4,h5,h6,menu,ul,ol,li,dl,dt,dd,table,th,td,form,fieldset,legend,input,textarea,button,select,hr { margin:0;padding:0; }
+		body { background-color:#fff; font-size:0.75em; font-family:'돋움',Dotum,AppleGothic,sans-serif; }
+		input,textarea,select,button,table{ font-size:1em; }
+		img,fieldset,button{ border:0; }
+		img, input, select { vertical-align:middle; }
+		ul,ol { display:inline-block; list-style:none; }
+		em,address,i { font-style:normal; }
+		a { text-decoration:none; vertical-align:middle; }
+		a:hover,a:active,a:focus { text-decoration:none; }
+		button { display:inline-block;overflow:hidden;border:0;background:none;cursor:pointer; }
+		table{ border-collapse:collapse;border-spacing:0; width:100%; }
+		.hide { position:absolute; overflow:hidden; top:0; left:0; width:100%; height:1px; text-indent:-10000px; }
+		caption { height: 1px; overflow: hidden; line-height: 0; margin-top: -1px; color: transparent; }
+		textarea { resize:none; vertical-align:middle; }
+		
+		svg { position:absolute; z-index:-1;}
+		.cnt-area { position:relative; top:0; left:0; right:0; bottom:0; padding:50px; filter:url('#filter-gooey');}
+		.btn { display:inline-block; width:150px; height:28px; font-size:15px; line-height:1em; background:#666; color:#fff; border-radius:30px; }
+		.btn.move { position:absolute; }
+
+		.cnt-hover { padding:50px; }
+		.cnt-hover .menu { position:relative; filter:url('#filter-gooey'); }
+		.r-btn { display:block; width:60px; height:60px; font-size:15px; line-height:60px; background:rgb(22, 181, 155); border-radius:50%; color:#fff; }
+		.menu > .r-btn { position:relative; z-index:5; }
+		.cnt-hover ul { position:absolute; display:block; top:0; left:0; transform:translate3d(0, 0, 0); z-index:1; transition:transform .2s cubic-bezier(0.3, 0.01, 0.4, 1); }
+		.cnt-hover li { position:absolute; top:0; left:0; z-index:4; transform:translate3d(0,0,0); transition:transform .2s cubic-bezier(0.3, 0.01, 0.4, 1); }
+		.cnt-hover li:nth-child(2) { z-index:3; transition:transform .3s cubic-bezier(0.3, 0.01, 0.4, 1);}
+		.cnt-hover li:nth-child(3) { z-index:2; transition:transform .2s cubic-bezier(0.3, 0.01, 0.4, 1);}
+		.cnt-hover li:nth-child(4) { z-index:1; transition:transform .1s cubic-bezier(0.3, 0.01, 0.4, 1);}
+		.cnt-hover li .r-btn { font-size:13px; transition:background-color .2s;}
+		.cnt-hover li .r-btn:hover { background-color:rgb(8, 136, 115); }
+
+		.cnt-hover .menu:hover ul { transform:translate3d(25px, 45px, 0); z-index:6; }
+		.cnt-hover .menu:hover li:nth-child(2) { transform:translate3d(60px,0,0); transition-duration:.3s; }
+		.cnt-hover .menu:hover li:nth-child(3) { transform:translate3d(120px,0,0); transition-duration:.4s; }
+		.cnt-hover .menu:hover li:nth-child(4) { transform:translate3d(180px,0,0); transition-duration:.5s; }
+	</style>
+</head>
+<body>
+	<div class="wrap">
+		<svg id="svg-line" width="800" height="600" xmlns="http://www.w3.org/2000/svg">
+			<defs>
+				<filter id="filter-gooey">
+					<feGaussianBlur in="SourceGraphic" stdDeviation="10" result="blur"/>
+					<feColorMatrix in="blur" mode="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 20 -10" result="goo" />
+					<feBlend in="SourceGraphic" in2="goo" />
+				</filter>
+			</defs>
+		</svg>
+		<div class="cnt-area">
+			<button type="button" class="btn">BUTTON</button>
+			<button type="button" class="btn move">BUTTON</button>
+		</div>
+
+		<div class="cnt-hover">
+			<div class="menu">
+				<button type="button" class="r-btn">메뉴</button>
+				<ul>
+					<li><button type="button" class="r-btn">서브1</button></li>
+					<li><button type="button" class="r-btn">서브2</button></li>
+					<li><button type="button" class="r-btn">서브3</button></li>
+					<li><button type="button" class="r-btn">서브4</button></li>
+				</ul>
+			</div>
+		</div>
+	</div>
+	<script>
+		var wrap 	= document.querySelector('.cnt-area'),
+			btn 	= document.querySelector('.btn.move'),
+			moveChk = false;
+
+		wrap.addEventListener('mousedown', function(e){
+			moveChk = true;
+		});
+		wrap.addEventListener('mousemove', function(e){
+			e.preventDefault();
+			e.stopPropagation();
+			if(moveChk){
+				btn.style.top = (e.clientY - 14) + 'px';
+				btn.style.left = (e.clientX - 75) + 'px';
+			}
+		}, false);
+		wrap.addEventListener('mouseup', function(){
+			moveChk = false;
+		});
+	</script>
+</body>

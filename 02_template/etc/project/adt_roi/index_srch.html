@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+	<meta charset="UTF-8" >
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="user-scalable=yes, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, width=device-width">
+	<meta name="author" content="snamo - SK MNS" >
+	<meta name="description" content="">
+	<meta name="keywords" content="">
+	<meta property="og:type" content="website">
+	<meta property="og:title" content="">
+	<meta property="og:description" content="">
+	<meta property="og:image" content="">
+	<meta property="og:url" content="">
+
+	<script src="js/common.js"></script>
+
+	<title>svg test</title>
+	<style type="text/css">
+		html,body,p,h1,h2,h3,h4,h5,h6,menu,ul,ol,li,dl,dt,dd,table,th,td,form,fieldset,legend,input,textarea,button,select,hr { margin:0;padding:0; }
+		body { background-color:#fff; font-size:0.75em; font-family:'돋움',Dotum,AppleGothic,sans-serif; }
+		input,textarea,select,button,table{ font-size:1em; }
+		img,fieldset,button{ border:0; }
+		img, input, select { vertical-align:middle; }
+		ul,ol { display:inline-block; list-style:none; }
+		em,address,i { font-style:normal; }
+		a { text-decoration:none; vertical-align:middle; }
+		a:hover,a:active,a:focus { text-decoration:none; }
+		button { display:inline-block;overflow:hidden;border:0;background:none;cursor:pointer; }
+		table{ border-collapse:collapse;border-spacing:0; width:100%; }
+		.hide { position:absolute; top:0; left:0; width:100%; height:100%; opacity:0; filter:alpha(opacity=0); zoom:1; text-indent:-9999px; z-index:0; overflow:hidden; }
+		caption { height: 1px; overflow: hidden; line-height: 0; margin-top: -1px; color: transparent; }
+		textarea { resize:none; vertical-align:middle; }
+
+		#wrap { min-width:1600px; }
+		#wrap:after { content:''; display:block; clear:both; }
+		.area-wrap { float:left; width:1280px; }
+		.list-area { float:left; width:300px; }
+
+		.board { position:relative; width:1280px; height:720px; background:url(images/@temp_bg.jpg) no-repeat left top / 100% 100%; }
+		.board svg { width:100%; height:100%; border:1px solid #666; box-sizing:border-box; }
+		.arrow { position:absolute; display:block; width:5px; height:5px; top:-1000px; }
+		.arrow > img { position:absolute; top:50%; left:50%; transform:translate(-50%, -50%); }
+		.arrow-dir { position:absolute; display:block; top:-1000px; }
+		.board .btn { position:absolute; top:5px; right:10px; }
+		.board .btn-reverse { right:70px; }
+
+		.board circle { fill:#ff0000; }
+		.board .mr-point0:hover, .board .mr-point2:hover { cursor:nw-resize; }
+		.board .mr-point1:hover, .board .mr-point3:hover { cursor:ne-resize; }
+		.board .base-box { fill:rgba(0,0,0,0.3) }
+		.board .area-box { fill:transparent; stroke:#fff; stroke-width:1px; }
+		.board .area-box:hover { cursor:move; }
+		.board .mask-box { fill:#000; }
+		.board .mr-point { r:5; fill:#fff; }
+		.inp-area { width:1280px; text-align: center; }
+		.btn { display:inline-block; margin-top:10px; padding:5px 10px; font-size:14px; line-height:1em; border:1px solid #666; border-radius:3px;}
+		.btn.del, .btn.reset { background:#666; color:#fff; }
+	</style>
+</head>
+<body>
+
+	<div id="wrap">
+		<div class="area-wrap">
+			<div class="board">
+				<svg version="1.1" xmlns="http://www.w3.org/2000/svg">
+					<mask id="mask">
+						<rect x="0" y="0" width="1280" height="720" fill="white"></rect>
+					</mask>
+					<rect x="0" y="0" width="1280" height="720" class="base-box" mask="url(#mask)"></rect>
+				</svg>
+			</div>
+
+			<div class="inp-area">
+				<button type="button" class="btn reset">선택 초기화</button>
+				<i>|</i>
+				<button type="button" class="btn cancel">취소</button>
+				<button type="button" class="btn confirm">확인</button>
+			</div>
+		</div>
+
+	</div>	
+	
+	
+	<script src="js/common.js"></script>
+	<script>		
+
+		function srchAreaSet(target){
+			var wrap 		= document.querySelector(target),
+				svg  		= wrap.querySelector('svg'),
+				maskWrap 	= svg.querySelector('mask'),
+				mask		= svg.querySelector('.mask-box'),
+				nowDraw,
+				rect,
+				pointArr 	= new Array();
+
+			var btnReset 	= wrap.querySelector('.btn.reset');
+
+			var drawReset = function(){
+				nowDraw.parentNode.removeChild(nowDraw);
+				maskWrap.removeChild(mask);
+				drawRect(svg);
+			}
+			
+			this.drawStart = function(){
+				drawRect(svg);
+			}			
+			this.getPoint = function(){
+				return pointArr;
+			}
+
+			// pointArr 에 박스 각 꼭지접 값 입력
+			var insertArr = function(){
+				var x = Number(rect.getAttribute('x')),
+					y = Number(rect.getAttribute('y')),
+					w = Number(rect.getAttribute('width')),
+					h = Number(rect.getAttribute('height'));
+
+				pointArr[0][0] = x;
+				pointArr[0][1] = y;
+				pointArr[1][0] = x + w;
+				pointArr[1][1] = y;
+				pointArr[2][0] = x + w;
+				pointArr[2][1] = y + h;
+				pointArr[3][0] = x;
+				pointArr[3][1] = y + h;
+			}
+
+			function modifyOn(){
+				// 모서리 포인트 이동
+				var dots,
+					mouseX, mouseY, gapX, gapY, rectW, rectH;
+
+				var setPoint = function(tg, x, y, gX, gY){
+					tg.setAttribute('x', x);
+					tg.setAttribute('y', y);
+					dots[1].setAttribute('cy', y);
+					dots[3].setAttribute('cx', x);
+					gX < 0 ? tg.setAttribute('width', rectW + (gX * -1)) : tg.setAttribute('width', rectW - gX);
+					gY < 0 ? tg.setAttribute('height', rectH + (gY * -1)) : tg.setAttribute('height', rectH - gY);
+				},
+				setPoint01 = function(tg, x, y, gX, gY){
+					tg.setAttribute('y', y);
+					dots[0].setAttribute('cy', y);
+					dots[2].setAttribute('cx', x);
+					tg.setAttribute('width', rectW + gX);
+					gY < 0 ? tg.setAttribute('height', rectH + (gY * -1)) : tg.setAttribute('height', rectH - gY);
+				},
+				setPoint02 = function(tg, x, y, gX, gY){
+					dots[1].setAttribute('cx', x);
+					dots[3].setAttribute('cy', y);
+					tg.setAttribute('width', rectW + gX);
+					tg.setAttribute('height', rectH + gY);
+				},
+				setPoint03 = function(tg, x, y, gX, gY){
+					tg.setAttribute('x', x);
+					dots[0].setAttribute('cx', x);
+					dots[2].setAttribute('cy', y);
+					gX < 0 ? tg.setAttribute('width', rectW + (gX * -1)) : tg.setAttribute('width', rectW - gX);
+					tg.setAttribute('height', rectH + gY);
+				}
+
+				var cirMove = function(e, obj, idx){
+					gapX = e.layerX - mouseX;
+					gapY = e.layerY - mouseY;
+
+					obj.setAttribute('cx', e.layerX);
+					obj.setAttribute('cy', e.layerY);
+					if(idx == 0) {
+						setPoint(rect, e.layerX, e.layerY, gapX, gapY);
+						setPoint(mask, e.layerX, e.layerY, gapX, gapY);
+					} else if(idx == 1){
+						setPoint01(rect, e.layerX, e.layerY, gapX, gapY);
+						setPoint01(mask, e.layerX, e.layerY, gapX, gapY);
+					} else if(idx == 2){							
+						setPoint02(rect, e.layerX, e.layerY, gapX, gapY);
+						setPoint02(mask, e.layerX, e.layerY, gapX, gapY);
+					} else if(idx == 3){							
+						setPoint03(rect, e.layerX, e.layerY, gapX, gapY);
+						setPoint03(mask, e.layerX, e.layerY, gapX, gapY);
+					}
+				}, cirUp = function(){
+					insertArr();
+					svg.removeSvgListeners();
+					document.removeEventListener('mouseup', cirUp);
+				}
+				var cirOn = function(obj){
+					dots = obj.querySelectorAll('circle');					
+					
+					Array.prototype.forEach.call(dots, function(dot, idx){
+						dot.onSvgEvent('mousedown', function(e){
+							mouseX = pointArr[idx][0];
+							mouseY = pointArr[idx][1];
+							rectW = Number(rect.getAttribute('width')),
+							rectH = Number(rect.getAttribute('height'));
+
+							svg.onSvgEvent('mousemove', function(e){cirMove(e, dot, idx)});
+							document.addEventListener('mouseup', cirUp);
+						});
+					});
+
+				}
+				cirOn(nowDraw);
+
+				// 영역 자체 이동
+				var bx, by, bw, bh;
+
+				var boxMove = function(e){
+					gapX = mouseX - e.layerX;
+					gapY = mouseY - e.layerY;
+					
+					var mx, my;
+					mx = bx - gapX;
+					my = by - gapY;
+
+					rect.setAttribute('x', mx);
+					rect.setAttribute('y', my);
+					mask.setAttribute('x', mx);
+					mask.setAttribute('y', my);
+
+					dots[0].setAttribute('cx', mx);
+					dots[0].setAttribute('cy', my);
+					dots[1].setAttribute('cx', mx + bw);
+					dots[1].setAttribute('cy', my);
+					dots[2].setAttribute('cx', mx + bw);
+					dots[2].setAttribute('cy', my + bh);
+					dots[3].setAttribute('cx', mx);
+					dots[3].setAttribute('cy', my + bh);
+
+				}, boxUp = function(e){
+					insertArr();
+					svg.removeSvgListeners();
+					document.removeEventListener('mouseup', boxUp);
+				}
+
+				rect.addEventListener('mousedown', function(e){
+					mouseX = e.layerX;
+					mouseY = e.layerY;
+
+					bx = Number(rect.getAttribute('x')),
+					by = Number(rect.getAttribute('y')),
+					bw = Number(rect.getAttribute('width')),
+					bh = Number(rect.getAttribute('height'));
+
+					svg.onSvgEvent('mousemove', boxMove);
+					document.addEventListener('mouseup', boxUp);
+				});
+			}
+
+			var makeModifyRect = function(num){
+				var newMR = '<circle class="mr-point mr-point'+num+'" data-num='+num+'"></circle>';
+				nowDraw.insertAdjacentHTML('beforeend', newMR);
+				var tgCir = nowDraw.querySelector('.mr-point'+num);	
+				tgCir.setAttribute('cx', pointArr[num][0]);
+				tgCir.setAttribute('cy', pointArr[num][1]);
+			},
+			addModifyBox = function(){
+				for(var i=0; i<4; i++){
+					makeModifyRect(i);
+				}
+				modifyOn();
+			}
+
+			// 사각형 그리기
+			function drawRect(obj){
+				var mouseX, mouseY, gapX, gapY;
+
+				obj.addEventListener('mousedown', mouseDown);
+
+				function mouseDown(e){
+					mouseX = e.layerX;
+					mouseY = e.layerY;
+
+					var newElement = document.createElementNS("http://www.w3.org/2000/svg", 'g');
+					nowDraw = newElement;
+					svg.appendChild(nowDraw);
+					var newRect = document.createElementNS("http://www.w3.org/2000/svg", 'rect');
+					nowDraw.appendChild(newRect);
+					rect = nowDraw.querySelector('rect');
+					rect.classList.add('area-box');
+
+					var newMask = '<rect class="mask-box"></rect>';
+					maskWrap.insertAdjacentHTML('beforeend', newMask);
+					mask = maskWrap.querySelector('.mask-box');
+					
+					rect.setAttribute('x', mouseX);
+					rect.setAttribute('y', mouseY);
+					mask.setAttribute('x', mouseX);
+					mask.setAttribute('y', mouseY);
+
+					obj.addEventListener('mousemove', mouseMove);
+					document.addEventListener('mouseup', mouseUp);
+				};
+
+				function mouseMove(e){
+					gapX = e.layerX - mouseX;
+					gapY = e.layerY - mouseY;
+
+					if(gapX > 0) {
+						rect.setAttribute('width', gapX);
+						mask.setAttribute('width', gapX);
+					} else {
+						rect.setAttribute('width', gapX * (-1));
+						rect.setAttribute('x', mouseX + gapX);
+						
+						mask.setAttribute('width', gapX * (-1));
+						mask.setAttribute('x', mouseX + gapX);
+					}
+					if(gapY > 0) {
+						rect.setAttribute('height', gapY);
+						mask.setAttribute('height', gapY);
+					} else {
+						rect.setAttribute('height', gapY * (-1));
+						rect.setAttribute('y', mouseY + gapY);
+
+						mask.setAttribute('height', gapY * (-1));
+						mask.setAttribute('y', mouseY + gapY);
+					}
+				};
+
+				function mouseUp(e){
+					obj.removeEventListener('mousedown', mouseDown);
+					obj.removeEventListener('mousemove', mouseMove);
+					document.removeEventListener('mouseup', mouseUp);
+					
+
+					if(gapX != undefined){
+						for(var i=0; i<4; i++){
+							pointArr[i] = new Array();
+						}
+						insertArr();
+						
+						addModifyBox();
+					} else {
+						svg.removeChild(nowDraw);
+					}
+				}
+			}
+
+			btnReset.addEventListener('click', function(){
+				drawReset();
+			});
+		}
+
+		var srchArea = new srchAreaSet('.area-wrap');
+		srchArea.drawStart();
+		srchArea.getPoint();
+
+	</script>
+
+</body>
+</html>

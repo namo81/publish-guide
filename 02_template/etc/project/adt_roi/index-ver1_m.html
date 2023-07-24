@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+	<meta charset="UTF-8" >
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="user-scalable=yes, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, width=device-width">
+	<meta name="author" content="snamo - SK MNS" >
+	<meta name="description" content="">
+	<meta name="keywords" content="">
+	<meta property="og:type" content="website">
+	<meta property="og:title" content="">
+	<meta property="og:description" content="">
+	<meta property="og:image" content="">
+	<meta property="og:url" content="">
+
+	<script src="js/common.js"></script>
+
+	<title>svg test_mobile</title>
+	<style type="text/css">
+		html,body,p,h1,h2,h3,h4,h5,h6,menu,ul,ol,li,dl,dt,dd,table,th,td,form,fieldset,legend,input,textarea,button,select,hr { margin:0;padding:0; }
+		body { background-color:#fff; font-size:0.75em; font-family:'돋움',Dotum,AppleGothic,sans-serif; }
+		input,textarea,select,button,table{ font-size:1em; }
+		img,fieldset,button{ border:0; }
+		img, input, select { vertical-align:middle; }
+		ul,ol { display:inline-block; list-style:none; }
+		em,address,i { font-style:normal; }
+		a { text-decoration:none; vertical-align:middle; }
+		a:hover,a:active,a:focus { text-decoration:none; }
+		button { display:inline-block;overflow:hidden;border:0;background:none;cursor:pointer; }
+		table{ border-collapse:collapse;border-spacing:0; width:100%; }
+		.hide { position:absolute; top:0; left:0; width:100%; height:100%; opacity:0; filter:alpha(opacity=0); zoom:1; text-indent:-9999px; z-index:0; overflow:hidden; }
+		caption { height: 1px; overflow: hidden; line-height: 0; margin-top: -1px; color: transparent; }
+		textarea { resize:none; vertical-align:middle; }
+
+		.board { position:relative; width:1280px; height:720px; }
+		.board.mobile { width:100%; height:auto; }
+		.board.mobile .bg-img img { width:100%; }
+		.board svg { width:100%; height:100%; border:1px solid #666; box-sizing:border-box; }
+		.board.mobile svg { position:absolute; top:0; left:0; }
+		.arrow { position:absolute; display:block; width:5px; height:5px; top:-1000px; }
+		.arrow > img { position:absolute; top:50%; left:50%; transform:translate(-50%, -50%); }
+		.arrow-dir { position:absolute; display:block; top:-1000px; }
+		.board .btn { position:absolute; top:5px; right:10px; }
+		.board .btn-reverse { right:70px; }
+
+		.board circle { fill:#ff0000; }
+		.board path, .board rect { fill:rgba(0,0,0,.3); stroke:#f7ee01; stroke-width:1px; }
+		.inp-area { text-align: center; }
+		.btn-draw { display:inline-block; margin-top:10px; padding:5px 10px; font-size:14px; line-height:1em; border:1px solid #666; border-radius:3px;}
+	</style>
+</head>
+<body>
+
+	<div id="wrap">
+		<div class="layer-pop">
+			<div class="board mobile">
+				<p class="bg-img"><img src="images/@temp_bg.jpg" alt=""></p>
+				<svg version="1.1" xmlns="http://www.w3.org/2000/svg">
+
+				</svg>
+			</div>
+
+			<div class="inp-area">
+				<button type="button" class="btn-draw rect">사각형 그리기</button>
+				<button type="button" class="btn-draw path">다각형 그리기</button>
+			</div>
+			<input type="datetime-local">
+		</div>
+	</div>	
+	
+	<script>
+		window.onload = (function(){
+
+			var defaultArr 	= new Array([294,171], [449,180], [509,380], [262,547], 1), // 기존 데이터용 배열
+				valueArr	= new Array(), // 최종 그리기용 배열 - 모바일
+				valueArrPc 	= new Array(); // 최종 데이터용 배열 - PC 대응 변환 배열;
+			//var defaultArr = new Array();
+
+			function cameraBoxSet(target){
+				// 전체 공통 변수
+				var wrap		= document.querySelector(target),
+					svgWrap		= wrap.querySelector('.board'),
+					svg			= svgWrap.querySelector("svg"),
+					num			= 0, // path 그리기 시 클릭 횟수
+					maxNum		= 7, // path 그리기 시 클릭 최대 제한 횟수
+					pointArr 	= new Array(),
+					btnPath		= document.querySelector('.btn-draw.path'),
+					btnRect		= document.querySelector('.btn-draw.rect');
+
+				var nowDraw,
+					drawNum = 0; // 화면 내 그려진 요소관련 Num
+
+				// 모바일용 비율 계산
+				var viewWid 	= window.innerWidth,
+					webWid  	= 1280,
+					toPcRatio   = Math.round((webWid / viewWid) * 10) / 10;
+					toMobRatio  = Math.round((viewWid / webWid) * 10) / 10;
+
+				/* 배열 값 치환
+					arr		 : 원본 배열
+					tgArr 	 : 비율 변경 값 입력 될 배열
+					type 	 : 'toPc' 일 경우 모바일 좌표 > PC 좌표로 변경 / 값이 null 일 경우 PC좌표 > 모바일 좌표로 변경
+				*/
+				function arrayTrans(arr, tgArr, type){
+					tgArr = [];
+					for(var i=0; i<arr.length; i++){
+						tgArr[i] = new Array();
+						for(var o=0; o<arr[i].length; o++){
+							tgArr[i][o] = new Array();
+							for(var v=0; v<arr[i][o].length; v++){
+								type == 'toPc' ? tgArr[i][o][v] = Math.round(arr[i][o][v] * toPcRatio) : tgArr[i][o][v] = Math.round(arr[i][o][v] * toMobRatio);
+							}
+						}
+					}
+					console.log(valueArr);
+				}
+
+				// 사각형 그리기
+				function drawRect(obj){
+					var mouseX, mouseY, gapX, gapY,
+						thisRect;
+
+					obj.addEventListener('touchstart', mouseDown);
+
+					function mouseDown(e){
+						e.preventDefault();
+						var touch = e.touches[0] || e.changedTouches[0];
+						mouseX = touch.pageX - svgWrap.getBoundingClientRect().left;
+						mouseY = touch.pageY - svgWrap.getBoundingClientRect().top;
+
+						var newElement = document.createElementNS("http://www.w3.org/2000/svg", 'g');
+						nowDraw = newElement;
+						svg.appendChild(nowDraw);
+						var newRect = document.createElementNS("http://www.w3.org/2000/svg", 'rect');
+						nowDraw.appendChild(newRect);
+						thisRect = nowDraw.querySelector('rect');
+						thisRect.setAttribute('x', mouseX);
+						thisRect.setAttribute('y', mouseY);
+
+						obj.addEventListener('touchmove', mouseMove);
+						obj.addEventListener('touchend', mouseUp);
+					};
+
+					function mouseMove(e){
+						var touch = e.touches[0] || e.changedTouches[0];
+						gapX = (touch.pageX  - svgWrap.getBoundingClientRect().left) - mouseX;
+						gapY = (touch.pageY  - svgWrap.getBoundingClientRect().top) - mouseY;
+
+						if(gapX > 0) thisRect.setAttribute('width', gapX);
+						else {
+							thisRect.setAttribute('width', gapX * (-1));
+							thisRect.setAttribute('x', mouseX + gapX);
+						}
+						if(gapY > 0) thisRect.setAttribute('height', gapY);
+						else {
+							thisRect.setAttribute('height', gapY * (-1));
+							thisRect.setAttribute('y', mouseY + gapY);
+						}
+					};
+
+					function mouseUp(e){
+						obj.removeEventListener('touchstart', mouseDown);
+						obj.removeEventListener('touchmove', mouseMove);
+						obj.removeEventListener('touchend', mouseUp);
+						
+						var x = Number(thisRect.getAttribute('x')),
+							y = Number(thisRect.getAttribute('y')),
+							w = Number(thisRect.getAttribute('width')),
+							h = Number(thisRect.getAttribute('height'));
+
+						if(gapX != undefined){
+							for(var i=0; i<4; i++){
+								pointArr[i] = new Array();
+							}
+							pointArr[0][0] = x;
+							pointArr[0][1] = y;
+							pointArr[1][0] = x + w;
+							pointArr[1][1] = y;
+							pointArr[2][0] = x + w;
+							pointArr[2][1] = y + h;
+							pointArr[3][0] = x;
+							pointArr[3][1] = y + h;
+
+							nowDraw.setAttribute('data-num', drawNum);
+							valueArr[drawNum] = pointArr;
+							drawNum++;
+							pointArr = [];
+						} else {
+							svg.removeChild(nowDraw);
+						}
+						arrayTrans(valueArr, valueArrPc, 'toPc');
+					}
+				}
+
+				var timer, timeCount = 0;
+
+				// path 기능 실행
+				function drawPath(e){ 
+					var posX = e.layerX,
+						posY = e.layerY;
+
+					if(num < 1) {
+						var newElement = document.createElementNS("http://www.w3.org/2000/svg", 'g');
+						nowDraw = newElement;
+						svg.appendChild(nowDraw);
+						var newPath = document.createElementNS("http://www.w3.org/2000/svg", 'path');
+						nowDraw.appendChild(newPath);
+						timerStart();
+					}
+					pointArr[num] = new Array();
+					pointArr[num][0] = posX;
+					pointArr[num][1] = posY;
+					num++;
+					drawLine(nowDraw.querySelector('path'));
+					drawDot(posX, posY);
+					document.addEventListener('click', endCheck);
+				}
+				
+				// 점 그리기 함수
+				function drawDot(pX, pY){
+					var newDot = document.createElementNS("http://www.w3.org/2000/svg", 'circle');
+					newDot.setAttribute('r', 3);
+					newDot.setAttribute('cx',pX);
+					newDot.setAttribute('cy',pY);
+					nowDraw.appendChild(newDot);
+				}
+
+				// path 그리기 함수	
+				function drawLine(obj){
+					var pathVal;
+					pathVal = 'M'+ pointArr[0][0] +' '+ pointArr[0][1] +' ';
+					for(var i=1; i<pointArr.length; i++){
+						pathVal += 'L'+ pointArr[i][0] +' '+ pointArr[i][1] +' ';
+						if(i == pointArr.length - 1) pathVal += 'Z';
+					}
+					obj.setAttribute('d', pathVal);
+				}
+
+				// path 첫 클릭 시 카운트 시작
+				function timerStart(){
+					timer = setInterval(function(){
+						timeCount++;
+						if(timeCount > 3) drawEnd();
+					}, 1000);	
+				}
+
+				// 카운트 리셋
+				function endCheck(e){ 
+					timeCount = 0;
+				}
+
+				function drawEnd(){
+					num = 0;
+					svg.removeEventListener('click',drawPath);
+					nowDraw.setAttribute('data-num', drawNum);
+					valueArr[drawNum] = pointArr;
+					drawNum++;
+					pointArr = [];
+					
+					console.log(valueArr);
+					clearInterval(timer);
+					document.removeEventListener('click', endCheck);
+				}
+
+				btnPath.addEventListener('click', function(){
+					svg.addEventListener('click',drawPath);
+				});
+
+				btnRect.addEventListener('click', function(){
+					drawRect(svgWrap);
+				});
+			}
+
+			cameraBoxSet('.layer-pop');
+		});
+	</script>
+
+</body>
+</html>

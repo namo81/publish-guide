@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+	<meta charset="UTF-8" >
+	<meta name="author" content="SK MNS" >
+	<title></title>
+	<style type="text/css">	
+		html,body,p,h1,h2,h3,h4,h5,h6,menu,ul,ol,li,dl,dt,dd,table,th,td,form,fieldset,legend,input,textarea,button,select,hr { margin:0;padding:0; }
+		body { background-color:#fff; font-size:0.75em; font-family:'돋움',Dotum,AppleGothic,sans-serif; }
+		input,textarea,select,button,table{ font-size:1em; }
+		img,fieldset,button{ border:0; }
+		img, input, select { vertical-align:middle; }
+		ul,ol { display:inline-block; list-style:none; }
+		em,address,i { font-style:normal; }
+		a { text-decoration:none; vertical-align:middle; }
+		a:hover,a:active,a:focus { text-decoration:none; }
+		button { display:inline-block;overflow:hidden;border:0;background:none;cursor:pointer; }
+		table{ border-collapse:collapse;border-spacing:0; width:100%; }
+		.hide { position:absolute; overflow:hidden; top:0; left:0; width:100%; height:1px; text-indent:-10000px; }
+		caption { height: 1px; overflow: hidden; line-height: 0; margin-top: -1px; color: transparent; }
+		textarea { resize:none; vertical-align:middle; }
+
+		body { background-color:#eee; }
+		.wrap { text-align:center; }
+		.wrap svg { margin-top:100px; }
+
+		/*
+			blue : #16509B
+		*/
+		#set { transform:translate(100px, 100px); }
+		#bg_cloud circle,
+		#bg_cloud rect { fill:#16509B; transform-origin:30% 30%; transform:scale(0); }
+		#bg_cloud circle { animation:scaleBounce 1s 1 forwards; }
+
+		#bg_cloud .cir_2 { animation-delay:.2s; }
+		#bg_cloud .cir_3 { animation-delay:.3s; }
+		#bg_cloud .cir_4 { animation-delay:.4s; }
+		#bg_cloud .cir_5 { animation-delay:.5s; }
+		#bg_cloud .rect_1 { animation:scaleUp 1s 1 forwards; animation-delay:.4s; }
+
+		#img_camera .c_cir-1,
+		#img_camera .c_cir-2 { transform-origin:175px 79px; transform:scale(0); animation:scaleBounce 1s 1 forwards; animation-delay:.6s;}
+		#img_camera .c_cir-3 { transform-origin:174px 79px; transform:scale(0); animation:scaleBounce 1s 1 forwards; animation-delay:.8s; }
+		#img_camera .c_cir-2 { animation-delay:.7s; }
+
+		#img_camera .c_line-light { transform-origin:175px 79px; stroke-dasharray:1; stroke-dashoffset:1; transform:rotate(-30deg); opacity:0; animation:lightOffset .5s 1 forwards; animation-delay:1.4s; }
+		#img_camera .c_cir-light { transform-origin:175px 79px; opacity:0; transform:rotate(-60deg); animation:lightRotate 1s 1 forwards; animation-delay:1.5s;}
+
+		#text path { fill:#16509B; }
+		#text > g { transform:translateY(-70px); opacity:0; animation:inDown .8s 1 forwards; animation-delay:1.6s; }
+		#text .tx_2 { animation-delay:1.7s; }
+		#text .tx_3 { animation-delay:1.8s; }
+		#text .tx_4 { animation-delay:2.1s; }
+		#text .tx_5 { animation-delay:2.15s; }
+		#text .tx_6 { animation-delay:2.2s; }
+		#text .tx_7 { animation-delay:2.3s; }
+		#text .tx_8 { animation-delay:2.5s; }
+
+		@keyframes scaleBounce {
+			0% { transform:scale(0); animation-timing-function:cubic-bezier(.78,0,.57,1); }
+			50% { transform:scale(1.1); animation-timing-function:cubic-bezier(.36,.01,.15,1); }
+			80% { transform:scale(0.95); animation-timing-function:cubic-bezier(.11,0,.11,.99); }
+			100% { transform:scale(1); }
+		}
+		@keyframes scaleUp {
+			0% { transform:scale(0); animation-timing-function:cubic-bezier(.78,0,.57,1); }
+			100% { transform:scale(1); }
+		}
+		@keyframes lightOffset {
+			0% { transform:rotate(-30deg); stroke-dashoffset:1; opacity:0; animation-timing-function:cubic-bezier(.04,.6,.34,1); }
+			100% { transform:rotate(0); stroke-dashoffset:0; opacity:1; }
+		}
+		@keyframes lightRotate {
+			0% { transform:rotate(-60deg); opacity:0; animation-timing-function:cubic-bezier(.04,.6,.34,1); }
+			100% { transform:rotate(0); opacity:1; }
+		}
+		
+		@keyframes inDown {
+			0% { transform:translateY(-70px); opacity:0; animation-timing-function:cubic-bezier(.04,.6,.34,1); }
+			100% { transform:translateY(0); opacity:1; }
+		}
+	</style>
+</head>
+<body>
+	<div class="wrap">
+		<svg width="500" height="500" viewBox="0 0 500 500" fill="none" xmlns="http://www.w3.org/2000/svg">
+			
+			<g id="set">
+				<g id="bg_cloud">
+					<circle class="cir_1" id="Ellipse 1" cx="53.5" cy="132.5" r="53.5"/>
+					<circle class="cir_2" id="Ellipse 5" cx="141.5" cy="132.5" r="53.5"/>
+					<circle class="cir_3" id="Ellipse 3" cx="236.5" cy="132.5" r="53.5"/>
+					<circle class="cir_4" id="Ellipse 4" cx="175.5" cy="79.5" r="79.5"/>
+					<circle class="cir_5" id="Ellipse 2" cx="78.5" cy="85.5" r="37.5"/>
+					<rect class="rect_1" id="Rectangle 1" x="57" y="144" width="178" height="42"/>
+				</g>
+				<g id="img_camera">
+					<circle class="c_cir-1" id="circle_1" cx="175" cy="79" r="67.5" fill="#16509B" stroke="white"/>
+					<circle class="c_cir-2" id="circle_2" cx="175" cy="79" r="57.5" fill="white" stroke="white"/>
+					<circle class="c_cir-3" id="circle_3" cx="174" cy="79" r="33" fill="white" stroke="#16509B" stroke-width="8"/>
+					<path class="c_line-light" id="line_light" d="M155.444 74.983C157.168 68.5496 162.222 63.4934 168.627 61.8093" stroke="#16509B" stroke-width="4" stroke-miterlimit="10" stroke-linecap="round" pathLength="1"/>
+					<circle class="c_cir-light" id="circle_light" cx="228" cy="121" r="7" fill="white"/>
+				</g>
+				<g id="text">
+					<g class="tx_1">
+						<path id="path42" d="M40.4457 211.995H22.7231V216.341H40.4457V211.995ZM46.5246 221.302H16.5965V202.31H22.7231V207.082H40.4457V202.31H46.5246V221.302ZM51.154 230.421H42.457V244.31H36.2376V230.421H27.0252V244.31H20.8523V230.421H12.154V225.413H51.154V230.421Z"/>
+					</g>
+					<g id="g44" class="tx_2">
+						<path id="path46" d="M93.343 222.739H87.318V244.17H81.1541V201.214H87.318V217.65H93.343V222.739ZM75.8755 205.651C75.8755 218.536 70.9714 229.602 56.6798 236.839L53.2246 232.124C63.2195 226.987 68.5431 220.171 69.6639 210.646H55.6066V205.651H75.8755Z"/>
+					</g>
+					<g id="g48" class="tx_3">
+						<path id="path50" d="M129.538 226.007H99.2733V204.81H129.212V209.805H105.44V221.104H129.538V226.007ZM133.695 239.126H94.7437V234.083H133.695V239.126Z"/>
+					</g>
+					<g id="g52" class="tx_4">
+						<path id="path54" d="M154.335 223.642C154.335 211.91 161.488 204.721 171.219 204.721C175.9 204.721 179.477 206.868 181.686 209.165L179.267 211.861C177.269 209.764 174.638 208.366 171.272 208.366C163.75 208.366 158.805 214.157 158.805 223.541C158.805 232.977 163.54 238.917 171.114 238.917C174.848 238.917 177.688 237.42 180.214 234.724L182.633 237.319C179.635 240.665 175.9 242.562 170.904 242.562C161.383 242.562 154.335 235.472 154.335 223.642Z"/>
+					</g>
+					<g id="g56" class="tx_5">
+						<path id="path58" d="M187.475 236.97V202.176H191.736V237.271C191.736 238.617 192.314 239.168 193.05 239.168C193.313 239.168 193.524 239.168 194.049 239.067L194.68 242.212C193.997 242.411 193.313 242.562 192.104 242.562C188.842 242.562 187.475 240.565 187.475 236.97Z"/>
+					</g>
+					<g id="g60" class="tx_6">
+						<path id="path62" d="M219.561 228.484C219.561 222.044 215.984 217.702 210.881 217.702C205.78 217.702 202.256 222.044 202.256 228.484C202.256 234.873 205.78 239.168 210.881 239.168C215.984 239.168 219.561 234.873 219.561 228.484ZM197.838 228.484C197.838 219.448 203.939 214.257 210.881 214.257C217.825 214.257 223.979 219.448 223.979 228.484C223.979 237.37 217.825 242.562 210.881 242.562C203.939 242.562 197.838 237.37 197.838 228.484Z"/>
+					</g>
+					<g id="g64" class="tx_7">
+						<path id="path66" d="M229.188 232.078V214.956H233.449V231.58C233.449 236.771 235.079 239.017 239.077 239.017C242.076 239.017 244.233 237.57 247.073 234.274V214.956H251.332V241.913H247.808L247.44 237.619H247.283C244.599 240.565 241.759 242.561 237.815 242.561C231.87 242.561 229.188 238.967 229.188 232.078Z"/>
+					</g>
+					<g id="g68" class="tx_8">
+						<path id="path70" d="M277.32 235.273V220.696C274.742 218.549 272.534 217.701 270.062 217.701C265.221 217.701 261.487 222.145 261.487 228.434C261.487 235.074 264.432 239.117 269.64 239.117C272.376 239.117 274.795 237.819 277.32 235.273ZM257.017 228.484C257.017 219.748 262.855 214.256 269.378 214.256C272.744 214.256 274.953 215.455 277.53 217.451L277.32 212.759V202.175H281.581V241.913H278.056L277.635 238.668H277.53C275.269 240.814 272.217 242.561 268.746 242.561C261.593 242.561 257.017 237.469 257.017 228.484Z"/>
+					</g>
+				</g>
+			</g>
+		</svg>
+		
+	</div>
+</body>
+</html>

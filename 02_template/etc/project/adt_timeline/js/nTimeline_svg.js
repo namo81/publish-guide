@@ -166,19 +166,19 @@ function timelineFunc(option) {
             sTime = lineWidth + ( lineWidth * ((start - startSec) / totalSec)),
             eTime = lineWidth + ( lineWidth * ((end - startSec) / totalSec)),
             gap   = eTime - sTime;
-            tag += '<g class="marker" transform="translate('+ sTime +',14)"><rect x="0" y="0" width="'+ gap +'" height="4"></rect></g>';
+            tag += '<g class="marker" transform="translate('+ sTime +',12)"><rect x="0" y="0" width="'+ gap +'" height="22"></rect></g>';
             marksPrev.insertAdjacentHTML('afterbegin', tag);
         } else if (start > endSec) {
             sTime = ( lineWidth * ((start - startSec) / totalSec)) - lineWidth,
             eTime = ( lineWidth * ((end - startSec) / totalSec)) - lineWidth,
             gap   = eTime - sTime;
-            tag += '<g class="marker" transform="translate('+ sTime +',14)"><rect x="0" y="0" width="'+ gap +'" height="4"></rect></g>';
+            tag += '<g class="marker" transform="translate('+ sTime +',12)"><rect x="0" y="0" width="'+ gap +'" height="22"></rect></g>';
             marksNext.insertAdjacentHTML('afterbegin', tag);
         } else {
             sTime = lineWidth * ((start - startSec) / totalSec),
             eTime = lineWidth * ((end - startSec) / totalSec),
             gap   = eTime - sTime;
-            tag += '<g class="marker" transform="translate('+ sTime +',14)"><rect x="0" y="0" width="'+ gap +'" height="4"></rect></g>';
+            tag += '<g class="marker" transform="translate('+ sTime +',12)"><rect x="0" y="0" width="'+ gap +'" height="22"></rect></g>';
             marks.insertAdjacentHTML('afterbegin', tag);
         }
     },
@@ -237,15 +237,15 @@ function timelineFunc(option) {
         for(let t = 0; t < tickArr[0].length; t++) {
             let tickHtml = '';
             if(tickArr[2][t] === null) {
-                tickHtml = '<g class="tick" transform="translate('+ tickArr[0][t] +', 0)"><line x2="0" y2="12"></line><text y="24" x="0" style="text-anchor:middle;" class="time">'+ tickArr[1][t] +'</text></g>';
+                tickHtml = '<g class="tick" transform="translate('+ tickArr[0][t] +', 0)"><line x2="0" y2="10"></line><text y="50" x="0" style="text-anchor:middle;" class="time">'+ tickArr[1][t] +'</text></g>';
             } else {
-                tickHtml = '<g class="tick" transform="translate('+ tickArr[0][t] +', 0)"><line x2="0" y2="12"></line><text y="24" x="0" style="text-anchor:middle;" class="time">'+ tickArr[1][t] +'</text><rect class="date" width="50" height="18" x="-2" y="25"></rect><text y="38" x="-1" class="date">'+ tickArr[2][t] +'</text></g>';
+                tickHtml = '<g class="tick" transform="translate('+ tickArr[0][t] +', 0)"><line x2="0" y2="10"></line><text y="50" x="0" style="text-anchor:middle;" class="time">'+ tickArr[1][t] +'</text><rect class="date-bg" width="66" height="22" x="-33" y="35" rx="11" ry="11"></rect><text y="50" x="-25" class="date">'+ tickArr[2][t] +'</text></g>';
             }
             tickArea.insertAdjacentHTML('afterbegin', tickHtml);
         }
         for(let st = 0; st < sTickArr.length; st++) {
             let sTickHtml = '';
-                sTickHtml = '<g class="sTick" transform="translate('+ sTickArr[st] +', 0)"><line x2="0" y2="6"></line></g>';
+                sTickHtml = '<g class="sTick" transform="translate('+ sTickArr[st] +', 0)"><line x2="0" y2="10"></line></g>';
             sTickArea.insertAdjacentHTML('afterbegin', sTickHtml);
         }
     },
@@ -277,7 +277,7 @@ function timelineFunc(option) {
         if(pos > startSec && pos < endSec) {
             let p = pos - startSec;
             pointer.style.display = 'block';
-            pointer.setAttribute('transform','translate('+ lineWidth * (p/totalSec) +',4)');
+            pointer.setAttribute('transform','translate('+ lineWidth * (p/totalSec) +',0)');
             nowSec = pos;
             nowTime = secToVal(nowSec);
         } else {
@@ -294,14 +294,16 @@ function timelineFunc(option) {
         nowTime = secToVal(nowSec);
 
         pointer.style.display = 'block';
-        pointer.setAttribute('transform','translate('+ pX +',4)');
+        pointer.setAttribute('transform','translate('+ pX +',0)');
 
         if ( typeof option.active === 'function' ) {
             option.active( secToVal(nowSec) );
         }
+        pointerCheck();
     });
 
-    // 외부 호출용 함수 **********************************************
+    let grandParent = timeline.parentNode.parentNode;
+
     // 타임라인 그리기 - 기본
     let drawTime = function(){
         calcDur(totalSec);
@@ -309,8 +311,20 @@ function timelineFunc(option) {
         makeBar();
         recMarkDraw(recArr, recData);
         movePoint(nowSec);
+    }, pointerCheck = function(){
+        if(nowSec < startSec){
+            grandParent.classList.remove('pointNext');
+            grandParent.classList.add('pointPrev');
+        } else if(nowSec > endSec) {
+            grandParent.classList.remove('pointPrev');
+            grandParent.classList.add('pointNext');
+        } else {
+            grandParent.classList.remove('pointPrev');
+            grandParent.classList.remove('pointNext');
+        }
     }
 
+    // 외부 호출용 함수 **********************************************
     // 타임라인 시작시간 호출
     this.startDate = function(){
         return secToVal(startSec);
@@ -326,6 +340,7 @@ function timelineFunc(option) {
         viewSec = valToSec(now);
         nowSec = viewSec;
         drawTime();
+        pointerCheck();
     }
     this.changeTotal = function(total){
         totalSec = total;
@@ -349,6 +364,7 @@ function timelineFunc(option) {
         movePoint(nowSec);
         timeline.style.transitionDuration = '0s';
         timeline.style.transform = 'translate3d(0,0,0)';
+        pointerCheck();
     }
 
     // 다음 타임라인 이동

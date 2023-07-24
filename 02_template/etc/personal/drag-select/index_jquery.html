@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+	<meta charset="UTF-8" >
+	<meta name="author" content="SK MNS" >
+	<title>드래그 테스트</title>
+	<script src="js/jquery-1.12.4.min.js"></script>
+	<style type="text/css">
+		html,body,p,h1,h2,h3,h4,h5,h6,menu,ul,ol,li,dl,dt,dd,table,th,td,form,fieldset,legend,input,textarea,button,select,hr { margin:0;padding:0; }
+		body { background-color:#fff; font-size:0.75em; font-family:'돋움',Dotum,AppleGothic,sans-serif; }
+		input,textarea,select,button,table{ font-size:1em; }
+		img,fieldset,button{ border:0; }
+		img, input, select { vertical-align:middle; }
+		ul,ol { display:inline-block; list-style:none; }
+		em,address,i { font-style:normal; }
+		a { text-decoration:none; vertical-align:middle; }
+		a:hover,a:active,a:focus { text-decoration:none; }
+		button { display:inline-block;overflow:hidden;border:0;background:none;cursor:pointer; }
+		table{ border-collapse:collapse;border-spacing:0; width:100%; }
+		.hide { position:absolute; top:0; left:0; width:100%; height:100%; opacity:0; filter:alpha(opacity=0); zoom:1; text-indent:-9999px; z-index:0; overflow:hidden; }
+		caption { height: 1px; overflow: hidden; line-height: 0; margin-top: -1px; color: transparent; }
+		textarea { resize:none; vertical-align:middle; }
+
+		.page { width:200px; padding:20px; overflow:hidden; }
+		.page > ul { float:left; width:50px; box-sizing:border-box;}
+		.page li { width:100%; height:20px; border-top:1px solid #999; border-left:1px solid #999; text-indent:-10000px; }
+		.page li.chk, .page li.bg { background:#aaa; }
+		.page ul:last-child { border-right:1px solid #999; }
+		.page ul li:last-child { border-bottom:1px solid #999; }
+		.page .select { position:absolute; display:none; background:rgba(0,0,0,.1); z-index:100;}
+	</style>
+	<script>
+		$(function(){
+			var $area = $('.page'),
+			$box = $('.select');
+
+			var startX, startY, endX, endY, gapX, gapY;
+
+			$area.on('mousedown',function(e){
+				startX = e.pageX;
+				startY = e.pageY;
+				$box.show().css({'top':''+startY+'px','left':''+startX+'px'});
+
+				$area.on('',function(){
+
+				});
+
+				$area.on('mousemove',function(e){
+					e.preventDefault();
+					endX = e.pageX,
+					endY = e.pageY,
+					gapX = endX - startX,
+					gapY = endY - startY;
+					
+					$box.css({'width':''+gapX+'px', 'height':''+gapY+'px'});
+					
+					if(gapX > 5 && gapY > 5){
+						$area.find('li').each(function(){
+							var boxT = $(this).offset().top,
+							boxL = $(this).offset().left,
+							boxR = boxL + $(this).width(),
+							boxB = boxT + $(this).height();
+							
+							if(e.ctrlKey){
+								if(boxB > startY && boxT < endY && boxR > startX && boxL < endX){
+									if($(this).hasClass('bg')) $(this).removeClass('bg').addClass('past');
+								} else {
+									if($(this).hasClass('past')) $(this).addClass('chk');
+								}
+							} else {
+								if(boxB > startY && boxT < endY && boxR > startX && boxL < endX){
+									$(this).addClass('chk');
+								} else {
+									$(this).removeClass('chk');
+								}
+							}
+						});
+					}
+				});
+			});			
+
+			$area.on('mouseup',function(e){
+				$box.hide().css({'width':'0px', 'height':'0px'});
+				$area.off('mousemove');
+				$area.find('li').each(function(){
+					$(this).removeClass('past');
+					if($(this).hasClass('chk')){
+						$(this).removeClass('chk').addClass('bg');
+					}
+				});
+			});
+
+			$area.find('li').click(function(){
+				$(this).toggleClass('bg');
+			});
+
+		});
+	</script>
+</head>
+<body>
+
+<div id="wrap">
+	<div class="page">
+		<p class="select"></p>
+		<ul>
+			<li>00</li>
+			<li>01</li>
+			<li>02</li>
+			<li>03</li>
+			<li>04</li>
+			<li>05</li>
+			<li>06</li>
+			<li>07</li>
+			<li>08</li>
+			<li>09</li>
+			<li>10</li>
+			<li>11</li>
+			<li>12</li>
+			<li>13</li>
+			<li>14</li>
+			<li>15</li>
+			<li>16</li>
+			<li>17</li>
+			<li>18</li>
+			<li>19</li>
+			<li>20</li>
+			<li>21</li>
+			<li>22</li>
+			<li>23</li>
+			<li>24</li>
+		</ul>
+		
+		<ul>
+			<li>00</li>
+			<li>01</li>
+			<li>02</li>
+			<li>03</li>
+			<li>04</li>
+			<li>05</li>
+			<li>06</li>
+			<li>07</li>
+			<li>08</li>
+			<li>09</li>
+			<li>10</li>
+			<li>11</li>
+			<li>12</li>
+			<li>13</li>
+			<li>14</li>
+			<li>15</li>
+			<li>16</li>
+			<li>17</li>
+			<li>18</li>
+			<li>19</li>
+			<li>20</li>
+			<li>21</li>
+			<li>22</li>
+			<li>23</li>
+			<li>24</li>
+		</ul>
+		
+		<ul>
+			<li>00</li>
+			<li>01</li>
+			<li>02</li>
+			<li>03</li>
+			<li>04</li>
+			<li>05</li>
+			<li>06</li>
+			<li>07</li>
+			<li>08</li>
+			<li>09</li>
+			<li>10</li>
+			<li>11</li>
+			<li>12</li>
+			<li>13</li>
+			<li>14</li>
+			<li>15</li>
+			<li>16</li>
+			<li>17</li>
+			<li>18</li>
+			<li>19</li>
+			<li>20</li>
+			<li>21</li>
+			<li>22</li>
+			<li>23</li>
+			<li>24</li>
+		</ul>
+		
+		<ul>
+			<li>00</li>
+			<li>01</li>
+			<li>02</li>
+			<li>03</li>
+			<li>04</li>
+			<li>05</li>
+			<li>06</li>
+			<li>07</li>
+			<li>08</li>
+			<li>09</li>
+			<li>10</li>
+			<li>11</li>
+			<li>12</li>
+			<li>13</li>
+			<li>14</li>
+			<li>15</li>
+			<li>16</li>
+			<li>17</li>
+			<li>18</li>
+			<li>19</li>
+			<li>20</li>
+			<li>21</li>
+			<li>22</li>
+			<li>23</li>
+			<li>24</li>
+		</ul>
+	</div>
+</div>
+
+</body>
+</html>

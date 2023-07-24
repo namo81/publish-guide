@@ -105,7 +105,7 @@
     </div>
 
   </div>
-  <p class="test-movie">00:00:00</p>
+  <p class="test-movie">2020-10-22T01:00:00</p>
 
   <script src="js/nTimeline_svg.js"></script>
   <script>
@@ -203,33 +203,47 @@
     function zeroSet(num) { // 숫자가 1자리수 일 경우 앞에 0 붙이기
       return num < 10 ? '0' + num : num;
     }
-    // 가상 영상용 함수
-    function testMovie(){
-      let playTime = 0;
-          hour = 0,
-          min  = 0,
-          sec  = 0;
-      let playInt;
 
-      let testWrap  = document.querySelector('.test-movie');
-
-      this.setInt = function(){
-        playInt = setInterval(vPlay, 1000);
+    function playTest(date) {
+      let dateToSec = function(date){
+        return new Date(date).valueOf();
+      },
+      secToDate = function(sec){
+        var date = new Date(sec),
+            year = date.getFullYear(),
+            mon  = zeroSet(date.getMonth() + 1),
+            day  = zeroSet(date.getDate()),
+            hour = zeroSet(date.getHours()),
+            min  = zeroSet(date.getMinutes()),
+            sec  = zeroSet(date.getSeconds());
+        
+        var result = year + '-' + mon + '-' + day + 'T' + hour + ':' + min + ':' + sec;
+        return result;
       }
-      this.clearInt = function(){
+      
+      let nowSec = dateToSec(date),
+          txArea = document.querySelector('.test-movie'),
+          playInt;;
+
+      function tPlay(){
+        nowSec+=100;
+        let tx = secToDate(nowSec);
+        txArea.innerText = tx;
+        newM.justMovePoint(tx);
+      }
+      playInt = setInterval(tPlay, 100);
+
+      this.updateSec = function(time) {
+        nowSec = dateToSec(time);
+      }
+      this.jumpSec = function(sec) {
+        nowSec = nowSec + (sec * 1000);
+      }
+      this.playStop = function(){
         clearInterval(playInt);
       }
-      this.setTime = function(num){
-        playTime = num;
-      }
-
-      function vPlay(){
-        if(playTime < 86400) playTime++;
-
-        hour = parseInt(playTime/3600),
-        min  = parseInt((playTime%3600)/60),
-        sec  = playTime%60;
-        testWrap.innerText = zeroSet(Math.floor(hour)) + ':' + zeroSet(Math.floor(min)) + ':' + zeroSet(Math.floor(sec));
+      this.playStart = function(){
+        playInt = setInterval(tPlay, 100);
       }
     }
 
@@ -243,12 +257,10 @@
       heigh : 533,
       sources: [{src: "http://vjs.zencdn.net/v/oceans.mp4", type: "video/mp4"}]
     });
-    
-    let tm = new testMovie();
-   // tm.setInt();
 
     let nowPlayDate;
 
+    // 타임라인 적용 예시
     let newM = new timelineFunc({
       totalSec : 3600, 
       recData : cam_info,
@@ -257,6 +269,7 @@
       active : function(time){
         console.log('now : ' + time);
         nowPlayDate = time;
+        testMovie.updateSec(time);
       }
     });
 
@@ -333,10 +346,14 @@
 
     prev30Sec.addEventListener('click', function(){
       newM.pointJump(-30);
+      testMovie.jumpSec(-30);
     });
     next30Sec.addEventListener('click', function(){
       newM.pointJump(30);
+      testMovie.jumpSec(30);
     });
+
+    let testMovie = new playTest('2020-10-22T02:00:00');
 
   </script>
 
