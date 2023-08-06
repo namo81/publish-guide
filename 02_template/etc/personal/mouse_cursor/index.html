@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="user-scalable=yes, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, width=device-width">
+    <meta name="author" content="snamo - SK MNS">
+    <meta name="description" content="">
+    <meta name="keywords" content="">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="">
+    <meta property="og:description" content="">
+    <meta property="og:image" content="">
+    <meta property="og:url" content="">
+
+    <title>마우스 커서 animation</title>
+    <style>
+        @charset 'utf-8';
+        /* -- date :  -- */
+        /* -- snamo(Seo nam ho) -- */
+        /* z-index 설정
+        기본 화면 : none / 0
+        GNB / 기타 메뉴 및 header 영역이 화면 위에 위치할 경우: 100
+        기타 event 적 요소 (select / calendar 등) : 500
+        레이어팝업 : 1000
+        */
+        html,body,p,h1,h2,h3,h4,h5,h6,menu,ul,ol,li,dl,dt,dd,table,th,td,form,fieldset,legend,input,textarea,button,select,hr { margin:0;padding:0; }
+        article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, section { display: block; }
+        html { font-size:12px; min-width:320px; }
+        body { background-color:#fff; font-size:12px; font-family:'Noto Sans KR', '맑은 고딕', '돋움',Dotum,AppleGothic,sans-serif; } /* PC */
+        input,textarea,select,button,table{ font-size:1em; }
+        img,fieldset,button{ border:0; }
+        img, input, select { vertical-align:middle; }
+        img { width:100%; }
+        ul,ol { display:inline-block; list-style:none; vertical-align:top; }
+        li, dd { list-style:none; }
+        em,address,i { font-style:normal; }
+        a { text-decoration:none; vertical-align:middle; color:inherit; }
+        a:hover,a:active,a:focus { text-decoration:none; }
+        button { display:inline-block; overflow:hidden; border:0; background:none; cursor:pointer; }
+        button > span { position:relative; }
+
+        html, body { width:100%; height:100%; }
+        .cursor-item2 { position:fixed; width:30px; height:30px; background-color:blue; border-radius:50%; opacity:.5; user-select:none; pointer-events:none; backdrop-filter:invert(80%); }
+        .cursor-item { position:fixed; width:14px; height:14px; background-color:blue; border-radius:50%; opacity:.5; user-select:none; pointer-events:none; }
+    </style>
+</head>
+<body>
+    <div id="wrap">
+        <p class="cursor-item"></p>
+        <p class="cursor-item2"></p>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.2/dist/gsap.min.js"></script>
+    <script src="../../../../js/common.js"></script>
+    <script>
+        var mouse = document.querySelector('.cursor-item'),
+            mouse2 = document.querySelector('.cursor-item2');
+        gsap.set(mouse, {xPercent: -50, yPercent: -50});
+        gsap.set(mouse2, {xPercent: -50, yPercent: -50});
+        
+        var qX = gsap.quickTo(mouse, 'x', {duration : .5, ease:'expo'}),
+            qY = gsap.quickTo(mouse, 'y', {duration : .5, ease:'expo'}),
+            q2X = gsap.quickTo(mouse2, 'x', {duration : .8, ease:'expo'}),
+            q2Y = gsap.quickTo(mouse2, 'y', {duration : .8, ease:'expo'});
+
+        window.addEventListener('mousemove', function(e){
+            qX(e.clientX);
+            qY(e.clientY);
+            q2X(e.clientX);
+            q2Y(e.clientY);
+        });
+
+        function chkFunc(){
+            console.log(gsap.getTweensOf(mouse));
+        }
+
+        /*
+        window.addEventListener('mousemove', function(e){
+            var posX = e.clientX,
+                posY = e.clientY;
+            gsap.to(mouse, {
+                duration : .6,
+                top : posY - 7 + 'px',
+                left : posX - 7 + 'px'
+            })
+            gsap.to(mouse2, {
+                duration : .3,
+                top : posY - 15 + 'px',
+                left : posX - 15 + 'px'
+            });
+        });*/
+    </script>
+</body>
+</html>
