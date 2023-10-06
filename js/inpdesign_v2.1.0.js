@@ -5,19 +5,22 @@
 /*-- 2019-09-05 - v1.1 변수 추가 및 사용방법 변경 // select 부모영역 설정 추가 (상황에 따라 리스트 위로 뜨도록) --*/
 /*-- 2019-12-11 - v1.2 select - option 속성 관련 추가 --*/
 /*-- 2020-01-15 - v2.0.0 - radio, checkbox 기능 제거(css로만 적용) 및 jquery 제거버전 진행  */
+/*-- 2023-10-06 - v2.1.0 - select - option 변경관련 - 클릭 시 매번 새로 생성하도록 -> optionUpdate 기능변경  */
 
 // !! common.js 필수
 
 
 /* 적용 예시 - file 및 input 동일
 특정 1개 적용 				 : var 변수명 = new nSelectSet('선택자');
-특정 1개 업데이트 			 : 변수명.selectUpdate();
+select disabled 상태 설정	: 변수명.selectDisable(boolean);
 
 화면내 전체 적용			 : nSelect('클래스명');	
-전체적용 시 select 업데이트  : nSelArr.selectUpdate();
-** 화면 내 select 가 1개일 경우 nSelArr.selectUpdate();
-   화면 내 select 가 다수일 경우 nSelArr[0].selectUpdate(); (업데이트가 필요한 select index 선택)
+** 화면 내 select 가 1개일 경우 nSelArr.selectDisable(boolean);
+   화면 내 select 가 다수일 경우 nSelArr[0].selectDisable(boolean); (disable 설정 필요한 select index 선택)
    만약 전체 업데이트 일 경우 반목문 적용
+
+** select option 변경 : selBtn 클릭 시 매번 option 을 지우고 새로 생성함으로 별도 update 불필요
+** select 의 selectIndex 변경 : selectIndex 변경 후 해당 select에 'change' 이벤트 dispatch 해주변 option 재 설정됨
 */
 
 // select 설정 ------------------------------------------------------------------------
@@ -79,19 +82,27 @@ function nSelectSet(Ele){
 		selUl 		= selList.querySelector('ul'),
 		selBtn		= selWrap.querySelector('.btn-select'),
 		selBtnTx 	= selBtn.querySelector('span');
-		optionCreate();
+		
 	}
 	selectCreate();	
 
-	selBtnTx.innerText = firstOp;
-	selUl.insertAdjacentHTML('beforeend', optHtml);
+	function optionAdd(){		
+		opts		= sel.querySelectorAll('option');
+		while ( selUl.hasChildNodes() ) { selUl.removeChild( selUl.firstChild ); }
+		
+		optionCreate();
+		selBtnTx.innerText = firstOp;
+		selUl.insertAdjacentHTML('beforeend', optHtml);
+	}
+	optionAdd();
 
 	// 대체 태그 기능 설정 영역
 	var selBtnClick = function(){
-		funcAddClass(selWrap, 'on');
+		optionAdd();
+		selWrap.classList.add('on');
 		selWrap.style.zIndex = 200;
 	}, selLeave = function(){
-		funcRemoveClass(selWrap, 'on');
+		selWrap.classList.remove('on');
 		selWrap.style.zIndex = '';
 	}, optBtnClick = function(event){
 		var tg		= event.target;
@@ -117,15 +128,13 @@ function nSelectSet(Ele){
 	selBtn.addEventListener('click', selBtnClick);
 	selWrap.addEventListener('mouseleave',selLeave);
 	selUl.addEventListener('click', optBtnClick);
+	sel.addEventListener('change', function(){
+		optionAdd();
+	});
 
 	return {
-		selectUpdate : function(){
-			opts	= sel.querySelectorAll('option');
-			while ( selUl.hasChildNodes() ) { selUl.removeChild( selUl.firstChild ); }
-			
-			optionCreate();
-			selBtnTx.innerText = firstOp;
-			selUl.insertAdjacentHTML('beforeend', optHtml);
+		selectDisable : function(bln){
+			bln == true ? selBtn.disabled = true : selBtn.disabled = false;
 		}
 	}
 	
@@ -157,7 +166,7 @@ function nFileSet(Ele){
 		inpHtml		= '';	
 
 	if(fileInp.disabled == true) {
-		funcAddClass(fileWrap, 'disabled');
+		fileWrap.classList.add('disabled');
 		inpHtml += '<input type="text" class="inp-file-url" title="파일 경로" placeholder="'+placeholder+'" readonly disabled>';
 	} else inpHtml += '<input type="text" class="inp-file-url" title="파일 경로" placeholder="'+placeholder+'" readonly>';
 

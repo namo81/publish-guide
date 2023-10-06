@@ -36,9 +36,9 @@
 			<div class="guide-sec">
 				<h3 class="guide-stit">CSS</h3>
 <pre><code class="css">/* 말풍선 =============================================================== */
-.bln-wrap { position:relative; display:inline-block; z-index:0;}
+.bln-wrap { position:relative; display:inline-block; }
 .bln-wrap:hover { z-index:1; }
-.bln-wrap .bln { position:absolute; visibility:hidden; padding:10px; top:calc(100% + 5px); left:0; background:#aaa; white-space:nowrap; opacity:0; transition:opacity .3s, visibility .3s; }
+.bln-wrap .bln { position:absolute; visibility:hidden; padding:10px; top:calc(100% + 5px); left:0; background:#aaa; white-space:nowrap; opacity:0; transition:opacity .3s, visibility .3s; z-index:1; }
 .bln-wrap .bln.center { transform:translate3d(-50%, 0, 0); margin-left:50%; }
 .bln-wrap .bln.center:after { left:50%; margin-left:-5px; }
 .bln-wrap .bln.align-r { left:auto; right:0; }

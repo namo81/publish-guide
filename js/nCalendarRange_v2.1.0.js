@@ -6,7 +6,7 @@
 
 function nCalendarRange(option){
 
-	var wrap            = document.querySelector(option.wrap),
+	var wrap            = typeof option.wrap === 'string' ? document.querySelector(option.wrap) : option.wrap,
 		showType        = option.showType ? option.showType : 'button',				// both / button / input
 		inpSingle 		= option.inpSingle ? option.inpSingle : false, 				// true : input 1개에 기간 입력 / false : input 시작일,종료일 각각 일 경우
 		dualCal         = option.dualCal != null ? option.dualCal : true,			// true: 표출달력 2개 / false : 표출달력 1개
@@ -39,7 +39,7 @@ function nCalendarRange(option){
 			gapM = 0, 
 			gapD = 0;
 		if(gapVal != null) {
-			if(typeof(gapVal) === 'string') {
+			if(typeof gapVal  === 'string') {
 				var gapTx  = gapVal.substr(-1,1);
 				if(gapTx == 'Y') gapY = Number(gapVal.replace('Y',''));
 				else if(gapTx == 'M') gapM = Number(gapVal.replace('M',''));
@@ -126,7 +126,7 @@ function nCalendarRange(option){
 		cntLeft += '<p class="tx-yearMon"></p>';
 		cntLeft += '<button type="button" class="cal-btn next">'+nextTx+'</button>';
 	} else {
-		funcAddClass(calWrap, 'dual');
+		calWrap.classList.add('dual');
 		calWrap.insertAdjacentHTML('beforeend', '<div class="cal-right"><div class="cal-area"></div></div>');
 		rightArea = calWrap.querySelector('.cal-right');
 		rightCal = rightArea.querySelector('.cal-area');
@@ -163,6 +163,8 @@ function nCalendarRange(option){
 		calWrap.style.left = '';
 		calWrap.style.display = 'none';
 		inpSingle == true ? inp.focus() : inpStart.focus();
+		startDate = null;
+		endDate = null;
 	},
 	calCloseAll = function(){
 		var wrapAll = document.querySelectorAll('.cal-wrap');
@@ -327,6 +329,10 @@ function nCalendarRange(option){
 			if( year > minYear ) year--;
 			month = 11;
 		}
+		if(todayLimit == false && rangeLimit == null) {
+			if(year == minYear && month == 0) prevM.disabled = true;
+			if(nextM.disabled == true) nextM.disabled = false;
+		}
 		calDraw();
 	}
 	function nextMonth(){
@@ -334,6 +340,10 @@ function nCalendarRange(option){
 		else { 
 			if( year < maxYear ) year++;
 			month = 0;
+		}
+		if(todayLimit == false && rangeLimit == null) {
+			if(year == maxYear && month == 11) nextM.disabled = true;
+			if(prevM.disabled == true) prevM.disabled = false;
 		}
 		calDraw();
 	}
@@ -347,9 +357,9 @@ function nCalendarRange(option){
 	var clearRangeClass = function() {
 		var td = calWrap.querySelectorAll('td');
 		for(t=0; t < td.length; t++) {
-			funcRemoveClass(td[t],'start');
-			funcRemoveClass(td[t],'end');
-			funcRemoveClass(td[t],'in-range');
+			td[t].classList.remove('start');
+			td[t].classList.remove('end');
+			td[t].classList.remove('in-range');
 		}
 	}, dateSelect = function(e){
 		var dateBtn = e.target.tagName == 'BUTTON' ? e.target : e.target.closest('BUTTON'),
@@ -359,25 +369,25 @@ function nCalendarRange(option){
 			clearRangeClass();
 			startDate = changeToDate(dateBtn.getAttribute('data-date'));
 			endDate = null;
-			funcAddClass(dateBtn.parentNode, 'start');
+			dateBtn.parentNode.classList.add('start');
 			if(rangeLimit != null) setRnageDisabled();
 			applyBtn.disabled = true;
 		} else if(startDate != null && endDate == null ){
 			if(rangeLimit == null) {
 				if( tdDate >= startDate ) {
 					endDate = changeToDate(dateBtn.getAttribute('data-date'));
-					funcAddClass(dateBtn.parentNode, 'end');
+					dateBtn.parentNode.classList.add('end');
 					applyBtn.disabled = false;
 				} else {
 					clearRangeClass();
 					startDate = changeToDate(dateBtn.getAttribute('data-date'));
 					if(rangeLimit != null) setRnageDisabled();
-					funcAddClass(dateBtn.parentNode, 'start');
+					dateBtn.parentNode.classList.add('start');
 				}
 			} else {
 				if( tdDate >= startDate && tdDate < startDate.valueOf() + (60 * 60 * 24 * 1000 * rangeLimit)){
 					endDate = changeToDate(dateBtn.getAttribute('data-date'));						
-					funcAddClass(dateBtn.parentNode, 'end');
+					dateBtn.parentNode.classList.add('end');
 					applyBtn.disabled = false;
 					// rangeset($(this).parent().data('date'));  end 클릭 시 중간 날짜 bg 추가 - 모바일일 경우 추가
 					setRnageEnabled();
@@ -441,12 +451,12 @@ function nCalendarRange(option){
 			if(btn != null) {
 				var btnDate = changeToDate(btn.getAttribute('data-date')).valueOf();
 				if(endDate == null) {
-					if(btnDate == startDate.valueOf()) funcAddClass(chkTds[i], 'start');
+					if(btnDate == startDate.valueOf()) chkTds[i].classList.add('start');
 					if(rangeLimit != null) setRnageDisabled();
 				} else {
-					if(btnDate == startDate.valueOf()) funcAddClass(chkTds[i], 'start');
-					if(btnDate == endDate.valueOf()) funcAddClass(chkTds[i], 'end');
-					if(btnDate > startDate.valueOf() && btnDate < endDate.valueOf()) funcAddClass(chkTds[i],'in-range');
+					if(btnDate == startDate.valueOf()) chkTds[i].classList.add('start');
+					if(btnDate == endDate.valueOf()) chkTds[i].classList.add('end');
+					if(btnDate > startDate.valueOf() && btnDate < endDate.valueOf()) chkTds[i].classList.add('in-range');
 					if(rangeLimit != null) setRnageEnabled();
 				} 
 			}
@@ -462,7 +472,7 @@ function nCalendarRange(option){
 				var tdBtn = td[t].querySelector('button');
 				if(tdBtn != null) {
 					thisBtnDate = changeToDate(tdBtn.getAttribute('data-date'));
-					thisBtnDate > startDate && thisBtnDate < eDate ? funcAddClass(td[t],'in-range') : funcRemoveClass(td[t], 'in-range');
+					thisBtnDate > startDate && thisBtnDate < eDate ? td[t].classList.add('in-range') : td[t].classList.remove('in-range');
 				}
 			}
 		}

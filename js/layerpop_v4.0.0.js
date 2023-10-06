@@ -84,7 +84,7 @@ var nlayer = {
 		});
 	},
 
-	// 버튼으로 레이어 팝업 열기
+	// 버튼으로 레이어 팝업 열기 (동일 클래스 버튼에 전체 기능 부여)
 	showBtn : function(cls){
 		var btns = document.querySelectorAll(cls);
 		btns.forEach(function(btn){
@@ -98,10 +98,20 @@ var nlayer = {
 		});
 	},
 
-	// 함수 실행으로 레이어 팝업 열기
-	showFunc : function(cls){
-		nlayer.layerShow(cls);
-		nlayer.closeBtnSet(cls, true);
+	// 특정 버튼에 클릭 Event 발생으로 레이어 팝업 열기
+	showClick : function(cls){
+		var btn = typeof cls === 'string' ? document.querySelectorAll(cls) : cls,
+			tg 	= document.getElementById(btn.getAttribute('data-target'));
+
+		nlayer.layerShow(tg, btn);
+		btn.classList.add(clsOn);
+		nlayer.closeBtnSet(tg, false);
+	},
+
+	// 함수 실행으로 레이어 팝업 열기 (버튼 연결 없이 단순 script 로 호출할 경우)
+	showFunc : function(tg_id){
+		nlayer.layerShow(tg_id);
+		nlayer.closeBtnSet(tg_id, true);
 	}
 }
 

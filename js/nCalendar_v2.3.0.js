@@ -473,8 +473,8 @@ function nCalendar(option){
 		var setDateMark = function(){
 			var chkBtn = cal.querySelectorAll('button');
 			for(i=0; i<chkBtn.length; i++){
-				if( chkBtn[i].getAttribute('data-year') == thisYear && chkBtn[i].getAttribute('data-month') == thisMonth + 1 && chkBtn[i].innerText == today ) funcAddClass(chkBtn[i], 'today');
-				else if ( chkBtn[i].getAttribute('data-year') == activeYear && chkBtn[i].getAttribute('data-month') == activeMonth + 1 && chkBtn[i].innerText == activeDay ) funcAddClass(chkBtn[i], 'select-day');
+				if( chkBtn[i].getAttribute('data-year') == thisYear && chkBtn[i].getAttribute('data-month') == thisMonth + 1 && chkBtn[i].innerText == today ) chkBtn[i].classList.add('today');
+				else if ( chkBtn[i].getAttribute('data-year') == activeYear && chkBtn[i].getAttribute('data-month') == activeMonth + 1 && chkBtn[i].innerText == activeDay ) chkBtn[i].classList.add('select-day');
 			}
 		}, dateMark = function(){
 			if( year == thisYear && month == thisMonth || year == activeYear && month == activeMonth) setDateMark();
@@ -713,8 +713,8 @@ function nCalendar(option){
 		var setDateMark = function(){
 			var chkBtn = cal.querySelectorAll('button');
 			for(i=0; i<chkBtn.length; i++){
-				if( chkBtn[i].getAttribute('data-year') == thisYear && chkBtn[i].getAttribute('data-month') == thisMonth + 1 ) funcAddClass(chkBtn[i], 'thisMonth');
-				else if ( chkBtn[i].getAttribute('data-year') == activeYear && chkBtn[i].getAttribute('data-month') == activeMonth + 1 ) funcAddClass(chkBtn[i], 'select-mon');
+				if( chkBtn[i].getAttribute('data-year') == thisYear && chkBtn[i].getAttribute('data-month') == thisMonth + 1 ) chkBtn[i].classList.add('thisMonth');
+				else if ( chkBtn[i].getAttribute('data-year') == activeYear && chkBtn[i].getAttribute('data-month') == activeMonth + 1 ) chkBtn[i].classList.add('select-mon');
 			}
 		}, dateMark = function(){
 			if( year == thisYear || year == activeYear) setDateMark();
