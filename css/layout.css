@@ -375,3 +375,11 @@ ul.under-desc li { margin:3px 0; font-size:12px; line-height:1.4em; color:#666; 
 .time-wrap .roll-wrap li button.on { font-weight:bold; }
 .time-wrap .btns { display:flex; }
 .time-wrap .btns > button { flex:1; padding:7px 3px; border-radius:0; }
+
+/* editor 용 리셋 */
+.editor-view pre { word-break:break-all; }
+.editor-view pre i, .editor-view pre em, .editor-view pre var { font-style:italic; }
+.editor-view pre ol, .editor-view pre ul { display:block; margin:16px 0; padding-left:40px; }
+.editor-view pre ol li { list-style:decimal; }
+.editor-view pre ul li { list-style:disc; }
+.editor-view pre table { table-layout:auto; border-collapse:separate; border-spacing: 2px; }

@@ -187,6 +187,15 @@ function nFileSet(Ele){
 	if(btnClear != null) {
 		btnClear.addEventListener('click',valueClear);
 	}
+	
+	// 외부호출 함수
+	this.inpReset = function(){
+		valueClear();
+	}
+	this.inpFileNameShow = function(filename){
+		urlInp.value = filename;
+		btnClear.style.display = 'block';
+	}
 }
 
 /* 적용 예시

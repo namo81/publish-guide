@@ -84,28 +84,24 @@ var nlayer = {
 		});
 	},
 
-	// 버튼으로 레이어 팝업 열기 (동일 클래스 버튼에 전체 기능 부여)
-	showBtn : function(cls){
-		var btns = document.querySelectorAll(cls);
-		btns.forEach(function(btn){
-			var tg 		= document.getElementById(btn.getAttribute('data-target'));
-
-			btn.addEventListener('click', function(){
-				nlayer.layerShow(tg, btn);
-				btn.classList.add(clsOn);
-			});
-			nlayer.closeBtnSet(tg, false);
-		});
-	},
-
-	// 특정 버튼에 클릭 Event 발생으로 레이어 팝업 열기
-	showClick : function(cls){
-		var btn = typeof cls === 'string' ? document.querySelectorAll(cls) : cls,
+	// 버튼의 data-target 와 동일한 레이어 호출 ( click 이벤트를 별도로 선언할 경우 사용 )
+	showClick : function(btnCls){
+		var btn = typeof btnCls === 'string' ? document.querySelector(btnCls) : btnCls,
 			tg 	= document.getElementById(btn.getAttribute('data-target'));
 
 		nlayer.layerShow(tg, btn);
 		btn.classList.add(clsOn);
 		nlayer.closeBtnSet(tg, false);
+	},
+
+	// 동일 클래스 버튼에 전체 기능 부여
+	showBtn : function(btnCls){
+		var btns = document.querySelectorAll(btnCls);
+		btns.forEach(function(btn){
+			btn.addEventListener('click', function(){
+				nlayer.showClick(this);
+			});
+		});
 	},
 
 	// 함수 실행으로 레이어 팝업 열기 (버튼 연결 없이 단순 script 로 호출할 경우)

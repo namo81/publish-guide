@@ -9,7 +9,7 @@
 
 function nCalendar(option){
 
-	var calInp          = document.querySelector(option.calInp),
+	var calInp          = typeof option.calInp === 'string' ? document.querySelector(option.calInp) : option.calInp,
 		showType        = option.showType ? option.showType : 'button',				// both / button / input
 		splitType 		= option.splitType ? option.splitType : '-',				// 날짜 구분선
 		mobileDevice	= option.mobileDevice ? true : false,						// true : 모바일일 경우 left 값 0 고정 / false : input 위치값 적용
@@ -474,7 +474,7 @@ function nCalendar(option){
 			var chkBtn = cal.querySelectorAll('button');
 			for(i=0; i<chkBtn.length; i++){
 				if( chkBtn[i].getAttribute('data-year') == thisYear && chkBtn[i].getAttribute('data-month') == thisMonth + 1 && chkBtn[i].innerText == today ) chkBtn[i].classList.add('today');
-				else if ( chkBtn[i].getAttribute('data-year') == activeYear && chkBtn[i].getAttribute('data-month') == activeMonth + 1 && chkBtn[i].innerText == activeDay ) chkBtn[i].classList.add('select-day');
+				if ( chkBtn[i].getAttribute('data-year') == activeYear && chkBtn[i].getAttribute('data-month') == activeMonth + 1 && chkBtn[i].innerText == activeDay ) chkBtn[i].classList.add('select-day');
 			}
 		}, dateMark = function(){
 			if( year == thisYear && month == thisMonth || year == activeYear && month == activeMonth) setDateMark();
