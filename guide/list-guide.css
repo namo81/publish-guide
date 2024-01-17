@@ -51,7 +51,8 @@ body { width:100%; height:100%; /*background:linear-gradient(180deg, #fff 70px, 
 #work-list .menu li button.view { background:#fff; color:#333; }
 
 #work-list .function { position:sticky; width:100%; height:36px; top:31px; color:#444; box-sizing:border-box; background:#fff; box-shadow:0 3px 3px rgba(0,0,0,.15); z-index:101; }
-#work-list .function > .inbox { position:relative; display:flex; max-width:1200px; padding:8px 0; margin:0 auto; justify-content:space-between; align-items:center; }
+#work-list .function > .inbox { position:relative; display:flex; max-width:1200px; padding:6px 0; margin:0 auto; justify-content:space-between; align-items:center; }
+#work-list .func-items { flex:1; display:flex; justify-content:flex-end; align-items:center; }
 #work-list .function .tit { vertical-align:middle; font-size:12px; color:#666; }
 #work-list .func-wrap + .func-wrap { display:inline-block; margin-left:25px; }
 #work-list .check { display:inline-block; position:relative; width:40px; height:20px; border-radius:15px; background:#444; text-align:left; vertical-align:middle;}
@@ -60,10 +61,7 @@ body { width:100%; height:100%; /*background:linear-gradient(180deg, #fff 70px, 
 #work-list .check input:checked + label { left:22px; background:#fff; }
 #work-list .check input:disabled + label { opacity:.5; }
 
-#work-list .ing-per { position:absolute; top:8px; left:50%; margin-left:-590px; font-size:14px; font-weight:bold; }
-
-#work-list .function > .func-wrap { position:absolute; top:8px; left:50%; margin-left:490px; }
-#work-list .function > .text-finder { top:6px; margin-left:240px; }
+#work-list .ing-per { font-size:14px; font-weight:bold; }
 
 #work-list .temp { display:none; }
 #work-list .text-finder label { color:#666; vertical-align:middle;}
@@ -88,17 +86,18 @@ body { width:100%; height:100%; /*background:linear-gradient(180deg, #fff 70px, 
 #work-list .list td.link a { display:block; padding-right:12px; color:#036ab3; background:url(../guide/images/next.png) no-repeat right 50%; background-size:8px 8px; font-weight:bold; letter-spacing:-0.05em; }
 #work-list .list td.link a.ready { background:none; color:#bbb; }
 #work-list .list td.link a.classUse { color:#ff0000; }
-#work-list .list td.state:after { content:'대기'; display:inline-block; width:40px; padding:2px 15px; font-size:12px; line-height:16px; color:#fff; background:#ccc; border-radius:10px 2px; }
-#work-list .list td.state.ing:after { content:'진행중'; color:#fff; background:#e5426d; }
-#work-list .list td.state.end:after { content:'완료'; color:#fff; background:#036ab3; }
+#work-list .list td.state::after { content:'대기'; display:inline-block; width:40px; padding:2px 15px; font-size:12px; line-height:16px; color:#fff; background:#ccc; border-radius:10px 2px; }
+#work-list .list td.state.ing::after { content:'진행중'; color:#fff; background:#e5426d; }
+#work-list .list td.state.end::after { content:'완료'; color:#fff; background:#036ab3; }
+#work-list .list td.state.include::after { content:'┖ 포함'; width:50px; padding:2px 10px; color:#036ab3; background:#fff; }
 #work-list .list td.modify dl { overflow:hidden; text-align:left; }
 #work-list .list td.modify dt { float:left; font-weight:bold; margin-right:10px; }
 #work-list .list td.modify dd { display:block; overflow:hidden;  }
 #work-list .list tr.del td, #work-list .list tr.del td a { color:#aaa; text-decoration: line-through; background-image:none; }
-#work-list .list tr.del td.state.end:after { content:'삭제'; background:#ccc; }
+#work-list .list tr.del td.state.end::after { content:'삭제'; background:#ccc; }
 #work-list .list tr.notuse td { color:#999; background:#f6f6f6; }
 #work-list .list tr.notuse td a { opacity:.5; }
-#work-list .list tr.notuse td.state.end:after { content:'참고용'; opacity:.5; }
+#work-list .list tr.notuse td.state.end::after { content:'참고용'; opacity:.5; }
 
 #work-list .iframe { position:fixed; display:none; width:1200px; height:1600px; top:50%; left:10%; z-index:200; background:#fff; transform:scale(.5) translateY(-50%); -webkit-transform:scale(.5) translateY(-50%); transform-origin:0 0;-webkit-transform-origin:0 0; box-sizing:border-box; box-shadow:2px 2px 20px rgba(0,0,0,.8); }
 #work-list .iframe iframe { width:100%; height:calc(100% - 84px); }
@@ -123,7 +122,7 @@ body { width:100%; height:100%; /*background:linear-gradient(180deg, #fff 70px, 
 #work-list .guide .guide-sstit { margin:15px 0 10px; padding-top:15px; font-size:16px; }
 #work-list .guide-sec p { margin:5px 0; }
 #work-list .guide-sec .imp { position:relative; padding-left:15px; font-weight:bold; color:#ff0000; font-size:14px; }
-#work-list .guide-sec .imp:after { content:'▶'; position:absolute; width:15px; height:15px; top:0; left:0; }
+#work-list .guide-sec .imp::after { content:'▶'; position:absolute; width:15px; height:15px; top:0; left:0; }
 #work-list .guide-sec ul { width:100%; }
 #work-list .guide-sec > ul li { margin-top:5px; }
 #work-list .guide-sec > ul > li:first-child { margin-top:0; }
@@ -160,11 +159,11 @@ body { width:100%; height:100%; /*background:linear-gradient(180deg, #fff 70px, 
 #work-list .btn-tr-tgl { position:absolute; display:inline-block; width:16px; height:16px; top:0; left:-80px; text-indent:-10000px; background:#dedede; border-radius:2px; vertical-align:middle; }
 #work-list .btn-tr-tgl.open { background:#aaa; }
 #work-list .btn-tr-tgl:before { content:''; position:absolute; display:none; width:2px; height:8px; top:4px; left:7px; background:#fff; }
-#work-list .btn-tr-tgl:after { content:''; position:absolute; width:8px; height:2px; top:7px; left:4px; background:#fff; }
+#work-list .btn-tr-tgl::after { content:''; position:absolute; width:8px; height:2px; top:7px; left:4px; background:#fff; }
 #work-list .btn-tr-tgl:hover { background:#aaa; }
 #work-list .btn-tr-tgl.open:before { display:block; }
 #work-list .btn-tr-tgl:disabled { cursor:default; opacity:0; }
-#work-list .btn-tr-tgl:disabled:after, #work-list .btn-tr-tgl:disabled:before { display:none; }
+#work-list .btn-tr-tgl:disabled::after, #work-list .btn-tr-tgl:disabled:before { display:none; }
 #work-list .btn-tr-tgl:disabled:hover { background:#dedede; }
 
 .btn-guide-top { position:fixed; bottom:10px; right:10px; padding:4px 6px; background:rgba(255,255,255,.5); color:#666; border:1px solid #ccc; box-shadow:1px 1px 5px rgba(0,0,0,.2); border-radius:3px;}

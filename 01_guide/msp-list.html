@@ -20,7 +20,7 @@
 	<!-- 가이드 관련 -->
 	<link rel="stylesheet" href="../guide/list-guide.css" media="screen, print" />
 	<link rel="stylesheet" href="../guide/vendor/railscasts.css">
-	<script src="../guide/vendor/highlight.pack.js"></script>
+	<script src="../guide/vendor/highlight.js"></script>
 	
 </head>
 <body>
@@ -90,15 +90,24 @@
 			
 			<div class="guide-sec">
 				<h3 class="guide-stit">작성방법</h3>
-				<p></p>
 				<ol>
 					<li>1. 사이트명 / 작성일, 파트별 작업자 정보 기입</li>
 					<li>2. SB 문서 IA 기준으로 depth1 ~ depth4 정리</li>
 					<li>3. 각 페이지명에 따른 파일명과 a 태그 생성</li>
-					<li>4. 진행 전 페이지의 경우 a 태그를 주석 처리 &rarr; '진행상태'가 '대기'로 자동 변경 <br>&nbsp;&nbsp;&nbsp;진행 중인 페이지 a 태그 활성화 &rarr; '진행상태'가 '진행중'으로 자동 변경<br>&nbsp;&nbsp;&nbsp;완료된 페이지일 경우 'end-date' 칸에 완성일자 추가 &rarr; '진행상태'가 '완료'로 자동 변경</li>
-					<li>5. 단순 텍스트 수정 제외, 화면 레이아웃 변경 등의 수정이 있을 경우 '수정 및 참고' 칸에 수정 날짜 / 수정 내역 기입</li>
-					<li>* 페이지가 특정 페이지에 포함되어 있을 경우, 페이지명은 작성하되 a 버튼은 생성하지 않습니다. 단, '수정 및 참고' 항목에 포함된 페이지 안내를 표시합니다.</li>
+					<li>4. 단순 텍스트 수정 제외, 화면 레이아웃 변경 등의 수정이 있을 경우 '수정 및 참고' 칸에 수정 날짜 / 수정 내역 기입</li>
+					<li>* 페이지가 특정 페이지에 포함되어 있을 경우, 페이지명은 작성하되 a 버튼은 생성하지 않습니다. <br>
+						단, td.state 에 'include' 클래스를 추가하고, '수정 및 참고' 항목에 포함된 페이지 안내를 표시합니다.</li>
 				</ol>
+				<br><br>
+				<p><strong>'진행상태' 영역의 상태설정 방법</strong></p>
+				<p>아래 설정 시 대기/진행중/완료/포함 문구가 자동 생성됩니다.</p>
+				<ul>
+					<li><strong>작업 전 :</strong> a 태그를 주석 처리 &rarr; <strong>대기</strong> </li>
+					<li><strong>작업 중 :</strong> a 태그 활성화 &rarr; <strong>진행중</strong></li>
+					<li><strong>작업 완료 : </strong> td.end-date 에 완료일자(YYYY-MM-DD) 표기 &rarr; <strong>완료</strong></li>
+					<li><strong>포함 화면 : </strong> td.state 에 'include' 클래스 추가 &rarr; <strong>┖ 포함</strong></li>
+					<li><strong></strong></li>
+				</ul>
 				<br><br>
 				<ul>
 					<li>페이지가 삭제될 경우 tr 에 'del' 클래스 추가 : 전체 텍스트 취소선 / 진행상태 '삭제' 로 변경</li>

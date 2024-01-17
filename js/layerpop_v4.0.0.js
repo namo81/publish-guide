@@ -199,6 +199,10 @@ function nToast(ment, addCls) {
 		toastCnt += '<p class="ment">'+ment+'</p>';
 		toastCnt += '</div></div>';
 
+	// 혹, 기존 토스트가 있는 상태에서 다시 추가할 경우 기존 토스트 제거 (toast 가 전체화면이 아닐 경우)
+	var beforeToast		= document.querySelector('.toast');
+	if(beforeToast) beforeToast.parentNode.removeChild(beforeToast);
+
 	body.insertAdjacentHTML('beforeend', toastCnt);
 	var toast		= document.querySelector('.toast'),
 		toastCnt	= toast.querySelector('.toast-cnt');

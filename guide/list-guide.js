@@ -146,7 +146,7 @@ function guide_tblSet(tbl){
 	var pageTotal   = document.querySelector('.total-page'),
 		pageEnd 	= document.querySelector('.end-page'),
 		pagePer 	= document.querySelector('.per'),
-		endCount  	= tbl.querySelectorAll('.end').length,
+		endCount  	= tbl.querySelectorAll('.end').length + tbl.querySelectorAll('.include').length,
 		endPer 		= (endCount / (tblTotal + 1)) * 100;
 
 		if(pageTotal) {
