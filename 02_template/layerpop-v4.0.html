@@ -24,10 +24,8 @@
 
 	<!-- 프로젝트 관련 CSS 파일 로드 -->
 	<link rel="stylesheet" href="/css/layout.css" media="screen, print" />
-
 </head>
 <body>
-	
 	<div id="work-list">
 		<div class="guide">
 			<section id="guide-basic">
@@ -87,79 +85,77 @@ nlayer.showFunc('호출할 레이어 ID'); // 함수형 호출 - 대상 팝업 i
 		</div>
 	</div>
 
-<!-- 레이어팝업 영역 ----------------------------------------------------------- -->
-<!-- layerPop - 1 -->
-<div class="layer" id="layer1">
-	<div class="inbox">
-		<div class="layer-cnt">
-			<div class="layer-top">test</div>
-			<div class="layer-mid">
-				<p>tx</p>
-				<p style="border-bottom:1px solid #eee;">tx</p><br>
-				<button type="button" data-target="layer2" class="btn01 open-layer2">레이어팝업</button><br>
-				<p>tx</p>
-				<p>tx</p>
-				<p>tx</p>
-				<p>tx</p>
-				<p>tx</p>
-				<p>tx</p>
-				<p>tx</p>
-				<p>tx</p>
-				<p>tx</p>
-				<p>tx</p>
-				<p>tx</p>
-				<p>tx</p>
-				<p>tx</p>
-				<p>tx</p>
-				<p>tx</p>
-				<p>tx</p>
-				<p>tx</p>
-				<p>tx</p>
-				<p>tx</p>
-				<p>tx</p>
-				<p>tx</p>
-				<p>tx</p>
-				<p>tx</p>
-				<p>tx</p>
-				<p>tx</p>
-				<p>tx</p>
-				<p>tx</p>
-				<p>tx</p>
-				<p>tx</p>
-				<p>tx</p>
-				<p>tx</p>
-				<p>tx</p>
-				<p>tx</p>
-				<p>tx</p>
+	<!-- 레이어팝업 영역 ----------------------------------------------------------- -->
+	<!-- layerPop - 1 -->
+	<div class="layer" id="layer1">
+		<div class="inbox">
+			<div class="layer-cnt">
+				<div class="layer-top">test</div>
+				<div class="layer-mid">
+					<p>tx</p>
+					<p style="border-bottom:1px solid #eee;">tx</p><br>
+					<button type="button" data-target="layer2" class="btn01 open-layer2">레이어팝업</button><br>
+					<p>tx</p>
+					<p>tx</p>
+					<p>tx</p>
+					<p>tx</p>
+					<p>tx</p>
+					<p>tx</p>
+					<p>tx</p>
+					<p>tx</p>
+					<p>tx</p>
+					<p>tx</p>
+					<p>tx</p>
+					<p>tx</p>
+					<p>tx</p>
+					<p>tx</p>
+					<p>tx</p>
+					<p>tx</p>
+					<p>tx</p>
+					<p>tx</p>
+					<p>tx</p>
+					<p>tx</p>
+					<p>tx</p>
+					<p>tx</p>
+					<p>tx</p>
+					<p>tx</p>
+					<p>tx</p>
+					<p>tx</p>
+					<p>tx</p>
+					<p>tx</p>
+					<p>tx</p>
+					<p>tx</p>
+					<p>tx</p>
+					<p>tx</p>
+					<p>tx</p>
+					<p>tx</p>
+					<button type="button" class="close-layer">닫기</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- layerPop - 2 -->
+	<div class="layer" id="layer2">
+		<div class="inbox">
+			<div class="layer-cnt">
+				<button type="button" class="close-layer all">전체닫기</button>
 				<button type="button" class="close-layer">닫기</button>
 			</div>
 		</div>
 	</div>
-</div>
 
-<!-- layerPop - 2 -->
-<div class="layer" id="layer2">
-	<div class="inbox">
-		<div class="layer-cnt">
-			<button type="button" class="close-layer all">전체닫기</button>
-			<button type="button" class="close-layer">닫기</button>
-		</div>
-	</div>
-</div>
+	<script src="/js/common.js"></script>
+	<script src="/js/layerpop_v4.0.0.js"></script>
 
-<script src="/js/common.js"></script>
-<script src="/js/layerpop_v4.0.0.js"></script>
+	<script>
+		hljs.initHighlightingOnLoad(); 
 
-<script>
-	hljs.initHighlightingOnLoad(); 
-
-	window.onload = function(){
-		nlayer.showBtn('.open-layer'); // 버튼형
-		nlayer.showBtn('.open-layer2'); 
-		nlayer.showFunc('layer1'); // 함수형 호출 - 대상 팝업 id 값 설정
-	}
-</script>
-
-
+		window.onload = function(){
+			nlayer.showBtn('.open-layer'); // 버튼형
+			nlayer.showBtn('.open-layer2'); 
+			nlayer.showFunc('layer1'); // 함수형 호출 - 대상 팝업 id 값 설정
+		}
+	</script>
 </body>
 </html>

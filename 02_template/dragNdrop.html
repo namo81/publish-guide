@@ -24,12 +24,6 @@
 
 	<!-- 프로젝트 관련 CSS 및 JS 파일 로드 -->
 	<link rel="stylesheet" href="../css/layout.css" media="screen, print" />
-	<script src="../js/jquery-1.12.4.min.js"></script>
-	<script src="../js/common.js"></script>
-
-	<!--[if lt IE 9]>
-    <script src="/js/html5shiv.js"></script>
-    <![endif]-->	
 
 	<!-- calendar 관련 설정 -->
 	<link rel="stylesheet" href="../css/nCalendar.css" media="screen, print" />
@@ -50,14 +44,14 @@
 	</style>
 </head>
 <body>
-<div id="work-list">
-	<div class="guide">
+	<div id="work-list">
+		<div class="guide">
 
-		<!-- input ================================================================ -->
-		<section id="guide-input">
-			<h2 class="guide-sec-tit">Drag &amp; Drop</h2>
-			<div class="guide-sec">
-				<h3 class="guide-stit">옵션 안내</h3>
+			<!-- input ================================================================ -->
+			<section id="guide-input">
+				<h2 class="guide-sec-tit">Drag &amp; Drop</h2>
+				<div class="guide-sec">
+					<h3 class="guide-stit">옵션 안내</h3>
 <pre class="pre"><code class="html">
 &lt;script src="../js/nDragnDrop_v1.0.0.js"&gt;&lt;/script&gt;
 </code></pre>
@@ -77,43 +71,43 @@ var 이름 = new nDragnDrop({
 	}
 });
 </code></pre>
-			</div>
-
-			<div class="guide-sec">
-				<h3 class="guide-stit">리스트 순서 변경</h3>
-				<p>자체 제작 플러그인 사용</p>
-				<p><strong class="tx-red">* 현재 highlight 요소로 인해 드래그 위치가 다르게 인식되나 일반 화면에서는 괜찮음. ( highlight 에서 로드 시 요소 높이 변경되는 듯. )</strong></p>
-				<div class="guide-show">
-					<div class="drag-test1">
-						<ul class="drag-list">
-							<li data-num="1">
-								<span class="list-title">드래그 아이템 1번 입니다.</span>
-								<a href="#" onclick="console.log('click01')">바로가기</a>
-								<span class="drag-item">asdfasfd</span>
-							</li>
-							<li data-num="2">
-								<span class="list-title">드래그 아이템 2번 입니다.</span>
-								<a href="#" onclick="console.log('click02')">바로가기</a>
-								<span class="drag-item">sadf</span>
-							</li>
-							<li data-num="3">
-								<span class="list-title">드래그 아이템 3번 입니다.</span>
-								<a href="#" onclick="console.log('click03')">바로가기</a>
-								<span class="drag-item">asdfsadf</span>
-							</li>
-							<li data-num="4">
-								<span class="list-title">드래그 아이템 4번 입니다.</span>
-								<a href="#" onclick="console.log('click04')">바로가기</a>
-								<span class="drag-item">asdf</span>
-							</li>
-							<li data-num="5">
-								<span class="list-title">드래그 아이템 5번 입니다.</span>
-								<a href="#" onclick="console.log('click05')">바로가기</a>
-								<span class="drag-item">asdfsa</span>
-							</li>
-						</ul>
-					</div>
 				</div>
+
+				<div class="guide-sec">
+					<h3 class="guide-stit">리스트 순서 변경</h3>
+					<p>자체 제작 플러그인 사용</p>
+					<p><strong class="tx-red">* 현재 highlight 요소로 인해 드래그 위치가 다르게 인식되나 일반 화면에서는 괜찮음. ( highlight 에서 로드 시 요소 높이 변경되는 듯. )</strong></p>
+					<div class="guide-show">
+						<div class="drag-test1">
+							<ul class="drag-list">
+								<li data-num="1">
+									<span class="list-title">드래그 아이템 1번 입니다.</span>
+									<a href="#" onclick="console.log('click01')">바로가기</a>
+									<span class="drag-item">asdfasfd</span>
+								</li>
+								<li data-num="2">
+									<span class="list-title">드래그 아이템 2번 입니다.</span>
+									<a href="#" onclick="console.log('click02')">바로가기</a>
+									<span class="drag-item">sadf</span>
+								</li>
+								<li data-num="3">
+									<span class="list-title">드래그 아이템 3번 입니다.</span>
+									<a href="#" onclick="console.log('click03')">바로가기</a>
+									<span class="drag-item">asdfsadf</span>
+								</li>
+								<li data-num="4">
+									<span class="list-title">드래그 아이템 4번 입니다.</span>
+									<a href="#" onclick="console.log('click04')">바로가기</a>
+									<span class="drag-item">asdf</span>
+								</li>
+								<li data-num="5">
+									<span class="list-title">드래그 아이템 5번 입니다.</span>
+									<a href="#" onclick="console.log('click05')">바로가기</a>
+									<span class="drag-item">asdfsa</span>
+								</li>
+							</ul>
+						</div>
+					</div>
 <pre><code class="html">&lt;div class="drag-test1"&gt;
 	&lt;ul class="drag-list"&gt;
 		&lt;li data-num="1"&gt;
@@ -156,46 +150,46 @@ var 이름 = new nDragnDrop({
 	}
 });
 </code></pre>
-			</div>
-			
-			<div class="guide-sec">
-				<h3 class="guide-stit">특정 영역 Drop</h3>
-				<p>자체 제작 플러그인 사용</p>
-				<div class="guide-show">
-					<div class="drag-test2">
-						<ul class="drag-list">
-							<li data-num="1">
-								<span class="list-title">드래그 아이템 1번 입니다.</span>
-								<a href="#" onclick="console.log('click01')">바로가기</a>
-								<span class="drag-item">asdfasfd</span>
-							</li>
-							<li data-num="2">
-								<span class="list-title">드래그 아이템 2번 입니다.</span>
-								<a href="#">바로가기</a>
-								<span class="drag-item">sadf</span>
-							</li>
-							<li data-num="3">
-								<span class="list-title">드래그 아이템 3번 입니다.</span>
-								<a href="#">바로가기</a>
-								<span class="drag-item">asdfsadf</span>
-							</li>
-							<li data-num="4">
-								<span class="list-title">드래그 아이템 4번 입니다.</span>
-								<a href="#">바로가기</a>
-								<span class="drag-item">asdf</span>
-							</li>
-							<li data-num="5">
-								<span class="list-title">드래그 아이템 5번 입니다.</span>
-								<a href="#">바로가기</a>
-								<span class="drag-item">asdfsa</span>
-							</li>
-						</ul>
-						<div class="drop-area" data-num="drop1"></div>
-						<div class="drop-area" data-num="drop2"></div>
-						<div class="drop-area" data-num="drop3"></div>
-						<div class="drop-area" data-num="drop4"></div>
-					</div>
 				</div>
+				
+				<div class="guide-sec">
+					<h3 class="guide-stit">특정 영역 Drop</h3>
+					<p>자체 제작 플러그인 사용</p>
+					<div class="guide-show">
+						<div class="drag-test2">
+							<ul class="drag-list">
+								<li data-num="1">
+									<span class="list-title">드래그 아이템 1번 입니다.</span>
+									<a href="#" onclick="console.log('click01')">바로가기</a>
+									<span class="drag-item">asdfasfd</span>
+								</li>
+								<li data-num="2">
+									<span class="list-title">드래그 아이템 2번 입니다.</span>
+									<a href="#">바로가기</a>
+									<span class="drag-item">sadf</span>
+								</li>
+								<li data-num="3">
+									<span class="list-title">드래그 아이템 3번 입니다.</span>
+									<a href="#">바로가기</a>
+									<span class="drag-item">asdfsadf</span>
+								</li>
+								<li data-num="4">
+									<span class="list-title">드래그 아이템 4번 입니다.</span>
+									<a href="#">바로가기</a>
+									<span class="drag-item">asdf</span>
+								</li>
+								<li data-num="5">
+									<span class="list-title">드래그 아이템 5번 입니다.</span>
+									<a href="#">바로가기</a>
+									<span class="drag-item">asdfsa</span>
+								</li>
+							</ul>
+							<div class="drop-area" data-num="drop1"></div>
+							<div class="drop-area" data-num="drop2"></div>
+							<div class="drop-area" data-num="drop3"></div>
+							<div class="drop-area" data-num="drop4"></div>
+						</div>
+					</div>
 <pre><code class="html">&lt;div class="drag-test2"&gt;
 	&lt;ul class="drag-list"&gt;
 		&lt;li data-num="1"&gt;
@@ -242,47 +236,48 @@ var 이름 = new nDragnDrop({
 	}
 });
 </code></pre>
-			</div>
-		</section>
+				</div>
+			</section>
 
 
+		</div>
+		<a href="#work-list" class="guide-top">Top</a>	
 	</div>
-	<a href="#work-list" class="guide-top">Top</a>	
-</div>
 
-<script src="../js/nDragnDrop_v1.0.0.js"></script>
-<script>
-	hljs.initHighlightingOnLoad(); 
-	
-	var dragTest = new nDragnDrop({
-		wrap 		: '.drag-test1',
-		objWrap		: '.drag-list',
-		obj  		: 'li',
-		func 		: 'sequence',
-		active      : function(tgItem){
-			console.log(tgItem);
-		}
-	});
+	<script src="../js/common.js"></script>
+	<script src="../js/nDragnDrop_v1.0.0.js"></script>
+	<script>
+		hljs.initHighlightingOnLoad(); 
+		
+		var dragTest = new nDragnDrop({
+			wrap 		: '.drag-test1',
+			objWrap		: '.drag-list',
+			obj  		: 'li',
+			func 		: 'sequence',
+			active      : function(tgItem){
+				console.log(tgItem);
+			}
+		});
 
-	var dragTest2 = new nDragnDrop({
-		wrap 		: '.drag-test2',
-		objWrap		: '.drag-list',
-		obj  		: 'li',
-		func 		: 'dnd',
-		area 		: '.drop-area',
-		active      : function(tgItem, area){
-			console.log(tgItem, area);
-			/*if(area) {
-				var clo = tgItem.cloneNode(true),
-					list;
-				if(!area.querySelector('ul')) {
-					area.insertAdjacentHTML('beforeend','<ul></ul>');
-					list = area.querySelector('ul');
-				} else list = area.querySelector('ul');
-				list.insertBefore(clo, null);
-			}*/
-		}
-	});
-</script>
+		var dragTest2 = new nDragnDrop({
+			wrap 		: '.drag-test2',
+			objWrap		: '.drag-list',
+			obj  		: 'li',
+			func 		: 'dnd',
+			area 		: '.drop-area',
+			active      : function(tgItem, area){
+				console.log(tgItem, area);
+				/*if(area) {
+					var clo = tgItem.cloneNode(true),
+						list;
+					if(!area.querySelector('ul')) {
+						area.insertAdjacentHTML('beforeend','<ul></ul>');
+						list = area.querySelector('ul');
+					} else list = area.querySelector('ul');
+					list.insertBefore(clo, null);
+				}*/
+			}
+		});
+	</script>
 </body>
 </html>

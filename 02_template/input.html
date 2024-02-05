@@ -26,33 +26,33 @@
 	<link rel="stylesheet" href="/css/layout.css" media="screen, print" />
 </head>
 <body>
-<div id="work-list">
-	<div class="guide">
-		
+	<div id="work-list">
+		<div class="guide">
+			
 
-		<!-- input ================================================================ -->
-		<section id="guide-input">
-			<h2 class="guide-sec-tit">input</h2>
-			<div class="guide-sec">
-				<h3 class="guide-stit">Text</h3>
-				<h4 class="guide-sstit">기본형</h3>
-				<div class="guide-show">
-					<input type="text" name="" title="" placeholder="기본형">
-				</div>
+			<!-- input ================================================================ -->
+			<section id="guide-input">
+				<h2 class="guide-sec-tit">input</h2>
+				<div class="guide-sec">
+					<h3 class="guide-stit">Text</h3>
+					<h4 class="guide-sstit">기본형</h3>
+					<div class="guide-show">
+						<input type="text" name="" title="" placeholder="기본형">
+					</div>
 <pre><code class="html">&lt;input type="text" name="" title="" placeholder="기본형"&gt;
 </code></pre>
-				<h4 class="guide-sstit">기본형 + 삭제 + 오류</h3>
-				<p>inp-label 에 'error' 클래스 추가 시 오류 메세지 표출됨</p>
-				<div class="guide-show">
-					<div class="inp-label">
-						<label for="" class="hide">기본형 텍스트</label>
-						<input type="text" name="" placeholder="기본형">
-						<button type="button" class="btn-clear"><span>내용 삭제</span></button>
-						<div class="error-msg">
-							<span class="tx-red">내용을 입력해주세요.</span>
+					<h4 class="guide-sstit">기본형 + 삭제 + 오류</h3>
+					<p>inp-label 에 'error' 클래스 추가 시 오류 메세지 표출됨</p>
+					<div class="guide-show">
+						<div class="inp-label">
+							<label for="" class="hide">기본형 텍스트</label>
+							<input type="text" name="" placeholder="기본형">
+							<button type="button" class="btn-clear"><span>내용 삭제</span></button>
+							<div class="error-msg">
+								<span class="tx-red">내용을 입력해주세요.</span>
+							</div>
 						</div>
 					</div>
-				</div>
 <pre><code class="html">&lt;div class="inp-label"&gt;
 	&lt;label for="" class="hide"&gt;기본형 텍스트&lt;/label&gt;
 	&lt;input type="text" name="" placeholder="기본형"&gt;
@@ -62,44 +62,44 @@
 	&lt;/div&gt;
 &lt;/div&gt;
 </code></pre>
-<br>
+	<br>
 <pre><code class="js">// 단독요소 설정
 var inptName = new nTextSet('.inp-label');
 
 // 다수 요소 설정
 nText('.inp-label');
 </code></pre>
-			</div>
+				</div>
 
-			<div class="guide-sec">
-				<h3 class="guide-stit">radio 버튼</h3>				
-				<h4 class="guide-sstit">일반형</h3>
-					<div class="guide-show">
-						<input type="radio" name="radio-inps" id="" class="radio">
-						<input type="radio" name="radio-inps" id="" class="radio">
-					</div>
+				<div class="guide-sec">
+					<h3 class="guide-stit">radio 버튼</h3>				
+					<h4 class="guide-sstit">일반형</h3>
+						<div class="guide-show">
+							<input type="radio" name="radio-inps" id="" class="radio">
+							<input type="radio" name="radio-inps" id="" class="radio">
+						</div>
 <pre><code class="html">&lt;input type="radio" name="radio-inps" id="" class="radio"&gt;
 &lt;input type="radio" name="radio-inps" id="" class="radio"&gt;
 </code></pre>
-				<h4 class="guide-sstit">IE대응 (radio + label)</h3>
-				<p>label 의 for 값과 input radio 의 id 값을 일치 시켜주어야 함.</p>
-				<p>기본적으로 연속 2개를 사용할 경우 2번째 부터 margin-left:15px 가 자동으로 적용</p>
-				<p>.box 의 위치에 따라 checkbox 아이콘 위치 이동 // radio 만 보여야 할 경우 .box 안에 텍스트 입력</p>
-				<p>가장 외곽 div 의 min-height 는 radio 아이콘 사이즈보다 2px 크게 설정</p>
-				<div class="guide-show">
-					<div class="inp-radio">
-						<input type="radio" name="radio-set" id="no" checked>
-						<label for="no"><span class="box"></span> 라디오버튼 - N</label>
+					<h4 class="guide-sstit">IE대응 (radio + label)</h3>
+					<p>label 의 for 값과 input radio 의 id 값을 일치 시켜주어야 함.</p>
+					<p>기본적으로 연속 2개를 사용할 경우 2번째 부터 margin-left:15px 가 자동으로 적용</p>
+					<p>.box 의 위치에 따라 checkbox 아이콘 위치 이동 // radio 만 보여야 할 경우 .box 안에 텍스트 입력</p>
+					<p>가장 외곽 div 의 min-height 는 radio 아이콘 사이즈보다 2px 크게 설정</p>
+					<div class="guide-show">
+						<div class="inp-radio">
+							<input type="radio" name="radio-set" id="no" checked>
+							<label for="no"><span class="box"></span> 라디오버튼 - N</label>
+						</div>
+						<div class="inp-radio">
+							<input type="radio" name="radio-set" id="yes">
+							<label for="yes">라디오버튼 - Y <span class="box"></span></label>
+						</div>
+						<div class="inp-radio">
+							<input type="radio" name="radio-set" id="non-tx">
+							<label for="non-tx"><span class="box">라디오버튼 - Y</span></label>
+						</div>
 					</div>
-					<div class="inp-radio">
-						<input type="radio" name="radio-set" id="yes">
-						<label for="yes">라디오버튼 - Y <span class="box"></span></label>
-					</div>
-					<div class="inp-radio">
-						<input type="radio" name="radio-set" id="non-tx">
-						<label for="non-tx"><span class="box">라디오버튼 - Y</span></label>
-					</div>
-				</div>
 <pre><code class="html">&lt;div class="inp-radio"&gt;
 	&lt;input type="radio" name="radio-set" id="no" checked&gt;
 	&lt;label for="no"&gt;&lt;span class="box"&gt;&lt;/span&gt; 라디오버튼 - N&lt;/label&gt;
@@ -113,36 +113,36 @@ nText('.inp-label');
 	&lt;label for="non-tx"&gt;&lt;span class="box"&gt;라디오버튼 - Y&lt;/span&gt;&lt;/label&gt;
 &lt;/div&gt;
 </code></pre>
-			</div>
+				</div>
 
-			<div class="guide-sec">
-				<h3 class="guide-stit">checkbox</h3>
-				<h4 class="guide-sstit">일반형</h3>
-					<div class="guide-show">
-						<input type="checkbox" name="" id="" class="checkbox">
-					</div>
+				<div class="guide-sec">
+					<h3 class="guide-stit">checkbox</h3>
+					<h4 class="guide-sstit">일반형</h3>
+						<div class="guide-show">
+							<input type="checkbox" name="" id="" class="checkbox">
+						</div>
 <pre><code class="html">&lt;input type="checkbox" name="" id="" class="checkbox"&gt;
 </code></pre>
-				<h4 class="guide-sstit">IE대응 (radio + label)</h3>
-				<p>label 의 for 값과 input radio 의 id 값을 일치 시켜주어야 함.</p>
-				<p>기본적으로 연속 2개를 사용할 경우 2번째 부터 margin-left:15px 가 자동으로 적용</p>
-				<p>.box 의 위치에 따라 checkbox 아이콘 위치 이동</p>
-				<p>가장 외곽 div 의 min-height 는 checkbox 아이콘 사이즈보다 2px 크게 설정</p>
-				<p>checkbox 만 보여야 할 경우 .box 안에 텍스트 입력</p>
-				<div class="guide-show">
-					<div class="inp-check">
-						<input type="checkbox" name="" id="check1" checked>
-						<label for="check1"><span class="box"></span> 체크박스</label>
+					<h4 class="guide-sstit">IE대응 (radio + label)</h3>
+					<p>label 의 for 값과 input radio 의 id 값을 일치 시켜주어야 함.</p>
+					<p>기본적으로 연속 2개를 사용할 경우 2번째 부터 margin-left:15px 가 자동으로 적용</p>
+					<p>.box 의 위치에 따라 checkbox 아이콘 위치 이동</p>
+					<p>가장 외곽 div 의 min-height 는 checkbox 아이콘 사이즈보다 2px 크게 설정</p>
+					<p>checkbox 만 보여야 할 경우 .box 안에 텍스트 입력</p>
+					<div class="guide-show">
+						<div class="inp-check">
+							<input type="checkbox" name="" id="check1" checked>
+							<label for="check1"><span class="box"></span> 체크박스</label>
+						</div>
+						<div class="inp-check">
+							<input type="checkbox" name="" id="check1-1">
+							<label for="check1-1">체크박스 <span class="box"></span></label>
+						</div>
+						<div class="inp-check">
+							<input type="checkbox" name="" id="check2">
+							<label for="check2"><span class="box">체크박스</span></label>
+						</div>
 					</div>
-					<div class="inp-check">
-						<input type="checkbox" name="" id="check1-1">
-						<label for="check1-1">체크박스 <span class="box"></span></label>
-					</div>
-					<div class="inp-check">
-						<input type="checkbox" name="" id="check2">
-						<label for="check2"><span class="box">체크박스</span></label>
-					</div>
-				</div>
 <pre><code class="html">&lt;div class="inp-check"&gt;
 	&lt;input type="checkbox" name="" id="check1"&gt;
 	&lt;label for="check1"&gt;&lt;span class="box"&gt;&lt;/span&gt; 체크박스&lt;/label&gt;
@@ -156,30 +156,30 @@ nText('.inp-label');
 	&lt;label for="check2"&gt;&lt;span class="box"&gt;체크박스&lt;/span&gt;&lt;/label&gt;
 &lt;/div&gt;
 </code></pre>
-				
-			</div>
-
-			<!-- 
-			<div class="guide-sec">
-				<h3 class="guide-stit">IE 구버전 호환</h3>
-				<h4 class="guide-sstit">일반형 (radio + label)</h3>
-				<p>label 의 for 값과 input radio 의 id 값을 일치 시켜주어야 함.</p>
-				<p>기본적으로 연속 2개를 사용할 경우 2번째 부터 margin-left:15px 가 자동으로 적용</p>
-				<p>가장 외곽 div 의 min-height 는 radio 아이콘 사이즈보다 2px 크게 설정</p>
-				<div class="guide-show">
-					<div class="inp-radio old">
-						<input type="radio" name="radio-set-old" id="no-old" checked>
-						<label for="no-old"><span class="box"></span> 라디오버튼 - N</label>
-					</div>
-					<div class="inp-radio old">
-						<input type="radio" name="radio-set-old" id="yes-old">
-						<label for="yes-old">라디오버튼 - Y <span class="box"></span></label>
-					</div>
-					<div class="inp-radio old">
-						<input type="radio" name="radio-set-old" id="non-tx-old">
-						<label for="non-tx-old"><span class="box">라디오버튼 - Y</span></label>
-					</div>
+					
 				</div>
+
+				<!-- 
+				<div class="guide-sec">
+					<h3 class="guide-stit">IE 구버전 호환</h3>
+					<h4 class="guide-sstit">일반형 (radio + label)</h3>
+					<p>label 의 for 값과 input radio 의 id 값을 일치 시켜주어야 함.</p>
+					<p>기본적으로 연속 2개를 사용할 경우 2번째 부터 margin-left:15px 가 자동으로 적용</p>
+					<p>가장 외곽 div 의 min-height 는 radio 아이콘 사이즈보다 2px 크게 설정</p>
+					<div class="guide-show">
+						<div class="inp-radio old">
+							<input type="radio" name="radio-set-old" id="no-old" checked>
+							<label for="no-old"><span class="box"></span> 라디오버튼 - N</label>
+						</div>
+						<div class="inp-radio old">
+							<input type="radio" name="radio-set-old" id="yes-old">
+							<label for="yes-old">라디오버튼 - Y <span class="box"></span></label>
+						</div>
+						<div class="inp-radio old">
+							<input type="radio" name="radio-set-old" id="non-tx-old">
+							<label for="non-tx-old"><span class="box">라디오버튼 - Y</span></label>
+						</div>
+					</div>
 <pre><code class="html">&lt;div class="inp-radio old"&gt;
 	&lt;input type="radio" name="radio-set-old" id="no-old" checked&gt;
 	&lt;label for="no-old"&gt;&lt;span class="box"&gt;&lt;/span&gt; 라디오버튼 - N&lt;/label&gt;
@@ -193,38 +193,38 @@ nText('.inp-label');
 	&lt;label for="non-tx-old"&gt;&lt;span class="box"&gt;라디오버튼 - Y&lt;/span&gt;&lt;/label&gt;
 &lt;/div&gt;
 </code></pre>
-			</div> -->
+				</div> -->
 
-			<div class="guide-sec">
-				<h3 class="guide-stit">Select</h3>
-				<h4 class="guide-sstit">기본</h4>
-				<p>일반 select</p>
-				<div class="guide-show">
-					<select name="" title="">
-						<option value="direct">직접 선택</option>
-						<option value="nate" disabled>nate.com</option>
-						<option value="daum">daum.net</option>
-					</select>
-				</div>
+				<div class="guide-sec">
+					<h3 class="guide-stit">Select</h3>
+					<h4 class="guide-sstit">기본</h4>
+					<p>일반 select</p>
+					<div class="guide-show">
+						<select name="" title="">
+							<option value="direct">직접 선택</option>
+							<option value="nate" disabled>nate.com</option>
+							<option value="daum">daum.net</option>
+						</select>
+					</div>
 <pre><code class="html">&lt;select name="" title=""&gt;
 	&lt;option value=""&gt;직접 선택&lt;/option&gt;
 	&lt;option value=""&gt;nate.com&lt;/option&gt;
 	&lt;option value=""&gt;daum.net&lt;/option&gt;
 &lt;/select&gt;
 </code></pre>
-				<h4 class="guide-sstit">dropdown 방식</h4>
-				<p>js 적용 버전</p>
-				<p>IE대응 / option 영역까지 디자인을 적용하여야 할 때 사용</p>
-				<p>width 는 100%. 특정 사이즈로 사용할 경우 width 값 설정 필요.</p>
-				<div class="guide-show">
-					<div class="inp-select">
-						<select name="" title="">
-							<option value="direct">직접 선택</option>
-							<option value="nate">nate.com</option>
-							<option value="daum" selected>daum.net</option>
-						</select>
+					<h4 class="guide-sstit">dropdown 방식</h4>
+					<p>js 적용 버전</p>
+					<p>IE대응 / option 영역까지 디자인을 적용하여야 할 때 사용</p>
+					<p>width 는 100%. 특정 사이즈로 사용할 경우 width 값 설정 필요.</p>
+					<div class="guide-show">
+						<div class="inp-select">
+							<select name="" title="">
+								<option value="direct">직접 선택</option>
+								<option value="nate">nate.com</option>
+								<option value="daum" selected>daum.net</option>
+							</select>
+						</div>
 					</div>
-				</div>
 <pre><code class="html">&lt;div class="inp-select"&gt;
 	&lt;select name="" title=""&gt;
 		&lt;option value=""&gt;직접 선택&lt;/option&gt;
@@ -240,19 +240,19 @@ var selectName = new nSelectSet('.inp-select');
 // 다수 요소 설정
 nSelect('.inp-select');
 </code></pre>
-			</div>
-
-			<div class="guide-sec">
-				<h3 class="guide-stit">File</h3>
-				<p>label 값 필수.</p>
-				<p>최소 사이즈 200px</p>
-				<div class="guide-show">
-					<div class="inp-file">
-						<label for="file" class="btn medium">파일첨부</label>
-						<input type="file" class="" id="file">
-						<button type="button" class="btn-clear" title="파일 경로 삭제"><span>X</span></button>
-					</div>
 				</div>
+
+				<div class="guide-sec">
+					<h3 class="guide-stit">File</h3>
+					<p>label 값 필수.</p>
+					<p>최소 사이즈 200px</p>
+					<div class="guide-show">
+						<div class="inp-file">
+							<label for="file" class="btn medium">파일첨부</label>
+							<input type="file" class="" id="file">
+							<button type="button" class="btn-clear" title="파일 경로 삭제"><span>X</span></button>
+						</div>
+					</div>
 <pre><code class="html">&lt;div class="inp-file"&gt;
 	&lt;label for="file" class="btn medium"&gt;파일첨부&lt;/label&gt;
 	&lt;input type="file" class="" id="file"&gt;
@@ -266,41 +266,39 @@ var fileName = new nFileSet('.inp-file');
 // 다수 요소 설정
 nFile('.inp-file');
 </code></pre>
-				<h4 class="guide-sstit">style (not js)</h4>
-				<p>script 를 사용하지 않는 버전</p>
-				<p>파일 경로 표기 방식 및 input 기본 문구(선택된 파일 없음) 교체 불가</p>
-				<div class="guide-show">
-					<div class="inp-file-n">
-						<input type="file" class="" id="file2" placeholder="파일첨부">
-						<label for="file2" class="btn medium">파일첨부</label>
+					<h4 class="guide-sstit">style (not js)</h4>
+					<p>script 를 사용하지 않는 버전</p>
+					<p>파일 경로 표기 방식 및 input 기본 문구(선택된 파일 없음) 교체 불가</p>
+					<div class="guide-show">
+						<div class="inp-file-n">
+							<input type="file" class="" id="file2" placeholder="파일첨부">
+							<label for="file2" class="btn medium">파일첨부</label>
+						</div>
 					</div>
 				</div>
-			</div>
-			<style>
-				.inp-file-n input { position:relative; padding:3px 20px 3px 5px; border:1px solid #ccc; border-radius:3px; line-height:27px; box-sizing:border-box; }
-				.inp-file-n input::file-selector-button { position:absolute; width:1px; height:1px; opacity:0; overflow:hidden; }
-			</style>
-		</section>
+				<style>
+					.inp-file-n input { position:relative; padding:3px 20px 3px 5px; border:1px solid #ccc; border-radius:3px; line-height:27px; box-sizing:border-box; }
+					.inp-file-n input::file-selector-button { position:absolute; width:1px; height:1px; opacity:0; overflow:hidden; }
+				</style>
+			</section>
 
 
+		</div>
+		<a href="#work-list" class="guide-top">Top</a>	
+		
 	</div>
-	<a href="#work-list" class="guide-top">Top</a>	
-	
-</div>
 
-<script src="/js/jquery-3.2.1.min.js"></script>
-<script src="/js/common.js"></script>
+	<script src="/js/common.js"></script>
+	<!-- input design js -->
+	<script src="/js/inpdesign_v2.1.0.js"></script>
 
-<!-- input design js -->
-<script src="/js/inpdesign_v2.1.0.js"></script>
+	<script>
+		hljs.initHighlightingOnLoad();
 
-<script>
-	hljs.initHighlightingOnLoad();
+		var inpName = new nTextSet('.inp-label');
+		var selectName = new nSelectSet('.inp-select');
+		nFile('.inp-file');
 
-	var inpName = new nTextSet('.inp-label');
-	var selectName = new nSelectSet('.inp-select');
-	nFile('.inp-file');
-
-</script>
+	</script>
 </body>
 </html>

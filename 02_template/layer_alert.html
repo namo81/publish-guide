@@ -24,11 +24,8 @@
 
 	<!-- 프로젝트 관련 CSS 및 JS 파일 로드 -->
 	<link rel="stylesheet" href="/css/layout.css" media="screen, print" />
-
 </head>
 <body>
-	
-	
 	<div id="work-list">
 		<div class="guide">
 			<section id="guide-basic">
@@ -46,14 +43,14 @@
 						<button type="button" class="btn small alert">알럿 호출</button>
 					<!-- // 코드 작성 -->
 					</div>
-	<pre><code class="html ">&lt;button type="button" class="btn01 alert"&gt;알럿 호출&lt;/button&gt;
-	</code></pre>
+<pre><code class="html ">&lt;button type="button" class="btn01 alert"&gt;알럿 호출&lt;/button&gt;
+</code></pre>
 
-	<pre><code class="js">var btnAlert = document.querySelector('.alert');
+<pre><code class="js">var btnAlert = document.querySelector('.alert');
 btnAlert.addEventListener('click', function(){
-	nlayerAlert('내용을 확인하셨습니까?', '타이틀', function(){ console.log('check!!') });
+nlayerAlert('내용을 확인하셨습니까?', '타이틀', function(){ console.log('check!!') });
 });
-	</code></pre>
+</code></pre>
 				</div>
 
 				<div class="guide-sec">
@@ -70,17 +67,17 @@ btnAlert.addEventListener('click', function(){
 						<button type="button" class="btn small confirm">컨펌 호출</button>
 					<!-- // 코드 작성 -->
 					</div>
-	<pre><code class="html ">&lt;button type="button" class="btn01 confirm"&gt;컨펌 호출&lt;/button&gt;
-	</code></pre>
+<pre><code class="html ">&lt;button type="button" class="btn01 confirm"&gt;컨펌 호출&lt;/button&gt;
+</code></pre>
 
-	<pre><code class="js">var btnConfirm = document.querySelector('.confirm');
+<pre><code class="js">var btnConfirm = document.querySelector('.confirm');
 btnConfirm.addEventListener('click', function(){
-	var funcRun = function(){
-		console.log('YES');
-	}
-	nlayerConfirm('내용을 확인하셨습니까?', '타이틀', funcRun)
+var funcRun = function(){
+	console.log('YES');
+}
+nlayerConfirm('내용을 확인하셨습니까?', '타이틀', funcRun)
 });
-	</code></pre>
+</code></pre>
 				</div>
 			</section>
 		</div>

@@ -44,58 +44,58 @@
 	</style>
 </head>
 <body>
-<div id="work-list">
-	<div class="guide">
+	<div id="work-list">
+		<div class="guide">
 
-		<section id="guide-basic">
-			<h2 class="guide-sec-tit">Chart</h2>
-			<div class="guide-sec">
-				<h3 class="guide-stit">pie 차트</h3>
-				<p>SVG로 구성된 원형 차트</p>
-				<div class="guide-show">
-				<!-- 코드 작성 -->
-					<div class="nChart-pie">
-						<!-- <svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="200" height="200" viewBox="0 0 400 400">
-							<path d="M 50 10 A 40 40, 0, 0, 1, 90 50 L 80 50 A 30 30, 0, 0, 0, 50 20 Z" fill="#999"></path>
-							<path d="M 90 50 A 40 40, 0, 0, 1, 50 90 L 50 80 A 30 30, 0, 0, 0, 80 50 Z" fill="#666"></path>
-							<path d="M 50 90 A 40 40, 0, 0, 1, 50 10 L 50 20 A 30 30, 0, 0, 0, 50 80 Z" fill="#333"></path>
-							<path d="M 150 0 A 150 150, 0, 0, 1, 140 290 L 150 150 Z" fill="#999"></path>
-						</svg> -->
+			<section id="guide-basic">
+				<h2 class="guide-sec-tit">Chart</h2>
+				<div class="guide-sec">
+					<h3 class="guide-stit">pie 차트</h3>
+					<p>SVG로 구성된 원형 차트</p>
+					<div class="guide-show">
+					<!-- 코드 작성 -->
+						<div class="nChart-pie">
+							<!-- <svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="200" height="200" viewBox="0 0 400 400">
+								<path d="M 50 10 A 40 40, 0, 0, 1, 90 50 L 80 50 A 30 30, 0, 0, 0, 50 20 Z" fill="#999"></path>
+								<path d="M 90 50 A 40 40, 0, 0, 1, 50 90 L 50 80 A 30 30, 0, 0, 0, 80 50 Z" fill="#666"></path>
+								<path d="M 50 90 A 40 40, 0, 0, 1, 50 10 L 50 20 A 30 30, 0, 0, 0, 50 80 Z" fill="#333"></path>
+								<path d="M 150 0 A 150 150, 0, 0, 1, 140 290 L 150 150 Z" fill="#999"></path>
+							</svg> -->
+						</div>
+					<!-- // 코드 작성 -->
 					</div>
-				<!-- // 코드 작성 -->
-				</div>
 <pre><code class="html">&lt;div class="nChart-pie"&gt;&lt;/div&gt;</code></pre><br>
 <pre><code class="css">
 </code></pre><br>
 <pre><code class="js"></code></pre>
 
-			</div>
-		</section>
+				</div>
+			</section>
+		</div>
+		<a href="#work-list" class="guide-top">Top</a>	
 	</div>
-	<a href="#work-list" class="guide-top">Top</a>	
-</div>
 
-<script src="../js/common.js"></script>
-<script src="../js/nChartSvg-pie_v.1.0.0.js"></script>
-<script>
-	hljs.initHighlightingOnLoad();
+	<script src="../js/common.js"></script>
+	<script src="../js/nChartSvg-pie_v.1.0.0.js"></script>
+	<script>
+		hljs.initHighlightingOnLoad();
 
-	var chartSvg = new nChartSvgPie({
-		area : '.nChart-pie',
-		//stack : true,
-		//direction : 'horison',
-		labels : ['sec01', 'sec02', 'sec03', 'sec04', 'sec05', 'sec06'],
-		data : [19, 25, 2, 12, 35, 17],
-		color : ['#ff4444', '#4466ff', '#aacc55', '#55aacc', '#5555cc', '#22aa66'],
-		title : {
-			show : true
-		},
-		animate : true,
-		graph : {
-			width : 300,
-			barWidth : 50
-		}
-	});
-</script>
+		var chartSvg = new nChartSvgPie({
+			area : '.nChart-pie',
+			//stack : true,
+			//direction : 'horison',
+			labels : ['sec01', 'sec02', 'sec03', 'sec04', 'sec05', 'sec06'],
+			data : [19, 25, 2, 12, 35, 17],
+			color : ['#ff4444', '#4466ff', '#aacc55', '#55aacc', '#5555cc', '#22aa66'],
+			title : {
+				show : true
+			},
+			animate : true,
+			graph : {
+				width : 300,
+				barWidth : 50
+			}
+		});
+	</script>
 </body>
 </html>

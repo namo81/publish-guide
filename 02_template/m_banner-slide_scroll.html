@@ -42,59 +42,59 @@
 	</style>
 </head>
 <body>
-<div id="work-list" class="mobile">
-	<div class="guide">
-		
+	<div id="work-list" class="mobile">
+		<div class="guide">
+			
 
-		<!-- input ================================================================ -->
-		<section id="guide-input">
-			<h2 class="guide-sec-tit">Slide 배너</h2>
-			<div class="guide-sec">
-				<h3 class="guide-stit">기본형</h3>
-				<div class="guide-show">
-					<div class="slide-wrap">
-						<button type="button" class="btn-slide-ctrl prev">이전</button>
-						<div class="slide-container">
-							<ul class="slide-area">
-								<li class="slide-item" style="background-color:#eee;"><a href="#"><img src="../images/exImg01.jpg" alt=""></a></li>
-								<li class="slide-item"><a href="#"><img src="../images/exImg02.jpg" alt=""></a></li>
-								<li class="slide-item"><a href="#"><img src="../images/exImg03.jpg" alt=""></a></li>
-								<li class="slide-item"><a href="#"><img src="../images/exImg04.jpg" alt=""></a></li>
-								<li class="slide-item"><a href="#"><img src="../images/exImg05.jpg" alt=""></a></li>
-							</ul>
+			<!-- input ================================================================ -->
+			<section id="guide-input">
+				<h2 class="guide-sec-tit">Slide 배너</h2>
+				<div class="guide-sec">
+					<h3 class="guide-stit">기본형</h3>
+					<div class="guide-show">
+						<div class="slide-wrap">
+							<button type="button" class="btn-slide-ctrl prev">이전</button>
+							<div class="slide-container">
+								<ul class="slide-area">
+									<li class="slide-item" style="background-color:#eee;"><a href="#"><img src="../images/exImg01.jpg" alt=""></a></li>
+									<li class="slide-item"><a href="#"><img src="../images/exImg02.jpg" alt=""></a></li>
+									<li class="slide-item"><a href="#"><img src="../images/exImg03.jpg" alt=""></a></li>
+									<li class="slide-item"><a href="#"><img src="../images/exImg04.jpg" alt=""></a></li>
+									<li class="slide-item"><a href="#"><img src="../images/exImg05.jpg" alt=""></a></li>
+								</ul>
+							</div>
+							<div class="slide-pos"></div>
+							<button type="button" class="btn-slide-ctrl next">다음</button>
 						</div>
-						<div class="slide-pos"></div>
-						<button type="button" class="btn-slide-ctrl next">다음</button>
 					</div>
-				</div>
 <pre><code class="html">
 </code></pre>
-			</div>
-		</section>
+				</div>
+			</section>
 
 
+		</div>
+		<a href="#work-list" class="guide-top">Top</a>	
+		
 	</div>
-	<a href="#work-list" class="guide-top">Top</a>	
-	
-</div>
 
-<script src="/js/common.js"></script>
-<!-- nSlide js -->
-<script src="/js/nSlideScroll_v.1.0.0.js"></script>
+	<script src="/js/common.js"></script>
+	<!-- nSlide js -->
+	<script src="/js/nSlideScroll_v.1.0.0.js"></script>
 
-<script>
-	hljs.initHighlightingOnLoad();
-	
-	var testSlide = new nSlideScroll({
-		wrap : '.slide-wrap',
-		slidePos : '.slide-pos',
-		activeStart : function(num, num2){
-			console.log('start:' + num + num2)
-		},
-		activeEnd : function(num, num2){
-			console.log('end:' + num + num2);
-		}
-	});
-</script>
+	<script>
+		hljs.initHighlightingOnLoad();
+		
+		var testSlide = new nSlideScroll({
+			wrap : '.slide-wrap',
+			slidePos : '.slide-pos',
+			activeStart : function(num, num2){
+				console.log('start:' + num + num2)
+			},
+			activeEnd : function(num, num2){
+				console.log('end:' + num + num2);
+			}
+		});
+	</script>
 </body>
 </html>

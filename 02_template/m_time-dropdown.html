@@ -50,49 +50,48 @@
 
 </head>
 <body>
-<div id="work-list" class="mobile">
-	<div class="guide">
-		
+	<div id="work-list" class="mobile">
+		<div class="guide">
+			
 
-		<!-- input ================================================================ -->
-		<section id="guide-input">
-			<h2 class="guide-sec-tit">Time Picker</h2>
+			<!-- input ================================================================ -->
+			<section id="guide-input">
+				<h2 class="guide-sec-tit">Time Picker</h2>
 
-			<div class="guide-sec">
-				<h3 class="guide-stit">시간 선택</h3>
-				<p>자체 제작 플러그인 사용</p>
-				<p>width 값은 별도 지정</p>
-				<p>input focus 시 dropdown 으로 시간 리스트 표출 및 선택</p>
-				<div class="guide-show">
-					<div class="inp-time">
-						<input type="text" name="" class="inp-1" value="오후 11:00" readonly/>
+				<div class="guide-sec">
+					<h3 class="guide-stit">시간 선택</h3>
+					<p>자체 제작 플러그인 사용</p>
+					<p>width 값은 별도 지정</p>
+					<p>input focus 시 dropdown 으로 시간 리스트 표출 및 선택</p>
+					<div class="guide-show">
+						<div class="inp-time">
+							<input type="text" name="" class="inp-1" value="오후 11:00" readonly/>
+						</div>
 					</div>
-				</div>
 <pre><code class="html">&lt;div class="inp-time"&gt;
 	&lt;input type="text" name="" class="inp-1" value="00:00"/&gt;
 &lt;/div&gt;
 </code></pre>
-			
-			</div>
-		</section>
+				</div>
+			</section>
 
 
+		</div>
+		<a href="#work-list" class="guide-top">Top</a>	
 	</div>
-	<a href="#work-list" class="guide-top">Top</a>	
-</div>
 
-<script src="/js/common.js"></script>
-<script src="/js/nTimePickerMobile_v1.0.0.js"></script>
-<script>
-	hljs.initHighlightingOnLoad(); 
+	<script src="/js/common.js"></script>
+	<script src="/js/nTimePickerMobile_v1.0.0.js"></script>
+	<script>
+		hljs.initHighlightingOnLoad(); 
 
-	var calDay = new nTimeSetMobile({
-		area : '.inp-time',
-		title : '타이틀영역',
-		optHeight : 40,
-		halfTime : true,
-		halfShow : true
-	});
-</script>
+		var calDay = new nTimeSetMobile({
+			area : '.inp-time',
+			title : '타이틀영역',
+			optHeight : 40,
+			halfTime : true,
+			halfShow : true
+		});
+	</script>
 </body>
 </html>

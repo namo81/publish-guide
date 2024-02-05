@@ -24,55 +24,50 @@
 
 	<!-- 프로젝트 관련 CSS 및 JS 파일 로드 -->
 	<link rel="stylesheet" href="/css/layout.css" media="screen, print" />
-	<script src="/js/common.js"></script>
-	<script src="/js/jquery-3.2.1.min.js"></script>
-
-	<!--[if lt IE 9]>
-    <script src="/js/html5shiv.js"></script>
-    <![endif]-->
 
 </head>
 <body>
-<div id="work-list">
-	<div class="guide">
-		
+	<div id="work-list">
+		<div class="guide">
+			
 
-		<!-- input ================================================================ -->
-		<section id="guide-input">
-			<h2 class="guide-sec-tit">Calendar</h2>
+			<!-- input ================================================================ -->
+			<section id="guide-input">
+				<h2 class="guide-sec-tit">Calendar</h2>
 
-			<div class="guide-sec">
-				<h3 class="guide-stit">주간달력</h3>
-				<p>자체 제작 달력 플러그인 사용</p>
-				<p>width 값은 별도 지정</p>
-				<p>달력 style은 nCalendar.css 로 설정</p>
-				<p>input 및 달력 버튼 style은 layout.css 로 설정</p>
-				<div class="guide-show">
-					<div class="inp-cal" style="width:300px">
-						<input type="text" name="" placeholder="" class="cal-week"/>
+				<div class="guide-sec">
+					<h3 class="guide-stit">주간달력</h3>
+					<p>자체 제작 달력 플러그인 사용</p>
+					<p>width 값은 별도 지정</p>
+					<p>달력 style은 nCalendar.css 로 설정</p>
+					<p>input 및 달력 버튼 style은 layout.css 로 설정</p>
+					<div class="guide-show">
+						<div class="inp-cal" style="width:300px">
+							<input type="text" name="" placeholder="" class="cal-week"/>
+						</div>
 					</div>
-				</div>
 <pre><code class="html">&lt;div class="inp-cal" style="width:300px"&gt;
 	&lt;input type="text" name="" placeholder="" class="cal-week"/&gt;
 &lt;/div&gt;
 </code></pre>
-			</div>
-		</section>
+				</div>
+			</section>
 
 
+		</div>
+		<a href="#work-list" class="guide-top">Top</a>	
 	</div>
-	<a href="#work-list" class="guide-top">Top</a>	
-</div>
 
 	<!-- calendar 관련 설정 -->
 	<link rel="stylesheet" href="/css/nCalendar.css" media="screen, print" />
+	<script src="/js/common.js"></script>
 	<script src="/js/nCalendar_week_v2.0.0.js"></script>
 	<script>
 		hljs.initHighlightingOnLoad(); 
 		
 		var calDay = new nCalendarWeek({
 			calInp : '.cal-week',
-			showType : 'input',
+			showType : 'both',
 			gapTop : 10,
 			splitType : '.',
 			todayBtnTx : '최근주',

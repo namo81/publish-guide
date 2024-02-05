@@ -47,61 +47,61 @@
 	</style>
 </head>
 <body>
-<div id="work-list">
-	<div class="guide">
+	<div id="work-list">
+		<div class="guide">
 
-		<section id="guide-basic">
-			<h2 class="guide-sec-tit">헤더 고정형 테이블</h2>
-			<div class="guide-sec">
-				<h3 class="guide-stit">sticky 방식</h3>
-				<p><strong>th-sticky</strong> 클래스 추가 시 상단 th 영역 sticky 로 고정</p>
-				<p class="tx-red"><strong>※ 주의 사항</strong></p>
-				<ul>
-					<li class="tx-red">브라우저 : IE 모든버전에서 사용 불가</li>
-					<li>border-collapse 설정을 separate 로 설정하여야 함</li>
-					<li>전체를 감싸는 외곽 테두리는 tbl-sticky 에 주는걸 추천.</li>
-					<li>column 과 column 사이 border 는 한쪽만 주어야 함. (border-collapse 가 separate 이기 때문에 라인두께가 2배로 보임)</li>
-				</ul>
-				<div class="guide-show">
-				<!-- 코드 작성 -->
-					<div class="tbl th-sticky">
-						<table>
-							<colgroup>
-								<col style="width:50%">
-								<col style="width:auto">
-							</colgroup>
-							<thead>
-								<tr>
-									<th scope="col">타이틀1</th>
-									<th scope="col">타이틀2</th>
-								</tr>
-							</thead>
-							<tbody>
-								<tr>
-									<td>내용1</td>
-									<td>내용2</td>
-								</tr>
-								<tr>
-									<td>내용1</td>
-									<td>내용2</td>
-								</tr>
-								<tr>
-									<td>내용1</td>
-									<td>내용2</td>
-								</tr>
-								<tr>
-									<td>내용1</td>
-									<td>내용2</td>
-								</tr>
-								<tr>
-									<td>내용1</td>
-									<td>내용2</td>
-								</tr>
-							</tbody>
-						</table>
+			<section id="guide-basic">
+				<h2 class="guide-sec-tit">헤더 고정형 테이블</h2>
+				<div class="guide-sec">
+					<h3 class="guide-stit">sticky 방식</h3>
+					<p><strong>th-sticky</strong> 클래스 추가 시 상단 th 영역 sticky 로 고정</p>
+					<p class="tx-red"><strong>※ 주의 사항</strong></p>
+					<ul>
+						<li class="tx-red">브라우저 : IE 모든버전에서 사용 불가</li>
+						<li>border-collapse 설정을 separate 로 설정하여야 함</li>
+						<li>전체를 감싸는 외곽 테두리는 tbl-sticky 에 주는걸 추천.</li>
+						<li>column 과 column 사이 border 는 한쪽만 주어야 함. (border-collapse 가 separate 이기 때문에 라인두께가 2배로 보임)</li>
+					</ul>
+					<div class="guide-show">
+					<!-- 코드 작성 -->
+						<div class="tbl th-sticky">
+							<table>
+								<colgroup>
+									<col style="width:50%">
+									<col style="width:auto">
+								</colgroup>
+								<thead>
+									<tr>
+										<th scope="col">타이틀1</th>
+										<th scope="col">타이틀2</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr>
+										<td>내용1</td>
+										<td>내용2</td>
+									</tr>
+									<tr>
+										<td>내용1</td>
+										<td>내용2</td>
+									</tr>
+									<tr>
+										<td>내용1</td>
+										<td>내용2</td>
+									</tr>
+									<tr>
+										<td>내용1</td>
+										<td>내용2</td>
+									</tr>
+									<tr>
+										<td>내용1</td>
+										<td>내용2</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+					<!-- // 코드 작성 -->
 					</div>
-				<!-- // 코드 작성 -->
-				</div>
 <pre><code class="html">&lt;div class="tbl th-sticky"&gt;
 	&lt;table&gt;
 		&lt;colgroup&gt;
@@ -129,74 +129,74 @@
 .tbl.th-sticky th + th, 
 .tbl.th-sticky td + td { border-left:none; }
 </code></pre>
-			</div>
+				</div>
 
-			<div class="guide-sec">
-				<h3 class="guide-stit">테이블 분리 방식</h3>
-				<p><strong>th-fixed</strong> 클래스 추가 및 테이블 2개 사용</p>
-				<p>타이틀 테이블 + 컨텐츠 테이블 2개 구조이며, 컨텐츠 테이블의 th 영역은 hide 되어짐.</p>
-				<p>브라우저 : 사용제한 없음</p>
-				<p class="tx-red"><strong>※ 주의 사항</strong></p>
-				<ul>
-					<li>가로스크롤 발생 시 th-fixed 영역에 적용할 수 있으나, tbl-cnt 영역이 세로 스크롤의 우측에 있으므로 가로스크롤을 우측 끝으로 이동하지 않으면 보이지 않음</li>
-					<li>전체를 감싸는 외곽 테두리는 tbl-fixed 에 주어야 함.</li>
-					<li>col 너비 설정 시 px 단위 사용.</li>
-					<li>타이틀-컨텐츠 테이블의 colgroup 값을 동일하게 넣되, <strong>컨텐츠 테이블의 마지막 column 너비가 타이틀 테이블 마지막 column 보다 -17px(scrollbar 너비) 작아야함.</strong></li>
-				</ul>
-				<div class="guide-show">
-				<!-- 코드 작성 -->
-					<div class="tbl th-fixed">
-						<table>
-							<colgroup>
-								<col style="width:auto">
-								<col style="width:200px">
-							</colgroup>
-							<thead>
-								<tr>
-									<th scope="col">타이틀1</th>
-									<th scope="col">타이틀2</th>
-								</tr>
-							</thead>
-						</table>
-						<div class="tbl-cnt">
+				<div class="guide-sec">
+					<h3 class="guide-stit">테이블 분리 방식</h3>
+					<p><strong>th-fixed</strong> 클래스 추가 및 테이블 2개 사용</p>
+					<p>타이틀 테이블 + 컨텐츠 테이블 2개 구조이며, 컨텐츠 테이블의 th 영역은 hide 되어짐.</p>
+					<p>브라우저 : 사용제한 없음</p>
+					<p class="tx-red"><strong>※ 주의 사항</strong></p>
+					<ul>
+						<li>가로스크롤 발생 시 th-fixed 영역에 적용할 수 있으나, tbl-cnt 영역이 세로 스크롤의 우측에 있으므로 가로스크롤을 우측 끝으로 이동하지 않으면 보이지 않음</li>
+						<li>전체를 감싸는 외곽 테두리는 tbl-fixed 에 주어야 함.</li>
+						<li>col 너비 설정 시 px 단위 사용.</li>
+						<li>타이틀-컨텐츠 테이블의 colgroup 값을 동일하게 넣되, <strong>컨텐츠 테이블의 마지막 column 너비가 타이틀 테이블 마지막 column 보다 -17px(scrollbar 너비) 작아야함.</strong></li>
+					</ul>
+					<div class="guide-show">
+					<!-- 코드 작성 -->
+						<div class="tbl th-fixed">
 							<table>
 								<colgroup>
 									<col style="width:auto">
-									<col style="width:183px">
+									<col style="width:200px">
 								</colgroup>
 								<thead>
 									<tr>
-										<th scope="col" aria-hidden="true">타이틀1</th>
-										<th scope="col" aria-hidden="true">타이틀2</th>
+										<th scope="col">타이틀1</th>
+										<th scope="col">타이틀2</th>
 									</tr>
 								</thead>
-								<tbody>
-									<tr>
-										<td>내용1</td>
-										<td>내용2</td>
-									</tr>
-									<tr>
-										<td>내용1</td>
-										<td>내용2</td>
-									</tr>
-									<tr>
-										<td>내용1</td>
-										<td>내용2</td>
-									</tr>
-									<tr>
-										<td>내용1</td>
-										<td>내용2</td>
-									</tr>
-									<tr>
-										<td>내용1</td>
-										<td>내용2</td>
-									</tr>
-								</tbody>
 							</table>
+							<div class="tbl-cnt">
+								<table>
+									<colgroup>
+										<col style="width:auto">
+										<col style="width:183px">
+									</colgroup>
+									<thead>
+										<tr>
+											<th scope="col" aria-hidden="true">타이틀1</th>
+											<th scope="col" aria-hidden="true">타이틀2</th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr>
+											<td>내용1</td>
+											<td>내용2</td>
+										</tr>
+										<tr>
+											<td>내용1</td>
+											<td>내용2</td>
+										</tr>
+										<tr>
+											<td>내용1</td>
+											<td>내용2</td>
+										</tr>
+										<tr>
+											<td>내용1</td>
+											<td>내용2</td>
+										</tr>
+										<tr>
+											<td>내용1</td>
+											<td>내용2</td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
 						</div>
+					<!-- // 코드 작성 -->
 					</div>
-				<!-- // 코드 작성 -->
-				</div>
 <pre><code class="html">&lt;div class="tbl th-fixed"&gt;
 	&lt;table&gt;
 		&lt;colgroup&gt;
@@ -246,16 +246,16 @@
 .tbl.th-fixed tr th:last-child, 
 .tbl.th-fixed tr td:last-child { border-right:none; }
 </code></pre>
-			</div>
+				</div>
 
-		</section>
+			</section>
+		</div>
+		<a href="#work-list" class="guide-top">Top</a>
 	</div>
-	<a href="#work-list" class="guide-top">Top</a>
 
 	<script src="../guide/vendor/highlight.js"></script>	
 	<script>
 		hljs.initHighlightingOnLoad(); 
 	</script>
-</div>
 </body>
 </html>

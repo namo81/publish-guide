@@ -66,7 +66,6 @@ function nSelectSet(Ele){
 					else optHtml += '<li><button type="button" class="btn-sel">'+opts[i].text+'</button></li>';
 				}
 			}
-
 			if(opts[i].selected == true) firstOp = opts[i].text;
 		}
 	}, selectCreate = function(){
@@ -82,7 +81,6 @@ function nSelectSet(Ele){
 		selUl 		= selList.querySelector('ul'),
 		selBtn		= selWrap.querySelector('.btn-select'),
 		selBtnTx 	= selBtn.querySelector('span');
-		
 	}
 	selectCreate();	
 
@@ -130,6 +128,7 @@ function nSelectSet(Ele){
 	selUl.addEventListener('click', optBtnClick);
 	sel.addEventListener('change', function(){
 		optionAdd();
+		selBtn.innerText = this.options[this.selectedIndex].textContent;
 	});
 
 	return {

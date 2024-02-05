@@ -24,7 +24,6 @@
 
 	<!-- 프로젝트 관련 CSS 및 JS 파일 로드 -->
 	<link rel="stylesheet" href="/css/layout.css" media="screen, print" />
-	<script src="/js/jquery-3.2.1.min.js"></script>
 
 	<style>
 		.editor-wrap .edit-cnt { min-height:300px; padding:15px; font-size:14px; border:1px solid #eee; }
@@ -36,111 +35,111 @@
 	</style>
 </head>
 <body>
-<div id="work-list">
-	<div class="guide">
+	<div id="work-list">
+		<div class="guide">
 
-		<section id="guide-basic">
-			<h2 class="guide-sec-tit">Editor</h2>
-			<div class="guide-sec">
-				<h3 class="guide-stit">Editor 기본</h3>
-				<div class="guide-show">
-				<!-- 코드 작성 -->
-					<div class="editor-wrap">
-						<div class="edit-cnt" contenteditable="true">가나다라마바사아자차카타파하 <br>abcdefghijklnmopqrstuvwxyz<br>1234567890</div>
-						<div class="ctrl-area">
-							<button type="button" class="btn medium reset">Reset</button>
-							&nbsp;&nbsp;
-							<button type="button" class="btn medium bold">Bold</button>
-							<!-- <button type="button" class="btn medium italic">Italic</button> -->
-							<button type="button" class="btn medium underline">underline</button>
-							<!-- <button type="button" class="btn medium st">del-line</button> -->
-							<!-- &nbsp;&nbsp;
-							<button type="button" class="btn medium ul">UL</button>
-							<button type="button" class="btn medium ol">OL</button>
-							<button type="button" class="btn medium sup">위첨자</button>
-							<button type="button" class="btn medium sub">아래첨자</button>
-							&nbsp;&nbsp;
-							<button type="button" class="btn medium tl">left</button>
-							<button type="button" class="btn medium tc">center</button>
-							<button type="button" class="btn medium tr">right</button>
-							&nbsp;&nbsp;
-							<button type="button" class="btn medium undo">Undo</button>
-							<button type="button" class="btn medium redo">Redo</button>
-							&nbsp;&nbsp;<br> -->
-							<button type="button" class="btn medium f_color">font Color</button>
-							<button type="button" class="btn medium h_color">highlight Color</button>
-							&nbsp;&nbsp;
+			<section id="guide-basic">
+				<h2 class="guide-sec-tit">Editor</h2>
+				<div class="guide-sec">
+					<h3 class="guide-stit">Editor 기본</h3>
+					<div class="guide-show">
+					<!-- 코드 작성 -->
+						<div class="editor-wrap">
+							<div class="edit-cnt" contenteditable="true">가나다라마바사아자차카타파하 <br>abcdefghijklnmopqrstuvwxyz<br>1234567890</div>
+							<div class="ctrl-area">
+								<button type="button" class="btn medium reset">Reset</button>
+								&nbsp;&nbsp;
+								<button type="button" class="btn medium bold">Bold</button>
+								<!-- <button type="button" class="btn medium italic">Italic</button> -->
+								<button type="button" class="btn medium underline">underline</button>
+								<!-- <button type="button" class="btn medium st">del-line</button> -->
+								<!-- &nbsp;&nbsp;
+								<button type="button" class="btn medium ul">UL</button>
+								<button type="button" class="btn medium ol">OL</button>
+								<button type="button" class="btn medium sup">위첨자</button>
+								<button type="button" class="btn medium sub">아래첨자</button>
+								&nbsp;&nbsp;
+								<button type="button" class="btn medium tl">left</button>
+								<button type="button" class="btn medium tc">center</button>
+								<button type="button" class="btn medium tr">right</button>
+								&nbsp;&nbsp;
+								<button type="button" class="btn medium undo">Undo</button>
+								<button type="button" class="btn medium redo">Redo</button>
+								&nbsp;&nbsp;<br> -->
+								<button type="button" class="btn medium f_color">font Color</button>
+								<button type="button" class="btn medium h_color">highlight Color</button>
+								&nbsp;&nbsp;
+							</div>
 						</div>
+					<!-- // 코드 작성 -->
 					</div>
-				<!-- // 코드 작성 -->
-				</div>
 <pre><code class="html">
 </code></pre>
 
-			</div>
-		</section>
+				</div>
+			</section>
+		</div>
+		<a href="#work-list" class="guide-top">Top</a>	
 	</div>
-	<a href="#work-list" class="guide-top">Top</a>	
-</div>
 
-<script>
-	hljs.initHighlightingOnLoad();
-	
-	//document.execCommand('defaultParagraphSeparator', false, 'p'); contentEditable 영역 내 기본 태그를 div > p 로 변경
-
-	var edit 		= document.querySelector('.edit-cnt'),
-		btnReset	= document.querySelector('.btn.reset'),
-
-		btnBold		= document.querySelector('.btn.bold'),
-		//btnItalic 	= document.querySelector('.btn.italic'),
-		btnUnder 	= document.querySelector('.btn.underline'),		
-		//btnSt 		= document.querySelector('.btn.st'),
+	<script>
+		hljs.initHighlightingOnLoad();
 		
-		// btnUl 		= document.querySelector('.btn.ul'),
-		// btnOl 		= document.querySelector('.btn.ol'),
-		// btnSup 		= document.querySelector('.btn.sup'),
-		// btnSub 		= document.querySelector('.btn.sub'),
+		//document.execCommand('defaultParagraphSeparator', false, 'p'); contentEditable 영역 내 기본 태그를 div > p 로 변경
 
-		// btnTl 		= document.querySelector('.btn.tl'),
-		// btnTc 		= document.querySelector('.btn.tc'),
-		// btnTr 		= document.querySelector('.btn.tr'),
-		// btnStyle	= document.querySelector('.btn.style'),
+		var edit 		= document.querySelector('.edit-cnt'),
+			btnReset	= document.querySelector('.btn.reset'),
 
-		// btnUndo 	= document.querySelector('.btn.undo'),
-		// btnRedo		= document.querySelector('.btn.redo'),
+			btnBold		= document.querySelector('.btn.bold'),
+			//btnItalic 	= document.querySelector('.btn.italic'),
+			btnUnder 	= document.querySelector('.btn.underline'),		
+			//btnSt 		= document.querySelector('.btn.st'),
+			
+			// btnUl 		= document.querySelector('.btn.ul'),
+			// btnOl 		= document.querySelector('.btn.ol'),
+			// btnSup 		= document.querySelector('.btn.sup'),
+			// btnSub 		= document.querySelector('.btn.sub'),
 
-		btnFcolor	= document.querySelector('.btn.f_color'),
-		btnHcolor	= document.querySelector('.btn.h_color');
-	
+			// btnTl 		= document.querySelector('.btn.tl'),
+			// btnTc 		= document.querySelector('.btn.tc'),
+			// btnTr 		= document.querySelector('.btn.tr'),
+			// btnStyle	= document.querySelector('.btn.style'),
+
+			// btnUndo 	= document.querySelector('.btn.undo'),
+			// btnRedo		= document.querySelector('.btn.redo'),
+
+			btnFcolor	= document.querySelector('.btn.f_color'),
+			btnHcolor	= document.querySelector('.btn.h_color');
 		
-	//document.execCommand('styleWithCSS', false, true);	// style 적용 시 u / i 태그가 생성되지 않고 span 태그에 style 이 적용되는 형태로 설정되도록 설정.
-	btnReset.addEventListener('click', function () { setStyle('removeFormat'); });
-	btnBold.addEventListener('click', function () { setStyle('bold'); });
-	//btnItalic.addEventListener('click', function () { setStyle('italic'); });
-	btnUnder.addEventListener('click', function () { setStyle('underline'); });	
-	//btnSt.addEventListener('click', function () { setStyle('strikeThrough'); });
+			
+		//document.execCommand('styleWithCSS', false, true);	// style 적용 시 u / i 태그가 생성되지 않고 span 태그에 style 이 적용되는 형태로 설정되도록 설정.
+		btnReset.addEventListener('click', function () { setStyle('removeFormat'); });
+		btnBold.addEventListener('click', function () { setStyle('bold'); });
+		//btnItalic.addEventListener('click', function () { setStyle('italic'); });
+		btnUnder.addEventListener('click', function () { setStyle('underline'); });	
+		//btnSt.addEventListener('click', function () { setStyle('strikeThrough'); });
 
-	// btnUl.addEventListener('click', function () { setStyle('insertUnorderedList'); });
-	// btnOl.addEventListener('click', function () { setStyle('insertOrderedList'); });
-	// btnSup.addEventListener('click', function () { setStyle('superscript'); });
-	// btnSub.addEventListener('click', function () { setStyle('subscript'); });
+		// btnUl.addEventListener('click', function () { setStyle('insertUnorderedList'); });
+		// btnOl.addEventListener('click', function () { setStyle('insertOrderedList'); });
+		// btnSup.addEventListener('click', function () { setStyle('superscript'); });
+		// btnSub.addEventListener('click', function () { setStyle('subscript'); });
 
-	// btnTl.addEventListener('click', function () { setStyle('justifyLeft'); });
-	// btnTc.addEventListener('click', function () { setStyle('justifyCenter'); });
-	// btnTr.addEventListener('click', function () { setStyle('justifyRight'); });
+		// btnTl.addEventListener('click', function () { setStyle('justifyLeft'); });
+		// btnTc.addEventListener('click', function () { setStyle('justifyCenter'); });
+		// btnTr.addEventListener('click', function () { setStyle('justifyRight'); });
 
-	// btnUndo.addEventListener('click', function () { setStyle('undo'); });
-	// btnRedo.addEventListener('click', function () { setStyle('redo'); });
+		// btnUndo.addEventListener('click', function () { setStyle('undo'); });
+		// btnRedo.addEventListener('click', function () { setStyle('redo'); });
 
-	btnFcolor.addEventListener('click', function () { setStyleColor('foreColor', '#ff0000'); });
-	btnHcolor.addEventListener('click', function () { 
-		setStyleColor('hiliteColor', '#ff0000'); 
-		setStyleColor('foreColor', '#fff'); 
-	});
+		btnFcolor.addEventListener('click', function () { setStyleColor('foreColor', '#ff0000'); });
+		btnHcolor.addEventListener('click', function () { 
+			setStyleColor('hiliteColor', '#ff0000'); 
+			setStyleColor('foreColor', '#fff'); 
+		});
 
-	function setStyle(style) { document.execCommand(style); focusEditor(); }
-	function setStyleColor(style, fColor) { document.execCommand(style, false, fColor); }
-	function focusEditor() { edit.focus({preventScroll: true}); }
-</script>
+		function setStyle(style) { document.execCommand(style); focusEditor(); }
+		function setStyleColor(style, fColor) { document.execCommand(style, false, fColor); }
+		function focusEditor() { edit.focus({preventScroll: true}); }
+	</script>
 </body>
 </html>

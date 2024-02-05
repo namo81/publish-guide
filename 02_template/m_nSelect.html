@@ -90,25 +90,25 @@
 		<a href="#work-list" class="guide-top">Top</a>	
 	</div>
 
-<script src="/js/common.js"></script>
-<script src="/js/nSelectMobile_v1.0.0.js"></script>
-<script>
-	hljs.initHighlightingOnLoad(); 
+	<script src="/js/common.js"></script>
+	<script src="/js/nSelectMobile_v1.0.0.js"></script>
+	<script>
+		hljs.initHighlightingOnLoad(); 
 
-	var selMobile = new nSelectMobile({
-		area 		: '.n-select.num',
-		title 		: '타이틀영역',
-		optHeight 	: 40
-	});
-	var selMobile2 = new nSelectMobile({
-		area 		: '.n-select.str',
-		optHeight 	: 40
-	});
+		var selMobile = new nSelectMobile({
+			area 		: '.n-select.num',
+			title 		: '타이틀영역',
+			optHeight 	: 40
+		});
+		var selMobile2 = new nSelectMobile({
+			area 		: '.n-select.str',
+			optHeight 	: 40
+		});
 
-	var sel = document.querySelector('.n-select.num select');
-	sel.addEventListener('change', function(){
-		console.log(this.value)
-	});
-</script>
+		var sel = document.querySelector('.n-select.num select');
+		sel.addEventListener('change', function(){
+			console.log(this.value)
+		});
+	</script>
 </body>
 </html>

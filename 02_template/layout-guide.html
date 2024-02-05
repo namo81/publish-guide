@@ -24,32 +24,21 @@
 
 	<!-- 프로젝트 관련 CSS 및 JS 파일 로드 -->
 	<link rel="stylesheet" href="/css/layout.css" media="screen, print" />
-	<script src="/js/jquery-3.2.1.min.js"></script>
-
-	<!--[if lt IE 9]>
-    <script src="/js/html5shiv.js"></script>
-	<![endif]-->
-	
-	<script>
-		$(function(){ 
-			hljs.initHighlightingOnLoad(); 
-		});
-	</script>
 </head>
 <body>
-<div id="work-list">
-	<div class="guide">
-		
+	<div id="work-list">
+		<div class="guide">
+			
 
-		<!-- input ================================================================ -->
-		<section id="guide-input">
-			<h2 class="guide-sec-tit">Layout</h2>
+			<!-- input ================================================================ -->
+			<section id="guide-input">
+				<h2 class="guide-sec-tit">Layout</h2>
 
-			<div class="guide-sec">
-				<h3 class="guide-stit">기본형 (GNB 상단)</h3>
-				<p>가로 1000px 기준 (기준 변경 시 '--cnt-width' 변수 수정)</p>
-				<p>flex를 통한 height 100% 설정 - footer 가 항상 브라우저 하단에.</p>
-				<a href="layout-ver.html" class="guide-link">예시화면</a>
+				<div class="guide-sec">
+					<h3 class="guide-stit">기본형 (GNB 상단)</h3>
+					<p>가로 1000px 기준 (기준 변경 시 '--cnt-width' 변수 수정)</p>
+					<p>flex를 통한 height 100% 설정 - footer 가 항상 브라우저 하단에.</p>
+					<a href="layout-ver.html" class="guide-link">예시화면</a>
 <pre><code class="html">&lt;div id="wrap"&gt;
 	&lt;header id="top"&gt;
 		&lt;div class="top-menu"&gt;
@@ -77,13 +66,13 @@
 	&lt;/footer&gt;
 &lt;/div&gt;
 </code></pre>
-			</div>
+				</div>
 
-			<div class="guide-sec">
-				<h3 class="guide-stit">LNB 추가형</h3>
-				<p>가로 1000px 기준 (기준 변경 시 '--cnt-width' 변수 수정)</p>
-				<p>LNB 영역 sticky 기능 필요 시 side-wrap 내부에 추가 태그로 한번 더 감싸준 후 설정</p>
-				<a href="layout-mix.html" class="guide-link">예시화면</a>
+				<div class="guide-sec">
+					<h3 class="guide-stit">LNB 추가형</h3>
+					<p>가로 1000px 기준 (기준 변경 시 '--cnt-width' 변수 수정)</p>
+					<p>LNB 영역 sticky 기능 필요 시 side-wrap 내부에 추가 태그로 한번 더 감싸준 후 설정</p>
+					<a href="layout-mix.html" class="guide-link">예시화면</a>
 <pre><code class="html">&lt;div id="wrap"&gt;
 	&lt;header id="top"&gt;
 		&lt;div class="top-menu"&gt;
@@ -114,12 +103,15 @@
 	&lt;/footer&gt;
 &lt;/div&gt;
 </code></pre>
-			</div>
-		</section>
+				</div>
+			</section>
 
 
+		</div>
+		<a href="#work-list" class="guide-top">Top</a>	
 	</div>
-	<a href="#work-list" class="guide-top">Top</a>	
-</div>
+	<script>
+		hljs.initHighlightingOnLoad(); 
+	</script>
 </body>
 </html>

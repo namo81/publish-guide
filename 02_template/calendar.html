@@ -25,11 +25,6 @@
 	<!-- 프로젝트 관련 CSS 및 JS 파일 로드 -->
 	<link rel="stylesheet" href="/css/layout.css" media="screen, print" />
 	<script src="/js/common.js"></script>
-	<script src="/js/jquery-3.2.1.min.js"></script>
-
-	<!--[if lt IE 9]>
-    <script src="/js/html5shiv.js"></script>
-    <![endif]-->	
 
 	<style type="text/css">
 		#guide-input { position:relative; }
@@ -37,29 +32,29 @@
 
 </head>
 <body>
-<div id="work-list">
-	<div class="guide">
-		
+	<div id="work-list">
+		<div class="guide">
+			
 
-		<!-- input ================================================================ -->
-		<section id="guide-input">
-			<h2 class="guide-sec-tit">Calendar</h2>
+			<!-- input ================================================================ -->
+			<section id="guide-input">
+				<h2 class="guide-sec-tit">Calendar</h2>
 
-			<div class="guide-sec">
-				<h3 class="guide-stit">기본형</h3>
-				<h4 class="guide-sstit">모달 표시</h4>
-				<p>자체 제작 달력 플러그인 사용</p>
-				<p>width 값은 별도 지정</p>
-				<p>달력 style은 nCalendar.css 로 설정</p>
-				<p>input 및 달력 버튼 style은 layout.css 로 설정</p>
-				<div class="guide-show">
-					<div class="inp-cal" style="width:300px">
-						<input type="text" name="" placeholder="" class="cal" />
+				<div class="guide-sec">
+					<h3 class="guide-stit">기본형</h3>
+					<h4 class="guide-sstit">모달 표시</h4>
+					<p>자체 제작 달력 플러그인 사용</p>
+					<p>width 값은 별도 지정</p>
+					<p>달력 style은 nCalendar.css 로 설정</p>
+					<p>input 및 달력 버튼 style은 layout.css 로 설정</p>
+					<div class="guide-show">
+						<div class="inp-cal" style="width:300px">
+							<input type="text" name="" placeholder="" class="cal" />
+						</div>
+						<div class="inp-cal" style="width:300px">
+							<input type="text" name="" placeholder="" class="cal-mon"/>
+						</div>
 					</div>
-					<div class="inp-cal" style="width:300px">
-						<input type="text" name="" placeholder="" class="cal-mon"/>
-					</div>
-				</div>
 <pre><code class="javascript">var 변수명 = new nCalendar({
 	calInp : '.cal'						// 달력 기능 적용할 input 선택자
 	showType : 'button',					// 달력 호출 방식 / button - 버튼 클릭시 / input - input 에 focus / both - 버튼,input 둘다 사용	
@@ -88,13 +83,13 @@
 	&lt;input type="text" name="" placeholder="" class="cal"/&gt;
 &lt;/div&gt;
 </code></pre>
-				<h4 class="guide-sstit">페이지 내 고정 표시</h4>
-				<p>기본 기능 설정은 모달형과 같으며, in-page 옵션만 추가 설정</p>
-				<div class="guide-show">
-					<div class="inp-cal" style="width:300px">
-						<input type="text" name="" placeholder="" class="cal-page" />
+					<h4 class="guide-sstit">페이지 내 고정 표시</h4>
+					<p>기본 기능 설정은 모달형과 같으며, in-page 옵션만 추가 설정</p>
+					<div class="guide-show">
+						<div class="inp-cal" style="width:300px">
+							<input type="text" name="" placeholder="" class="cal-page" />
+						</div>
 					</div>
-				</div>
 <pre><code class="javascript">var 변수명 = new nCalendar({
 	inPage : false,					//	'false' : 기본/ 모달형, 'true' : 페이지형
 	inTarget : null					// 달력 컨텐츠 표시할 영역 선택 (별도 지정 없을 경우 inp-cal 영역 내 표기됨)
@@ -105,13 +100,13 @@
 &lt;/div&gt;
 </code></pre>
 
-				<h4 class="guide-sstit">기간 제한 설정 예시</h4>
-				<ul style="margin-bottom:10px;">
-					<li>- 날짜 제한 없을 경우 <strong>todayLimit : false</strong></li>
-					<li>- 오늘 이전날짜 선택 제한 - limitType : 'before' / 오늘 이후날짜 선택 제한 - limitType : 'after' <br>&nbsp;&nbsp;<strong>'before' 가 기본값</strong></li>
-					<li>- <strong>todayGap - 제한 기준일 변경값</strong><br>&nbsp;&nbsp;단위는 연/월/일 각각 설정 가능 / 구분은 대문자 필수 / 3가지중 택1 하여 설정 / 설정시 string 로 설정 ('' - 필수) <br>&nbsp;&nbsp;오늘 이전날짜 선택 제한(limitType : 'before') 일때 1을 설정하면 내일부터 선택가능 <br>&nbsp;&nbsp;오늘 이후날짜 선택 제한(limitType : 'after') 일때 1을 설정하면 어제까지 선택가능</li>
-					<li>- <strong>limitGap - 달력 내 표출 기간을 제한할 경우 사용.</strong> <br>&nbsp;&nbsp;<strong>시작일 기준으로 계산됨 (오늘 or todayGap 으로 설정한 시작일 기준)</strong> <br>&nbsp;&nbsp;단위는 연/월/일 각각 설정 가능 / 구분은 대문자 필수 / 3가지중 택1 하여 설정 / 설정시 string 로 설정 ('' - 필수) <br>&nbsp;&nbsp;(ex: 2년 = '2Y' / 3개월 = '3M' / 20일 = '20D') <br>&nbsp;&nbsp;오늘 이전날짜 선택 제한(limitType : 'before') 일때 값을 설정하면 해당 기간까지 선택가능 <br>&nbsp;&nbsp;오늘 이후날짜 선택 제한(limitType : 'after') 일때 값을 설정하면 해당기간 이전부터 선택가능</li>
-				</ul>
+					<h4 class="guide-sstit">기간 제한 설정 예시</h4>
+					<ul style="margin-bottom:10px;">
+						<li>- 날짜 제한 없을 경우 <strong>todayLimit : false</strong></li>
+						<li>- 오늘 이전날짜 선택 제한 - limitType : 'before' / 오늘 이후날짜 선택 제한 - limitType : 'after' <br>&nbsp;&nbsp;<strong>'before' 가 기본값</strong></li>
+						<li>- <strong>todayGap - 제한 기준일 변경값</strong><br>&nbsp;&nbsp;단위는 연/월/일 각각 설정 가능 / 구분은 대문자 필수 / 3가지중 택1 하여 설정 / 설정시 string 로 설정 ('' - 필수) <br>&nbsp;&nbsp;오늘 이전날짜 선택 제한(limitType : 'before') 일때 1을 설정하면 내일부터 선택가능 <br>&nbsp;&nbsp;오늘 이후날짜 선택 제한(limitType : 'after') 일때 1을 설정하면 어제까지 선택가능</li>
+						<li>- <strong>limitGap - 달력 내 표출 기간을 제한할 경우 사용.</strong> <br>&nbsp;&nbsp;<strong>시작일 기준으로 계산됨 (오늘 or todayGap 으로 설정한 시작일 기준)</strong> <br>&nbsp;&nbsp;단위는 연/월/일 각각 설정 가능 / 구분은 대문자 필수 / 3가지중 택1 하여 설정 / 설정시 string 로 설정 ('' - 필수) <br>&nbsp;&nbsp;(ex: 2년 = '2Y' / 3개월 = '3M' / 20일 = '20D') <br>&nbsp;&nbsp;오늘 이전날짜 선택 제한(limitType : 'before') 일때 값을 설정하면 해당 기간까지 선택가능 <br>&nbsp;&nbsp;오늘 이후날짜 선택 제한(limitType : 'after') 일때 값을 설정하면 해당기간 이전부터 선택가능</li>
+					</ul>
 <pre><code class="javascript">&lt;!-- 오늘부터 선택가능 / 기간제한 없음 --&gt;
 	todayLimit : true,
 	limitType : 'before' (기본값이므로 설정하지 않아도 무관함)
@@ -148,12 +143,12 @@
 	todayGap : '-6M',
 	limitGap :  '9M'
 </code></pre>
-			</div>
-		</section>
+				</div>
+			</section>
 
+		</div>
+		<a href="#work-list" class="guide-top">Top</a>	
 	</div>
-	<a href="#work-list" class="guide-top">Top</a>	
-</div>
 
 	<!-- calendar 관련 설정 -->
 	<link rel="stylesheet" href="/css/nCalendar.css" media="screen, print" />

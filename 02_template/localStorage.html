@@ -24,12 +24,31 @@
 
 	<!-- 프로젝트 관련 CSS 및 JS 파일 로드 -->
 	<link rel="stylesheet" href="/css/layout.css" media="screen, print" />
+</head>
+<body>
+	<div id="work-list">
+		<div class="guide">
+			
+
+			<!-- input ================================================================ -->
+			<section id="guide-input">
+				<h2 class="guide-sec-tit">localStorage Test</h2>
+
+				<div class="guide-sec">
+					<h3 class="guide-stit">기본형</h3>
+					<div class="guide-show">
+						<input type="text" name="" placeholder="" class="inp"/>
+						<span class="result"></span>
+						<button type="button" class="btn medium red set">입력</button>
+						<button type="button" class="btn medium get">출력</button>
+						<button type="button" class="btn medium white del">삭제</button>
+					</div>
+				</div>
+			</section>
+		</div>
+	</div>
+
 	<script src="/js/common.js"></script>
-
-	<!--[if lt IE 9]>
-    <script src="/js/html5shiv.js"></script>
-    <![endif]-->	
-
 
 	<script src="/js/js_plug-base.js"></script>
 	<script>
@@ -70,29 +89,5 @@
 			});
 		}
 	</script>
-
-</head>
-<body>
-<div id="work-list">
-	<div class="guide">
-		
-
-		<!-- input ================================================================ -->
-		<section id="guide-input">
-			<h2 class="guide-sec-tit">localStorage Test</h2>
-
-			<div class="guide-sec">
-				<h3 class="guide-stit">기본형</h3>
-				<div class="guide-show">
-					<input type="text" name="" placeholder="" class="inp"/>
-					<span class="result"></span>
-					<button type="button" class="btn medium red set">입력</button>
-					<button type="button" class="btn medium get">출력</button>
-					<button type="button" class="btn medium white del">삭제</button>
-				</div>
-			</div>
-		</section>
-	</div>
-</div>
 </body>
 </html>

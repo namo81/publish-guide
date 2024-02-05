@@ -7,6 +7,7 @@
 function nCalendarRange(option){
 
 	var wrap            = typeof option.wrap === 'string' ? document.querySelector(option.wrap) : option.wrap,
+		inCalWrap		= option.inCalWrap ? option.inCalWrap : false,				// 달력의 body 가 아닌 wrap 내부에 위치할지 설정
 		showType        = option.showType ? option.showType : 'button',				// both / button / input
 		inpSingle 		= option.inpSingle ? option.inpSingle : false, 				// true : input 1개에 기간 입력 / false : input 시작일,종료일 각각 일 경우
 		dualCal         = option.dualCal != null ? option.dualCal : true,			// true: 표출달력 2개 / false : 표출달력 1개
@@ -23,7 +24,8 @@ function nCalendarRange(option){
 		todayLimit      = option.todayLimit ? option.todayLimit : false,			// 오늘 기준 선택 제한
 		todayGap 		= option.todayGap ? option.todayGap : '0D', 				// 오늘 기준일의 gap 설정 (ex. 내일부터 제한, 5일전까지 제한 등)
 		limitType       = option.limitType ? option.limitType : 'before',			// 제한 방향 설정 - before : 오늘 이전 날짜 선택 제한 / after : 오늘 이후 날짜 선택 제한
-		limitGap 		= option.limitGap ? option.limitGap : null; 				// 제한 기간 설정 - null : 기한 없음 / nY : n년 / nM : n개월 / nD : n일
+		limitGap 		= option.limitGap ? option.limitGap : null, 				// 제한 기간 설정 - null : 기한 없음 / nY : n년 / nM : n개월 / nD : n일
+		activeCal;
 		
 	// 날짜 제한 관련 ----------------------------------------------------------------------------
 	var now = new Date(),
@@ -109,8 +111,13 @@ function nCalendarRange(option){
 	}
 
 	// 달력 기본 영역 그리기 (calWrap, 좌,우 영역, 상단버튼영역, 이전-다음 버튼 등) --------------------------------------------
-	document.querySelector('body').insertAdjacentHTML('beforeend', '<div class="cal-wrap range" tabindex="0"><div class="cal-left"><div class="cal-area"></div></div></div>');
-	cals = document.querySelectorAll('.cal-wrap');
+	if(inCalWrap) {
+		wrap.insertAdjacentHTML('beforeend', '<div class="cal-wrap range" tabindex="0"><div class="cal-left"><div class="cal-area"></div></div></div>');
+		cals = wrap.querySelectorAll('.cal-wrap');
+	} else {
+		document.querySelector('body').insertAdjacentHTML('beforeend', '<div class="cal-wrap range" tabindex="0"><div class="cal-left"><div class="cal-area"></div></div></div>');
+		cals = document.querySelectorAll('.cal-wrap');
+	}
 	calWrap = cals[cals.length - 1];
 
 	leftArea = calWrap.querySelector('.cal-left');
@@ -156,6 +163,9 @@ function nCalendarRange(option){
 		prevM.style.display = 'none';
 		nextM.style.display = 'none';
 	}
+
+	// 달력 초기 생성 시 달력obj 값 전달
+	if(typeof option.activeCal === 'function') option.activeCal(calWrap);
 
 	// close ---------------------------------
 	var calClose = function(){
@@ -538,6 +548,11 @@ function nCalendarRange(option){
 	/* common functions --------------------------------------- */
 	// 달력 생성 위치 설정 함수
 	function calPosition(){
+		if(inCalWrap) { // 달력이 wrap 내부일 경우 설정
+			calWrap.classList.add('in-wrap');
+			calWrap.style.top = '100%';
+			return;
+		}
 		var top		= offset(wrap).top,
 			left	= offset(wrap).left;
 

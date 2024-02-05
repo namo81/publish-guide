@@ -157,7 +157,7 @@ function nCalendarWeek(option){
 		wrap.style.top = '';
 		wrap.style.left = '';
 		wrap.style.display = 'none';
-		if(device == false) inp.focus();
+		inp.focus();
 	},
 	calCloseAll = function(){
 		var wrapAll = document.querySelectorAll('.cal-wrap');
@@ -493,11 +493,11 @@ function nCalendarWeek(option){
 				if(btn != null) {
 					var btnDate = changeToDate(btn.getAttribute('data-date')).valueOf();
 					if(weekSunDay == null) {
-						if(btnDate == weekMonDay.valueOf()) funcAddClass(chkTds[i], 'start');
+						if(btnDate == weekMonDay.valueOf()) chkTds[i].classList.add('start');
 					} else {
-						if(btnDate == weekMonDay.valueOf()) funcAddClass(chkTds[i], 'start');
-						if(btnDate == weekSunDay.valueOf()) funcAddClass(chkTds[i], 'end');
-						if(btnDate > weekMonDay.valueOf() && btnDate < weekSunDay.valueOf()) funcAddClass(chkTds[i],'in-range');
+						if(btnDate == weekMonDay.valueOf()) chkTds[i].classList.add('start');
+						if(btnDate == weekSunDay.valueOf()) chkTds[i].classList.add('end');
+						if(btnDate > weekMonDay.valueOf() && btnDate < weekSunDay.valueOf()) chkTds[i].classList.add('in-range');
 					} 
 				}
 			}
