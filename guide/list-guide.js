@@ -1,3 +1,6 @@
+var clickEvt = new Event('click', { bubbles: true, cancelable: true });
+
+
 function getIndex( elm ){ 
     var c = elm.parentNode.children, i = 0;
     for(; i < c.length; i++ )
@@ -18,6 +21,7 @@ function elemsRemoveClass(elem, cls){
 function guide_tblSet(tbl){
 	var trs 		= tbl.querySelectorAll('tbody tr'),
 		previewChk 	= document.querySelector('#view-chk'),
+		mobileChk   = document.querySelector('#view-mobile'),
 		tblTotal;
 
 	var	frameWrap	= document.querySelector('.iframe');
@@ -96,6 +100,11 @@ function guide_tblSet(tbl){
 					btn.classList.contains('open') ? btn.classList.remove('open') : btn.classList.add('open');
 				}
 			});
+			
+			// 미사용 화면 리스트 닫기
+			if(btn.parentNode.parentNode.classList.contains('notuse')) {
+				btn.dispatchEvent(clickEvt);
+			}
 		});
 	}
 
@@ -139,6 +148,11 @@ function guide_tblSet(tbl){
 			frameWrap.style.display = 'none';
 			previewChk.checked = false;
 		});
+		if(mobileChk) {
+			mobileChk.addEventListener('click', function(){
+				this.checked == true ? frameWrap.classList.add('mobile') : frameWrap.classList.remove('mobile');
+			});
+		}
 	}
 
 
