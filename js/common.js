@@ -11,7 +11,9 @@ try { // chrome / edge 용
     changeEvt.initEvent('change', true, true);
 }
 
-// 이벤트 리스트 관련 함수 - 이벤트 추가 시 listener 를 별도 배열로 보관 - 추후 삭제 가능하도록.
+/** 이벤트 추가 함수 - 이벤트 추가 시 listener 를 별도 배열로 보관 - 추후 삭제 가능하도록. 
+ * ex : object.onEvent('', function...)
+*/
 HTMLElement.prototype.onEvent = function (eventType, callBack, useCapture) {
 	this.addEventListener(eventType, callBack, useCapture);
 	if (!this.myListeners) {
@@ -20,8 +22,10 @@ HTMLElement.prototype.onEvent = function (eventType, callBack, useCapture) {
 	this.myListeners.push({ eType: eventType, callBack: callBack });
 	return this;
 };
-// ex : object.onEvent('', function...)
 
+/** 이벤트 제거 함수 
+ * ex : object.removeListeners()
+*/
 HTMLElement.prototype.removeListeners = function () {
 	if (this.myListeners) {
 		for (var i = 0; i < this.myListeners.length; i++) {
@@ -30,9 +34,10 @@ HTMLElement.prototype.removeListeners = function () {
 		delete this.myListeners;
 	};
 };
-// ex : object.removeListeners()
 
-// parents 기능 함수 - 부모요소 배열 반환
+/** parents 기능 함수 - 부모요소 배열 반환 
+ * ex : object.parents(selector)
+*/
 Element.prototype.parents = function(selector) {
 	var elements = [];
 	var elem = this;
@@ -44,9 +49,10 @@ Element.prototype.parents = function(selector) {
 	} 
 	return elements;
 };
-// ex : object.parents(selector)
 
-// offset 함수.
+/** offset 함수
+ * ex : offset(object).top / offset(object).left
+*/
 function offset(elem) {
     if(!elem) elem = this;
 
@@ -60,23 +66,26 @@ function offset(elem) {
 
     return { left: x, top: y };
 }
-// ex : offset(object).top / offset(object).left
 
-// index 반환 함수
+/** index 반환 함수 
+ * ex : getIndex(object)
+*/
 function getIndex( elm ){ 
     var c = elm.parentNode.children, i = 0;
     for(; i < c.length; i++ )
         if( c[i] == elm ) return i;
 }
-// ex : getIndex(object)
 
-// dom요소 style값 가져오기(타켓요소, 가져올 style, 가상요소) - 가상요소는 없을 경우 무시 가능
+/** dom요소 style값 가져오기(타켓요소, 가져올 style, 가상요소) - 가상요소는 없을 경우 무시 가능 
+ * ex : getStyle(dom요소, 'position', ':after');
+*/
 function getStyle(target, value, pseudo){
 	return window.getComputedStyle(target, pseudo).getPropertyValue(value);	
 }
-// ex : getStyle(dom요소, 'position', ':after');
 
-// padding, margin 값을 분류하여 top / right / bottom / left 의 object로 반환
+/** padding, margin 값을 분류하여 top / right / bottom / left 의 object로 반환
+ * ex : getStyleArr('20px') / getStyleArr('20px 20px') ...
+*/
 function getStyleArr(val){
 	var regex 		= /[^0-9]/g,
 		valArr 		= val.split(' '),
@@ -104,32 +113,34 @@ function getStyleArr(val){
 	}
 	return styleArr;
 }
-// ex : getStyleArr('20px') / getStyleArr('20px 20px') ...
 
-//콤마 넣기
+/** 콤마 넣기 */
 function comma(str) {
 	str = String(str);
 	return str.replace(/(\d)(?=(?:\d{3})+(?!\d))/g, '$1,');
 }
 
-//콤마 풀기
+/** 콤마 풀기 */
 function uncomma(str) {
 	str = String(str);
 	return str.replace(/[^\d]+/g, '');
 }
 
-// replace all 기능
+/** replace all 기능 
+ * ex : replaceAll(변경할 문구, 지워질 글자, 대체할 글자);
+*/
 function replaceAll(str, searchStr, replaceStr) {
 	return str.split(searchStr).join(replaceStr);
 }
-// ex : replaceAll(변경할 문구, 지워질 글자, 대체할 글자);
 
-// 숫자가 10 이하일 경우 앞에 '0' 붙이기
+/** 숫자가 10 이하일 경우 앞에 '0' 붙이기 */
 function setZero(num){
 	return num < 10 ? '0' + num : num;
 }
 
-// yyyy-mm-dd 형식을 date 값으로 변환
+/** yyyy-mm-dd 형식을 date 값으로 변환 
+ * convertToDate('YYYY.MM.DD', '연월일 구분자')
+*/
 function convertToDate(e, sType){
 	var thisY = e.split(sType)[0],
 	thisM = e.split(sType)[1] - 1,
@@ -137,7 +148,9 @@ function convertToDate(e, sType){
 	nowDate = new Date(thisY, thisM, thisD);
 	return nowDate;
 }
-// date 값을 yyyy-mm-dd 형식으로 변환
+/** date 값을 yyyy-mm-dd 형식으로 변환 
+ * convertToYMD(javascript date, '연월일 구분자')
+*/
 function convertToYMD(e, sType){
 	var thisY = e.getFullYear(),
 	thisM = e.getMonth() + 1,
@@ -149,7 +162,13 @@ function convertToYMD(e, sType){
 	return nowDate;
 }
 
-// 공통 함수 : 특정 영역 외 클릭 감지
+/** 공통 함수 : 특정 영역 외 클릭 감지 
+ * area : 부모요소 검색용 css selector
+ * target : 제어될 html dom 요소
+ * 삭제할 class
+ * ex : var wrapArea = document.querySelector('.chk-area');
+ * ex : outSideClick('.chk-area', wrapArea, 'show');
+*/
 function outSideClick(area, target, cls){
 	var body = document.querySelector('body');
 	body.addEventListener('mousedown', function(e){
@@ -160,13 +179,8 @@ function outSideClick(area, target, cls){
 		}
 	});
 }
-// area : 부모요소 검색용 css selector
-// target : 제어될 html dom 요소
-// 삭제할 class
-// ex : var wrapArea = document.querySelector('.chk-area');
-// ex : outSideClick('.chk-area', wrapArea, 'show');
 
-//tab menu 기능 - 페이지 전체 동일 기능 적용(탭 안의 탭 등 depth 구조일 경우 사용불가)
+/** tab menu 기능 - 페이지 전체 동일 기능 적용(탭 안의 탭 등 depth 구조일 경우 사용불가) */
 function nTab(selector){
 	var nTabEle = document.querySelectorAll(selector);
 	if(nTabEle.length > 1) {
@@ -219,13 +233,12 @@ function nTabSet(Ele){
 	}	
 }
 
-// tab 메뉴 개별 설정형
-/* 
-	var 변수명 = new nTabMenu({
-       wrap         : '.tab-wrap', - 탭 메뉴 및 컨텐츠를 포함하는 영역 선택자
-       menuWrap     : '.tab-menu', - 탭 메뉴 선택자
-       tabCnt       : '.tab-cnt'   - 탭 컨텐츠 선택자
-    });
+/** tab 메뉴 개별 설정형
+ *	var 변수명 = new nTabMenu({
+ *      wrap         : '.tab-wrap', - 탭 메뉴 및 컨텐츠를 포함하는 영역 선택자
+ *      menuWrap     : '.tab-menu', - 탭 메뉴 선택자
+ *      tabCnt       : '.tab-cnt'   - 탭 컨텐츠 선택자
+ *   });
 */
 function nTabMenu(option){
 	var tabWrap	= document.querySelector(option.wrap),

@@ -117,9 +117,7 @@ function nSelectSet(Ele){
 		/* 크롭은 한줄로 가능
 		var changeEvt = new Event('change');*/
 		/* IE 등 타 브라우저 */
-		var changeEvt = document.createEvent('Event');
-		changeEvt.initEvent('change', true, false);
-
+		var changeEvt = new Event('change', { bubbles: true, cancelable: true });
 		sel.dispatchEvent(changeEvt); // 공통문구
 	}
 

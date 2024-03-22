@@ -333,16 +333,19 @@ function nCalendarRange(option){
 	}
 
 	// cal reDraw ------------------------------
+	/** 달력 연도제한관련 prev / next버튼 비활성화 */
+	function prevNextBtnChk(){
+		if(year == minYear && month == 0) prevM.disabled = true;
+		if(year == maxYear && month == 11) nextM.disabled = true;
+	}
+
 	function prevMonth(){
 		if(month > 0) month--;
 		else {
 			if( year > minYear ) year--;
 			month = 11;
 		}
-		if(todayLimit == false && rangeLimit == null) {
-			if(year == minYear && month == 0) prevM.disabled = true;
-			if(nextM.disabled == true) nextM.disabled = false;
-		}
+		if(nextM.disabled == true) nextM.disabled = false;
 		calDraw();
 	}
 	function nextMonth(){
@@ -351,10 +354,7 @@ function nCalendarRange(option){
 			if( year < maxYear ) year++;
 			month = 0;
 		}
-		if(todayLimit == false && rangeLimit == null) {
-			if(year == maxYear && month == 11) nextM.disabled = true;
-			if(prevM.disabled == true) prevM.disabled = false;
-		}
+		if(prevM.disabled == true) prevM.disabled = false;
 		calDraw();
 	}
 
@@ -414,7 +414,7 @@ function nCalendarRange(option){
 			btnDate[b].addEventListener('mouseover', dateBgSet);
 			if(todayLimit == true) limitSet(btnDate[b]);
 		}
-
+		prevNextBtnChk();
 	}
 
 	// 시작일-종료일 최종 input 에 설정하기 및 달력 닫기.

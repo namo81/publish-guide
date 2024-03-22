@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+	<meta charset="UTF-8" >
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="user-scalable=yes, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, width=device-width">
+	<meta name="author" content="seonamho - SK MNS" >
+	<meta name="description" content="">
+	<meta name="keywords" content="Site Template">
+	<meta property="og:type" content="website">
+	<meta property="og:title" content="Site Template">
+	<meta property="og:description" content="">
+	<meta property="og:image" content="">
+	<meta property="og:url" content="">
+	<link rel="shortcut icon" href="data:;base64,iVBORwOKGO=" />
+
+	<title>벽돌 레이아웃(Masonry) 가이드</title>
+
+	<!-- 가이드 관련 -->
+	<link rel="stylesheet" href="../guide/list-guide.css" media="screen, print" />
+	<link rel="stylesheet" href="../guide/vendor/railscasts.css">
+	<script src="../guide/vendor/highlight.js"></script>
+
+	<!-- 프로젝트 관련 CSS 및 JS 파일 로드 -->
+	<link rel="stylesheet" href="/css/layout.css" media="screen, print" />
+	<style>
+		#work-list { min-width:0; }
+		#work-list .guide > section { max-width:none; }
+		
+		.masonry-wrap { position:relative; width:100%; }
+		.masonry-wrap .item { position:absolute; display:inline-block; padding:5px; box-sizing:border-box; }
+		.masonry-wrap.set-on .item { transition:transform .3s cubic-bezier(.08,.01,.05,1); }
+		.masonry-wrap .item p { margin:0 !important; }
+		.masonry-wrap .item img { width:100%; }
+	</style>
+</head>
+<body>
+	<div id="work-list">
+		<div class="guide">
+
+			<section id="guide-basic">
+				<h2 class="guide-sec-tit">벽돌 레이아웃(Masonry)</h2>
+				<div class="guide-sec">
+					<h3 class="guide-stit">Flex 기본</h3>
+					<p>block 타입 요소들의 배치에 사용</p>
+					<div class="guide-show">
+					<!-- 코드 작성 -->
+						<div class="masonry-wrap">
+							<ul class="list">
+								<li class="item"><p class="thum-img">1<img src="../images/temp_thum.png" alt=""></p></li>
+								<li class="item"><p class="thum-img">2<img src="../images/temp_thum2.png" alt=""></p></li>
+								<li class="item"><p class="thum-img">3<img src="../images/temp_thum4.png" alt=""></p></li>
+								<li class="item"><p class="thum-img">4<img src="../images/temp_thum3.png" alt=""></p></li>
+								<li class="item"><p class="thum-img">5<img src="../images/temp_thum.png" alt=""></p></li>
+								<li class="item"><p class="thum-img">6<img src="../images/temp_thum4.png" alt=""></p></li>
+								<li class="item"><p class="thum-img">7<img src="../images/temp_thum2.png" alt=""></p></li>
+								<li class="item"><p class="thum-img">8<img src="../images/temp_thum3.png" alt=""></p></li>
+							</ul>
+						</div>
+					<!-- // 코드 작성 -->
+					</div>
+				</div>
+			</section>
+		</div>
+		<a href="#work-list" class="guide-top">Top</a>	
+	</div>
+
+	<script src="../js/common.js"></script>
+	<script src="../js/nMasonry_v1.0.0.js"></script>
+	<script>
+		hljs.initHighlightingOnLoad(); 
+
+		let text_masonry = new nMasonry({
+			wrap : '.masonry-wrap',
+			min_item_width : 150,
+			max_item_width : 300
+		});
+	</script>
+</body>
+</html>
