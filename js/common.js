@@ -162,6 +162,17 @@ function convertToYMD(e, sType){
 	return nowDate;
 }
 
+/** date값 or 'yyyy-mm-dd 형식'을 'yyyy년 mm월 dd일' 형식으로 변환 
+ * param date : date값 or YYYY.MM.DD 형식의 string
+ * param sType : 날짜 구분자
+ * convertToYMD_kr('2024.05.01','.');
+ * convertToYMD_kr(javascript Date 값,'.');
+*/
+function convertToYMD_kr(date, sType){
+	let date_tx = typeof date === 'string' ? date : convertToYMD(date, sType);
+	return date_tx.split(sType)[0] + '년 ' + date_tx.split(sType)[1] + '월 ' + date_tx.split(sType)[2] + '일';
+}
+
 /** 공통 함수 : 특정 영역 외 클릭 감지 
  * area : 부모요소 검색용 css selector
  * target : 제어될 html dom 요소
@@ -242,43 +253,57 @@ function nTabSet(Ele){
 */
 function nTabMenu(option){
 	var tabWrap	= document.querySelector(option.wrap),
-		tabLi	= tabWrap.querySelectorAll(option.menuWrap + ' li'),
 		tabBtn	= tabWrap.querySelectorAll(option.menuWrap + ' a'),
 		tabCnt	= tabWrap.querySelectorAll(option.tabCnt),
-		tgCnt	= '',
 		showNum	= 0;
 
-	var tabCntHide = function(){
-		for(i=0; i<tabCnt.length; i++){
-			tabCnt[i].style.display = 'none';
-		}
-	}
-
-	// 화면 로드 시 활성화된 버튼에 맞는 컨텐츠 show
-	for(i=0; i<tabLi.length; i++){
-		if(tabLi[i].classList.contains('on')) showNum = i;
+	function tabCntHide(){
+		tabCnt.forEach(function(cnt){
+			cnt.style.display = 'none';
+			cnt.setAttribute('aria-hidden', true);
+		});
 	}
 	tabCntHide();
-	tabCnt[showNum].style.display = 'block';
+
+	function tabBtnOff(){
+		tabBtn.forEach(function(btn){
+			btn.parentNode.classList.remove('on');
+			btn.setAttribute('aria-selected', false);
+		});
+	}
 
 	// tab menu 클릭 기능
-	var tabClick = function(event){
+	function tabClick(event, idx) {
 		var btn;
 		event.target.tagName != 'A' ? btn = event.target.parentElement : btn = event.target;
 		// 클릭 시 a 태그 내부에 있는 태그 클릭 시 btn 을 a 태그로 설정
 
-		tgCnt = btn.getAttribute('href');
-		for(i=0; i<tabLi.length; i++){
-			tabLi[i].classList.remove('on');
-		}
+		event.preventDefault(); // 클릭 시 scroll 이동 방지
+
+		showNum = idx;
+		tabBtnOff();
 		btn.parentElement.classList.add('on');
+		btn.setAttribute('aria-selected', true);
+
 		tabCntHide();
-		tabWrap.querySelector(tgCnt).style.display = 'block';
+		tabCnt[showNum].style.display = 'block';
+		tabCnt[showNum].setAttribute('aria-hidden', false);
 	}
 
-	for(i=0; i<tabBtn.length; i++){
-		tabBtn[i].addEventListener('click', tabClick);
-	}	
+	tabBtn.forEach(function(btn, idx){
+		btn.setAttribute('role', 'tab');
+		btn.setAttribute('aria-controls', btn.getAttribute('href').split('#')[1]);
+		btn.setAttribute('aria-selected', false);
+		btn.addEventListener('click', function(e){tabClick(e, idx)});
+		if(btn.parentNode.classList.contains('on')) showNum = idx;
+	});
+
+	tabCnt.forEach(function(cnt, idx){
+		cnt.setAttribute('role', 'tabpanel');
+		cnt.setAttribute('aria-labelledby', tabBtn[idx].getAttribute('id'));
+	});
+	
+	tabBtn[showNum].dispatchEvent(clickEvt);
 }
 
 // 말풍선 요소 - 단일 사용

@@ -261,44 +261,53 @@ function nChartSvgPie(option){
     drawGraph();
 
     function reDrawGraph(){
-        var sets = svgChart.querySelectorAll('.chart-set');
+        sets = svgChart.querySelectorAll('.chart-set');
         Array.prototype.forEach.call(sets, function(set, idx){
             var setPath = set.querySelector('.set-path'),
                 setTx   = set.querySelector('.set-name'),
-                labelTx = setTx.querySelector('text');
-            if(dataArr[idx] > 0) {
-                var startX = idx == 0 ? pieCenter : calcArcPos(radArr[idx-1], pieCenter)[0],
-                    startY = idx == 0 ? 0 : calcArcPos(radArr[idx-1], pieCenter)[1],
-                    arcPos = calcArcPos(radArr[idx], pieCenter),
-                    inEndX = idx == 0 ? pieCenter : calcArcPos(radArr[idx-1], (pieCenter - barWidth))[0],
-                    inEndY = idx == 0 ? barWidth : calcArcPos(radArr[idx-1], (pieCenter - barWidth))[1],
-                    inArcPos = calcArcPos(radArr[idx], (pieCenter - barWidth));
+                labelTx = setTx.querySelector('text'),
+                lineD;
 
-                var cirSize = 0;
-                if(idx == 0) {
-                    radArr[0] > 180 ? cirSize = 1 : cirSize = 0;
-                    radArr[0] < 15 ? labelTx.style.display = 'none' : labelTx.style.display = '';
-                } else {
-                    (radArr[idx] - radArr[idx-1]) > 180 ? cirSize = 1 : cirSize = 0;
-                    (radArr[idx] - radArr[idx-1]) < 15 ? labelTx.style.display = 'none' : labelTx.style.display = '';
-                }
-
-                lineD = 'M '+startX+' '+startY+' A '+pieCenter+' '+pieCenter+', 0, '+cirSize+', 1, '+arcPos[0]+' '+arcPos[1]+' L '+inArcPos[0]+' '+inArcPos[1]+' A '+(pieCenter - barWidth)+' '+ (pieCenter - barWidth) +', 0, '+cirSize+', 0, '+inEndX+' '+inEndY+' Z';
-
-                setPath.setAttribute('d', lineD);
-
-                var txPos = calcArcPos(txRadArr[idx], pieCenter - (barWidth / 2));
-                labelTx.setAttribute('x', txPos[0]);
-                labelTx.setAttribute('y', txPos[1]);
-
-                set.style.display = '';
-                setTx.style.display = '';
-                
-            } else {
+            if(dataArr[idx] == 0) {
                 lineD = '';
                 setPath.setAttribute('d', lineD);
                 set.style.display = 'none';
+                return;
             }
+            
+            var startX = idx == 0 ? pieCenter : calcArcPos(radArr[idx-1], pieCenter)[0],
+                startY = idx == 0 ? 0 : calcArcPos(radArr[idx-1], pieCenter)[1],
+                arcPos = calcArcPos(radArr[idx], pieCenter),
+                inEndX = idx == 0 ? pieCenter : calcArcPos(radArr[idx-1], (pieCenter - barWidth))[0],
+                inEndY = idx == 0 ? barWidth : calcArcPos(radArr[idx-1], (pieCenter - barWidth))[1],
+                inArcPos = calcArcPos(radArr[idx], (pieCenter - barWidth));
+
+            var cirSize = 0;
+            if(idx == 0) {
+                radArr[0] > 180 ? cirSize = 1 : cirSize = 0;
+                radArr[0] < 15 ? labelTx.style.display = 'none' : labelTx.style.display = '';
+            } else {
+                (radArr[idx] - radArr[idx-1]) > 180 ? cirSize = 1 : cirSize = 0;
+                (radArr[idx] - radArr[idx-1]) < 15 ? labelTx.style.display = 'none' : labelTx.style.display = '';
+            }
+            
+            // 그려야할 데이터가 1개일 경우 (path 의 시작점/종료점이 같으면 오류)
+            if(inEndX == startX) {
+                startX = startX + 0.1;
+                inEndX = inEndX + 0.1;
+            }
+
+            lineD = 'M '+startX+' '+startY+' A '+pieCenter+' '+pieCenter+', 0, '+cirSize+', 1, '+arcPos[0]+' '+arcPos[1]+' L '+inArcPos[0]+' '+inArcPos[1]+' A '+(pieCenter - barWidth)+' '+ (pieCenter - barWidth) +', 0, '+cirSize+', 0, '+inEndX+' '+inEndY+' Z';
+
+            setPath.setAttribute('d', lineD);
+
+            var txPos = calcArcPos(txRadArr[idx], pieCenter - (barWidth / 2));
+            labelTx.setAttribute('x', txPos[0]);
+            labelTx.setAttribute('y', txPos[1]);
+
+            set.style.display = '';
+            setTx.style.display = '';
+            set.style.display = 'block';
         });
     }
 
@@ -419,7 +428,7 @@ function nChartSvgPie(option){
         var pos = calcArcPos(rad, pieCenter),
             cirSize = rad < 180 ? 0 : 1;
 
-        lineD = 'M 150 0 A '+pieCenter+' '+pieCenter+', 0, '+cirSize+', 1, '+pos[0]+' '+pos[1]+' L 150 150 Z';
+        lineD = 'M '+ cirWidth/2 +' 0 A '+pieCenter+' '+pieCenter+', 0, '+cirSize+', 1, '+pos[0]+' '+pos[1]+' L ' + cirWidth/2 +' '+ cirWidth/2 + ' Z';
         motionCir.setAttribute('d', lineD);
     }
 

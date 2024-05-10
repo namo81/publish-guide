@@ -172,10 +172,12 @@ function nSlide(option){
         var addNum = width < 1 ? viewCount + 1 : viewCount; // width가 1 이하여서 이전,다음 배너가 보일 경우 추가 dummy 필요
         for(var s=0; s<addNum; s++){
            var cNode = items[s].cloneNode(true);
+           cNode.setAttribute('aria-hidden', 'true'); // 스크린 리더에서 dummy 무시하도록
            container.appendChild(cNode);
         }
         for(var e=itemLen - 1; e>itemLen - addNum - 1; e--){
             var cNode = items[e].cloneNode(true);
+            cNode.setAttribute('aria-hidden', 'true'); // 스크린 리더에서 dummy 무시하도록
             container.insertBefore(cNode, container.firstChild);
         }
         container.style.transform = 'translate3d(-'+ countGap + 'px, 0,0)';

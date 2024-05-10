@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+	<meta charset="UTF-8" >
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="user-scalable=yes, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, width=device-width">
+	<meta name="author" content="seonamho - SK MNS" >
+	<meta name="description" content="">
+	<meta name="keywords" content="Site Template">
+	<meta property="og:type" content="website">
+	<meta property="og:title" content="Site Template">
+	<meta property="og:description" content="">
+	<meta property="og:image" content="">
+	<meta property="og:url" content="">
+	<link rel="shortcut icon" href="data:;base64,iVBORwOKGO=" />
+
+	<title>WebGL Test</title>
+
+	<!-- 가이드 관련 -->
+	<link rel="stylesheet" href="../guide/list-guide.css" media="screen, print" />
+	<link rel="stylesheet" href="../guide/vendor/railscasts.css">
+	<script src="../guide/vendor/highlight.js"></script>
+
+	<!-- 프로젝트 관련 CSS 및 JS 파일 로드 -->
+	<link rel="stylesheet" href="/css/layout.css" media="screen, print" />	
+</head>
+<body>
+	<div id="work-list">
+		<div class="guide">
+
+			<section id="guide-basic">
+				<h2 class="guide-sec-tit">WebGL - three.js</h2>
+				<div class="guide-sec">
+					<div class="guide-show">
+					<!-- 코드 작성 -->
+						<div class="wegbl">
+							<canvas id="glcanvas" width="1000" height="700"></canvas>
+						</div>
+					<!-- // 코드 작성 -->
+					</div>
+<pre><code class="html">
+</code></pre>
+				</div>
+			</section>
+		</div>
+		<a href="#work-list" class="guide-top">Top</a>	
+	</div>
+
+	<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+	<script type="importmap">
+		{
+		  "imports": {
+			"three": "https://unpkg.com/three@0.162.0/build/three.module.js",
+			"three/addons/": "https://unpkg.com/three@0.162.0/examples/jsm/"
+		  }
+		}
+	</script>
+	<script type="module">
+		import * as THREE from 'three';
+		import { PCFSoftShadowMap } from 'three';
+		import { FontLoader } from 'three/addons/loaders/FontLoader.js';
+		import { TextGeometry } from 'three/addons/geometries/TextGeometry.js';
+		import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+		import { GUI } from 'three/addons/libs/lil-gui.module.min.js';
+
+		const tgCanvas  = document.querySelector('#glcanvas'),
+			  testScene 	= new THREE.Scene();
+
+		//testScene.background = new THREE.Color( 0x8ec1de );		
+		//testScene.fog = new THREE.Fog( 0x8ec1de, 200, 200 );
+
+		let areaWidth 	= 1000,
+			areaHeight 	= 700;
+		
+		// camera
+		let camera 		= new THREE.PerspectiveCamera(45, areaWidth/areaHeight, 1);
+		camera.position.set(0, 0, 200)
+		testScene.add(camera);
+		
+		// renderer
+		let renderer   = new THREE.WebGLRenderer({
+			canvas : tgCanvas,
+			antialias : true
+		});
+
+		// light
+		let light 	= new THREE.DirectionalLight(0xfffb84, 5),
+			light_p = new THREE.PointLight(0xfffb84, 1, 1000, 0);
+		light.position.set(20,100,150);
+		testScene.add(light);
+		light_p.castShadow = true;
+		light_p.position.set(-30,-50,-20);
+		testScene.add(light_p);
+
+		/*background 설정 (cubic)
+		let loader = new THREE.CubeTextureLoader(),
+			bg_arr = [
+				'../images/three/skybox/humble_ft.jpg',
+				'../images/three/skybox/humble_bk.jpg',
+				'../images/three/skybox/humble_up.jpg',
+				'../images/three/skybox/humble_dn.jpg',
+				'../images/three/skybox/humble_rt.jpg',
+				'../images/three/skybox/humble_lf.jpg'
+			]
+		loader.load(bg_arr, CubeTexture => {
+			testScene.background = CubeTexture;
+			textTureSet();
+		});*/
+
+		let loader = new THREE.TextureLoader();
+		loader.load('../images/three/skybox/equire_1.jpg', texture => {
+			texture.colorSpace = 'srgb';
+			let tx_render_tg = new THREE.WebGLCubeRenderTarget(texture.image.height);
+			tx_render_tg.fromEquirectangularTexture(renderer, texture);
+			testScene.background = tx_render_tg.texture;
+			textTureSet();
+		});
+
+		// text 재질 설정
+		let pmremG, renderTg, mat_red, mat_org;
+		function textTureSet() {
+			pmremG = new THREE.PMREMGenerator(renderer),
+			renderTg = pmremG.fromEquirectangular(testScene.background),
+			mat_red = new THREE.MeshStandardMaterial({
+				color : 0xde071a,
+				roughness : 0.05,
+				metalness : 0.9,
+				envMap : renderTg.texture
+			});
+			mat_org = new THREE.MeshStandardMaterial({
+				color : 0xff7a00,
+				roughness : 0.05,
+				metalness : 0.9,
+				envMap : renderTg.texture
+			});
+			console.log(renderTg)
+		}
+
+		// text
+		let mesh_sk,
+			mesh_mns,
+			tx_group = new THREE.Group(),
+			loader_sk = new FontLoader(),
+			loader_mns = new FontLoader();
+
+		let font_opt = {
+			height : 3,
+			bevelThickness : 0.5,
+			bevelSize : 0.8
+		}
+
+		loader_sk.load('../fonts_three/helvetiker_regular.typeface.json', function(font){
+			let geometry = new TextGeometry('SK', {
+				font : font,
+				size : 24,
+				height : font_opt.height,
+				curveSegements : 12,
+				bevelEnabled : true,
+				bevelThickness : font_opt.bevelThickness,
+				bevelSize : font_opt.bevelSize,
+				bevelOffset : 0,
+				bevelSegments : 12
+			});
+
+			mesh_sk = new THREE.Mesh(geometry, mat_red);
+			mesh_sk.position.x = -100;
+			mesh_sk.position.y = -8;
+			tx_group.add(mesh_sk)
+		});
+
+		loader_mns.load('../fonts_three/helvetiker_regular.typeface.json', function(font){
+			let geometry = new TextGeometry('m&service', {
+				font : font,
+				size : 22,
+				height : font_opt.height,
+				curveSegements : 10,
+				bevelEnabled : true,
+				bevelThickness : font_opt.bevelThickness,
+				bevelSize : font_opt.bevelSize,
+				bevelOffset : 0,
+				bevelSegments : 6
+			});
+
+			mesh_mns = new THREE.Mesh(geometry, mat_org);
+			tx_group.add(mesh_mns);
+			mesh_mns.position.x = -50;
+			mesh_mns.position.y = -8;
+			mesh_mns.castShadow = true;
+			mesh_mns.receiveShadow = false;
+			//mesh_mns.fog = new THREE.Fog( 0xffffff, 5, 200 );
+		});
+		testScene.add(tx_group);
+
+		// helper
+		const axesHelper = new THREE.AxesHelper(2)
+		testScene.add(axesHelper)
+		let lightHelper = new THREE.PointLightHelper(light);
+		testScene.add(lightHelper);
+
+		// control
+		let controls = new OrbitControls(camera, renderer.domElement);
+		controls.enableDamping = true;
+		controls.update();
+
+		let camera_tg = new THREE.Vector3(0, 0, 0);
+
+		function animate(){
+			controls.update();
+			camera.lookAt(camera_tg);
+			renderer.clear();
+			renderer.render(testScene, camera);
+			requestAnimationFrame(animate);
+		}
+		animate();
+
+		let gui = new GUI(),
+			param_color_red = { color:0xde071a },			
+			param_color_org = { color:0xff7a00 };
+		gui.add(tx_group.rotation, 'y', 0, 6.28, 0.01);
+		gui.addColor(param_color_red, 'color').onChange(function(){
+			mat_red.color.set(param_color_red.color)
+		});
+		gui.addColor(param_color_org, 'color').onChange(function(){
+			mat_org.color.set(param_color_org.color)
+		});
+
+	</script>
+</body>
+</html>

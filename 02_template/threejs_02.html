@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+	<meta charset="UTF-8" >
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="user-scalable=yes, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, width=device-width">
+	<meta name="author" content="seonamho - SK MNS" >
+	<meta name="description" content="">
+	<meta name="keywords" content="Site Template">
+	<meta property="og:type" content="website">
+	<meta property="og:title" content="Site Template">
+	<meta property="og:description" content="">
+	<meta property="og:image" content="">
+	<meta property="og:url" content="">
+	<link rel="shortcut icon" href="data:;base64,iVBORwOKGO=" />
+
+	<title>WebGL Test</title>
+
+	<!-- 가이드 관련 -->
+	<link rel="stylesheet" href="../guide/list-guide.css" media="screen, print" />
+	<link rel="stylesheet" href="../guide/vendor/railscasts.css">
+	<script src="../guide/vendor/highlight.js"></script>
+
+	<!-- 프로젝트 관련 CSS 및 JS 파일 로드 -->
+	<link rel="stylesheet" href="/css/layout.css" media="screen, print" />	
+</head>
+<body>
+	<div id="work-list">
+		<div class="guide">
+
+			<section id="guide-basic">
+				<h2 class="guide-sec-tit">WebGL - three.js</h2>
+				<div class="guide-sec">
+					<div class="guide-show">
+					<!-- 코드 작성 -->
+						<div class="wegbl">
+							<canvas id="glcanvas" width="720" height="480"></canvas>
+						</div>
+					<!-- // 코드 작성 -->
+					</div>
+<pre><code class="html">
+</code></pre>
+				</div>
+			</section>
+		</div>
+		<a href="#work-list" class="guide-top">Top</a>	
+	</div>
+
+	<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+	<script type="importmap">
+		{
+		  "imports": {
+			"three": "https://unpkg.com/three@0.162.0/build/three.module.js",
+			"three/addons/": "https://unpkg.com/three@0.162.0/examples/jsm/"
+		  }
+		}
+	</script>
+	<script type="module">
+		import * as THREE from 'three';
+		import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+		import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+
+		let testScene = new THREE.Scene(),
+			tg_canvas = document.querySelector('#glcanvas'),
+			mixer;
+
+		let areaWidth 	= 720,
+			areaHeight 	= 480;
+
+		let renderer = new THREE.WebGLRenderer({
+			canvas : tg_canvas,
+			antialias : true
+		});
+		//renderer.outputEncoding = THREE.sRGBEncoding;
+
+		let camera = new THREE.PerspectiveCamera(45, 4/3, 1, 10000);
+		camera.position.set(0,2,4);
+
+		//let controls = new OrbitControls(camera, renderer.domElement);		
+		//controls.rotateSpeed = 0.2
+		//controls.update();
+
+		let light = new THREE.DirectionalLight(0xffffff, 10);
+		testScene.add(light);
+
+		let loader = new GLTFLoader(),
+			cursor = {x:0, y:0},
+			position = new THREE.Vector3();
+		
+		loader.load('../images/free__lamborghini_terzo_millennio/scene.gltf', function(gltf){			
+			testScene.add(gltf.scene);
+			gltf.scene.position.y = -1
+			function animate(){
+				requestAnimationFrame(animate);
+				//controls.update();
+				camera.position.x = cursor.x;
+				camera.position.y = cursor.y;
+				camera.lookAt(gltf.scene.position);
+				renderer.render(testScene, camera);
+			}
+			animate();
+		});
+
+		tg_canvas.addEventListener('mousemove', (e) => {
+			let x_pos = (e.clientX / areaWidth - 0.5),
+				y_pos = -(e.clientY / areaHeight - 0.5);
+			cursor.x = x_pos;
+			cursor.y = y_pos;
+		});
+	</script>
+</body>
+</html>

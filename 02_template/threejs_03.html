@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+	<meta charset="UTF-8" >
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="user-scalable=yes, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, width=device-width">
+	<meta name="author" content="seonamho - SK MNS" >
+	<meta name="description" content="">
+	<meta name="keywords" content="Site Template">
+	<meta property="og:type" content="website">
+	<meta property="og:title" content="Site Template">
+	<meta property="og:description" content="">
+	<meta property="og:image" content="">
+	<meta property="og:url" content="">
+	<link rel="shortcut icon" href="data:;base64,iVBORwOKGO=" />
+
+	<title>WebGL Test</title>
+
+	<!-- 가이드 관련 -->
+	<link rel="stylesheet" href="../guide/list-guide.css" media="screen, print" />
+	<link rel="stylesheet" href="../guide/vendor/railscasts.css">
+	<script src="../guide/vendor/highlight.js"></script>
+
+	<!-- 프로젝트 관련 CSS 및 JS 파일 로드 -->
+	<link rel="stylesheet" href="/css/layout.css" media="screen, print" />	
+</head>
+<body>
+	<div id="work-list">
+		<div class="guide">
+
+			<section id="guide-basic">
+				<h2 class="guide-sec-tit">WebGL - three.js</h2>
+				<div class="guide-sec">
+					<div class="guide-show">
+					<!-- 코드 작성 -->
+						<div class="wegbl">
+							<canvas id="glcanvas" width="720" height="480"></canvas>
+						</div>
+					<!-- // 코드 작성 -->
+					</div>
+<pre><code class="html">
+</code></pre>
+				</div>
+			</section>
+		</div>
+		<a href="#work-list" class="guide-top">Top</a>	
+	</div>
+
+	<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+	<script type="importmap">
+		{
+		  "imports": {
+			"three": "https://unpkg.com/three@0.162.0/build/three.module.js",
+			"three/addons/": "https://unpkg.com/three@0.162.0/examples/jsm/"
+		  }
+		}
+	</script>
+	<script type="module">
+		import * as THREE from 'three';
+		import Stats from 'three/addons/libs/stats.module.js';
+		import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+		import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+
+		const tgCanvas  = document.querySelector('#glcanvas'),
+			  testScene 	= new THREE.Scene();
+		
+		const position = new THREE.Vector3(),
+			rotation = new THREE.Euler(),
+			quaternion = new THREE.Quaternion(),
+			scale = new THREE.Vector3();
+
+		let areaWidth 	= 720,
+			areaHeight 	= 480;
+
+		// renderer
+		let renderer   = new THREE.WebGLRenderer({
+			canvas : tgCanvas,
+			antialias : true
+		});
+		
+		const raycaster = new THREE.Raycaster();
+		const pointer = new THREE.Vector2();
+
+		// light
+		let light 	= new THREE.AmbientLight(0xffffff, 2.5);
+		light.position.set(10,10,10);
+		testScene.add(light);
+		
+		// camera
+		let camera 		= new THREE.PerspectiveCamera(75, areaWidth/areaHeight, 1, 1100);
+		camera.position.set(0, 0, 50)
+		testScene.add(camera);
+
+		let group 		= new THREE.Group(),
+			box 		= new THREE.BoxGeometry(5, 5, 5),
+			con 		= new THREE.ConeGeometry(1, 10, 32),
+			material 	= new THREE.MeshNormalMaterial(); // 색상
+
+		function randomizeMatrix( matrix ) {
+
+			position.x = Math.random() * 40 - 20;
+			position.y = Math.random() * 40 - 20;
+			position.z = Math.random() * 40 - 20;
+
+			rotation.x = Math.random() * 2 * Math.PI;
+			rotation.y = Math.random() * 2 * Math.PI;
+			rotation.z = Math.random() * 2 * Math.PI;
+
+			quaternion.setFromEuler( rotation );
+
+			scale.x = scale.y = scale.z = 0.5 + ( Math.random() * 0.5 );
+
+			return matrix.compose( position, quaternion, scale );
+		}
+
+		for(var i = 0; i<30; i++){
+			let item = new THREE.Mesh(box, material);
+			randomizeMatrix( item.matrix );
+			item.matrix.decompose( item.position, item.quaternion, item.scale );
+			testScene.add(item);
+
+			item.updateMatrixWorld();
+		}
+		
+		function onPointerMove( event ) {
+			pointer.x = ( event.clientX / areaWidth ) * 2 - 1;
+			pointer.y = - ( event.clientY / areaHeight ) * 2 + 1;
+		}
+		function render() {
+			raycaster.setFromCamera( pointer, camera );
+			const intersects = raycaster.intersectObjects( testScene.children, true );
+			for ( let i = 0; i < intersects.length; i ++ ) {
+				console.log(intersects[i].object);
+				intersects[ i ].object.material.color.set( 0xff0000 );
+			}
+			renderer.render( testScene, camera );
+			console.log(raycaster)
+		}
+
+		window.addEventListener( 'pointermove', onPointerMove );
+		window.requestAnimationFrame(render);
+
+		function animate(){
+			//controls.update();
+			//camera.lookAt(camera_tg);
+			renderer.clear();
+			renderer.render(testScene, camera);
+			requestAnimationFrame(animate);
+		}
+		//animate();
+
+	</script>
+</body>
+</html>

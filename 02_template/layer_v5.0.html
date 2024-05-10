@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+	<meta charset="UTF-8" >
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="user-scalable=yes, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, width=device-width">
+	<meta name="author" content="seonamho - SK MNS" >
+	<meta name="description" content="">
+	<meta name="keywords" content="Site Template">
+	<meta property="og:type" content="website">
+	<meta property="og:title" content="Site Template">
+	<meta property="og:description" content="">
+	<meta property="og:image" content="">
+	<meta property="og:url" content="">
+	<link rel="shortcut icon" href="data:;base64,iVBORwOKGO=" />
+
+	<title>레이어 팝업(v5) | 가이드</title>
+
+	<!-- 가이드 관련 -->
+	<link rel="stylesheet" href="../guide/list-guide.css" media="screen, print" />
+	<link rel="stylesheet" href="../guide/vendor/railscasts.css">
+	<script src="../guide/vendor/highlight.js"></script>
+
+	<!-- 프로젝트 관련 CSS 및 JS 파일 로드 -->
+	<link rel="stylesheet" href="/css/layout.css" media="screen, print" />
+</head>
+<body>
+	<div id="work-list">
+		<div class="guide">
+			<section id="guide-basic">
+				<h2 class="guide-sec-tit">레이어(v5.0)</h2>
+				<div class="guide-sec">
+					<h3 class="guide-stit">레이어</h3>
+					<p>레이어 팝업별로 new nlayer 을 통해 ojbect 생성</p>
+					<p>option 항목은 아래 script 부분 확인</p>
+					<p>닫기 버튼에 'all' 클래스 있을 경우 - 현재 열린 모든 레이어 닫기 (별도 콜백함수 실행X)</p>
+					<div class="guide-show">
+						<!-- 코드 작성 -->
+						<button type="button" class="btn medium open-layer">팝업 호출</button> <br /><br />
+						<button type="button" class="btn medium open-layer">팝업 호출2</button> <br /><br />
+						<button type="button" class="btn medium open-layer">팝업 호출3</button>
+						<!-- // 코드 작성 -->
+					</div>
+<h4 class="guide-sstit">css</h4>
+<pre><code class="css ">/* layer-pop - v4.0 용*/
+.layer-pop,
+.layer { position:fixed; display:none; width:100%; height:100%; top:0; left:0; background:rgba(0,0,0,.8); overflow-x:hidden; overflow-y:auto; z-index:1000; }
+.layer > .inbox { display:flex; align-items:center; height:calc(100% - 60px); margin:30px; }
+.layer-cnt { position:relative; display:flex; flex-direction:column; width:700px; max-height:100%; margin:auto; padding:25px; background:#fff; box-sizing:border-box;}
+.layer-top { position:relative; height:50px; flex-basis:50px; flex-shrink:0; }
+.layer-mid { flex:1 1 auto; overflow-y:auto; }
+.layer.showOn { display:block; }
+</code></pre>
+
+<h4 class="guide-sstit">호출버튼</h4>
+<pre><code class="html">&lt;button type="button" class="btn medium open-layer"&gt;팝업 호출&lt;/button&gt;
+&lt;button type="button" class="btn medium open-layer"&gt;팝업 호출2&lt;/button&gt;
+&lt;button type="button" class="btn medium open-layer"&gt;팝업 호출3&lt;/button&gt;
+</code></pre>
+
+<h4 class="guide-sstit">팝업 html 구조</h4>
+<pre><code class="html">&lt;div class="layer" id="layer2"&gt;
+	&lt;div class="inbox"&gt; &lt;!-- in-scroll 추가 시 내부 스크롤 --&gt;
+		&lt;div class="layer-cnt"&gt;
+			&lt;div class="layer-top"&gt;test&lt;/div&gt;
+			&lt;div class="layer-mid"&gt;
+				&lt;button type="button" class="close-layer all"&gt;전체닫기&lt;/button&gt;
+				&lt;button type="button" class="confirm"&gt;확인&lt;/button&gt;
+			&lt;/div&gt;
+			&lt;button type="button" class="close-layer"&gt;닫기&lt;/button&gt;
+		&lt;/div&gt;
+	&lt;/div&gt;
+&lt;/div&gt;</code></pre>
+
+<h4 class="guide-sstit">script</h4>
+<p>option 항목 확인</p>
+<ul>
+	<li>- <strong class="tx-red">필수</strong> : tg_layer : 대상 레이어 선택자 ( type : string ) ( 예시 : '#layer1' )</li>
+	<li>- btn_open : 레이어 호출 버튼 ( type : string ) ( 예시 : '.layer-open' ) <br>
+		&nbsp; 동일 클래스가 여러개 있을 경우 모두 적용
+	</li>
+	<li>- activeOn : 레이어 기능 설정 후 콜백함수 ( tg_layer ) 이 파라미터로 제공됨</li>
+	<li>- activeShowBefore : 레이어 호출 전 실행 콜백함수 ( tg_layer, 호출버튼 ) 이 파라미터로 제공됨</li>
+	<li>- activeShow : 레이어 호출 후 실행 콜백함수 ( tg_layer, 호출버튼 ) 이 파라미터로 제공됨</li>
+	<li>- activeClose : 레이어 닫기 후 실행 콜백함수 ( tg_layer, 호출버튼 ) 이 파라미터로 제공됨</li>
+	<li>- activeConfirm : 레이어 확인 후 실행 콜백함수 ( tg_layer, 호출버튼 ) 이 파라미터로 제공됨</li>
+</ul><br><br>
+<pre><code class="js">let layer_test = new nlayer({
+	tg_layer : '#layer1',
+	btn_open : '.open-layer',
+	activeShowBefore : function(layer, btn){
+		console.log('show before');
+	},
+	activeShow : function(layer, btn){
+		console.log('show');
+	},
+	activeClose : function(layer, btn){
+		console.log('close');
+	},
+	activeConfirm : function(layer, btn) {
+		console.log('confirm')
+	}
+});
+</code></pre>
+				</div>
+
+				<h2 class="guide-sec-tit">알럿 / 컨펌</h2>
+				<div class="guide-sec">
+					<h3 class="guide-stit">알럿</h3>
+					<p>기본 스타일은 레이어팝업과 공유하며, css 에서 별도 설정 가능</p>
+					<p>알럿 관련 클래스 추가 후 javascript 에서 기능 설정 (ex : alert 등..)</p>
+					<p>실제 팝업 관련 html 은 자동생성되므로 별도 하드코딩 X</p>
+					<p>팝업 style은 css 로 설정 / 특정 클래스 필요 시 layerpop-v5.0.0.js 파일 내 항목 수정</p><br />
+					<p>알럿 함수 파라미터 : nlayerAlert('호출버튼', '내용', '타이틀', 확인 후 실행할 함수, '버튼 텍스트');</p>
+					<ul>
+						<li>- <strong class="tx-red">필수</strong> : 호출버튼 ( type : dom 요소 ) ( 예시 : this, e.target .. )</li>
+						<li>- <strong class="tx-red">필수</strong> : 내용 ( type : string )</li>
+						<li>- 타이틀 ( type : string )</li>
+						<li>- 확인 후 실행할 함수 ( type : function )</li>
+						<li>- 버튼 텍스트 ( type : string )</li>
+					</ul>
+					<div class="guide-show">
+						<!-- 코드 작성 -->
+						<button type="button" class="btn medium open-alert">알럿 호출</button>
+						<!-- // 코드 작성 -->
+					</div>
+<pre><code class="html">&lt;button type="button" class="btn medium open-alert"&gt;알럿 호출&lt;/button&gt;</code></pre>
+
+<pre><code class="js">var btn_alert = document.querySelector('.open-alert');
+
+btn_alert.addEventListener('click', function(){
+	nlayerAlert(this, '테스트 알럿 입니다.', '타이틀', function(){ console.log('alert 닫았습니다.!!') });
+});
+</code></pre>
+				</div>
+
+				<div class="guide-sec">
+					<h3 class="guide-stit">컨펌</h3>
+					<p>기본 스타일은 레이어팝업과 공유하며, css 에서 별도 설정 가능</p>
+					<p>컨펌 관련 클래스 추가 후 javascript 에서 기능 설정 (ex : confirm 등..)</p>
+					<p>실제 팝업 관련 html 은 자동생성되므로 별도 하드코딩 X</p>
+					<p>팝업 style은 css 로 설정 / 특정 클래스 필요 시 layerpop-v5.0.0.js 파일 내 항목 수정</p> <br />
+					<p>컨펌 함수 파라미터 : nlayerConfirm('호출버튼', '내용', '타이틀', 확인 시 실행할 함수, 취소 시 실행할 함수, '확인버튼 텍스트', '취소버튼 텍스트');</p>
+					<ul>
+						<li>- <strong class="tx-red">필수</strong> : 호출버튼 ( type : dom 요소 ) ( 예시: this, e.target .. )</li>
+						<li>- <strong class="tx-red">필수</strong> : 내용 ( type : string )</li>
+						<li>- 타이틀 ( type : string )</li>
+						<li>- 확인 시 실행할 함수 ( type : function )</li>
+						<li>- 취소 시 실행할 함수 ( type : function )</li>
+						<li>- 확인 버튼 텍스트 ( type : string )</li>
+						<li>- 취소 버튼 텍스트 ( type : string )</li>
+					</ul>
+					<div class="guide-show">
+						<!-- 코드 작성 -->
+						<button type="button" class="btn medium open-confirm">컨펌 호출</button>
+						<!-- // 코드 작성 -->
+					</div>
+<pre><code class="html ">&lt;button type="button" class="btn medium open-confirm"&gt;컨펌 호출&lt;/button&gt;
+</code></pre>
+
+<pre><code class="js">let btn_confirm = document.querySelector('.open-confirm');
+
+function confirm_run(){
+	console.log('confirm 확인했습니다.!!');
+}
+function confirm_cancel(){
+	console.log('confirm 취소했습니다.!!');
+}
+btn_confirm.addEventListener('click', function(){
+	nlayerConfirm(this, '테스트 컨펌 입니다.', '타이틀', confirm_run, confirm_cancel);
+});
+</code></pre>
+				</div>
+				
+				<h2 class="guide-sec-tit">Toast Bar</h2>
+				<div class="guide-sec">
+					<h3 class="guide-stit">Toast Bar</h3>
+					<p>스타일 및 show 모션은 css 에서 별도 설정</p>
+					<p>nToast 함수에 문구를 파라미터로 전달하여 실행</p>
+					<p>CSS 에서 animation 시간 설정에 따라 전체 시간 조정됨<br>
+					전체 시간에서 <strong>show 모션 20% / show 상태 유지 60% / hide 모션 20% 로 설정</strong>되어 있음<br>
+					ex) 전체 5초일 경우 show 모션 1초 / show 상태유지 3초 / hide모션 1초</p>
+					<p>CSS 에서 toastShow 부분 조정 시 각 시간 조정 가능</p>
+					
+					<p>nToast 함수에 2번째 파라미터로 클래스 전달 시 toast 팝업에 클래스 추가 가능</p>
+					<p>** bottom 추가 시 toast 가 하단에서 표출됨</p>
+					<p>그 외 기타 class 추가 후 CSS 로 스타일 제어 가능</p>
+					<div class="guide-show">
+						<!-- 코드 작성 -->
+						<button type="button" class="btn medium open-toast">Toast 호출</button>
+						<button type="button" class="btn medium open-toast2">Toast 호출_하단</button>
+						<!-- // 코드 작성 -->
+					</div>
+					
+<pre><code class="html ">&lt;button type="button" class="btn medium open-toast"&gt;Toast 호출&lt;/button&gt;
+&lt;button type="button" class="btn medium open-toast2"&gt;Toast 호출_하단&lt;/button&gt;
+</code></pre>
+<pre><code class="js">let btn_toast = document.querySelector('.open-toast'),
+	btn_toast2 = document.querySelector('.open-toast2');
+
+btn_toast.addEventListener('click', function(){
+	nToast('테스트 Toast 입니다.');
+});
+btn_toast2.addEventListener('click', function(){
+	nToast('테스트 Toast 입니다.', 'bottom');
+});
+</code></pre>
+				</div>
+			</section>
+		</div>
+	</div>
+
+	<!-- 레이어팝업 영역 ----------------------------------------------------------- -->
+	<!-- layerPop - 1 -->
+	<div class="layer" id="layer1">
+		<div class="inbox">
+			<div class="layer-cnt">
+				<div class="layer-top">test</div>
+				<div class="layer-mid">
+					<p>tx</p>
+					<p style="border-bottom:1px solid #eee;">tx</p><br>
+					<button type="button" data-target="layer2" class="btn01 open-layer2">레이어팝업</button><br>
+					<p>tx</p>
+					<p>tx</p>
+					<p>tx</p>
+					<p>tx</p>
+					<p>tx</p>
+				</div>
+				<button type="button" class="confirm">확인</button>
+				<button type="button" class="close-layer">닫기</button>
+			</div>
+		</div>
+	</div>
+
+	<!-- layerPop - 2 -->
+	<div class="layer" id="layer2">
+		<div class="inbox">
+			<div class="layer-cnt">
+				<div class="layer-mid">
+					<button type="button" class="close-layer all">전체닫기</button>
+				</div>
+				<button type="button" class="close-layer">닫기</button>
+			</div>
+		</div>
+	</div>
+
+	<script src="/js/common.js"></script>
+	<script src="/js/layerpop_v5.0.0.js"></script>
+	<script>
+		hljs.initHighlightingOnLoad(); 
+
+		let layer_test = new nlayer({
+			tg_layer : '#layer1',
+			btn_open : '.open-layer',
+			activeOn : function(layer){
+				console.log('layer ON!!');
+			},
+			activeShowBefore : function(layer, btn){
+				console.log('show before');
+			},
+			activeShow : function(layer, btn){
+				console.log('show');
+			},
+			activeClose : function(layer, btn){
+				console.log('close');
+			},
+			activeConfirm : function(layer, btn) {
+				console.log('confirm')
+			}
+		});
+
+		let layer_test2 = new nlayer({
+			tg_layer : '#layer2',
+			btn_open : '.open-layer2',
+			activeShowBefore : function(layer, btn){
+				console.log(layer, btn);
+			},
+		});
+
+		let btn_alert = document.querySelector('.open-alert');
+		btn_alert.addEventListener('click', function(){
+			nlayerAlert(this, '테스트 알럿 입니다.', '타이틀', function(){
+				console.log('alert 닫았습니다.!!')
+			});
+		});
+
+		let btn_confirm = document.querySelector('.open-confirm');
+		function confirm_run(){
+			console.log('confirm 확인했습니다.!!');
+		}
+		function confirm_cancel(){
+			console.log('confirm 취소했습니다.!!');
+		}
+		btn_confirm.addEventListener('click', function(){
+			nlayerConfirm(this, '테스트 컨펌 입니다.', '타이틀', confirm_run, confirm_cancel);
+		});
+		
+		let btn_toast = document.querySelector('.open-toast'),
+			btn_toast2 = document.querySelector('.open-toast2');
+		btn_toast.addEventListener('click', function(){
+			nToast('테스트 Toast 입니다.');
+		});
+		btn_toast2.addEventListener('click', function(){
+			nToast('테스트 Toast 입니다.', 'bottom');
+		});
+	</script>
+</body>
+</html>

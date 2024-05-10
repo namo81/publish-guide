@@ -168,7 +168,7 @@ function nTimeSetMobile(option){
         function scrollChk(area){ // interval 로 scrolltop 값 비교를 통한 scroll 움직임 상태감지
             if(tgScTopVal != area.scrollTop) tgScTopVal = area.scrollTop;
             else {
-                if(tgScChk == false) {
+                if(!tgScChk) {
                     clearInterval(tgInterval);
                     scSet(area, area.scrollTop);
                 }

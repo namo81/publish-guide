@@ -179,7 +179,7 @@
 	<script>
 		hljs.initHighlightingOnLoad();
 
-		var chartHtml = new nChartHtml({
+		var chartHtml_opt = {
 			area : '.nChart-wrap',
 			//stack : true,
 			//direction : 'horison',
@@ -199,7 +199,13 @@
 				{ name : 'we', data : [12, 20, 15, 12], color : '#aacc55'},
 				{ name : 'they', data : [10, 6, 21, 14], color : '#55aacc'}
 			]
-		});
+		}
+
+		var chartHtml = new nChartHtml(chartHtml_opt);
+		/** 
+		 * chartHtml.reDraw() : 전체 새로 그리기
+		 * chartHtml.data_update() : dataset.data 값 변경 시 데이터부분만 다시그리기
+		*/
 	</script>
 </body>
 </html>

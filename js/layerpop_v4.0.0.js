@@ -194,7 +194,7 @@ nToast('내용', '추가 클래스')
 function nToast(ment, addCls) {
 	var body = document.querySelector('body');
 	var toastCnt = '';
-		addCls ? toastCnt = '<div class="toast '+addCls+'">' : toastCnt = '<div class="toast">';
+		addCls ? toastCnt = '<div class="toast '+addCls+'" role="alert">' : toastCnt = '<div class="toast" role="alert">';
 		toastCnt += '<div class="toast-cnt">';
 		toastCnt += '<p class="ment">'+ment+'</p>';
 		toastCnt += '</div></div>';

@@ -152,23 +152,9 @@ function guide_tblSet(tbl){
 			mobileChk.addEventListener('click', function(){
 				this.checked == true ? frameWrap.classList.add('mobile') : frameWrap.classList.remove('mobile');
 			});
+			mobileChk.checked == true ? frameWrap.classList.add('mobile') : frameWrap.classList.remove('mobile');
 		}
 	}
-
-
-	// 전체 페이지 수 및 완료 페이지 표기
-	var pageTotal   = document.querySelector('.total-page'),
-		pageEnd 	= document.querySelector('.end-page'),
-		pagePer 	= document.querySelector('.per'),
-		endCount  	= tbl.querySelectorAll('.end').length + tbl.querySelectorAll('.include').length,
-		endPer 		= (endCount / (tblTotal + 1)) * 100;
-
-		if(pageTotal) {
-			pageTotal.innerText = tblTotal + 1;
-			pageEnd.innerText = endCount;
-			pagePer.innerText = Math.round(endPer);
-		}
-
 	
 	// text 검색
 	var findBtn 	= document.querySelector('.btn-find-tx');
@@ -220,6 +206,20 @@ window.onload = function(){
 				guide_tblSet(tbl);
 			}
 		})
+		
+		// 전체 페이지 수 및 완료 페이지 표기
+		var pageTotal   = document.querySelector('.total-page'),
+			trTotal 	= document.querySelectorAll('tbody tr'),
+			pageEnd 	= document.querySelector('.end-page'),
+			pagePer 	= document.querySelector('.per'),
+			endCount  	= document.querySelectorAll('.end').length + document.querySelectorAll('.include').length,
+			endPer 		= (endCount / (trTotal.length)) * 100;
+			
+		if(pageTotal) {
+			pageTotal.innerText = trTotal.length;
+			pageEnd.innerText = endCount;
+			pagePer.innerText = Math.round(endPer);
+		}
 	}
 	
 	
