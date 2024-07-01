@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+	<title>화면 특정 영역 zoom 기능</title>
+	<meta name="author" content="SK MNS" >
+	<meta charset="UTF-8">
+	<meta name="viewport" content="user-scalable=yes, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, width=device-width">
+	<style type="text/css">
+		html, body,p,h1,h2,h3,h4,h5,h6,menu,ul,ol,li,dl,dt,dd,table,th,td,form,fieldset,legend,input,textarea,button,select,hr,div{ margin:0;padding:0; }
+		body { background-color:#fff; font-size:0.75em;line-height:1.5em;font-family:'돋움',Dotum,AppleGothic,sans-serif; }
+		img,fieldset,button{ border:0; }
+		ul,ol{ list-style:none; }
+		input, img, select { vertical-align:middle; }
+		.hide { position:absolute; overflow:hidden; top:0; left:0; width:100%; height:1px; text-indent:-10000px; }
+		caption { height: 1px; overflow: hidden; line-height: 0; margin-top: -1px; color: transparent; }
+		img { width:100%; }
+
+		.top { height:30px; padding:20px;  }
+		.img { position:relative; margin:20px; border:1px solid #aaa; overflow:hidden; }
+		.img > * { display:block; -webkit-user-select:none; user-select:none; -webkit-user-drag:none; touch-action:none; -webkit-transform-origin:50% 50%; transform-origin:50% 50%; }
+	</style>
+</head>
+
+<body>
+	<div class="zoom">	
+		<div class="top">
+			pinchZoom
+			<p class="console"></p>
+		</div>
+
+		<!-- <div class="img">
+			<img src="images/img.jpg" alt="" />
+		</div> -->
+		<div class="img">
+			<div class="pinch">
+				<img src="images/img.jpg" alt="">
+			</div>
+		</div>
+	</div>
+	<script type="text/javascript" src="js/pinchZoom.js"></script>
+	<script>
+		let zoom_area = document.querySelector('.img');
+		let zoom = new pinchZoom({
+			wrap : zoom_area,
+			zoom_area : '.pinch'
+		});
+	</script>
+</body>
+</html>

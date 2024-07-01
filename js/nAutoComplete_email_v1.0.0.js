@@ -1,14 +1,13 @@
 // calendar
 // 서남호(namo) - for m.s.p
-// 2024-05-09 : 모바일용 v1.0.0 제작
+// 2024-05-09 : 이메일 주소 - 도메인입력용 v1.0.0 제작
 
 /*
     wrap     : input 포함 영역
-    keyFunc  : 자동 완성 시 실행할 콜백함수
     data     : 데이터 (json 및 배열형식)
 */
 
-function srchMember(option) {
+function nAutoCompMail(option) {
     let wrap	= typeof option.wrap === 'string' ? document.querySelector(option.wrap) : option.wrap,
         inp     = wrap.querySelector('input'),
         data    = option.data;

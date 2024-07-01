@@ -75,6 +75,7 @@
 
         var io = new IntersectionObserver(function(entris){
             entris.forEach(function(entry){
+                console.log(entry.rootBounds)
                 if(entry.isIntersecting){
                     console.log(entry.target.idx);
                     entry.target.querySelector('.tx').innerText = 'On';

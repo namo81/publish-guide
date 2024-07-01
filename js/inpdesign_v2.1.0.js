@@ -6,6 +6,7 @@
 /*-- 2019-12-11 - v1.2 select - option 속성 관련 추가 --*/
 /*-- 2020-01-15 - v2.0.0 - radio, checkbox 기능 제거(css로만 적용) 및 jquery 제거버전 진행  */
 /*-- 2023-10-06 - v2.1.0 - select - option 변경관련 - 클릭 시 매번 새로 생성하도록 -> optionUpdate 기능변경  */
+/*-- 2024-06-11 - v2.1.0 - 2중 Range input 추가  */
 
 // !! common.js 필수
 
@@ -23,10 +24,10 @@ select disabled 상태 설정	: 변수명.selectDisable(boolean);
 ** select 의 selectIndex 변경 : selectIndex 변경 후 해당 select에 'change' 이벤트 dispatch 해주변 option 재 설정됨
 */
 
-// select 설정 ------------------------------------------------------------------------
+/** select 설정 ------------------------------------------------------------------------ */
 var nSelArr;
 
-// 화면내 동일 선택자 전체 적용 시
+/** 화면내 동일 선택자 전체 적용 시 */
 function nSelect(selector) {
 	var nSelectEle = document.querySelectorAll(selector);
 	
@@ -40,7 +41,7 @@ function nSelect(selector) {
 	else null;
 }
 
-// 실제 select 관련 기능 함수
+/** 실제 select 관련 기능 함수 */
 function nSelectSet(Ele){
 	var selWrap		= typeof Ele === 'string' ? document.querySelector(Ele) : Ele,
 		sel			= selWrap.querySelector('select'),
@@ -54,7 +55,7 @@ function nSelectSet(Ele){
 		selBtnTx	= null,
 		optHtml		= '';
 
-	// select 대체 태그 생성 영역
+	/** select 대체 태그 생성 영역 */
 	var optionCreate = function(){
 		optHtml = '';
 		for(i=0; i<opts.length; i++){
@@ -94,7 +95,7 @@ function nSelectSet(Ele){
 	}
 	optionAdd();
 
-	// 대체 태그 기능 설정 영역
+	/** 대체 태그 기능 설정 영역 */
 	var selBtnClick = function(){
 		optionAdd();
 		selWrap.classList.add('on');
@@ -140,7 +141,7 @@ function nSelectSet(Ele){
 
 // file 설정 ------------------------------------------------------------------------
 
-// 화면내 동일 선택자 전체 적용 시
+/** 화면내 동일 선택자 전체 적용 시 */
 function nFile(selector) {
 	var nFileEle = document.querySelectorAll(selector);
 
@@ -153,7 +154,7 @@ function nFile(selector) {
 	else null;
 }
 
-// 실제 file 관련 기능 함수
+/** 실제 file 관련 기능 함수 */
 function nFileSet(Ele){
 	var fileWrap	= typeof Ele === 'string' ? document.querySelector(Ele) : Ele,
 		fileInp		= fileWrap.querySelector('input[type=file]'),
@@ -197,11 +198,11 @@ function nFileSet(Ele){
 
 /* 적용 예시
 	nFile('클래스명');
- */
+*/
 
 // 텍스트 입력형 input ------------------------------------------------------------------------
 
-// 화면내 동일 선택자 전체 적용 시
+/** 화면내 동일 선택자 전체 적용 시 */
 function nText(selector){
 	var nTextEle = document.querySelectorAll(selector);
 	if(nTextEle.length > 1) {
@@ -213,7 +214,7 @@ function nText(selector){
 	else null;
 }
 
-// 실제 input 관련 기능 함수 - 개별 적용 시 
+/** 실제 input 관련 기능 함수 - 개별 적용 시 */
 function nTextSet(Ele){
 	var textWrap	= typeof Ele === 'string' ? document.querySelector(Ele) : Ele,
 		inp 		= textWrap.querySelector('input'),
@@ -234,6 +235,50 @@ function nTextSet(Ele){
 	});
 }
 
+/* 적용예시
+	nText('.inp-label');
+	nTextSet('.inp-label');
+*/
+
+/** 2중 Range input */
+function doubleRange(area, unit, gap){
+	const wrap = typeof area === 'string' ? document.querySelector(area) : area,
+		r_gap = gap ? parseInt(gap) : 1;
+
+	let inp_left = wrap.querySelector('.r_left'),
+		inp_right = wrap.querySelector('.r_right'),
+		range = wrap.querySelector('.range'),
+		thumb_l = wrap.querySelector('.thumb.left'),
+		thumb_l_tx = thumb_l.querySelector('.tx'),
+		thumb_r = wrap.querySelector('.thumb.right'),
+		thumb_r_tx = thumb_r.querySelector('.tx');
+
+	let min = parseInt(inp_left.getAttribute('min')),
+		max = parseInt(inp_left.getAttribute('max'));
+	
+	inp_left.addEventListener('input', function(){
+		let val = Math.min(this.value, inp_right.value - r_gap),
+			pos = parseInt(((val - min) / (max - min)) * 100);
+		this.value = val;
+		range.style.left = pos + '%';
+		thumb_l.style.left = pos + '%';
+		thumb_l_tx.textContent = val + unit;
+	})
+	inp_right.addEventListener('input', function(){
+		let val = Math.max(this.value, parseInt(inp_left.value) + r_gap),
+			pos = parseInt(((val - min) / (max - min)) * 100);
+		this.value = val;
+		range.style.right = 100 - pos + '%';
+		thumb_r.style.right = 100 - pos + '%';
+		thumb_r_tx.textContent = val + unit;
+	});
+
+	inp_left.dispatchEvent(inputEvt);
+	inp_right.dispatchEvent(inputEvt);
+}
+/* 적용예시
+	let d_range = new doubleRange('영역 선택자', '표시 단위', 최소간격(2개 버튼 사이));
+*/
 
 /* 실행문 예시 ---------------------------------------------------
 window.onload = function(){

@@ -1,15 +1,8 @@
 // javascript 함수 =====================================================
 
-var clickEvt, changeEvt;
-try { // chrome / edge 용
-	clickEvt = new Event('click', { bubbles: true, cancelable: true });
-	changeEvt = new Event('change', { bubbles: true, cancelable: true });
-} catch (error) { // IE 용
-    clickEvt = document.createEvent('Event');
-    clickEvt.initEvent('click', true, true);
-    changeEvt = document.createEvent('Event');
-    changeEvt.initEvent('change', true, true);
-}
+let clickEvt = new Event('click', { bubbles: true, cancelable: true }),
+	changeEvt = new Event('change', { bubbles: true, cancelable: true }),
+	inputEvt = new Event('input', { bubbles: true, cancelable: true });
 
 /** 이벤트 추가 함수 - 이벤트 추가 시 listener 를 별도 배열로 보관 - 추후 삭제 가능하도록. 
  * ex : object.onEvent('', function...)
@@ -126,9 +119,14 @@ function uncomma(str) {
 	return str.replace(/[^\d]+/g, '');
 }
 
-/** replace all 기능 
+/**
+ * replace all 기능 
+ * @param {string} str 변경할 문구
+ * @param {string} searchStr 지워질 글자
+ * @param {string} replaceStr 대체할 글자
+ * @returns 변경된 전체 문구
  * ex : replaceAll(변경할 문구, 지워질 글자, 대체할 글자);
-*/
+ */
 function replaceAll(str, searchStr, replaceStr) {
 	return str.split(searchStr).join(replaceStr);
 }
@@ -138,9 +136,12 @@ function setZero(num){
 	return num < 10 ? '0' + num : num;
 }
 
-/** yyyy-mm-dd 형식을 date 값으로 변환 
- * convertToDate('YYYY.MM.DD', '연월일 구분자')
-*/
+/**
+ * yyyy-mm-dd 형식을 date 값으로 변환 
+ * @param {string} e YYYY.MM.DD 형식
+ * @param {string} sType 날짜 구분자 (./- 등)
+ * @returns date 값
+ */
 function convertToDate(e, sType){
 	var thisY = e.split(sType)[0],
 	thisM = e.split(sType)[1] - 1,
@@ -148,38 +149,59 @@ function convertToDate(e, sType){
 	nowDate = new Date(thisY, thisM, thisD);
 	return nowDate;
 }
-/** date 값을 yyyy-mm-dd 형식으로 변환 
- * convertToYMD(javascript date, '연월일 구분자')
-*/
-function convertToYMD(e, sType){
+/**
+ * date 값을 yyyy-mm-dd 형식으로 변환 
+ * @param {date} e date 값
+ * @param {string} sType 날짜 구분자 (./- 등)
+ * @param {boolean} y2 연도 2자릿수표현 boolean
+ * @returns YYYY.MM.DD 형식 반환
+ */
+function convertToYMD(e, sType, y2){
 	var thisY = e.getFullYear(),
 	thisM = e.getMonth() + 1,
 	thisD = e.getDate(),
 	nowDate;
+	if(y2 == true) {
+		thisY = thisY.toString();
+		thisY = thisY.substr(2, 3);
+	}
 	if(thisM < 10) thisM = '0'+thisM;
 	if(thisD < 10) thisD = '0'+thisD;
 	nowDate = ''+thisY + sType + thisM + sType + thisD+'';
 	return nowDate;
 }
 
-/** date값 or 'yyyy-mm-dd 형식'을 'yyyy년 mm월 dd일' 형식으로 변환 
- * param date : date값 or YYYY.MM.DD 형식의 string
- * param sType : 날짜 구분자
- * convertToYMD_kr('2024.05.01','.');
- * convertToYMD_kr(javascript Date 값,'.');
-*/
+/**
+ * date 값을 mm/dd 형식으로 변환
+ * @param {date} e date 값
+ * @param {string} sType 날짜 구분자 (./- 등)
+ * @returns mm.dd 형식 string
+ */
+function convertToMD(e, sType){
+    var thisM = e.getMonth() + 1,
+    thisD = e.getDate();
+    return '' + setZero(thisM) + sType + setZero(thisD)+'';
+}
+
+/**
+ * date값 or 'yyyy-mm-dd 형식'을 'yyyy년 mm월 dd일' 형식으로 변환 
+ * @param {date} date date값 or YYYY.MM.DD 형식의 string
+ * @param {string} sType 날짜 구분자 (./- 등)
+ * @returns yyyy년 mm월 dd일
+ */
 function convertToYMD_kr(date, sType){
 	let date_tx = typeof date === 'string' ? date : convertToYMD(date, sType);
 	return date_tx.split(sType)[0] + '년 ' + date_tx.split(sType)[1] + '월 ' + date_tx.split(sType)[2] + '일';
 }
 
-/** 공통 함수 : 특정 영역 외 클릭 감지 
- * area : 부모요소 검색용 css selector
- * target : 제어될 html dom 요소
- * 삭제할 class
+/**
+ * 공통 함수 : 특정 영역 외 클릭 감지 
+ * @param {string} area 부모요소 검색용 css selector
+ * @param {dom} target 제어될 html dom 요소
+ * @param {string} cls 삭제할 class
  * ex : var wrapArea = document.querySelector('.chk-area');
  * ex : outSideClick('.chk-area', wrapArea, 'show');
-*/
+ */
 function outSideClick(area, target, cls){
 	var body = document.querySelector('body');
 	body.addEventListener('mousedown', function(e){
@@ -189,6 +211,17 @@ function outSideClick(area, target, cls){
 			body.removeEventListener('mousedown', arguments.callee);
 		}
 	});
+}
+
+/**
+ * 특정 요소 전체의 특정 클래스 제거
+ * @param {array} tg 요소 배열
+ * @param {string} cls 제거할 클래스
+ */
+function clsClear(tg, cls){
+	tg.forEach((item)=>{
+		item.classList.remove(cls);
+	})
 }
 
 /** tab menu 기능 - 페이지 전체 동일 기능 적용(탭 안의 탭 등 depth 구조일 경우 사용불가) */

@@ -280,6 +280,35 @@ nFile('.inp-file');
 					.inp-file-n input { position:relative; padding:3px 20px 3px 5px; border:1px solid #ccc; border-radius:3px; line-height:27px; box-sizing:border-box; }
 					.inp-file-n input::file-selector-button { position:absolute; width:1px; height:1px; opacity:0; overflow:hidden; }
 				</style>
+				
+				<div class="guide-sec">
+					<h3 class="guide-stit">2중 Range</h3>
+					<div class="guide-show">
+						<div class="double-range">
+							<input type="range" class="r_left" title="최소값" min="0" max="100" value="35" step="1">
+							<input type="range" class="r_right" title="최대값" min="0" max="100" value="95" step="1">
+							<div class="range-slider">
+								<p class="track"></p>
+								<p class="range"></p>
+								<p class="thumb left"><i class="tx"></i></p>
+								<p class="thumb right"><i class="tx"></i></p>
+							</div>
+						</div>
+					</div>
+<pre><code class="html">&lt;div class="double-range"&gt;
+	&lt;input type="range" class="r_left" title="최소값" min="0" max="100" value="35" step="1"&gt;
+	&lt;input type="range" class="r_right" title="최대값" min="0" max="100" value="95" step="1"&gt;
+	&lt;div class="range-slider"&gt;
+		&lt;p class="track"&gt;&lt;/p&gt;
+		&lt;p class="range"&gt;&lt;/p&gt;
+		&lt;p class="thumb left"&gt;&lt;i class="tx"&gt;&lt;/i&gt;&lt;/p&gt;
+		&lt;p class="thumb right"&gt;&lt;i class="tx"&gt;&lt;/i&gt;&lt;/p&gt;
+	&lt;/div&gt;
+&lt;/div&gt;</code></pre>
+<br>
+<pre><code class="js">let d_range = new doubleRange('.double-range', 'ppm', 10);
+</code></pre>
+				</div>
 			</section>
 
 
@@ -299,6 +328,7 @@ nFile('.inp-file');
 		var selectName = new nSelectSet('.inp-select');
 		nFile('.inp-file');
 
+		let d_range = new doubleRange('.double-range', 'ppm', 10);
 	</script>
 </body>
 </html>

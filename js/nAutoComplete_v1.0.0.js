@@ -1,6 +1,6 @@
 // calendar
 // 서남호(namo) - for m.s.p
-// 2023-04-13 : v1.0.0 제작
+// 2023-04-13 : v1.0.0 제작 - 데이터 내 이름과 동일항목을 버튼으로 추가
 
 /*
     wrap     : contentEditable 영역
@@ -8,7 +8,7 @@
     data     : 구성원 데이터 (json 및 배열형식)
 */
 
-function srchMember(option) {
+function nAutoComplete(option) {
     var wrap	= typeof option.wrap === 'string' ? document.querySelector(option.wrap) : option.wrap,
         //keyFunc = option.keyFunc,
         data    = option.data;

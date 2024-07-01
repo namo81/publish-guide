@@ -132,7 +132,7 @@ body { width:100%; height:100%; background-color:#efefef; background-repeat:no-r
 #work-list .guide .guide-stit { position:relative; height:28px; margin-bottom:20px; font-size:22px; line-height:28px; color:#333; }
 /* #work-list .guide .guide-stit:before { content:''; position:absolute; display:block; width:3px; height:45px; top:-18px; left:-18px; margin-right:5px; background-color:var(--head-color); } */
 #work-list .guide .guide-sstit { margin:15px 0 10px; padding-top:15px; font-size:16px; }
-#work-list .guide-sec p { margin:5px 0; }
+#work-list .guide-sec > p { margin:5px 0; }
 #work-list .guide-sec .imp { position:relative; padding-left:15px; font-weight:bold; color:#ff0000; font-size:14px; }
 #work-list .guide-sec .imp::after { content:'▶'; position:absolute; width:15px; height:15px; top:0; left:0; }
 #work-list .guide-sec ul { width:100%; }

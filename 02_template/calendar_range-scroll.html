@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="user-scalable=yes, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, width=device-width">
+    <meta name="author" content="snamo - SK MNS">
+    <meta name="description" content="">
+    <meta name="keywords" content="">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="">
+    <meta property="og:description" content="">
+    <meta property="og:image" content="">
+    <meta property="og:url" content="">
+
+    <title>기간달력 | ADT viewguard</title>
+    
+	<!-- 가이드 관련 -->
+	<link rel="stylesheet" href="../guide/list-guide.css" media="screen, print" />
+	<link rel="stylesheet" href="../guide/vendor/railscasts.css">
+	<script src="../guide/vendor/highlight.js"></script>
+
+	<!-- 프로젝트 관련 CSS 및 JS 파일 로드 -->
+	<link rel="stylesheet" href="/css/layout.css" media="screen, print" />
+	<link rel="stylesheet" href="/css/nCalendar.css" media="screen, print" />
+    <style>
+        .cal__cnt { display:flex; flex-direction:column; height:100vh; margin:0; padding:0; }
+        .cal__cnt .scroll-box { position:relative; flex:1; overflow-y:auto; }
+        .cal__cnt .scroll-box .scroll-trigger { position:absolute; width:100%; height:20vh; top:0; left:0; background-color:transparent; z-index:0; }
+        .cal__cnt .cal-info { padding:12px 20px; border-bottom:8px solid #F5F7FA;}
+        .cal__cnt .cal-info .tx-desc { margin:0; letter-spacing:-0.05em; }
+        .cal-info .date-info { display:flex; justify-content:space-between; font-size:15px; line-height:22px; color:#111; }
+        .cal-info .tx-desc + .date-info { margin-top:25px; }
+        .cal-info .date-info .sel-date { flex:1; display:flex; gap:10px;}
+        .cal-info .date-info .sel-date::before { content:''; display:inline-block; width:18px; height:19px; background:url(../images/ico_cal.png) no-repeat left 50% / 18px auto; }
+        .cal__cnt .btn-group { margin:0; gap:0; }
+        .cal__cnt .btn-group .btn { border-radius:0; line-height:24px; }
+        .cal__cnt .btn-group.srch .btn.gray { flex:1; }
+        .cal__cnt .btn-group.srch .btn.blue { flex:2; }
+        .cal__cnt .btn-group.srch .btn.blue > span { display:inline-block; padding-right:30px; background:url(../images/ico_arrow-right.png) no-repeat right top / 24px auto; }
+
+        .cal-area { padding:20px; }
+        .cal-area .cal-year-mon { margin-bottom:15px; text-align:center; font-size:20px; line-height:30px; color:#111; font-weight:700; }
+        .cal-area .cal + .cal { margin-top:25px; }
+        .cal-area .cal th,
+        .cal-area .cal td { position:relative; padding:8px 0; font-size:16px; line-height:24px; color:#777; text-align:center; z-index:1; }
+        .cal-area .cal th { color:#999; }
+        .cal-area .cal thead tr th:first-child { color:#EB3500; }
+        .cal-area .cal thead tr th:last-child { color:#1568DD; }
+        .cal-area .cal td button { position:relative; display:inline-block; width:32px; height:32px; color:#333; font-weight:500; border-radius:50%; z-index:1; }
+        .cal-area .cal td button:disabled { color:#ddd; }
+        .cal-area .cal td.start button,
+        .cal-area .cal td.end button { background-color:#1568DD; color:#fff; }
+        .cal-area .cal td.in-range::before { content:''; position:absolute; width:100%; height:32px; left:0; top:50%; margin-top:-16px; background-color:#DCEAFF; }
+        .cal-area .cal td.start.in-range::before { width:50%; left:50%; }
+        .cal-area .cal td.end.in-range::before { width:50%; }
+        .cal-area .cal td.end.start.in-range::before { display:none; }
+        .cal-area .cal td.today::after { content:'오늘'; position:absolute; width:100%; bottom:-5px; left:0; font-size:10px; line-height:14px; color:#1568DD; text-align:center; }
+    </style>
+</head>
+<body>
+    <div id="wrap">
+        <div class="cal__cnt">
+            <div class="cal-info">
+                <p class="tx-desc"><strong>달력에서 검색하고자 하는 날짜를 선택해주세요.<br>최대 3개월까지 선택 가능합니다.</strong></p>
+                <div class="date-info">
+                    <p class="sel-date start">시작일 <strong class="srch-date" data-date="2024.4.3">04/03</strong></p>
+                    <p class="sel-date end">종료일 <strong class="srch-date" data-date="2024.5.11">05/11</strong></p>
+                </div>
+            </div>
+
+            <div class="scroll-box">
+                <div class="cal-area"></div>
+            </div>
+        
+            <div class="btn-group srch">
+                <button type="button" class="btn large gray">이전</button>
+                <button type="button" class="btn large blue"><span>검색하기</span></button>
+            </div>
+        </div>
+    </div>
+
+    <script src="/js/common.js"></script>
+    <script src="/js/nCalendarRange_scroll_v.1.0.js"></script>
+    <script>
+        /* 2024-03-12 수정 : 달력 기능 변경 */
+        var cal_area = document.querySelector('.cal__cnt'),
+            btn_srch = document.querySelector('.btn.blue');
+            
+            range_cal = new nCalendarRangeScroll({
+                area : cal_area,
+                activeStartClick : function(){
+                    btn_srch.disabled = true;
+                }, activeEndClick : function(){
+                    btn_srch.disabled = false;
+                }
+            });
+        
+        // 오늘 기준 30일전부터 오늘까지 선택 설정
+        var today       = new Date(),
+            before30    = calcDurDate(today, 30);
+        range_cal.setDate('2024.03.01', '2024.04.08');
+
+        /* 
+            1. 데이터있는 날짜만 활성화하기
+
+            // 활성화할 날짜 배열
+            var onDates = new Array('2023.10.29', '2023.10.31', '2023.11.14', '2024.01.01', '2024.01.05');
+
+            // 달력에 위 배열에 해당하는 날짜만 활성화적용
+            range_cal.calBtnSet(onDates);
+
+
+            2. 검색 시작일/종료일 직접 설정하기 (화면 내 그려진 달력 일자 내에서 선택 가능 (오늘 포함월 / 이전월))
+
+            range_cal.setDate('2024.01.01', '2024.01.15');
+            > 2024.01.01 부터 2024.01.15 까지 기간선택 설정
+        */
+    </script>
+</body>
+</html>
