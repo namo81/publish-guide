@@ -1,26 +1,44 @@
-
 /** 달력 기능 ================================================================== */
 
 function nCalendarRangeScroll(option){
-    let wrap        = typeof option.area === 'string' ? document.querySelector(option.area) : option.area,
-        calArea     = wrap.querySelector('.cal-area'),
-        scrollArea  = wrap.querySelector('.scroll-box'),
-        activeStart = option.activeStartClick,
-        activeEnd   = option.activeEndClick;
+    let inPage          = option.inPage ? option.inPage : false,
+        inTarget        = option.inTarget,
+        calTitle        = option.calTitle,
+        shot_year       = option.shot_year ? option.shot_year : false,
+        activeConfirm   = option.activeConfirm;
 
-    let startTx     = wrap.querySelector('.sel-date.start .srch-date'),
-        endTx       = wrap.querySelector('.sel-date.end .srch-date'),
-        startDate   = null,
+    let wrap, inp_start, inp_end, btn_open;
+    
+    if(inPage == false) {
+        wrap        = typeof option.area === 'string' ? document.querySelector(option.area) : option.area,
+        inp_start   = option.inp_start ? option.inp_start : wrap.querySelector('.start'),
+        inp_end     = option.inp_end ? option.inp_end : wrap.querySelector('.end'),
+        btn_open    = option.btn_open ? option.btn_open : wrap.querySelector('.open-cal');
+    }
+
+    let startDate   = null,
         endDate     = null;
     
     let now         = new Date(),
         today       = new Date(now.getFullYear(), now.getMonth(), now.getDate()),
-        //beforeDate  = new Date(today.getFullYear(), today.getMonth(), today.getDate() -90), // 90일 전 날짜
         monArr      = new Array(), // 오늘 / 90일전 / 그 사이 날짜를 포함하는 월의 배열 */
         cal_height,
         dateBtns;
+    
+    /**
+     * dom 요소 생성 및 클래스 추가
+     * @param {string} type 만들고자 하는 태그명
+     * @param {string / object} cls 추가하고자 하는 클래스
+     * @returns cls 클래스를 가진 dom 요소
+     */
+    function createEle(type, cls){
+        let dom = document.createElement(type);
+        if(typeof cls === 'string') dom.classList.add(cls);
+        else cls.forEach((tx)=>{ dom.classList.add(tx); })
+        return dom;
+    }
 
-
+    // 기본정보 설정 =====================================================================================
     /** 요일 표기 (일~월) */
     let weekTx = new Array("일","월","화","수","목","금","토");
     /** 배열 : 각 월의 요일 수 */
@@ -30,21 +48,131 @@ function nCalendarRangeScroll(option){
         year % 4 === 0 && year % 100 !== 0 || year % 400 === 0 ? nalsu[1] = 29 : nalsu[1] = 28;
     }
     nalsu29(now.getFullYear());
+    
+    /** 요일 영역 생성 */
+    function setYoil(){
+        let str = '';
+        for(let i = 0; i < weekTx.length; i++){
+            str += "<li>" + weekTx[i] + "</li>";
+        }
+        calYoil.insertAdjacentHTML('beforeend',str);
+    }
 
-    /** 입력된 날짜 여부 확인 */
+    // 그리기 설정 (기본달력 / inPage 달력) =====================================================================================
+    // 달력 modal 구조 생성
+	let newCal = createEle('div', 'cal-wrap'),
+        inbox  = createEle('div', 'cal-cnt'),
+        calTop = createEle('div', 'cal-top'), // 달력 상단 제어영역
+        calTit = createEle('h2', 'cal-title'),
+        btn_close = createEle('button', 'btn-cal-close');
+
+    // 기간 달력 스크롤 영역 구조 생성
+    let range_wrap = createEle('div', 'cal_range_scroll'),
+        scrollArea  = createEle('div', 'scroll-box'),
+        calArea = createEle('div', 'cal-area'), // 달력 테이블 영역
+        calInfo = createEle('div', 'cal-info'),
+        calYoil = createEle('ul', 'cal-yoil'),
+        dateInfo = createEle('div', 'date-info'),
+        info_start = createEle('p', ['sel-date', 'start']),
+        info_end = createEle('p', ['sel-date', 'end']),
+        startTx = createEle('strong', 'srch-date'),
+        endTx = createEle('strong', 'srch-date'),
+        btnArea = createEle('div', 'btns'), // 버튼 영역
+        btn_confirm = createEle('button', ['btn', 'large', 'main']);
+    
+    setYoil();
+
+    calInfo.appendChild(dateInfo);
+    calInfo.appendChild(calYoil);
+    info_start.textContent = '시작일';
+    info_end.textContent = '종료일';
+    info_start.appendChild(startTx);
+    info_end.appendChild(endTx);
+    dateInfo.appendChild(info_start);
+    dateInfo.appendChild(info_end);
+
+    scrollArea.appendChild(calArea);
+
+    btn_confirm.setAttribute('type', 'button');
+    btn_confirm.textContent = '선택완료';
+    btnArea.appendChild(btn_confirm);
+
+    range_wrap.appendChild(calInfo);
+    range_wrap.appendChild(scrollArea);
+    range_wrap.appendChild(btnArea);
+
+    if(inPage == true) inTarget.appendChild(range_wrap);
+    else {
+        newCal.appendChild(inbox);
+        if(calTitle != undefined) {
+            calTit.textContent = calTitle;
+            calTop.appendChild(calTit);
+            inbox.appendChild(calTop);
+        }
+        inbox.appendChild(range_wrap);
+        inbox.appendChild(btn_close);
+        document.querySelector('body').appendChild(newCal);
+
+        btn_open.addEventListener('click', calShow);
+        btn_close.addEventListener('click', calClose);
+        btn_confirm.addEventListener('click', calConfirm);
+    }
+
+    /** 달력 보이기 */
+    function calShow(){
+        calInit();
+        newCal.classList.add('on');
+    }
+    
+    /** 달력 닫기 */
+    function calClose(){
+        newCal.classList.remove('on');
+    }
+    
+    /** 달력 컨펌 */
+    function calConfirm(){
+        let start_tx = startTx.textContent,
+            end_tx = startTx.textContent;
+        inp_start.value = shot_year == true ? start_tx.substr(2) : start_tx;
+        inp_end.value = shot_year == true ? end_tx.substr(2) : end_tx;
+        inp_start.dispatchEvent(changeEvt);
+        inp_end.dispatchEvent(changeEvt);
+        newCal.classList.remove('on');
+        if(typeof activeConfirm === 'function') activeConfirm();
+    }
+    
+    /** 컨펌 버튼 활성화 제어 */
+    function btn_dis_ctrl(){
+        startDate != null && endDate != null ? btn_confirm.disabled = false : btn_confirm.disabled = true;
+    }
+
+    /** input 날짜 여부 확인 - 일반 달력형 */
+    function inpGetDate(){
+        if(inp_start.value.length > 0) {
+            let s_date = inp_start.value;
+            if(shot_year == true) s_date = '20' + s_date;
+            startTx.textContent = s_date;
+        }
+        if(inp_end.value.length > 0) {
+            let e_date = inp_end.value;
+            if(shot_year == true) e_date = '20' + e_date;
+            endTx.textContent = e_date;
+        }
+    }
+
+    /** 입력된 날짜 여부 확인 - inPgae 일 경우 */
     function getDataDate(){
-        if(startTx.getAttribute('data-date').length > 0) {
-            let s_date = startTx.getAttribute('data-date');
+        if(startTx.textContent.length > 0) {
+            let s_date = startTx.textContent;
             startDate = convertToDate(s_date, '-');
             startTx.textContent = s_date;
         }
-        if(endTx.getAttribute('data-date').length > 0) {
-            let e_date = endTx.getAttribute('data-date');
+        if(endTx.textContent.length > 0) {
+            let e_date = endTx.textContent;
             endDate = convertToDate(e_date, '-');
             endTx.textContent = e_date;
         }
     }
-    getDataDate();
 
     let viewGap15; // 이번달 - 시작일포함 달 간의 개월차이 숫자값
     /** viewGap15 산출 - 이번달 - 시작일포함 달 간의 개월차이 숫자값 */
@@ -55,7 +183,6 @@ function nCalendarRangeScroll(option){
             viewGap15 = Math.ceil(viewDateGap / 15) < 3 ? 3 : Math.ceil(viewDateGap / 15); // 계산값이 2 이하일 경우 2 고정 (2024-03-26 수정 : 최소값 3)
         }
     }
-    calcGap();
 
     /** 이번달 - 시작일포함달 및 사이에 포함된 달의 배열 생성 */
     function monCalc(){
@@ -66,7 +193,6 @@ function nCalendarRangeScroll(option){
         }
         monArr = tempArr.filter((item, idx) => tempArr.indexOf(item) === idx);
     }
-    monCalc();
 
     /** monArr 기준 이전달 산출 */
     function caldPrevMon(){
@@ -88,7 +214,6 @@ function nCalendarRangeScroll(option){
             calDrawRun(arr[i]);
         }
     }
-    calDrawFromArr(monArr);
 
     /**
      * 달력 그리기 실행
@@ -240,7 +365,6 @@ function nCalendarRangeScroll(option){
             tg.parentNode.classList.add('start');
             endDate = null;
             onSetStartDate(tgDate);
-            if(typeof activeStart === 'function') activeStart();
         } else if(startDate && !endDate) {
             let thisValue = tgDate.valueOf(),
                 startValue = startDate.valueOf();
@@ -248,7 +372,6 @@ function nCalendarRangeScroll(option){
                 tg.parentNode.classList.add('end');
                 onSetEndDate(tgDate);
                 dateRangeBgSet();
-                if(typeof activeEnd === 'function') activeEnd();
             } else if( thisValue <= startValue && thisValue > startValue - (60 * 60 * 24 * 1000 * 90) ){
                 onSetEndDate(startDate);
                 onSetStartDate(tgDate);
@@ -258,9 +381,9 @@ function nCalendarRangeScroll(option){
                 firstTd.classList.add('end');
                 tg.parentNode.classList.add('start');
                 dateRangeBgSet();
-                if(typeof activeEnd === 'function') activeEnd();
             } else nToast('검색 기간은 최대 90일까지 설정 가능합니다.', 'blk');
         }
+        btn_dis_ctrl();
     };
 
     /** 날짜 클릭 - 기간 달력에서 '종료일' 클릭 시 실행 */
@@ -274,30 +397,14 @@ function nCalendarRangeScroll(option){
         });
     };
 
-    /** 달력 초기화 */
-    this.calReset = function(){
-        selClassClear();
-        onSetStartDate(today);
-        onSetEndDate(today);
-    }
-
-    /** 달력 내 버튼 활성/비활성 (배열 기준) */
-    this.calBtnSet = function(array){
-        Array.prototype.forEach.call(dateBtns, function(dateBtn){ 
-            let date = dateBtn.getAttribute('data-date');
-            array.indexOf(date) != -1 ? dateBtn.disabled = false : dateBtn.disabled = true;
-        });
-    }
 
     /** 달력 내부 스크롤 위치 설정 */
-    this.calScrollSet = function(){
+    function calScrollSet(){
         scrollArea.scrollTo(0, 0);
         let tgObj = endDate ? calArea.querySelector('.end button') : calArea.querySelector('.today button'),
             scVal = tgObj.getBoundingClientRect().top - scrollArea.getBoundingClientRect().top - (scrollArea.clientHeight / 2);
         scrollArea.scrollTo(0, scVal);
     }
-    this.calScrollSet();
-
     /**
      * 시작일 / 종료일 기준 버튼 활성화( value_update 함수용 )
      * @param {date} sDate 시작일
@@ -312,14 +419,37 @@ function nCalendarRangeScroll(option){
             if(setDateVal_e) thisDate == setDateVal_e ? dateBtn.dispatchEvent(clickEvt) : null;
         });
     }
-
-    /** input 값 재 적용 */
-    this.value_update = function(){
-        getDataDate();
+    
+    /** 달력 초기화 */
+    function calInit(){
+        if(inPage == false) inpGetDate();
+        getDataDate()
         calcGap();
         monCalc();
         calDrawFromArr(monArr);
         setDate(startDate, endDate);
-        this.calScrollSet();
+        calScrollSet();
+        btn_dis_ctrl();
     }
+    calInit();
+    
+    // 외부호출 =============================================================
+    
+    /** 달력 리셋(오늘날짜) */
+    this.calReset = function(){
+        selClassClear();
+        onSetStartDate(today);
+        onSetEndDate(today);
+    }
+
+    /** 달력 내 버튼 활성/비활성 (배열 기준) */
+    this.calBtnSet = function(array){
+        Array.prototype.forEach.call(dateBtns, function(dateBtn){ 
+            let date = dateBtn.getAttribute('data-date');
+            array.indexOf(date) != -1 ? dateBtn.disabled = false : dateBtn.disabled = true;
+        });
+    }
+
+    /** input 값 재 적용 */
+    this.value_update = calInit();
 }

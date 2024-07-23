@@ -48,6 +48,7 @@ function nSelectMobile(option){
         btnConfirm  = document.createElement('button');
 
     selModal.classList.add('modal-sel');
+    modalCnt.classList.add('scroll-select-cnt');
     modalCnt.classList.add('modal-cnt');
     scrollArea.classList.add('scroll-wrap');
     scrollCnt.classList.add('scroll-cnt'); // 실제 스크롤 되는 영역

@@ -120,6 +120,16 @@ function uncomma(str) {
 }
 
 /**
+ * 숫자 크기에 따른 순위 배열 반환
+ * @param {array} data 데이터 배열(숫자로만 구성)
+ * @returns 원본 배열 기준으로 해당 배열 내 숫자들의 크기 순서 배열 반환 (작은 숫자가 앞번호)
+ */
+function num_rank_calc(data) {
+    let num = data.slice().sort((a, b) => a - b)
+    return data.map(el => num.indexOf(el) + 1);
+}
+
+/**
  * replace all 기능 
  * @param {string} str 변경할 문구
  * @param {string} searchStr 지워질 글자
@@ -337,6 +347,49 @@ function nTabMenu(option){
 	});
 	
 	tabBtn[showNum].dispatchEvent(clickEvt);
+}
+
+/**
+ * check 전체 선택 제어 기능
+ * @param {string} allcls 전체 input 의 선택자
+ * @param {string} inpcls 대상요소들의 name 명
+ */
+function checkAll(allcls, inpcls){
+	let allBtn = document.querySelector(allcls),
+		inps   = document.querySelectorAll('input[name='+inpcls+']'),
+		inpLen = inps.length;
+
+	let changeEvt = new Event('change');
+
+	let inpsOn = function(){
+		for(let i=0; i<inpLen; i++) {
+			inps[i].checked = true;
+			inps[i].dispatchEvent(changeEvt);
+		}
+	}, inpsOff = function(){
+		for(let i=0; i<inpLen; i++) {
+			inps[i].checked = false;
+			inps[i].dispatchEvent(changeEvt);
+		}
+	}, inpCount = function(){
+		let chkLen = 0;
+		for(let i=0; i<inpLen; i++) {
+			if(inps[i].checked == true) chkLen++;
+		}
+		return chkLen;
+	}, inpsChk = function(idx){
+		inps[idx].addEventListener('click', function(){
+			inpCount() == inpLen ? allBtn.checked = true : allBtn.checked = false;
+		});
+	}
+
+	allBtn.addEventListener('click', function(){
+		this.checked == true ? inpsOn() : inpsOff();
+	});
+
+	for(let i=0; i<inpLen; i++) {
+		inpsChk(i);
+	}
 }
 
 // 말풍선 요소 - 단일 사용

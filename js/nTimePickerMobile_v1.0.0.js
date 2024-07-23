@@ -5,21 +5,34 @@
 /** time picker (bottom sheet) */
 function nTimeSetMobile(option){
     let wrap 		= typeof option.area === 'string' ? document.querySelector(option.area) : option.area,
-        input 		= wrap.querySelector('input[type=text]'),
+        input 		= typeof option.input === 'string' ? wrap.querySelector(option.input) : option.input,
+		inPage		= option.inPage ? option.inPage : false, // 페이지 내 표기 선택
+		inTarget	= option.inTarget ? option.inTarget : null, // 페이지 표기 할 영역 선택
         selTitle    = option.title,
         optHeight   = option.optHeight ? option.optHeight : 30,
+        gap_count   = option.gap_count ? option.gap_count : 3,
         halfTime    = option.halfTime ? option.halfTime : false, // 시간 선택 시 오전/오후 기능 사용 여부
         halfShow    = option.halfShow ? option.halfShow : false; // 시간 표기 시 오전/오후 표기 사용 여부
 
+    // 공통함수
+    function setZero(num){
+        return num < 10 ? '0' + num : num;
+    }
+
     // input readonly 일때 android 에서 click 이벤트 안됨 -> input 위에 투명버튼 추가
-    let btn_open = document.createElement('button');
-    btn_open.setAttribute('type', 'button');
-    btn_open.setAttribute('aria-haspopup', 'dialog');
-    btn_open.setAttribute('aria-expanded', 'false');
-    btn_open.classList.add('btn-open');
-    btn_open.setAttribute('title', input.value);
-    btn_open.textContent = '시간설정 열기 버튼';
-    wrap.appendChild(btn_open);
+    let btn_open = document.createElement('button'),
+        btnOk		= document.createElement('button'),
+        btnNo		= document.createElement('button');
+
+    if(inPage == false){
+        btn_open.setAttribute('type', 'button');
+        btn_open.setAttribute('aria-haspopup', 'dialog');
+        btn_open.setAttribute('aria-expanded', 'false');
+        btn_open.classList.add('btn-open');
+        btn_open.setAttribute('title', input.value);
+        btn_open.textContent = '시간설정 열기 버튼';
+        wrap.appendChild(btn_open);
+    }
     input.setAttribute('aria-hidden', 'true');
     input.setAttribute('tabindex', '-1');
     
@@ -33,10 +46,11 @@ function nTimeSetMobile(option){
         minMax 		= option.minMax ? option.minMax : 60,
         minStep		= option.minStep ? option.minStep : 1;
     
-    let scroll_padding = optHeight * 3;
+    let scroll_padding = optHeight * gap_count;
 
     // 기본 구조 생성
-    let time_wrap 	= document.createElement('div'),
+    let total_wrap,
+        time_wrap 	= document.createElement('div'),
         roll_wrap	= document.createElement('div'),
         hour_wrap	= document.createElement('div'),
         hour		= document.createElement('div'),
@@ -75,6 +89,7 @@ function nTimeSetMobile(option){
 
     // 기본 구조 생성
     time_wrap.classList.add('modal-sel', 'sel-time');
+    roll_wrap.classList.add('scroll-select-cnt');
     roll_wrap.classList.add('modal-cnt');
     hour_wrap.classList.add('scroll-wrap');
     hour.classList.add('scroll-cnt', 'area-hour');
@@ -82,34 +97,43 @@ function nTimeSetMobile(option){
     min.classList.add('scroll-cnt', 'area-min');
     btns.classList.add('btns');
 
-    time_wrap.appendChild(roll_wrap);
+    if(inPage == true) {
+        inTarget = typeof inTarget === 'string' ? document.querySelector(inTarget) : inTarget;
+        inTarget.appendChild(roll_wrap);
+        total_wrap = inTarget;
+    } else {
+        time_wrap.appendChild(roll_wrap);
+        total_wrap = time_wrap;
+    }
+
     hour_wrap.appendChild(hour);
     min_wrap.appendChild(min);
     roll_wrap.appendChild(hour_wrap);
     roll_wrap.appendChild(min_wrap);
-    roll_wrap.appendChild(btns);
 
-    hour_wrap.style.height = optHeight * 7 + 'px';
+    hour_wrap.style.height = optHeight * ((gap_count * 2) + 1) + 'px';
     hour.style.padding = scroll_padding + 'px 0px';
-    min_wrap.style.height = optHeight * 7 + 'px';
+    min_wrap.style.height = optHeight * ((gap_count * 2) + 1) + 'px';
     min.style.padding = scroll_padding + 'px 0px';
 
-    let tag_ul = '<ul></ul>',
+    let tag_ul = '<ul class="sel-list"></ul>',
         hour_ul, min_ul, ampm_ul;
     hour.insertAdjacentHTML('beforeend', tag_ul);
     min.insertAdjacentHTML('beforeend', tag_ul);
     hour_ul = hour.querySelector('ul'),
     min_ul = min.querySelector('ul');
 
-    let btnOk		= document.createElement('button'),
-        btnNo		= document.createElement('button');
-    btnOk.classList.add('btn');
-    btnOk.classList.add('large');
-    btnOk.classList.add('main');
-    btnNo.classList.add('btn-sel-close');
-    btnOk.innerText = '확인';
-    btnNo.innerText = '취소';
-    btns.appendChild(btnOk);
+    if(inPage == false){
+        roll_wrap.appendChild(btns);
+        btnOk.classList.add('btn');
+        btnOk.classList.add('large');
+        btnOk.classList.add('main');
+        btnNo.classList.add('btn-sel-close');
+        btnOk.innerText = '확인';
+        btnNo.innerText = '취소';
+        btns.appendChild(btnOk);
+        roll_wrap.appendChild(btnNo);
+    } 
 
     /** Observer 설정 */
     let observerOpt_ampm,
@@ -136,7 +160,10 @@ function nTimeSetMobile(option){
     obs_hour = new IntersectionObserver(scrollCenterSet, observerOpt_hour);
     obs_min = new IntersectionObserver(scrollCenterSet, observerOpt_min);
 
-    /** 스크롤 시 중앙위치 버튼 cls 제어 */
+    /**
+     * 스크롤 시 중앙위치 버튼 cls 제어 함수
+     * @param {observe} ent observer 관련 변수
+     */
     function scrollCenterSet(ent){
         ent.forEach((entry) => {
             entry.isIntersecting ? entry.target.classList.add('on') : entry.target.classList.remove('on');
@@ -168,6 +195,7 @@ function nTimeSetMobile(option){
         ampm_wrap.appendChild(ampm);
         ampm.insertAdjacentHTML('beforeend', tag_ul);
         ampm_ul = ampm.querySelector('ul');
+        ampm_ul.classList.add('sel-list');
         
         ampm_wrap.style.height = optHeight * 7 + 'px';
         ampm.style.padding = optHeight * 3 + 'px 0px';
@@ -182,8 +210,6 @@ function nTimeSetMobile(option){
         obs_ampm = new IntersectionObserver(scrollCenterSet, observerOpt_ampm);
     }
     
-    roll_wrap.insertBefore(btnNo, roll_wrap.firstChild);
-
     // 타이틀 영역
     let selTitArea;
     if(selTitle) {
@@ -198,7 +224,7 @@ function nTimeSetMobile(option){
     // 시간/분 버튼 기능 적용
     let hourBtns	= hour.querySelectorAll('button'),
         minBtns 	= min.querySelectorAll('button'),
-        btnAll 		= time_wrap.querySelectorAll('li > button');
+        btnAll 		= total_wrap.querySelectorAll('li > button');
 
     // 시간/분 (오전/오후) 버튼 클릭 시 scroll 이동 설정
     Array.prototype.forEach.call(btnAll, function(btn){
@@ -212,19 +238,31 @@ function nTimeSetMobile(option){
         });
     });
     
-    /** scroll 시 선택된 버튼의 값을 각 변수에 저장 */
+    /**
+     * scroll 시 선택된 버튼의 값을 각 변수에 저장
+     * @param {dom} area 오전오후/시간/분 영역
+     * @param {number} idx 현재 선택된 버튼의 idx값
+     */
     function setVal(area, idx){
-        if(area == hour) set_hour = hourBtns[idx].innerText;
-        else if(area == min) set_min = minBtns[idx].innerText;
-        else if(area == ampm) set_ampm = ampmBtns[idx].innerText;
+        if(area == hour) set_hour = hourBtns[idx].textContent;
+        else if(area == min) set_min = minBtns[idx].textContent;
+        else if(area == ampm) set_ampm = ampmBtns[idx].textContent;
+        if(inPage == true) inpValSet();
     }
 
-    // scroll 기능 설정
+    /**
+     * scroll 기능 설정
+     * @param {dom} area 오전오후/시간/분 영역
+     */
     function scrollFuncSet(area){
         let tgArea = area,
             tgInterval, tgScTopVal, tgScChk;
 
-        function scrollChk(area){ // interval 로 scrolltop 값 비교를 통한 scroll 움직임 상태감지 (touchout 후에도 scroll 이 마저 움직일 때 이벤트 발생 제한)
+        /**
+         * scroll 움직임 상태감지 : interval 로 scrolltop 값 비교 (touchout 후에도 scroll 이 마저 움직일 때 이벤트 발생 제한)
+         * @param {dom} area 오전오후/시간/분 영역
+         */
+        function scrollChk(area){
             if(tgScTopVal != area.scrollTop) tgScTopVal = area.scrollTop;
             else {
                 if(!tgScChk) {
@@ -234,6 +272,11 @@ function nTimeSetMobile(option){
             }
         }
 
+        /**
+         * 스크롤 종료 후 가장 가까운 값으로 scroll 조정
+         * @param {dom} area 오전오후/시간/분 영역
+         * @param {number} sc Scroll top 값
+         */
         function scSet(area, sc){
             let scN     = sc % optHeight,
                 scVal   = Math.floor(sc / optHeight),
@@ -263,7 +306,7 @@ function nTimeSetMobile(option){
     scrollFuncSet(hour);
     if(halfTime) scrollFuncSet(ampm);
 
-    // show - input 값에 따른 scroll 위치 조정
+    /** show - input 값에 따른 scroll 위치 조정 */
     function scrollSet(){
         let onBtns = roll_wrap.querySelectorAll('button.on');
         Array.prototype.forEach.call(onBtns, function(btn){
@@ -273,10 +316,10 @@ function nTimeSetMobile(option){
         });
     }
 
-    // 현재 선택된 btn 에 on 클래스 추가 / 그외 버튼 on 제거
+    /** 현재 선택된 btn 에 on 클래스 추가 / 그외 버튼 on 제거 */
     function btnOnSet(){
         hourBtns.forEach(function(btn){
-            if(Number(btn.innerText) == Number(set_hour)) {
+            if(Number(btn.textContent) == Number(set_hour)) {
                 btn.classList.add('on');
                 btn.setAttribute('aria-selected', 'true');
             } else {
@@ -285,7 +328,7 @@ function nTimeSetMobile(option){
             }
         });
         minBtns.forEach(function(btn){
-            if(Number(btn.innerText) == Number(set_min)) {
+            if(Number(btn.textContent) == Number(set_min)) {
                 btn.classList.add('on');
                 btn.setAttribute('aria-selected', 'true');
             } else {
@@ -295,7 +338,7 @@ function nTimeSetMobile(option){
         });
         if(halfTime) {
             ampmBtns.forEach(function(btn){
-                if(btn.innerText == set_ampm) {
+                if(btn.textContent == set_ampm) {
                     btn.classList.add('on');
                     btn.setAttribute('aria-selected', 'true');
                 } else {
@@ -306,7 +349,7 @@ function nTimeSetMobile(option){
         }
     }
 
-    // input 에 선택된 값 넣기
+    /** input 에 선택된 값 넣기 */
     function inpValSet(){
         if(halfTime){
             if(halfShow) input.value = set_ampm + ' ' + setZero(set_hour) + ':' + setZero(set_min)
@@ -317,10 +360,10 @@ function nTimeSetMobile(option){
                 input.value = setZero(hourval) + ':' + setZero(set_min);
             }
         } else input.value = setZero(set_hour) + ':' + setZero(set_min);
-        input.dispatchEvent(changeEvt);
+        if(inPage == false) input.dispatchEvent(changeEvt);
     }
 
-    // time_wrap show 함수
+    /** time_wrap show 함수 */
     function timesetOn(){
         body.appendChild(time_wrap);
         setTxVal();
@@ -336,6 +379,7 @@ function nTimeSetMobile(option){
         });
     }
 
+    /** time_wrap 닫기 함수 */
     function timesetOff(){
         time_wrap.classList.remove('on');
         body.removeChild(time_wrap);
@@ -345,6 +389,21 @@ function nTimeSetMobile(option){
         if(halfTime) obs_ampm.disconnect();
     }
 
+    /**
+     * 외부함수 - input 기준 오전오후/시간/분 scroll 위치 정렬
+     */
+    this.time_update = function(){
+        setTxVal();
+        btnOnSet();
+        scrollSet();
+    }
+
+    if(inPage == true) {
+        hourBtns.forEach(function(btn) { obs_hour.observe(btn) });
+        minBtns.forEach(function(btn) { obs_min.observe(btn) });
+        if(halfTime) ampmBtns.forEach(function(btn) { obs_ampm.observe(btn) });
+        return;
+    }
     input.addEventListener('change', function(){
         btn_open.setAttribute('title', input.value);
     });
@@ -358,14 +417,13 @@ function nTimeSetMobile(option){
 
     // 취소 버튼 클릭 시
     btnNo.addEventListener('click', timesetOff);
-
-    // 공통함수
-    function setZero(num){
-        return num < 10 ? '0' + num : num;
-    }
 }
 
-/** number selector - scroll &amp; input --------------------- */
+/**
+ * number selector - scroll &amp; input
+ * @param {object} option option.area : 적용 영역 (선택자 string or dom 요소)
+ * @returns null
+ */
 function nNumberSelector(option){
     const wrap = typeof option.area === 'string' ? document.querySelector(option.area) : option.area;
 
@@ -385,7 +443,7 @@ function nNumberSelector(option){
         numbers;
     
     scroll_wrap.classList.add('scroll-wrap');
-    scroll.classList.add('scroll-list');
+    scroll.classList.add('sel-list');
 
     for(let i = num_min; i<num_max; i++){
         let tag_tx;
@@ -406,19 +464,26 @@ function nNumberSelector(option){
     }
     obs = new IntersectionObserver(scrollCenterSet, observerOpt);
 
-     /** 스크롤 시 중앙위치 버튼 cls 제어 */
-     function scrollCenterSet(ent){
+    /** 스크롤 시 중앙위치 버튼 cls 제어 */
+    function scrollCenterSet(ent){
         ent.forEach((entry) => {
             entry.isIntersecting ? entry.target.parentNode.classList.add('on') : entry.target.parentNode.classList.remove('on');
         });
     }
 
-    /** scroll 기능 설정 */
+    /**
+     * scroll 기능 설정
+     * @param {dom} area 스크롤되는 영역 dom
+     */
     function scrollFuncSet(area){
         let tgArea = area,
             tgInterval, tgScTopVal, tgScChk;
 
-        function scrollChk(area){ // interval 로 scrolltop 값 비교를 통한 scroll 움직임 상태감지 (touchout 후에도 scroll 이 마저 움직일 때 이벤트 발생 제한)
+        /**
+         * scroll 움직임 상태감지 : interval 로 scrolltop 값 비교 (touchout 후에도 scroll 이 마저 움직일 때 이벤트 발생 제한)
+         * @param {dom} area 오전오후/시간/분 영역
+         */
+        function scrollChk(area){
             if(tgScTopVal != area.scrollTop) tgScTopVal = area.scrollTop;
             else {
                 if(!tgScChk) {
@@ -428,6 +493,11 @@ function nNumberSelector(option){
             }
         }
 
+        /**
+         * 스크롤 종료 후 가장 가까운 값으로 scroll 조정
+         * @param {dom} area 오전오후/시간/분 영역
+         * @param {number} sc Scroll top 값
+         */
         function scSet(area, sc){
             let scN     = sc % num_height,
                 scVal   = Math.floor(sc / num_height),

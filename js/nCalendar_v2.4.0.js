@@ -76,7 +76,7 @@ function nCalendar(option){
 	 * @param {string} gapVal gap 차이값 (nY : n년 / nM : n개월 / nD : n일)
 	 * @returns 기준일에서 gap 차이 만큼의 date 값
 	 */
-	function com_calcGapDay(dayVal, gapVal) {
+	function calcGapDay(dayVal, gapVal) {
 		let val, 
 			gapY = 0,
 			gapM = 0, 
@@ -95,7 +95,7 @@ function nCalendar(option){
 
 	// 오늘 제한 및 선택제한 일자 관련 변수 내용 설정
 	if(todayLimit == true) {
-		limitDay = com_calcGapDay(now, todayGap);
+		limitDay = calcGapDay(now, todayGap);
 		limitDayVal = limitDay.valueOf();
 		limitY = limitDay.getFullYear();
 		limitM = limitDay.getMonth();
@@ -103,7 +103,7 @@ function nCalendar(option){
 		limitMonVal = new Date(limitY, limitM, 1, 0, 0, 0).valueOf();
 
 		if(limitGap != null) {
-			limitGapDay = com_calcGapDay(limitDay, limitGap);
+			limitGapDay = calcGapDay(limitDay, limitGap);
 			limitGapDayVal = limitGapDay.valueOf();
 			limitGapY = limitGapDay.getFullYear();
 			limitGapM = limitGapDay.getMonth();
@@ -307,11 +307,11 @@ function nCalendar(option){
 			btnArea.appendChild(btn_c);
 			btn_close = btn_c;
 		}
-		if(inPage == false) btn_close.addEventListener('click', com_calClose);
+		if(inPage == false) btn_close.addEventListener('click', calClose);
 	}
 
 	/** 상단 연도 표기 설정 */
-	function com_yearSet(){
+	function yearSet(){
 		if(changeYear == true && monthShift == false){
 			let yearOpts = yearObj.querySelectorAll('option');
 			for(o=0; o< yearOpts.length; o++){
@@ -324,7 +324,7 @@ function nCalendar(option){
 
 	/* common functions ------------------------------------------------------------------------ */
 	/** 달력 생성 위치 설정 함수 */
-	function com_calPosition(){
+	function calPosition(){
 		if(inPage == true || positionSet == false) return;
 		let top		= offset(inp).top,
 			left	= offset(inp).left;
@@ -367,7 +367,7 @@ function nCalendar(option){
 
 	// close ------------------------------------------------------------------
 	/** 달력 닫기 함수 */
-	function com_calClose(){
+	function calClose(){
 		wrap.style.top = '';
 		wrap.style.left = '';
 		wrap.classList.remove('on');
@@ -375,7 +375,7 @@ function nCalendar(option){
 		shiftState = false;
 	}
 	/** 화면내 띄워진 달력 전체 닫기 */
-	function com_calCloseAll(){
+	function calCloseAll(){
 		let wrapAll = document.querySelectorAll('.cal-wrap');
 		for(a=0; a<wrapAll.length; a++){
 			if(wrapAll[a].classList.contains('in-page')) return;
@@ -390,7 +390,7 @@ function nCalendar(option){
 		body.addEventListener('mousedown', function(e){
 			let tg = e.target;
 			if( !tg.closest('.cal-wrap') ) {
-				com_calClose();
+				calClose();
 				this.removeEventListener('mousedown', arguments.callee);
 			}
 		});
@@ -417,7 +417,7 @@ function nCalendar(option){
 	/** 일간 달력 그리기 */
 	function calDraw(){
 		top_btm_draw();
-		com_yearSet();
+		yearSet();
 		monthSet();
 		chkFirstYoil();
 		makeCalendar(firstYoil, nalsu[month], year, month + 1);
@@ -427,7 +427,7 @@ function nCalendar(option){
 	/** 월간 달력 그리기 */
 	function calDraw_mon(){
 		top_btm_draw_mon();
-		com_yearSet();
+		yearSet();
 		makeCalendar_mon(year);
 		if(todayLimit == true) limitPNSet_mon();
 	}
@@ -439,9 +439,9 @@ function nCalendar(option){
 
 	/** 달력 보이기 함수 */
 	function calShow(type){
-		com_calCloseAll();
+		calCloseAll();
 		inp.value.length > 0 ? dateSetToInp(inp) : resetDate();
-		com_calPosition();
+		calPosition();
 		type == 'month' ? calDraw_mon() : calDraw();
 		wrap.classList.add('on');
 		wrap.focus();
@@ -471,6 +471,7 @@ function nCalendar(option){
 		});
 	}
 	if(inp.disabled == true) btn_show.disabled = true;
+	if(inPage == true) calShow_type();
 
 	/* 일간 달력 전용 함수 ============================================================================================================================================== */
 	/** 일간달력 calTop / btnArea 영역 그리기 */
@@ -590,8 +591,9 @@ function nCalendar(option){
 			inpDate = new Date(dateBtn.getAttribute('data-date'));
 
 		inp.value = changeToYMD(inpDate);
-		if(inPage == false) com_calClose();
+		if(inPage == false) calClose();
 		else {
+			if(shiftState == true) shiftState = false; // 레이어 팝업에 inPage 달력 표출 시 월 일때 화면 종료 후 다시 일간달력 표출시 에러 제거
 			dateSetToInp(inp);
 			setMarkReset();
 			setDateMark();
@@ -659,10 +661,14 @@ function nCalendar(option){
 	 * @param {number} month 그리고자 하는 월
 	 */
 	function makeCalendar(firstYoil, nalsu, year, month) {
-		let str= "";
-		str = "<table border ='0'>";
+		let str = "<ul class='cal-yoil'>";
+		for(let i = 0; i < weekTx.length; i++){
+			str += "<li>" + weekTx[i] + "</li>";
+		}
+		str += "</ul>";
+		str += "<table border ='0'>";
 		str += "<caption>" + year + "년" + month + "월 달력</caption><thead>";
-		str += "<tr>";
+		str += "<tr class='hide'>";
 		for(let i = 0; i < weekTx.length; i++){
 			str += "<th scope='col'>" + weekTx[i] + "</th>";
 		}
@@ -753,7 +759,7 @@ function nCalendar(option){
 			shiftState = false;
 		} else {
 			inp.value = changeToYMD(inpDate);
-			if(inPage == false) com_calClose();
+			if(inPage == false) calClose();
 			else {
 				dateSetToInp(inp);
 				setMarkReset();
@@ -826,5 +832,13 @@ function nCalendar(option){
 		calArea.insertAdjacentHTML('beforeend', str);
 		dateBtnSet_mon();
 		setDateMark_mon();
+	}
+
+	// 외부 호출 함수 ================================================================
+	/**
+	 * 달력 - input value 기준 업데이트
+	 */
+	this.date_update = function(){
+		calShow_type();
 	}
 }

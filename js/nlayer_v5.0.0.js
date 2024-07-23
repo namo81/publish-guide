@@ -15,7 +15,7 @@
  * btn_open : 레이어 팝업 제어 버튼 (string or Dom요소 배열) - dom요소 단독일 경우는 X
  * 
  * activeOn(tg_layer) : 팝업 초기 설정 후 콜백 (레이어 변수 전달)
- * activeShowBefore(tg_layer, btn) : 팝업 띄우기 전 콜백함수 (레이어, active버튼 변수 전달)
+ * activeShowBefore(tg_layer, btn) : 팝업 띄우기 전 콜백함수 (레이어, active버튼 변수 전달) - 버튼 클릭 후 레이어 show 바로 직전 실행
  * activeShow(tg_layer, btn) : 팝업 띄운 후 콜백 함수 (레이어, active버튼 변수 전달)
  * activeClose(tg_layer, btn) : 팝업 닫기 후 콜백 함수 (clsCloseBtn 을 통한 닫기) - (레이어, active버튼 변수 전달)  ** 다중레이어 전체닫기는 제외
  * activeConfirm(tg_layer, btn) : 팝업 확인 및 닫기 후 콜백함수 (clsConfirm 을 통한 닫기) - (레이어, active버튼 변수 전달)
@@ -25,7 +25,7 @@
 function nlayer(option){
 	let clsLayer	= option.layer_cls ? option.layer_cls : 'layer', 		// 레이어 팝업 공통 클래스
 		clsCloseBtn	= option.btn_close ? option.btn_close : 'close-layer',	// 레이어 팝업 닫기버튼 클래스
-		clsShow		= option.show_cls ? option.show_cls : 'showOn',			// 레이어 show 용 상태 클래스
+		clsShow		= option.show_cls ? option.show_cls : 'show',			// 레이어 show 용 상태 클래스
 		clsConfirm  = option.confirm_cls ? option.confirm_cls : 'confirm',  // 레이어 confirm 버튼 클래스
 		tg_layer  	= typeof option.tg_layer === 'string' ? document.querySelector(option.tg_layer) : option.tg_layer, 	// 대상 레이어 (필수값)	
 		btn_open, // 레이어 오픈 버튼 (해당 레이어를 제어할 수 있는 모든 버튼)
@@ -47,7 +47,7 @@ function nlayer(option){
 		tabEle.forEach(function(ele){
 			if(ele.closest('.' + clsLayer)) return;
 			ele.setAttribute('tabindex','-1');
-			ele.setAttribute('aria-hidden', 'true');
+			ele.setAttribute('aria-hidden', true);
 		});		
 		bodyStyle.overflow = 'hidden';
 	}
@@ -68,6 +68,7 @@ function nlayer(option){
 		let on_layers 	= document.querySelectorAll('.' + clsLayer + '.' + clsShow);
 
 		tg_layer.classList.remove(clsShow);
+		tg_layer.removeAttribute('role');
 		if(on_layers.length < 2) pageUnset();
 
 		if(btn_active == null) return;
@@ -101,11 +102,16 @@ function nlayer(option){
 	/** 레이어 보기 */
 	function layerShow(){
 		if(typeof option.activeShowBefore === 'function') option.activeShowBefore(tg_layer, btn_active);
-		tg_layer.classList.add(clsShow);
-		pageSet();
-		// tg_focus_dom.focus(); --> focus 로 인해 화면 밖 > 안으로 이동하는 모션 무시됨
-		if(btn_active != null) btn_active.setAttribute('aria-expended', true);
-		if(typeof option.activeShow === 'function') option.activeShow(tg_layer, btn_active);
+		setTimeout(function(){ // alert / confirm 일 경우 show 클래스 관련 transition 적용을 위한 delay
+			tg_layer.classList.add(clsShow);
+			tg_layer.setAttribute('role', 'dialog');
+			
+			pageSet();
+			// tg_focus_dom.focus(); --> focus 로 인해 화면 밖 > 안으로 이동하는 모션 무시됨
+			if(btn_active != null) btn_active.setAttribute('aria-expended', true);
+			if(typeof option.activeShow === 'function') option.activeShow(tg_layer, btn_active);
+			
+		}, 10)
 	}
 
 	/** 레이어 닫기 버튼 설정 */
@@ -141,11 +147,13 @@ function nlayer(option){
 
 	if(typeof option.activeOn === 'function') option.activeOn(tg_layer);
 
+	/** 외부호출함수 - 레이어 보이기 */
 	this.layer_show = function(){
 		layerShow();
 		closeBtnSet(true);
 	}
 	
+	/** 외부호출함수 - 레이어 닫기 */
 	this.layer_hide = function(){
 		layerHide();
 	}
@@ -168,7 +176,7 @@ function nlayerAlert(openBtn, ment, title, active, btn) {
 		if(title != undefined && title.length > 0) layerCnt += '<div class="layer-top">'+ title +'</div>';
 		layerCnt += '<div class="layer-mid">';
 		layerCnt += '<p class="ment">'+ment+'</p>';
-		layerCnt += '<div class="btn-group">';
+		layerCnt += '<div class="btns">';
 		layerCnt += '<button type="button" class="btn medium close-layer">'+btnTx+'</button>';
 		layerCnt += '</div></div></div></div></div>';
 
@@ -204,9 +212,9 @@ function nlayerConfirm(openBtn, ment, title, activeConfirm, activeCancel, btn1, 
 		if(title != undefined && title.length > 0) layerCnt += '<div class="layer-top">'+ title +'</div>';
 		layerCnt += '<div class="layer-mid">';
 		layerCnt += '<p class="ment">'+ment+'</p>';
-		layerCnt += '<div class="btn-group">';
+		layerCnt += '<div class="btns">';
 		layerCnt += '<button type="button" class="btn medium close-layer">'+ btnCancel +'</button>';
-		layerCnt += '<button type="button" class="btn medium red confirm">'+ btnOk +'</button>';
+		layerCnt += '<button type="button" class="btn medium main confirm">'+ btnOk +'</button>';
 		layerCnt += '</div></div></div></div></div>';
 
 	body.insertAdjacentHTML('beforeend', layerCnt);
