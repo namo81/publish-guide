@@ -76,19 +76,19 @@
 <h4 class="guide-sstit">script</h4>
 <p>option 항목 확인</p>
 <ul>
-	<li>- <strong class="tx-red">필수</strong> : tg_layer : 대상 레이어 선택자 ( type : string ) ( 예시 : '#layer1' )</li>
-	<li>- btn_open : 레이어 호출 버튼 ( type : string ) ( 예시 : '.layer-open' ) <br>
+	<li>- <strong class="tx-red">필수</strong> : layer : 대상 레이어 선택자 ( type : string ) ( 예시 : '#layer1' )</li>
+	<li>- btn : 레이어 호출 버튼 ( type : string ) ( 예시 : '.layer-open' ) <br>
 		&nbsp; 동일 클래스가 여러개 있을 경우 모두 적용
 	</li>
-	<li>- activeOn : 레이어 기능 설정 후 콜백함수 ( tg_layer ) 이 파라미터로 제공됨</li>
-	<li>- activeShowBefore : 레이어 호출 전 실행 콜백함수 ( tg_layer, 호출버튼 ) 이 파라미터로 제공됨</li>
-	<li>- activeShow : 레이어 호출 후 실행 콜백함수 ( tg_layer, 호출버튼 ) 이 파라미터로 제공됨</li>
-	<li>- activeClose : 레이어 닫기 후 실행 콜백함수 ( tg_layer, 호출버튼 ) 이 파라미터로 제공됨</li>
-	<li>- activeConfirm : 레이어 확인 후 실행 콜백함수 ( tg_layer, 호출버튼 ) 이 파라미터로 제공됨</li>
+	<li>- activeOn : 레이어 기능 설정 후 콜백함수 ( layer ) 이 파라미터로 제공됨</li>
+	<li>- activeShowBefore : 레이어 호출 전 실행 콜백함수 ( layer, 호출버튼 ) 이 파라미터로 제공됨</li>
+	<li>- activeShow : 레이어 호출 후 실행 콜백함수 ( layer, 호출버튼 ) 이 파라미터로 제공됨</li>
+	<li>- activeClose : 레이어 닫기 후 실행 콜백함수 ( layer, 호출버튼 ) 이 파라미터로 제공됨</li>
+	<li>- activeConfirm : 레이어 확인 후 실행 콜백함수 ( layer, 호출버튼 ) 이 파라미터로 제공됨</li>
 </ul><br><br>
 <pre><code class="js">let layer_test = new nlayer({
-	tg_layer : '#layer1',
-	btn_open : '.open-layer',
+	layer : '#layer1',
+	btn : '.open-layer',
 	activeShowBefore : function(layer, btn){
 		console.log('show before');
 	},
@@ -112,13 +112,13 @@
 					<p>알럿 관련 클래스 추가 후 javascript 에서 기능 설정 (ex : alert 등..)</p>
 					<p>실제 팝업 관련 html 은 자동생성되므로 별도 하드코딩 X</p>
 					<p>팝업 style은 css 로 설정 / 특정 클래스 필요 시 layerpop-v5.0.0.js 파일 내 항목 수정</p><br />
-					<p>알럿 함수 파라미터 : nlayerAlert('호출버튼', '내용', '타이틀', 확인 후 실행할 함수, '버튼 텍스트');</p>
+					<p>알럿 옵션 : nlayerAlert({ 하단 옵션 });</p>
 					<ul>
-						<li>- <strong class="tx-red">필수</strong> : 호출버튼 ( type : dom 요소 ) ( 예시 : this, e.target .. )</li>
-						<li>- <strong class="tx-red">필수</strong> : 내용 ( type : string )</li>
-						<li>- 타이틀 ( type : string )</li>
-						<li>- 확인 후 실행할 함수 ( type : function )</li>
-						<li>- 버튼 텍스트 ( type : string )</li>
+						<li>- openBtn : 호출버튼 ( type : dom 요소 ) ( 예시 : this, e.target .. ) <strong class="tx-red">필수</strong> </li>
+						<li>- ment : 내용 ( type : string ) <strong class="tx-red">필수</strong></li>
+						<li>- title : 타이틀 ( type : string )</li>
+						<li>- btnTx : 버튼 텍스트 ( type : string )</li>
+						<li>- active : 확인 후 실행할 함수 ( type : function )</li>
 					</ul>
 					<div class="guide-show">
 						<!-- 코드 작성 -->
@@ -127,10 +127,25 @@
 					</div>
 <pre><code class="html">&lt;button type="button" class="btn medium open-alert"&gt;알럿 호출&lt;/button&gt;</code></pre>
 
-<pre><code class="js">var btn_alert = document.querySelector('.open-alert');
+<pre><code class="js">/** 알럿 기능 
+* nlayerAlert(option);
+* openBtn : 호출버튼 (필수)
+* ment : 문구 (필수)
+* title : 타이틀
+* btnTx : 버튼 텍스트 - 없을 경우 '확인'
+* active : 확인 클릭 시 실행함수
+*/
 
+let btn_alert = document.querySelector('.open-alert');
 btn_alert.addEventListener('click', function(){
-	nlayerAlert(this, '테스트 알럿 입니다.', '타이틀', function(){ console.log('alert 닫았습니다.!!') });
+	nlayerAlert({
+		openBtn : this,
+		ment : '테스트 알럿 입니다.', 
+		title : '타이틀', 
+		active : function(){ 
+			console.log('alert 닫았습니다.!!')
+		}
+	});
 });
 </code></pre>
 				</div>
@@ -141,15 +156,15 @@ btn_alert.addEventListener('click', function(){
 					<p>컨펌 관련 클래스 추가 후 javascript 에서 기능 설정 (ex : confirm 등..)</p>
 					<p>실제 팝업 관련 html 은 자동생성되므로 별도 하드코딩 X</p>
 					<p>팝업 style은 css 로 설정 / 특정 클래스 필요 시 layerpop-v5.0.0.js 파일 내 항목 수정</p> <br />
-					<p>컨펌 함수 파라미터 : nlayerConfirm('호출버튼', '내용', '타이틀', 확인 시 실행할 함수, 취소 시 실행할 함수, '확인버튼 텍스트', '취소버튼 텍스트');</p>
+					<p>컨펌 함수 파라미터 : nlayerConfirm({ 하단 옵션 });</p>
 					<ul>
-						<li>- <strong class="tx-red">필수</strong> : 호출버튼 ( type : dom 요소 ) ( 예시: this, e.target .. )</li>
-						<li>- <strong class="tx-red">필수</strong> : 내용 ( type : string )</li>
-						<li>- 타이틀 ( type : string )</li>
-						<li>- 확인 시 실행할 함수 ( type : function )</li>
-						<li>- 취소 시 실행할 함수 ( type : function )</li>
-						<li>- 확인 버튼 텍스트 ( type : string )</li>
-						<li>- 취소 버튼 텍스트 ( type : string )</li>
+						<li>- openBtn : 호출버튼 ( type : dom 요소 ) ( 예시: this, e.target .. ) <strong class="tx-red">필수</strong> </li>
+						<li>- ment : 내용 ( type : string ) <strong class="tx-red">필수</strong></li>
+						<li>- title : 타이틀 ( type : string )</li>
+						<li>- activeConfirm : 확인 시 실행할 함수 ( type : function )</li>
+						<li>- activeCancel : 취소 시 실행할 함수 ( type : function )</li>
+						<li>- btnTxConfirm : 확인 버튼 텍스트 ( type : string )</li>
+						<li>- btnTxCancel : 취소 버튼 텍스트 ( type : string )</li>
 					</ul>
 					<div class="guide-show">
 						<!-- 코드 작성 -->
@@ -159,7 +174,18 @@ btn_alert.addEventListener('click', function(){
 <pre><code class="html ">&lt;button type="button" class="btn medium open-confirm"&gt;컨펌 호출&lt;/button&gt;
 </code></pre>
 
-<pre><code class="js">let btn_confirm = document.querySelector('.open-confirm');
+<pre><code class="js">/** 컨펌 기능 
+* nlayerConfirm(option);
+* openBtn : 호출버튼 (필수)
+* ment : 문구 (필수)
+* title : 타이틀
+* btnTxConfirm : 컨펌 버튼 텍스트 - 없을 경우 '확인'
+* btnTxCancel : 취소 버튼 텍스트 - 없을 경우 '취소'
+* activeConfirm : 컨펌버튼 클릭 시 실행함수
+* activeCancel : 취소버튼 클릭 시 실행함수
+*/
+
+let btn_confirm = document.querySelector('.open-confirm');
 
 function confirm_run(){
 	console.log('confirm 확인했습니다.!!');
@@ -168,7 +194,13 @@ function confirm_cancel(){
 	console.log('confirm 취소했습니다.!!');
 }
 btn_confirm.addEventListener('click', function(){
-	nlayerConfirm(this, '테스트 컨펌 입니다.', '타이틀', confirm_run, confirm_cancel);
+	nlayerConfirm({
+		openBtn : this, 
+		ment : '테스트 컨펌 입니다.', 
+		title : '타이틀', 
+		activeConfirm : confirm_run, 
+		activeCanCel : confirm_cancel
+	});
 });
 </code></pre>
 				</div>
@@ -246,13 +278,13 @@ btn_toast2.addEventListener('click', function(){
 	</div>
 
 	<script src="/js/common.js"></script>
-	<script src="/js/layerpop_v5.0.0.js"></script>
+	<script src="/js/nlayer_v5.0.0.js"></script>
 	<script>
 		hljs.initHighlightingOnLoad(); 
 
 		let layer_test = new nlayer({
-			tg_layer : '#layer1',
-			btn_open : '.open-layer',
+			layer : '#layer1',
+			btn : '.open-layer',
 			activeOn : function(layer){
 				console.log('layer ON!!');
 			},
@@ -271,8 +303,8 @@ btn_toast2.addEventListener('click', function(){
 		});
 
 		let layer_test2 = new nlayer({
-			tg_layer : '#layer2',
-			btn_open : '.open-layer2',
+			layer : '#layer2',
+			btn : '.open-layer2',
 			activeShowBefore : function(layer, btn){
 				console.log(layer, btn);
 			},
@@ -280,8 +312,13 @@ btn_toast2.addEventListener('click', function(){
 
 		let btn_alert = document.querySelector('.open-alert');
 		btn_alert.addEventListener('click', function(){
-			nlayerAlert(this, '테스트 알럿 입니다.', '타이틀', function(){
-				console.log('alert 닫았습니다.!!')
+			nlayerAlert({
+				openBtn : this,
+				ment : '테스트 알럿 입니다.', 
+				title : '타이틀', 
+				active : function(){ 
+					console.log('alert 닫았습니다.!!')
+				}
 			});
 		});
 
@@ -293,7 +330,13 @@ btn_toast2.addEventListener('click', function(){
 			console.log('confirm 취소했습니다.!!');
 		}
 		btn_confirm.addEventListener('click', function(){
-			nlayerConfirm(this, '테스트 컨펌 입니다.', '타이틀', confirm_run, confirm_cancel);
+			nlayerConfirm({
+				openBtn : this, 
+				ment : '테스트 컨펌 입니다.', 
+				title : '타이틀', 
+				activeConfirm : confirm_run, 
+				activeCanCel : confirm_cancel
+			});
 		});
 		
 		let btn_toast = document.querySelector('.open-toast'),

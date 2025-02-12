@@ -4,6 +4,27 @@ let clickEvt = new Event('click', { bubbles: true, cancelable: true }),
 	changeEvt = new Event('change', { bubbles: true, cancelable: true }),
 	inputEvt = new Event('input', { bubbles: true, cancelable: true });
 
+/** 안드로이드 / ios 구분 */
+function checkMobile() {
+	let mobileType = navigator.userAgent.toLowerCase();
+	if (mobileType.indexOf('android') > -1) {
+		return 'android';
+	}
+	else if (mobileType.indexOf('iphone') > -1 || mobileType.indexOf('ipad') > -1 || mobileType.indexOf('ipod') > -1) {
+		return 'ios';
+	}
+};
+
+/** 화면이 현재 모니터에 보이고 있는지 체크하는 이벤트
+document.addEventListener("visibilitychange", ()=>{
+	if(document.hidden) 안보일 때 실행!!
+	else 보일 때 실행!!
+
+	// 조건문 추가 예시
+	if (document.visibilityState === "visible")
+	if (document.visibilityState === "hidden")
+}) */
+
 /** 이벤트 추가 함수 - 이벤트 추가 시 listener 를 별도 배열로 보관 - 추후 삭제 가능하도록. 
  * ex : object.onEvent('', function...)
 */
@@ -120,6 +141,16 @@ function uncomma(str) {
 }
 
 /**
+ * 배열에서 tx 와 동일한 요소 제거
+ * @param {array} arr 배열
+ * @param {string} tx 제거할 문구
+ */
+function arr_del(arr, tx){
+	let findIndex = arr.indexOf(tx);
+	if(findIndex > -1) { arr.splice(findIndex, 1); }
+}
+
+/**
  * 숫자 크기에 따른 순위 배열 반환
  * @param {array} data 데이터 배열(숫자로만 구성)
  * @returns 원본 배열 기준으로 해당 배열 내 숫자들의 크기 순서 배열 반환 (작은 숫자가 앞번호)
@@ -224,6 +255,20 @@ function outSideClick(area, target, cls){
 }
 
 /**
+ * dom 요소 생성 함수
+ * @param {string} type html tag명
+ * @param {string} cls 태그에 추가할 클래스
+ * @returns 생성된 html dom 요소
+ */
+function createDom(type, cls){
+	let dom = document.createElement(type);
+	if(cls != undefined) dom.classList.add(cls);
+	if(type == 'button') dom.setAttribute('type', 'button');
+	return dom;
+}
+
+
+/**
  * 특정 요소 전체의 특정 클래스 제거
  * @param {array} tg 요소 배열
  * @param {string} cls 제거할 클래스
@@ -289,16 +334,19 @@ function nTabSet(Ele){
 
 /** tab 메뉴 개별 설정형
  *	var 변수명 = new nTabMenu({
- *      wrap         : '.tab-wrap', - 탭 메뉴 및 컨텐츠를 포함하는 영역 선택자
- *      menuWrap     : '.tab-menu', - 탭 메뉴 선택자
- *      tabCnt       : '.tab-cnt'   - 탭 컨텐츠 선택자
+ *      wrap     : '.tab-wrap', - 탭 메뉴 및 컨텐츠를 포함하는 영역 선택자
+ *      menu     : '.tab-menu', - 탭 메뉴 선택자
+ *      tabCnt   : '.tab-cnt'   - 탭 컨텐츠 선택자,
+ * 	   	active   : function(cnt, btn){ - 콜백함수
+ * 			cnt - 활성화된 영역
+ * 			btn - 클릭된 버튼
+ * 	   	}
  *   });
 */
 function nTabMenu(option){
 	var tabWrap	= document.querySelector(option.wrap),
-		tabBtn	= tabWrap.querySelectorAll(option.menuWrap + ' a'),
-		tabCnt	= tabWrap.querySelectorAll(option.tabCnt),
-		showNum	= 0;
+		tabBtn	= tabWrap.querySelectorAll(option.menu + ' a'),
+		tabCnt	= tabWrap.querySelectorAll(option.tabCnt);
 
 	function tabCntHide(){
 		tabCnt.forEach(function(cnt){
@@ -310,43 +358,45 @@ function nTabMenu(option){
 
 	function tabBtnOff(){
 		tabBtn.forEach(function(btn){
-			btn.parentNode.classList.remove('on');
+			btn.classList.remove('on');
 			btn.setAttribute('aria-selected', false);
 		});
 	}
 
 	// tab menu 클릭 기능
-	function tabClick(event, idx) {
-		var btn;
-		event.target.tagName != 'A' ? btn = event.target.parentElement : btn = event.target;
-		// 클릭 시 a 태그 내부에 있는 태그 클릭 시 btn 을 a 태그로 설정
+	function tabClick(e) {
+		let btn = e.target.tagName != 'A' ? e.target.closest('a') : e.target, // 클릭 시 a 태그 내부에 있는 태그 클릭 시 btn 을 a 태그로 설정
+			tg_cnt = tabWrap.querySelector(btn.getAttribute('href'));
 
-		event.preventDefault(); // 클릭 시 scroll 이동 방지
+		e.preventDefault(); // 클릭 시 scroll 이동 방지
 
-		showNum = idx;
 		tabBtnOff();
-		btn.parentElement.classList.add('on');
+		btn.classList.add('on');
 		btn.setAttribute('aria-selected', true);
 
 		tabCntHide();
-		tabCnt[showNum].style.display = 'block';
-		tabCnt[showNum].setAttribute('aria-hidden', false);
+		tg_cnt.style.display = '';
+		tg_cnt.setAttribute('aria-hidden', false);
+
+		if(option.active === 'function') option.active(tg_cnt, btn);
 	}
 
-	tabBtn.forEach(function(btn, idx){
+	tabBtn.forEach(function(btn){
 		btn.setAttribute('role', 'tab');
 		btn.setAttribute('aria-controls', btn.getAttribute('href').split('#')[1]);
 		btn.setAttribute('aria-selected', false);
-		btn.addEventListener('click', function(e){tabClick(e, idx)});
-		if(btn.parentNode.classList.contains('on')) showNum = idx;
-	});
+		btn.addEventListener('click', tabClick);
 
-	tabCnt.forEach(function(cnt, idx){
-		cnt.setAttribute('role', 'tabpanel');
-		cnt.setAttribute('aria-labelledby', tabBtn[idx].getAttribute('id'));
+		let tg_cnt = tabWrap.querySelector(btn.getAttribute('href'));
+		tg_cnt.setAttribute('role', 'tabpanel');
+		tg_cnt.setAttribute('aria-labelledby', btn.getAttribute('id'));
+
+		if(btn.classList.contains('on')) {
+			btn.setAttribute('aria-selected', true);
+			tg_cnt.style.display = '';
+			tg_cnt.setAttribute('aria-hidden', false);
+		}
 	});
-	
-	tabBtn[showNum].dispatchEvent(clickEvt);
 }
 
 /**
@@ -356,7 +406,8 @@ function nTabMenu(option){
  */
 function checkAll(allcls, inpcls){
 	let allBtn = document.querySelector(allcls),
-		inps   = document.querySelectorAll('input[name='+inpcls+']'),
+		name   = inpName != undefined ? inpName : allBtn.getAttribute('data-name'),
+		inps   = document.querySelectorAll('input[name='+name+']'),
 		inpLen = inps.length;
 
 	let changeEvt = new Event('change');

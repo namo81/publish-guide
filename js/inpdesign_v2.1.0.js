@@ -140,8 +140,10 @@ function nSelectSet(Ele){
 
 
 // file 설정 ------------------------------------------------------------------------
-
-/** 화면내 동일 선택자 전체 적용 시 */
+/**
+ * 화면내 동일 선택자 전체 적용 시
+ * @param {string} selector 선택자
+ */
 function nFile(selector) {
 	var nFileEle = document.querySelectorAll(selector);
 
@@ -154,12 +156,15 @@ function nFile(selector) {
 	else null;
 }
 
-/** 실제 file 관련 기능 함수 */
+/**
+ * file 관련 기능 함수
+ * @param {dom/string} Ele 파일기능 적용할 영역 선택자 or dom
+ */
 function nFileSet(Ele){
 	var fileWrap	= typeof Ele === 'string' ? document.querySelector(Ele) : Ele,
 		fileInp		= fileWrap.querySelector('input[type=file]'),
 		placeholder = fileInp.getAttribute('placeholder') == null ? '' : fileInp.getAttribute('placeholder'),
-		btnClear	= fileWrap.querySelector('.btn-clear'),
+		btnClear,
 		urlInp		= null,
 		inpHtml		= '';	
 
@@ -167,6 +172,14 @@ function nFileSet(Ele){
 		fileWrap.classList.add('disabled');
 		inpHtml += '<input type="text" class="inp-file-url" title="파일 경로" placeholder="'+placeholder+'" readonly disabled>';
 	} else inpHtml += '<input type="text" class="inp-file-url" title="파일 경로" placeholder="'+placeholder+'" readonly>';
+
+	let dom_btn = document.createElement('button');
+	dom_btn.classList.add('btn-clear');
+	dom_btn.setAttribute('type', 'button');
+	dom_btn.textContent = '첨부파일 제거';
+	btnClear = dom_btn;
+	fileWrap.appendChild(btnClear);
+
 
 	fileWrap.insertAdjacentHTML('beforeend', inpHtml);
 	urlInp = fileWrap.querySelector('.inp-file-url');
@@ -178,6 +191,7 @@ function nFileSet(Ele){
 		fileInp.value = '';
 		urlInp.value = '';
 		btnClear.style.display = 'none';
+		fileInp.dispatchEvent(inputEvt);
 	}
 	if(fileInp.value.length > 0) valueSet();
 	fileInp.addEventListener('change', valueSet);
@@ -201,8 +215,10 @@ function nFileSet(Ele){
 */
 
 // 텍스트 입력형 input ------------------------------------------------------------------------
-
-/** 화면내 동일 선택자 전체 적용 시 */
+/**
+ * 텍스트 입력형 input - 화면내 동일 선택자 전체 적용 시
+ * @param {string} selector 영역 선택자
+ */
 function nText(selector){
 	var nTextEle = document.querySelectorAll(selector);
 	if(nTextEle.length > 1) {
@@ -213,26 +229,47 @@ function nText(selector){
 	else if (nTextEle.length == 1) nTextSet(nTextEle[0]);
 	else null;
 }
-
-/** 실제 input 관련 기능 함수 - 개별 적용 시 */
+/**
+ * input 관련 기능 함수 - 개별 적용 시
+ * @param {dom/string} Ele dom 요소 및 영역 선택자
+ * @returns 
+ */
 function nTextSet(Ele){
-	var textWrap	= typeof Ele === 'string' ? document.querySelector(Ele) : Ele,
-		inp 		= textWrap.querySelector('input'),
-		btnClear	= textWrap.querySelector('.btn-clear');
+	let textWrap	= typeof Ele === 'string' ? document.querySelector(Ele) : Ele,
+		inp 		= textWrap.querySelector('input');
 	
+	if(inp.disabled == true || inp.readOnly == true) return;
+
+	let btn_clear 	= document.createElement('button');
+	btn_clear.setAttribute('type', 'button');
+	btn_clear.classList.add('btn-clear');
+	btn_clear.textContent = '내용 삭제';
+	textWrap.appendChild(btn_clear);
+
 	inp.addEventListener('focus', btnControl);
+	inp.addEventListener('focusout', btnHide);
 	inp.addEventListener('input', btnControl);
 	inp.addEventListener('propertychange', btnControl);
 
-	function btnControl(e){
-		if(e.target.value.length > 0) btnClear.style.display = 'block';
-		else btnClear.style.display = 'none';
-	};
-
-	btnClear.addEventListener('click', function(e){
+	btn_clear.addEventListener('click', function(e){
 		inp.value = '';
-		e.target.style.display = 'none';
+		inp.focus();
+		btn_clear.classList.remove('on');
+		inp.dispatchEvent(inputEvt);
 	});
+
+	function btnControl(e){
+		if(e.target.value.length > 0 && e.target.readOnly == false) {
+			btn_clear.setAttribute('tabindex', 0);
+			btn_clear.classList.add('on');
+		} else {
+			btn_clear.setAttribute('tabindex', -1);
+			btn_clear.classList.remove('on');
+		}
+	};
+	function btnHide(){
+		setTimeout(function(){ btn_clear.classList.remove('on') }, 50);
+	};
 }
 
 /* 적용예시
@@ -280,14 +317,260 @@ function doubleRange(area, unit, gap){
 	let d_range = new doubleRange('영역 선택자', '표시 단위', 최소간격(2개 버튼 사이));
 */
 
-/* 실행문 예시 ---------------------------------------------------
-window.onload = function(){
 
-	nSelect('.inp-select');
-	//nSelArr.selectUpdate();
+/**
+ * Input 입력에 따른 버튼 활성화 기능
+ * @param {dom/string} area 적용할 영역(input 및 버튼포함 영역 선택자)
+ * @param {string} tgbtn 제어할 버튼 선택자
+ * @param {dom/string} inpCls 적용할 input 요소 or 선택자 / 없을 경우 area 내에 있는 text / password input 전체가 대상
+ */
+function inpChkBtn(area, tgbtn, inpCls){
+	let wrap 	= document.querySelector(area),
+		inps 	= inpCls ? wrap.querySelectorAll(inpCls) : wrap.querySelectorAll('input[type=text], input[type=password]'),
+		btn	 	= wrap.querySelector(tgbtn);
 
-	nFile('.inp-file');
+	function inpChk(){
+		let chkNum = new Array();
+		for(let i=0; i<inps.length; i++){
+			if(inps[i].value.length > 0) chkNum[i] = 1;
+			else chkNum[i] = 0;
+		}
+		chkNum.indexOf(0) >= 0 ? btn.disabled = true : btn.disabled = false;
+	}
+	for(let i=0; i<inps.length; i++){
+		inps[i].addEventListener('input', inpChk);
+	}
+}
 
-	nText('.inp-label');
-};
-*/
+/**
+ * check 전체선택 기능
+ * @param {dom / string} allInp 전체선택 기능 적용할 input 요소 or 선택자
+ * @param {string} inpName 제어될 input 들의 name 값
+ */
+function checkAll(allInp, inpName){
+	let allBtn = typeof allInp === 'string' ? document.querySelector(allInp) : allInp,
+		name   = inpName != undefined ? inpName : allBtn.getAttribute('data-name'),
+		inps   = document.querySelectorAll('input[name='+name+']'),
+		inpLen = inps.length;
+	
+	/** 체크된 갯수 리턴 */
+	function inpCount(){
+		let chkLen = 0;
+		for(let i=0; i<inpLen; i++) {
+			if(inps[i].checked == true) chkLen++;
+		}
+		return chkLen;
+	}
+	function inpsOn(){
+		inps.forEach((inp)=> { inp.checked = true; });
+	}
+	function inpsOff(){
+		inps.forEach((inp)=> { inp.checked = false; });
+	}
+
+	inps.forEach((inp)=>{
+		inp.addEventListener('click', function(){
+			inpCount() == inpLen ? allBtn.checked = true : allBtn.checked = false;
+		});
+	})
+	allBtn.addEventListener('click', function(){ this.checked == true ? inpsOn() : inpsOff(); });
+}
+
+/**
+ * check 2중 중첩 전체선택 기능
+ * @param {dom / string} area 기능 적용할 영역
+ */
+function checkAllDepth(area){
+	const wrap = typeof area === 'string' ? document.querySelector(area) : area;
+	let dep1s = wrap.querySelectorAll('.dep1'),
+		dep2s = wrap.querySelectorAll('.dep2'),
+		dep3s = wrap.querySelectorAll('.dep3');
+
+	function chkSet(items, bln){
+		items.forEach((item)=>{ item.checked = bln });
+	}
+
+	dep1s.forEach(function(dep1){
+		let all_child = dep1.parentNode.querySelectorAll('.dep2, .dep3');
+		dep1.addEventListener('click', function(){
+			this.checked == true ? chkSet(all_child, true) : chkSet(all_child, false);
+		});
+	});
+
+	dep2s.forEach(function(dep2){
+		let ul = dep2.closest('ul'),
+			parent = ul.parentNode.querySelector('.dep1'),
+			siblings = ul.querySelectorAll('.dep2'),
+			childs = dep2.parentNode.querySelectorAll('.dep3');
+		dep2.addEventListener('click', function(){
+			this.checked == true ? chkSet(childs, true) : chkSet(childs, false);
+		});
+		dep2.addEventListener('change', function(){
+			let states = Array.from(siblings).every(item => item.checked),
+				changeEvt = new Event('change', { bubbles: true, cancelable: true });
+			parent.checked = states;
+			parent.dispatchEvent(changeEvt);
+		})
+	});
+	
+	dep3s.forEach(function(dep3){
+		let parent = dep3.closest('ul').parentNode.querySelector('.dep2'),
+			siblings = dep3.closest('ul').querySelectorAll('.dep3');
+		dep3.addEventListener('click', function(){
+			let states = Array.from(siblings).every(item => item.checked),
+				changeEvt = new Event('change', { bubbles: true, cancelable: true });
+			parent.checked = states;
+			parent.dispatchEvent(changeEvt);
+		});
+	});
+}
+
+/**
+ * radio 선택 시 관련 영역 show/hide - 타겟지정 방식 (radio 와 영역 순서가 맞지 않을 경우)
+ * @param {dom or string} area 설정할 영역
+ * @param {string} name radio name값
+ * @param {function} func 콜백함수 - input 클릭 시 실행
+ * input 은 다수 - 제어할 대상은 1개일 경우 제어할 대상을 show 할 input 에 'show' 클래스 추가
+ */
+function radioSelectTg(area, name, func){
+	let wrap = typeof area === 'string' ? document.querySelector(area) : area,
+		inps = wrap.querySelectorAll('input[name='+name+']'),
+		tgs = new Array();
+	
+	function tgReset(){
+		tgs.forEach((tg)=>{ 
+			tg.style.display = 'none';
+			if(tg.tagName == 'FIELDSET') tg.disabled = true;
+		});
+	}
+	function tgSetOn(tg){
+		tg.style.display = '';
+		if(tg.tagName == 'FIELDSET') tg.disabled = false;
+	}
+	function tgSet(inp){
+		tgReset();
+		let my_tg;
+		if(inp.getAttribute('data-target') != undefined) {
+			my_tg = wrap.querySelector('.' + inp.getAttribute('data-target'));
+			tgSetOn(my_tg);
+		}
+		if(typeof func === 'function') { 
+			my_tg ? func(inp, my_tg) : func(inp); 
+		}
+	}
+	inps.forEach((inp)=>{
+		if(inp.getAttribute('data-target') != undefined) {
+			let my_tg = wrap.querySelector('.' + inp.getAttribute('data-target'));
+			tgs.push(my_tg);
+		}
+		inp.addEventListener('click', function(){ tgSet(inp); });
+	});
+
+	inps.forEach((inp)=>{ if(inp.checked == true) tgSet(inp); });
+}
+
+/**
+ * input 체크여부에 따른 target 영역 내 요소 disabled 설정
+ * @param {dom / string} area 요소 선택 제한 영역 선택자
+ * @param {dom / string} inp ipnut or input 선택자
+ * @param {string} target target 영역 선택자
+ * @param {function} func 콜백함수
+ */
+function chk_tgl_ctrl(area, inp, target, func){
+	let wrap = typeof area === 'string' ? document.querySelector(area) : area,
+		tgl_inp = typeof inp === 'string' ? wrap.querySelector(inp) : inp,
+		tgl_area = wrap.querySelector(target);
+	
+	if(tgl_area.tagName == 'FIELDSET') {
+		tgl_inp.addEventListener('click', function(){
+			tgl_inp.checked == true ? tgl_area.disabled = false : tgl_area.disabled = true;
+			if(typeof func === 'function') func(!tgl_inp.checked);
+		});
+		tgl_inp.checked == true ? tgl_area.disabled = false : tgl_area.disabled = true;
+		return;
+	}
+	let tg_inps = tgl_area.querySelectorAll('select, input, button, a');
+
+	function areaSet(bln){
+		tg_inps.forEach((inp)=> { 
+			if(inp == tgl_inp) return;
+			inp.disabled = bln;
+		});
+	}
+	function stateSet(){
+		tgl_inp.checked == true ? areaSet(false) : areaSet(true);
+		if(typeof func === 'function') func(!tgl_inp.checked);
+	}
+	tgl_inp.addEventListener('click', stateSet);
+	stateSet();
+}
+
+/**
+ * 시작일-종료일 input 에 대한 달력 기능 선언
+ * @param {dom / string} s_input 영역 선택자 or dom
+ * @param {string} s_input 시작일(시) input 선택자
+ * @param {string} e_input 종료일(시) input 선택자
+ * @param {boolean} layer 레이어에 위치하는 달력 여부
+ * @param {boolean} time 시간기능 추가여부
+ */
+function cal_range_set(area, s_input, e_input, layer, time){
+	let wrap = typeof area === 'string' ? document.querySelector(area) : area;
+	let inp_s = wrap.querySelector(s_input),
+		inp_e = wrap.querySelector(e_input);
+
+	let start_opt = {
+		calInp : inp_s,
+		todayLimit : true,
+		limitType : 'before'
+	}
+	let end_opt = {
+		calInp : inp_e,
+		todayLimit : true,
+		limitType : 'before'
+	}
+	if(layer == true) {
+		start_opt.inCalWrap = true;
+		end_opt.inCalWrap = true;
+	}
+	if(time == true) {
+		start_opt.setTime = true;
+		end_opt.setTime = true;
+	}
+
+	let startDay = new nCalendar(start_opt);
+	let endDay = new nCalendar(end_opt);
+	cal_range_chk(startDay.input, endDay.input, time);
+}
+
+/**
+ * 시작일-종료일 input 2개 세트 - 입력값 비교
+ * @param {dom} s_input 시작일 input
+ * @param {dom} e_input 종료일 input
+ */
+function cal_range_chk(s_input, e_input, time){
+	let tx_alert_se = '시작일은 종료일 이후로 설정할 수 없습니다.',
+		tx_alert_es = '종료일은 시작일 이전으로 설정할 수 없습니다.';
+	if(time == true) {
+		tx_alert_se = '시작일시는 종료일시 이후로 설정할 수 없습니다.'
+		tx_alert_es = '종료일시는 시작일시 이전으로 설정할 수 없습니다.'
+	}
+	
+	s_input.addEventListener('change', function(){
+		let s_date = new Date(this.value),
+			e_date = new Date(e_input.value);
+		if(e_date == undefined) return;
+		if(s_date.valueOf() > e_date.valueOf()) {
+			alert(tx_alert_se);
+			this.value = null;
+		}
+	});
+	e_input.addEventListener('change', function(){
+		let e_date = new Date(this.value),
+			s_date = new Date(s_input.value);
+		if(s_date == undefined) return;
+		if(e_date.valueOf() < s_date.valueOf()) {
+			alert(tx_alert_es);
+			this.value = null;
+		}
+	});
+}

@@ -10,20 +10,21 @@
     pos                 : 현재 배너 위치 표기 영역
 */
 
-/* 
-    wrap        : 전체 영역 - string / dom 요소
-    container   : 실제 움직이는 배너 영역 - string
-    slidePos    : 배너 갯수 및 활성화 표기 영역 - string
-    posType     : 배너 갯수 및 활성화 표기 타입 ('bullet' / 'number') 기본은 bullet
-    autoplay    : 자동 재생 여부 - 100 이하거나 null 일 경우 자동재생X / 100 이상일 경우 해당 시간마다 자동재생
-    contWidth   : 배너영역 width
-    contHeight  : 배너영역 height
-    viewCount   : 한 화면에 보여야 할 배너 갯수
+/**
+    wrap        : 전체 영역 (string)
+    container   : 실제 움직이는 배너 영역 (string)
+    slidePos    : 배너 갯수 및 활성화 표기 영역 (string)
+    posType     : 배너 갯수 및 활성화 표기 타입 ('bullet' / 'number') 기본은 bullet (string)
+    autoplay    : 자동 재생 여부 - 100 이하거나 null 일 경우 자동재생X / 100 이상일 경우 해당 시간마다 자동재생 (number)
+    loop        : 무한반복 설정 (boolean)
+    width       : 배너영역 width - 기본은 1 (number)
+    viewCount   : 한 화면에 보여야 할 배너 갯수 - 기본은 1 (number)
 
-    ctrlBtn     : 이전/다음 버튼 사용 여부 boolean - 기본은 false
-    ctrlBtnPrev : 이전 버튼
-    ctrlBtnNext : 다음버튼
-    ctrlBtnPs   : play / stop 버튼 (재생 상태에서 버튼 stop 일때 클래스 없음 / 일시정지 상태일 때 버튼 play 일때 'on' 클래스 )
+    ctrlBtn     : 이전/다음 버튼 사용 여부 - 기본은 false (boolean)
+    ctrlBtnPrev : 이전 버튼 선택자 (string)
+    ctrlBtnNext : 다음버튼 선택자 (string)
+    ctrlBtnPs   : play / stop 버튼 선택자 (string)
+    (재생 상태에서 버튼 stop 일때 클래스 없음 / 일시정지 상태일 때 버튼 play 일때 'on' 클래스 )
 
     activeInit  : 기능 초기 설정 시 콜백함수
     activeStart : 배너 이동 시작 시 콜백함수
@@ -40,7 +41,6 @@ function nSlide(option){
         loop        = option.loop ? option.loop : false,
         viewCount   = option.viewCount ? option.viewCount : 1,
         width       = option.width ? option.width : 1,
-        height      = option.height ? option.height : 1,
         ctrlBtn     = option.ctrlBtn ? option.ctrlBtn : false,
         ctrlBtnPrev = option.ctrlBtnPrev ? option.ctrlBtnPrev : '.btn-slide-ctrl.prev',
         ctrlBtnNext = option.ctrlBtnNext ? option.ctrlBtnNext : '.btn-slide-ctrl.next',
@@ -160,7 +160,7 @@ function nSlide(option){
                 item.classList.remove('on');
             });
             posItems[itemNum].classList.add('on');
-        } else nowNumTx.innerText = itemNum + 1;
+        } else nowNumTx.innerText = Number(itemNum) + 1;
     }
     if(slidePos != null) {
         banPosSet();
@@ -173,11 +173,13 @@ function nSlide(option){
         for(var s=0; s<addNum; s++){
            var cNode = items[s].cloneNode(true);
            cNode.setAttribute('aria-hidden', 'true'); // 스크린 리더에서 dummy 무시하도록
+           if(cNode.querySelector('a, button')) cNode.querySelector('a, button').setAttribute('tabindex', '-1'); // dummy 하위 요소 tabindex 제거
            container.appendChild(cNode);
         }
         for(var e=itemLen - 1; e>itemLen - addNum - 1; e--){
             var cNode = items[e].cloneNode(true);
             cNode.setAttribute('aria-hidden', 'true'); // 스크린 리더에서 dummy 무시하도록
+            if(cNode.querySelector('a, button')) cNode.querySelector('a, button').setAttribute('tabindex', '-1'); // dummy 하위 요소 tabindex 제거
             container.insertBefore(cNode, container.firstChild);
         }
         container.style.transform = 'translate3d(-'+ countGap + 'px, 0,0)';
@@ -346,13 +348,29 @@ function nSlide(option){
                 if(tag.classList.contains('non-click')) tag.classList.remove('non-click');
             });
         });
+
+        // 접근성 관련 추가 (scrollLeft 는 focus 와 tranlate3d 간의 유격 조정)
+        if(items_a_tags.length > 0) {
+            items_a_tags.forEach(function(tag){
+                tag.addEventListener('focus', function(){
+                    container.parentNode.scrollLeft = 0;
+                    nowNum = Number(this.parentNode.getAttribute('data-idx'));
+                    targetX = (itemWidth * nowNum) + countGap;
+                    container.style.transitionDuration = '0s';
+                    container.style.transform = 'translate3d(-'+ targetX +'px, 0, 0)';
+                    slideActiveChk();
+                });
+            });
+        }
     }
 
     // 현재 활성화 배너 active 클래스 제어
     function slideActiveChk(){
         allItems.forEach(function(item){
-            var thisRect = item.getBoundingClientRect();
-            if (thisRect.left >= wrapRect.left && thisRect.right <= Math.ceil((wrapRect.right / viewCount) + wrapOffLeft)) {
+            wrapRect    = wrap.getBoundingClientRect(); // 레이어팝업용
+            var thisRect = item.getBoundingClientRect(),
+                rect_right = viewCount == 1 ? wrapRect.right : (wrapRect.width / viewCount) + wrapRect.left;
+            if (thisRect.left >= wrapRect.left && thisRect.right <= rect_right) {
                 item.classList.add('active');
                 itemNum = item.getAttribute('data-idx');
                 slideArr.changeNum = itemNum;

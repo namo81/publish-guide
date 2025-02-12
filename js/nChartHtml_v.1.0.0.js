@@ -199,7 +199,7 @@ function nChartHtml(option){
                 else tooltipVal.innerText = val;
                 toolitp.style.opacity = 1;
                 toolitp.style.zIndex = 100;
-                toolitp.style.left = direction == 'vertical' ? this.parentNode.offsetLeft + this.offsetLeft + 'px' : this.parentNode.offsetLeft + this.offsetWidth + 'px';
+                toolitp.style.left = direction == 'vertical' ? this.parentNode.offsetLeft + this.offsetLeft + 'px' : this.parentNode.offsetLeft + chart.offsetLeft + (this.offsetWidth/2) + 'px';
                 toolitp.style.top = ((this.parentNode.offsetTop + chart.offsetTop) - toolitp.offsetHeight) + 'px';
             });
             bar.addEventListener('mouseleave', function(e){

@@ -58,7 +58,8 @@ function nTimeSetMobile(option){
         min			= document.createElement('div'),
         btns		= document.createElement('div');
 
-    let body        = document.querySelector('body');
+    let body        = document.querySelector('body'),
+        bodyStyle   = body.style;
     
     // 시간/분/오전,오후 저장용 변수
     let set_hour, set_min, set_ampm;
@@ -88,7 +89,7 @@ function nTimeSetMobile(option){
     setTxVal();
 
     // 기본 구조 생성
-    time_wrap.classList.add('modal-sel', 'sel-time');
+    time_wrap.classList.add('modal', 'sel-time');
     roll_wrap.classList.add('scroll-select-cnt');
     roll_wrap.classList.add('modal-cnt');
     hour_wrap.classList.add('scroll-wrap');
@@ -145,18 +146,25 @@ function nTimeSetMobile(option){
 
     observerOpt_ampm = {
         rootMargin : -(scroll_padding - 15) + 'px 0px',
-        threshold : 1
+        threshold : 0.9
     }
     observerOpt_hour = {
         root : hour,
         rootMargin : -(scroll_padding - 15) + 'px 0px',
-        threshold : 1
+        threshold : 0.9
     }
     observerOpt_min = {
         root : min,
         rootMargin : -(scroll_padding - 15) + 'px 0px',
-        threshold : 1
+        threshold : 0.9
     }
+
+    if(checkMobile() == 'ios') { // ios 는 root 요소의 padding 값을 제거한 높이를 기준으로 동작함 (전체높이X)
+        observerOpt_ampm.rootMargin = '10px 0px';
+        observerOpt_hour.rootMargin = '10px 0px';
+        observerOpt_min.rootMargin = '10px 0px';
+    }
+
     obs_hour = new IntersectionObserver(scrollCenterSet, observerOpt_hour);
     obs_min = new IntersectionObserver(scrollCenterSet, observerOpt_min);
 
@@ -377,6 +385,8 @@ function nTimeSetMobile(option){
             minBtns.forEach(function(btn) { obs_min.observe(btn) });
             if(halfTime) ampmBtns.forEach(function(btn) { obs_ampm.observe(btn) });
         });
+        bodyStyle.overflow = 'hidden';
+        body.classList.add('hold');
     }
 
     /** time_wrap 닫기 함수 */
@@ -387,6 +397,8 @@ function nTimeSetMobile(option){
         obs_hour.disconnect();
         obs_min.disconnect();
         if(halfTime) obs_ampm.disconnect();
+        bodyStyle.overflow = '';
+        body.classList.remove('hold');
     }
 
     /**
@@ -462,6 +474,11 @@ function nNumberSelector(option){
         rootMargin : -(num_height -20) + 'px 0px',
         threshold : 1
     }
+
+    if(checkMobile() == 'ios') { // ios 는 root 요소의 padding 값을 제거한 높이를 기준으로 동작함 (전체높이X)
+        observerOpt.rootMargin = '10px 0px';
+    }
+    
     obs = new IntersectionObserver(scrollCenterSet, observerOpt);
 
     /** 스크롤 시 중앙위치 버튼 cls 제어 */

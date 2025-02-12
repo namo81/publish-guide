@@ -5,20 +5,21 @@
 	<style type="text/css">
 		<![CDATA[
 			@keyframes strokeSize {
-				0%, 25%,100% { stroke-dasharray:20 300; stroke-dashoffset:-15; }
-				60% { stroke-dasharray:110 300; stroke-dashoffset:0; stroke:#000; }
+				0%, { stroke-dasharray:10 10; stroke-dashoffset:0; }
+				45% { stroke-dasharray:160 240; }
+				100% { stroke-dasharray:230 240; stroke-dashoffset:-230; }
 			}
 			@keyframes strokeRotate {
-				0% { transform:rotate(50deg) }
-				100% { transform:rotate(-310deg); }
+				0% { transform:rotate(0deg) }
+				100% { transform:rotate(360deg); }
 			}
 
-			.obj1 { animation:strokeSize 1s cubic-bezier(.39,0.25,.2,1) infinite; }
-			.obj-group { animation:strokeRotate 1s cubic-bezier(.57,0,.2,1) infinite; transform-origin:50% 50%; }
+			.obj1 { animation:strokeSize 2s cubic-bezier(.39,0.25,.2,1) infinite; }
+			.obj-group { animation:strokeRotate 2s cubic-bezier(.57,0,.2,1) infinite; transform-origin:50% 50%; }
 		]]>
 	</style>
 	<circle fill="none" stroke="#aaa" stroke-width="8" stroke-miterlimit="10" cx="50" cy="50" r="37" />
 	<g class="obj-group">
-		<circle fill="none" stroke="#444" stroke-width="8" stroke-miterlimit="10" cx="50" cy="50" r="37" class="obj1" stroke-linecap="round" stroke-dasharray="30 300"/>
+		<circle fill="none" stroke="#444" stroke-width="8" stroke-miterlimit="10" cx="50" cy="50" r="37" class="obj1" stroke-linecap="round" stroke-dashoffset="0" stroke-dasharray="0 240"/>
 	</g>
 </svg>

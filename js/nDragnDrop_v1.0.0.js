@@ -7,8 +7,8 @@
 
 function nDragnDrop(option){
 	// 외부 설정 변수
-	let wrap 		= document.querySelector(option.wrap),	
-		objWrap 	= wrap.querySelector(option.objWrap),   	// 드래그 할 리스트 wrap
+	let wrap 		= typeof option.wrap === 'string' ? document.querySelector(option.wrap) : option.wrap,
+		objWrap 	= typeof option.objWrap === 'string' ? wrap.querySelector(option.objWrap) : option.objWrap,   	// 드래그 할 리스트 wrap
 		obj 		= objWrap.querySelectorAll(option.obj),   	// 드래그 할 요소 전체
 		objLen		= obj.length,								// obj legnth
 		area		= wrap.querySelectorAll(option.area), 		// 드랍 될 영역 ()

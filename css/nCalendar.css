@@ -6,6 +6,8 @@
 .cal-wrap select, .cal-wrap .cal-title { display:inline-block; width:auto; height:25px; margin:0 2px; padding:2px 5px 4px; font-size:13px; line-height:17px; color:#151515; font-weight:bold; box-sizing:border-box; vertical-align:middle; }
 .cal-wrap select { padding-right:20px; background:url(../images/ico_arrow-select.png) no-repeat right 3px top 50%; }
 .cal-wrap caption { height:1px; overflow:hidden; line-height:0; margin-top:-1px; color:transparent; }
+.cal-wrap .cal-now-tx.year::after { content:'년'; }
+.cal-wrap .cal-now-tx.month::after { content:'월'; }
 
 .cal-wrap .cal-top { position:relative; width:100%; margin-bottom:15px; overflow:hidden; text-align:center; }
 .cal-wrap .cal-top .cal-btn { position:absolute; top:0; padding:3px 8px 4px; border:1px solid #aaa; }
@@ -27,6 +29,10 @@
 
 .cal-wrap .cal-btns { margin-top:5px; padding:5px 0; text-align:center; clear:both;}
 .cal-wrap .cal-btns button { display:inline-block; margin:0 5px; padding:5px 15px; border:1px solid #cecece; }
+
+/* 별도 요일표기 */
+.cal-yoil { display:flex; justify-content:space-around; align-items:stretch; margin-bottom:10px; }
+.cal-yoil li { padding:10px; font-size:14px; line-height:20px; font-weight:500; color:#666; }
 
 /* 월간달력용 */
 .cal-wrap .cal-month-list { width:100%; }
