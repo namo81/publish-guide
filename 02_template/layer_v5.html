@@ -114,7 +114,7 @@
 					<p>팝업 style은 css 로 설정 / 특정 클래스 필요 시 layerpop-v5.0.0.js 파일 내 항목 수정</p><br />
 					<p>알럿 옵션 : nlayerAlert({ 하단 옵션 });</p>
 					<ul>
-						<li>- openBtn : 호출버튼 ( type : dom 요소 ) ( 예시 : this, e.target .. ) <strong class="tx-red">필수</strong> </li>
+						<li>- btn : 호출버튼 ( type : dom 요소 ) ( 예시 : this, e.target .. ) <strong class="tx-red">필수</strong> </li>
 						<li>- ment : 내용 ( type : string ) <strong class="tx-red">필수</strong></li>
 						<li>- title : 타이틀 ( type : string )</li>
 						<li>- btnTx : 버튼 텍스트 ( type : string )</li>
@@ -129,7 +129,7 @@
 
 <pre><code class="js">/** 알럿 기능 
 * nlayerAlert(option);
-* openBtn : 호출버튼 (필수)
+* btn : 호출버튼 (필수)
 * ment : 문구 (필수)
 * title : 타이틀
 * btnTx : 버튼 텍스트 - 없을 경우 '확인'
@@ -139,7 +139,7 @@
 let btn_alert = document.querySelector('.open-alert');
 btn_alert.addEventListener('click', function(){
 	nlayerAlert({
-		openBtn : this,
+		btn : this,
 		ment : '테스트 알럿 입니다.', 
 		title : '타이틀', 
 		active : function(){ 
@@ -158,7 +158,7 @@ btn_alert.addEventListener('click', function(){
 					<p>팝업 style은 css 로 설정 / 특정 클래스 필요 시 layerpop-v5.0.0.js 파일 내 항목 수정</p> <br />
 					<p>컨펌 함수 파라미터 : nlayerConfirm({ 하단 옵션 });</p>
 					<ul>
-						<li>- openBtn : 호출버튼 ( type : dom 요소 ) ( 예시: this, e.target .. ) <strong class="tx-red">필수</strong> </li>
+						<li>- btn : 호출버튼 ( type : dom 요소 ) ( 예시: this, e.target .. ) <strong class="tx-red">필수</strong> </li>
 						<li>- ment : 내용 ( type : string ) <strong class="tx-red">필수</strong></li>
 						<li>- title : 타이틀 ( type : string )</li>
 						<li>- activeConfirm : 확인 시 실행할 함수 ( type : function )</li>
@@ -176,7 +176,7 @@ btn_alert.addEventListener('click', function(){
 
 <pre><code class="js">/** 컨펌 기능 
 * nlayerConfirm(option);
-* openBtn : 호출버튼 (필수)
+* btn : 호출버튼 (필수)
 * ment : 문구 (필수)
 * title : 타이틀
 * btnTxConfirm : 컨펌 버튼 텍스트 - 없을 경우 '확인'
@@ -195,7 +195,7 @@ function confirm_cancel(){
 }
 btn_confirm.addEventListener('click', function(){
 	nlayerConfirm({
-		openBtn : this, 
+		btn : this, 
 		ment : '테스트 컨펌 입니다.', 
 		title : '타이틀', 
 		activeConfirm : confirm_run, 
@@ -258,6 +258,7 @@ btn_toast2.addEventListener('click', function(){
 					<p>tx</p>
 					<p>tx</p>
 					<p>tx</p>
+					<input type="text">
 				</div>
 				<button type="button" class="confirm">확인</button>
 				<button type="button" class="close-layer">닫기</button>
@@ -278,42 +279,49 @@ btn_toast2.addEventListener('click', function(){
 	</div>
 
 	<script src="/js/common.js"></script>
-	<script src="/js/nlayer_v5.0.0.js"></script>
+	<script src="/js/nlayer_v5.1.0.js"></script>
 	<script>
 		hljs.initHighlightingOnLoad(); 
 
 		let layer_test = new nlayer({
 			layer : '#layer1',
 			btn : '.open-layer',
-			activeOn : function(layer){
+			activeOn : function(){
 				console.log('layer ON!!');
 			},
-			activeShowBefore : function(layer, btn){
+			activeShowBefore : function(){
 				console.log('show before');
 			},
-			activeShow : function(layer, btn){
+			activeShow : function(){
 				console.log('show');
 			},
-			activeClose : function(layer, btn){
+			activeClose : function(){
 				console.log('close');
 			},
-			activeConfirm : function(layer, btn) {
-				console.log('confirm')
+			activeConfirm : function() {
+				//console.log('confirm')
+				nlayerAlert({
+					ment : '테스트 알럿 입니다.', 
+					title : '타이틀', 
+					active : function(){ 
+						console.log('alert 닫았습니다.!!')
+					}
+				});
 			}
 		});
 
 		let layer_test2 = new nlayer({
 			layer : '#layer2',
 			btn : '.open-layer2',
-			activeShowBefore : function(layer, btn){
-				console.log(layer, btn);
+			activeShowBefore : function(){
+				console.log(layer_test2);
 			},
 		});
 
 		let btn_alert = document.querySelector('.open-alert');
 		btn_alert.addEventListener('click', function(){
 			nlayerAlert({
-				openBtn : this,
+				btn : this,
 				ment : '테스트 알럿 입니다.', 
 				title : '타이틀', 
 				active : function(){ 
@@ -331,11 +339,11 @@ btn_toast2.addEventListener('click', function(){
 		}
 		btn_confirm.addEventListener('click', function(){
 			nlayerConfirm({
-				openBtn : this, 
+				btn : this, 
 				ment : '테스트 컨펌 입니다.', 
 				title : '타이틀', 
-				activeConfirm : confirm_run, 
-				activeCanCel : confirm_cancel
+				activeConfirm : function(){ confirm_run() }, 
+				activeCancel : function(){ confirm_cancel() }
 			});
 		});
 		

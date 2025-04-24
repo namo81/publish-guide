@@ -22,7 +22,7 @@
         .dial-wrap .dial-svg { width:100%; height:100%; }
         .dial-wrap svg { width:100%; height:100%; }
         .dial-wrap path { transform:translate3d(20px, 20px, 0); stroke-width:20; stroke:#008fc8; }
-        .dial-wrap path.path_guide { transform:translate3d(20px, 20px, 0); stroke-width:20; stroke:#ddd; }
+        .dial-wrap path.path_guide { transform:translate3d(20px, 20px, 0); stroke-width:20; stroke:#ddd; filter:drop-shadow(4px 4px 5px rgba(0,0,0,.15)); }
         .dial-wrap .rotate-wrap { position:absolute; width:100%; height:100%; top:0; left:0; background-color:transparent; }
         .rotate-wrap .pointer { position:absolute; width:30px; height:30px; background-color:#fff;border-radius:15px; box-shadow:1px 1px 6px rgba(0,0,0,.3); transform:translate3d(-15px, 5px, 0); }
         .dial-wrap .value-tx { position:absolute; width:100px; top:50%; left:50%; margin-left:-50px; font-size:24px; line-height:30px; }
@@ -37,7 +37,14 @@
                 <div class="dial-wrap">
                     <input type="text" title="온도" data-max="30" data-min="18" value="25">
                     <div class="dial-svg">
-                        <svg version="1.1" xmlns="http://www.w3.org/2000/svg"></svg>
+                        <svg version="1.1" xmlns="http://www.w3.org/2000/svg">
+                            <defs>
+                                <linearGradient id="gradient" x1="0%" y1="100%" x2="100%" y2="0%">
+                                    <stop offset="0%"   stop-color="#416EEC"/>
+                                    <stop offset="100%" stop-color="#7C77FF"/>
+                                </linearGradient>
+                            </defs>
+                        </svg>
                         <p class="rotate-wrap"><i class="pointer"></i></p>
                     </div>
                     <p class="value-tx"></p>
@@ -46,6 +53,10 @@
             </div>
         </main>
     </div>
+
+    <style scoped>
+        .path_gage { stroke:url(#gradient) !important; }
+    </style>
 
     <script src="../js/common.js"></script>
     <script src="../js/nDial_v.1.0.js"></script>

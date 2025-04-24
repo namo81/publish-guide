@@ -15,7 +15,7 @@
 	<meta property="og:url" content="">
 	<link rel="shortcut icon" href="data:;base64,iVBORwOKGO=" />
 
-	<title>레이어 팝업(v5) | 가이드</title>
+	<title>레이어 팝업(Dialog) | 가이드</title>
 
 	<!-- 가이드 관련 -->
 	<link rel="stylesheet" href="../guide/list-guide.css" media="screen, print" />
@@ -29,12 +29,12 @@
 	<div id="work-list">
 		<div class="guide">
 			<section id="guide-basic">
-				<h2 class="guide-sec-tit">레이어(v5.0)</h2>
+				<h2 class="guide-sec-tit">레이어(Dialog)</h2>
 				<div class="guide-sec">
 					<h3 class="guide-stit">레이어</h3>
-					<p>레이어 팝업별로 new nlayer 을 통해 ojbect 생성</p>
-					<p>option 항목은 아래 script 부분 확인</p>
-					<p>닫기 버튼에 'all' 클래스 있을 경우 - 현재 열린 모든 레이어 닫기 (별도 콜백함수 실행X)</p>
+					<p>Dialog 태그를 활용한 레이어</p>
+					<p>ios 의 경우 os ver 15.4 이후부터 지원됨. / aos 는 api level 28 (버전9)까진 작동 확인됨</p>
+					<p>참고 MDN 문서 : <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element/dialog" class="btn small" target="_blank">dialog</a></p>
 					<div class="guide-show">
 						<!-- 코드 작성 -->
 						<button type="button" class="btn medium open-dialog">팝업 호출</button> <br /><br />
@@ -43,14 +43,18 @@
 						<!-- // 코드 작성 -->
 					</div>
 <h4 class="guide-sstit">css</h4>
-<pre><code class="css ">/* layer-pop - v4.0 용*/
+<pre><code class="css ">/* layer-pop - v4.0 이상 */
 .layer-pop,
-.layer { position:fixed; display:none; width:100%; height:100%; top:0; left:0; background:rgba(0,0,0,.8); overflow-x:hidden; overflow-y:auto; z-index:1000; }
+.layer { position:fixed; display:none; width:100%; height:100%; top:0; left:0; background:rgba(0,0,0,.8); overflow-x:hidden; overflow-y:auto; backdrop-filter:blur(8px); z-index:1000;}
 .layer > .inbox { display:flex; align-items:center; height:calc(100% - 60px); margin:30px; }
 .layer-cnt { position:relative; display:flex; flex-direction:column; width:700px; max-height:100%; margin:auto; padding:25px; background:#fff; box-sizing:border-box;}
 .layer-top { position:relative; height:50px; flex-basis:50px; flex-shrink:0; }
 .layer-mid { flex:1 1 auto; overflow-y:auto; }
-.layer.showOn { display:block; }
+.layer.show { display:block; }
+
+dialog { width:100%; height:100%; margin:auto; background-color:transparent; border:none;}
+dialog[open] { display:flex; align-items:center; }
+dialog::backdrop { background-color:rgba(0,0,0, .8); backdrop-filter:blur(3px); }
 </code></pre>
 
 <h4 class="guide-sstit">호출버튼</h4>
@@ -70,7 +74,26 @@
 			<div class="layer-mid">
 				<p>tx</p>
 				<p style="border-bottom:1px solid #eee;">tx</p><br>
-				<button type="button" data-target="layer2" class="btn01">레이어팝업</button><br>
+				<button type="button" data-target="layer2" class="open-dialog2">레이어팝업</button><br>
+				<p>tx</p>
+				<p>tx</p>
+				<p>tx</p>
+				<p>tx</p>
+				<p>tx</p>
+				<p>tx</p>
+				<p>tx</p>
+			</div>
+			<button type="button" class="confirm">확인</button>
+			<button type="button" class="close-dialog">닫기</button>
+		</div>
+	</dialog>
+	
+	<!-- layerPop - 2 -->
+	<dialog class="dialog" id="dialog2">
+		<div class="layer-cnt">
+			<div class="layer-top">test</div>
+			<div class="layer-mid">
+				<p>tx</p>
 				<p>tx</p>
 				<p>tx</p>
 				<p>tx</p>
@@ -89,12 +112,18 @@
 
 		let btn_open = document.querySelector('.btn.open-dialog'),
 			dialog1 = document.querySelector('#dialog1'),
+			btn_open2 = document.querySelector('.open-dialog2'),
+			dialog2 = document.querySelector('#dialog2'),
 			btn_close = dialog1.querySelector('.close-dialog');
 		btn_open.addEventListener('click', function(){
 			dialog1.showModal();
 		});
 		btn_close.addEventListener('click', function(){
 			dialog1.close();
+		});
+		
+		btn_open2.addEventListener('click', function(){
+			dialog2.showModal();
 		});
 	</script>
 </body>

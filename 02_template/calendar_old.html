@@ -58,33 +58,25 @@
 <pre><code class="javascript">var 변수명 = new nCalendar({
 	calInp : '.cal'						// 달력 기능 적용할 input 선택자
 	showType : 'button',					// 달력 호출 방식 / button - 버튼 클릭시 / input - input 에 focus / both - 버튼,input 둘다 사용	
-	calTitle : '타이틀'					// 달력 영역 타이틀 text
-	splitTx : '-'						// 날짜 표기 구분선
-	positionSet : true,					// 달력 위치 - true : input 바로 아래 / false : 별도 설정 없음
+	splitType : '-', 					// 날짜 구분선
+	mobileDevice : false,					// true : 모바일일 경우 left 값 0 고정 / false : input 위치값 적용
 	gapTop : 0,						// 달력 top 위치 gap
 	gapLeft : 0,						// 달력 left 위치 gap
 	calType : null,						// null: 일반 기본형 ,  month : 월간달력
-	week : false,						// 일간달력 전용 - 주간표기 설정
 	langType : 'kr',						// kr : 한글, en : 영문 (월~일 표기)
 	changeMon : true,					// 달력 상단 월 변경 select 표출 여부
 	changeYear : true,					// 달력 상단 연도 변경 select 표출 여부
-	monthShift : false 					// 연/월 선택 시 '월간 달력' 전환 여부 - 일간달력 전용
-	yearRange : '2019:2040',					// 연도 제한 '시작연도:종료연도'
+	yearRange : '2019:2040',				// 연도 제한 '시작연도:종료연도'
 	showBtnPanel : true,					// 하단 '오늘', '닫기' 버튼 영역 표출 여부
 	closeBtnTx : '닫기',					// 닫기 버튼 텍스트
 	todayBtnTx : '오늘',					// 오늘 버튼 텍스트
-	controls : true,						// 이전달/다음달 버튼 생성 여부
+	controls : true,					// 이전달/다음달 버튼 생성 여부
 	nextTx : '&gt;',						// 다음달 버튼 텍스트
 	prevTx : '&lt;',						// 이전달 버튼 텍스트
-	enabled_array : array 					// 활성화할 버튼 배열 (특정 일자만 활성화 하고자 할 경우)
-	todayLimit : false,					// 오늘 기준 선택 제한
-	todayGap : '0D', 					// 오늘 기준일의 gap 설정 (ex. 내일부터 제한, 5일전까지 제한 등)
-	limitType : 'before',					// 제한 방향 설정 - before : 오늘 이전 날짜 선택 제한(기본값) / after : 오늘 이후 날짜 선택 제한
-	limitGap : null, 					// 제한 기간 설정 - null : 기한 없음 / nY : n년 / nM : n개월 / nD : n일 - 3가지 방식 중 택1
-	onModal : false,						// 팝업 띄울 때 body 스크롤 제거 관련 옵션(true 일 경우 달력 띄우면 body scroll 방지)
-	inPage : false,						// 페이지 고정형 선택
-	inTarget : null,						// 페이지 고정할 영역 선택
-	inCalWrap : false					// 달력의 body 가 아닌 input 과 동일레벨에 위치할지 여부
+	todayLimit      : false,				// 오늘 기준 선택 제한
+	todayGap 		: '0D', 			// 오늘 기준일의 gap 설정 (ex. 내일부터 제한, 5일전까지 제한 등)
+	limitType       : 'before',				// 제한 방향 설정 - before : 오늘 이전 날짜 선택 제한(기본값) / after : 오늘 이후 날짜 선택 제한
+	limitGap 		: null 				// 제한 기간 설정 - null : 기한 없음 / nY : n년 / nM : n개월 / nD : n일 - 3가지 방식 중 택1
 });
 </code></pre>
 <pre><code class="html">&lt;div class="inp-cal" style="width:300px"&gt;
@@ -143,13 +135,13 @@
 	todayLimit : true,
 	todayGap : '-3M',
 	limitType : 'after',
-	limitGap :  '3M'
+	limitGap :  '9M'
 
 	or 
 
 	todayLimit : true,
 	todayGap : '-6M',
-	limitGap :  '3M'
+	limitGap :  '9M'
 </code></pre>
 				</div>
 			</section>
@@ -160,7 +152,7 @@
 
 	<!-- calendar 관련 설정 -->
 	<link rel="stylesheet" href="/css/nCalendar.css" media="screen, print" />
-	<script src="/js/nCalendar_v2.4.2.js"></script>
+	<script src="/js/old version/nCalendar_v2.4.1.js"></script>
 	
 	<script>
 		hljs.initHighlightingOnLoad(); 
@@ -168,7 +160,8 @@
 		var calDay = new nCalendar({
 			calInp : '.cal',
 			todayLimit : true,
-			monthShift : true
+			changeYear : true,
+			changeMon : true,
 		});
 
 		var calMon = new nCalendar({

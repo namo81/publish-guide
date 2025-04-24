@@ -110,15 +110,17 @@ function nChartHtml(option){
     }
     
     // tooltip 설정
-    let ttTag = '<div class="tooltip">';
-        ttTag += '<p class="tt-title"></p>';
-        ttTag += tooltip_share ? '<div class="tt-value"><ul></ul></div>' : '<p class="tt-value"></p>';
-        ttTag += '</div>';
+    function set_tooltip(){
+        let ttTag = '<div class="tooltip">';
+            ttTag += '<p class="tt-title"></p>';
+            ttTag += tooltip_share ? '<div class="tt-value"><ul></ul></div>' : '<p class="tt-value"></p>';
+            ttTag += '</div>';
 
-    wrap.insertAdjacentHTML('beforeend', ttTag);
-    tooltip     = wrap.querySelector('.tooltip'),
-    tooltipTit  = tooltip.querySelector('.tt-title'),
-    tooltipVal  = tooltip.querySelector('.tt-value');
+        wrap.insertAdjacentHTML('beforeend', ttTag);
+        tooltip     = wrap.querySelector('.tooltip'),
+        tooltipTit  = tooltip.querySelector('.tt-title'),
+        tooltipVal  = tooltip.querySelector('.tt-value');
+    }
 
     /** 데이터 값 관련 */
     let maxArr, minArr, maxVal, minVal, stackArr, stackMax;
@@ -372,6 +374,14 @@ function nChartHtml(option){
         });
     }
 
+    /** label / dataset 리로드 */
+    function option_update(){
+        labels          = option.labels;
+        dataset         = option.dataset;
+        dataLen         = labels.length;
+        setLen          = dataset.length;
+    }
+
     /** 가이드라인 그리기 */
     function guideLineSet(){
         let listTag = '<ul class="guide-line">';
@@ -384,8 +394,10 @@ function nChartHtml(option){
     }
 
     function chart_init(){
+        option_update();
         wrapSizeSet();
         titleSet();
+        set_tooltip();
 
         calcMaxMin();
         if(stack == true && setLen > 1) calcMaxStackType();

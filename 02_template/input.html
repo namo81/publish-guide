@@ -212,6 +212,28 @@ nText('.inp-label');
 	&lt;option value=""&gt;daum.net&lt;/option&gt;
 &lt;/select&gt;
 </code></pre>
+					<h4 class="guide-sstit">기본 - placeholder</h4>
+					<p>placeholder 같은 효과 - 기본 상태 color 적용</p>
+					<p>selece 에 required 속성 필요 / select:invalid 속성으로 값이 없는 상태의 color 값 설정</p>
+					<p>option 에 별도 color 적용 필요</p>
+					<div class="guide-show">
+						<select name="" title="" required>
+							<option value="" hidden>선택해주세요.</option>
+							<option value="direct">직접 선택</option>
+							<option value="nate">nate.com</option>
+							<option value="daum">daum.net</option>
+						</select>
+					</div>
+<pre><code class="html">&lt;select name="" title="" required&gt;
+	&lt;option value="" hidden&gt;선택해주세요.&lt;/option&gt;
+	&lt;option value=""&gt;직접 선택&lt;/option&gt;
+	&lt;option value=""&gt;nate.com&lt;/option&gt;
+	&lt;option value=""&gt;daum.net&lt;/option&gt;
+&lt;/select&gt;
+</code></pre><br>
+<pre><code class="css">select:invalid { color:#aaa; }
+option { color:#000 }
+</code></pre>
 					<h4 class="guide-sstit">dropdown 방식</h4>
 					<p>js 적용 버전</p>
 					<p>IE대응 / option 영역까지 디자인을 적용하여야 할 때 사용</p>

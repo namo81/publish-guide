@@ -436,7 +436,7 @@ function radioSelectTg(area, name, func){
 	let wrap = typeof area === 'string' ? document.querySelector(area) : area,
 		inps = wrap.querySelectorAll('input[name='+name+']'),
 		tgs = new Array();
-	
+
 	function tgReset(){
 		tgs.forEach((tg)=>{ 
 			tg.style.display = 'none';
@@ -451,17 +451,19 @@ function radioSelectTg(area, name, func){
 		tgReset();
 		let my_tg;
 		if(inp.getAttribute('data-target') != undefined) {
-			my_tg = wrap.querySelector('.' + inp.getAttribute('data-target'));
-			tgSetOn(my_tg);
+			my_tg = wrap.querySelectorAll('.' + inp.getAttribute('data-target'));
+			my_tg.forEach((tg)=>{ tgSetOn(tg) });
+			
 		}
 		if(typeof func === 'function') { 
-			my_tg ? func(inp, my_tg) : func(inp); 
+			my_tg ? my_tg.forEach((tg)=>{ func(inp, tg) }) : func(inp); 
 		}
 	}
 	inps.forEach((inp)=>{
 		if(inp.getAttribute('data-target') != undefined) {
-			let my_tg = wrap.querySelector('.' + inp.getAttribute('data-target'));
-			tgs.push(my_tg);
+			let my_tg = wrap.querySelectorAll('.' + inp.getAttribute('data-target'));
+			my_tg.forEach((tg)=>{ tgs.push(tg); });
+			
 		}
 		inp.addEventListener('click', function(){ tgSet(inp); });
 	});
