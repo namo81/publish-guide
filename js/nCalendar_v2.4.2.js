@@ -18,34 +18,34 @@ function nCalendar(option){
 	calendar.wrap;
 	calendar.num;
 
-	let showType        = option.showType || 'input',		// both / button / input
-		calTitle 	    = option.calTitle,					// 달력 타이틀
-		splitTx 		= option.splitTx || '-',			// 날짜 구분선 '-' 이나 '.' 2가지만 가능
-		positionSet	    = option.positionSet || true,		// true : inp 위치에 달력 설정 / fasle : 별도 설정 없음
-		gapTop			= option.gapTop || 0,				// 달력 top 위치 gap
-		gapLeft			= option.gapLeft || 0,				// 달력 left 위치 gap
-		calType         = option.calType || null,			// null: 일반 기본형 ,  month : 월간달력
-		week 			= option.week || false,				// 일간달력 전용 - 주간표기 설정
-		langType		= option.langType || 'kr',			// kr : 한글, en : 영문 (월~일 표기)
-		changeMon       = option.changeMon || false,		// 월 선택 select 활성 여부
-		changeYear      = option.changeYear || false,		// 연도 선택 select 활성 여부
-		monthShift  	= option.monthShift || false,		// 연/월 선택 시 '월간 달력' 전환 여부 - 일간달력에서만 사용
-		yearRange       = option.yearRange || '2000:2050',	// 연도 제한
-		showBtnPanel    = option.showBtnPanel || true,		// 하단 버튼 영역 show/hide 선택 - 오늘/닫기 버튼
-		closeBtnTx      = option.closeBtnTx || '닫기',		// 닫기 버튼 텍스트
-		todayBtnTx      = option.todayBtnTx || '오늘',		// 오늘 버튼 텍스트
-		controls        = option.controls || true,			// 이전달/다음달 버튼 show/hide 선택
-		nextTx          = option.nextTx || '>',				// 다음달 버튼 텍스트
-		prevTx          = option.prevTx || '<',				// 이전달 버튼 텍스트
-		enabled_array	= option.enabled_array,				// 활성화할 버튼 배열 (특정 일자만 활성화 하고자 할 경우)
-		todayLimit      = option.todayLimit || false,		// 오늘 기준 선택 제한
-		todayGap 		= option.todayGap || '0D', 			// 오늘 기준일의 gap 설정 (ex. 내일부터 제한, 5일전까지 제한 등)
-		limitType       = option.limitType || 'before',		// 제한 방향 설정 - before : 오늘 이전 날짜 선택 제한 / after : 오늘 이후 날짜 선택 제한
-		limitGap 		= option.limitGap || null, 			// 제한 기간 설정 - null : 기한 없음 / nY : n년 / nM : n개월 / nD : n일
-		onModal 		= option.onModal || false,			// 팝업 띄울 때 body 스크롤 제거 관련 옵션(true 일 경우 달력 띄우면 body scroll 방지)
-		inPage			= option.inPage || false,			// 페이지 고정형 선택
-		inTarget		= option.inTarget || null, 			// 페이지 고정할 영역 선택
-		inCalWrap		= option.inCalWrap || false;		// 달력의 body 가 아닌 input 과 동일레벨에 위치할지 여부
+	let showType        = option.showType || 'input',									// both / button / input
+		calTitle 	    = option.calTitle,												// 달력 타이틀
+		splitTx 		= option.splitTx || '-',										// 날짜 구분선 '-' 이나 '.' 2가지만 가능
+		positionSet	    = option.positionSet != undefined ? option.positionSet : true,	// true : inp 위치에 달력 설정 / fasle : 별도 설정 없음
+		gapTop			= option.gapTop || 0,											// 달력 top 위치 gap
+		gapLeft			= option.gapLeft || 0,											// 달력 left 위치 gap
+		calType         = option.calType || null,										// null: 일반 기본형 ,  month : 월간달력
+		week 			= option.week || false,											// 일간달력 전용 - 주간표기 설정
+		langType		= option.langType || 'kr',										// kr : 한글, en : 영문 (월~일 표기)
+		changeMon       = option.changeMon || false,									// 월 선택 select 활성 여부
+		changeYear      = option.changeYear || false,									// 연도 선택 select 활성 여부
+		monthShift  	= option.monthShift || false,									// 연/월 선택 시 '월간 달력' 전환 여부 - 일간달력에서만 사용
+		yearRange       = option.yearRange || '2000:2050',								// 연도 제한
+		showBtnPanel    = option.showBtnPanel != undefined ? option.showBtnPanel : true,// 하단 버튼 영역 show/hide 선택 - 오늘/닫기 버튼
+		closeBtnTx      = option.closeBtnTx || '닫기',									// 닫기 버튼 텍스트
+		todayBtnTx      = option.todayBtnTx || '오늘',									// 오늘 버튼 텍스트
+		controls        = option.controls != undefined ? option.controls : true,		// 이전달/다음달 버튼 show/hide 선택
+		nextTx          = option.nextTx || '>',											// 다음달 버튼 텍스트
+		prevTx          = option.prevTx || '<',											// 이전달 버튼 텍스트
+		enabled_array	= option.enabled_array,											// 활성화할 버튼 배열 (특정 일자만 활성화 하고자 할 경우)
+		todayLimit      = option.todayLimit || false,									// 오늘 기준 선택 제한
+		todayGap 		= option.todayGap || '0D', 										// 오늘 기준일의 gap 설정 (ex. 내일부터 제한, 5일전까지 제한 등)
+		limitType       = option.limitType || 'before',									// 제한 방향 설정 - before : 오늘 이전 날짜 선택 제한 / after : 오늘 이후 날짜 선택 제한
+		limitGap 		= option.limitGap || null, 										// 제한 기간 설정 - null : 기한 없음 / nY : n년 / nM : n개월 / nD : n일
+		onModal 		= option.onModal || false,										// 팝업 띄울 때 body 스크롤 제거 관련 옵션(true 일 경우 달력 띄우면 body scroll 방지)
+		inPage			= option.inPage || false,										// 페이지 고정형 선택
+		inTarget		= option.inTarget || null, 										// 페이지 고정할 영역 선택
+		inCalWrap		= option.inCalWrap || false;									// 달력의 body 가 아닌 input 과 동일레벨에 위치할지 여부
 	
 	//초기 날짜 관련 세팅 및 변수 ----------------------------------------------------------------------------
 	let now         = new Date(),

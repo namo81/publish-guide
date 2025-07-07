@@ -97,6 +97,39 @@ function getStyle(target, value, pseudo){
 	return window.getComputedStyle(target, pseudo).getPropertyValue(value);	
 }
 
+/**
+ * object 깊은 복사 함수
+ * @param {Object} obj 복사할 Object 
+ * @returns 
+ */
+function object_copy(obj) {
+	if(typeof obj !== "object" || obj === null){
+	  return obj;
+	}	
+	const deepCopyObj = {};	
+	for(let key in obj){
+	  deepCopyObj[key] = object_copy(obj[key]);
+	}	
+	return deepCopyObj;
+}
+/**
+ * object 깊은 복사 함수 (배열 구분 포함)
+ * @param {Object} obj 복사할 Object 
+ * @returns 
+ */
+function deepCopy(obj) {
+  if (obj === null || typeof obj !== "object") return obj;
+  if (Array.isArray(obj)) return obj.map(deepCopy);
+
+  const copy = {};
+  for (const key in obj) {
+    if (obj.hasOwnProperty(key)) {
+      copy[key] = deepCopy(obj[key]);
+    }
+  }
+  return copy;
+}
+
 /** padding, margin 값을 분류하여 top / right / bottom / left 의 object로 반환
  * ex : getStyleArr('20px') / getStyleArr('20px 20px') ...
 */

@@ -318,6 +318,105 @@ function doubleRange(area, unit, gap){
 */
 
 
+
+/** 2중 Range input */
+function doubleRange_area(option){
+	const range = this;
+	range.wrap = typeof option.area === 'string' ? document.querySelector(option.area) : option.area;
+
+	const slider = range.wrap.querySelector('.range-slider'),
+	 	r_gap = option.gap ? Number(option.gap) : 0.5;
+
+	let inputEvt = new Event('input', { bubbles: true, cancelable: true });
+
+	let range_arr = option.range_tx,
+		range_single = false,
+		inp_left = range.wrap.querySelector('.r_left'),
+		inp_right = range.wrap.querySelector('.r_right'),
+		thumb_l = range.wrap.querySelector('.thumb.left'),
+		thumb_r = range.wrap.querySelector('.thumb.right');
+
+	let pos_1, pos_2,
+		ranges = [];
+
+	function create_range(){
+		ranges = [];
+		for(let i=0; i<range_arr.length; i++){
+			let item = createDom('p', 'range');
+			item.textContent = range_arr[i];
+			item.classList.add('step' + i);
+			slider.appendChild(item);
+			ranges.push(item);
+		}
+		if(range_arr.length > 2) {
+			range_single = false;
+			if(inp_left.value >= inp_right.value) {
+				inp_left.value = inp_right.value - r_gap;
+				inp_left.dispatchEvent(inputEvt);
+			}
+		} else range_single = true;
+	}
+	create_range();
+
+	function remove_range(){
+		ranges.forEach((item)=>{
+			slider.removeChild(item);
+		});
+	}
+
+	function range_pos(){
+		ranges[0].style.right = (100 - pos_1) + '%';
+		ranges[1].style.left = pos_1 + '%';
+		if(ranges.length == 3) {
+			ranges[1].style.right = (100 - pos_2) + '%';
+			ranges[ranges.length - 1].style.left = pos_2 + '%';
+		} 
+	}
+
+	let min = Number(inp_left.getAttribute('min')),
+		max = Number(inp_left.getAttribute('max'));
+	
+	inp_left.addEventListener('input', function(){
+		let val = range_single ? this.value : Math.min(this.value, inp_right.value - r_gap);
+		if(val == min) val = r_gap + min;
+		if(val == max) val = max - r_gap;
+		pos_1 = Number(((val - min) / (max - min)) * 100);
+		this.value = val;
+		thumb_l.style.left = pos_1 + '%';
+		range_pos();
+	})
+
+	inp_right.addEventListener('input', function(){
+		let val = Math.max(this.value, Number(inp_left.value) + r_gap);
+		if(val == max) val = max - r_gap;
+		pos_2 = Number(((val - min) / (max - min)) * 100);
+		this.value = val;
+		thumb_r.style.right = 100 - pos_2 + '%';
+		range_pos();
+	});
+
+	inp_left.dispatchEvent(inputEvt);
+	inp_right.dispatchEvent(inputEvt);
+
+	// range 영역 업데이트
+	range.range_update = function(range){
+		range_arr = range;
+		remove_range();
+		create_range();
+		range_pos()
+	}
+
+	// 최소값 변경
+	range.min_update = function(val){
+		inp_left.setAttribute('min', val);
+		inp_right.setAttribute('min', val);
+		min = Number(inp_left.getAttribute('min'));
+		inp_left.dispatchEvent(inputEvt);
+		inp_right.dispatchEvent(inputEvt);
+	}
+}
+
+
 /**
  * Input 입력에 따른 버튼 활성화 기능
  * @param {dom/string} area 적용할 영역(input 및 버튼포함 영역 선택자)

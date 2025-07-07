@@ -7,20 +7,22 @@ function addSvg(type){
 }
 
 function nDial(option){
-    const wrap      = typeof option.area === 'string' ? document.querySelector(option.area) : option.area,
-        cir_center  = option.cir_width / 2,
-        action_btn  = typeof option.action_tg === 'string' ? wrap.querySelector(option.action_tg) : option.action_tg, // 터치 요소
+    const dial = this;
+        dial.wrap      = typeof option.area === 'string' ? document.querySelector(option.area) : option.area;
+        
+    const cir_center  = option.cir_width / 2,
+        action_btn  = typeof option.action_tg === 'string' ?  dial.wrap.querySelector(option.action_tg) : option.action_tg, // 터치 요소
         rotate_wrap = action_btn.parentNode; // 터치요소를 감싸는 영역 (실제로 이 영역이 회전)
         
-    let inp = wrap.querySelector('input'),
-        svg = wrap.querySelector('svg'),
-        val_tx = wrap.querySelector('.value-tx'),
+    let inp =  dial.wrap.querySelector('input'),
+        svg =  dial.wrap.querySelector('svg'),
+        val_tx =  dial.wrap.querySelector('.value-tx'),
         path_guide = addSvg('path'),
         path_gage = addSvg('path');
     
     let min_val = Number(inp.getAttribute('data-min')),
         max_val = Number(inp.getAttribute('data-max')),
-        now_val = Number(inp.getAttribute('value'));
+        now_val = Number(inp.value);
     
     let start_point = calcArcPos(-135);
     let rotate_rect = rotate_wrap.getBoundingClientRect(),
@@ -117,4 +119,12 @@ function nDial(option){
         else result_val = val_rad - 135;
         return result_val;
     }
+
+    /* 외부호출 함수 */
+    dial.update = function(){
+        now_val = Number(inp.value);
+        drawPath(convertToRad(now_val), path_gage);
+        rotate_wrap.style.transform = 'rotate('+ convertToRad(now_val) +'deg)';
+    }
+    dial.input = inp;
 }

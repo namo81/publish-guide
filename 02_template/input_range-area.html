@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+	<meta charset="UTF-8" >
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="user-scalable=yes, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, width=device-width">
+	<meta name="author" content="seonamho - SK MNS" >
+	<meta name="description" content="">
+	<meta name="keywords" content="Site Template">
+	<meta property="og:type" content="website">
+	<meta property="og:title" content="Site Template">
+	<meta property="og:description" content="">
+	<meta property="og:image" content="">
+	<meta property="og:url" content="">
+	<link rel="shortcut icon" href="data:;base64,iVBORwOKGO=" />
+
+	<title>레이어 팝업(v5) | 가이드</title>
+
+	<!-- 가이드 관련 -->
+	<link rel="stylesheet" href="../guide/list-guide.css" media="screen, print" />
+	<link rel="stylesheet" href="../guide/vendor/railscasts.css">
+	<script src="../guide/vendor/highlight.js"></script>
+
+	<!-- 프로젝트 관련 CSS 및 JS 파일 로드 -->
+	<link rel="stylesheet" href="/css/layout.css" media="screen, print" />
+</head>
+<body>
+    <div id="work-list" class="mobile">
+		<div class="guide">
+
+			<section id="guide-input">
+				<div class="guide-sec">
+					<h3 class="guide-stit">2중 Range</h3>
+					<p>doubleRange 함수를 통해 선언</p>
+					<p>최소 갭 값이 없거나 0일 경우 좌우 요소가 겹칠 수 있음.</p>
+					<p>태그 구조는 아래와 동일하게 설정</p>
+					<p>range 2개의 min / max / step 값은 동일하여야 함</p>
+                    <div class="guide-show">
+                        <div class="srch-rbox">
+                            <div class="srch-items range-set">
+                                <div class="srch-group">
+                                    <div class="srch-set">
+                                        <p class="tit">관심 기준 사용 설정</p>
+                                        <select name="" id="sel_range-type" style="width:160px">
+                                            <option value="123">노출/시청/도달</option>
+                                            <option value="12">노출/시청</option>
+                                            <option value="13">노출/도달</option>
+                                            <option value="23">시청/도달</option>
+                                        </select>
+                                    </div>
+                                    <div class="srch-set">
+                                        <p class="tit">최소 관심 기준 설정</p>
+                                        <select name="" id="sel_range-min" style="width:160px">
+                                            <option value="0.3">0.3</option>
+                                            <option value="0.5">0.5</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="srch-set">
+                                    <p class="tit">관심 기준 구간 설정</p>
+                                    <div class="double-range_area flex1">
+                                        <input type="range" class="r_left" title="구분1" min="0" max="5" value="1.5" step="0.5">
+                                        <input type="range" class="r_right" title="구분2" min="0" max="5" value="3.5" step="0.5">
+                                        <div class="range-slider">
+                                            <p class="track"></p>
+                                            <p class="thumb left"></p>
+                                            <p class="thumb right"></p>
+                                            <ul class="label">
+                                                <li><span class="num">0.3</span>초</li>
+                                                <li></li>
+                                                <li><span class="num">1</span>초</li>
+                                                <li></li>
+                                                <li><span class="num">2</span>초</li>
+                                                <li></li>
+                                                <li><span class="num">3</span>초</li>
+                                                <li></li>
+                                                <li><span class="num">4</span>초</li>
+                                                <li></li>
+                                                <li><span class="num">5</span>초</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <button type="button" class="butn xlarge btn-srch">분석하기</button>
+                        </div>
+                    </div>
+				</div>
+			</section>
+    
+		</div>
+		<a href="#work-list" class="guide-top">Top</a>
+	</div>
+</body>
+<script src="/js/common.js"></script>
+<script src="/js/inpdesign_v2.1.0.js"></script>
+<script>
+
+    function range_func(area){
+        const wrap = typeof area === 'string' ? document.querySelector(area) : area;
+
+        let range_area = wrap.querySelector('.double-range_area'),
+            slider = range_area.querySelector('.range-slider'),
+            slider_first = slider.querySelector('li'),
+            sel_type = wrap.querySelector('#sel_range-type'),
+            sel_min  = wrap.querySelector('#sel_range-min'),
+            range_arr = ['노출', '시청', '도달'];
+
+        let d_range = new doubleRange_area({
+            area : range_area,
+            gap : 0.5,
+            range_tx : range_arr
+        });
+
+        function create_arr(num){
+            range_arr = [];
+            if(num.indexOf('1') != -1) range_arr.push('노출');
+            if(num.indexOf('2') != -1) range_arr.push('시청');
+            if(num.indexOf('3') != -1) range_arr.push('도달');
+            range_arr.length > 2 ? range_area.classList.remove('single') : range_area.classList.add('single');
+        }
+
+        sel_type.addEventListener('change', ()=>{
+            create_arr(sel_type.value);
+            d_range.range_update(range_arr);
+        });
+        sel_min.addEventListener('change', ()=>{
+            let min = sel_min.value;
+            if(min == '0.3') min = 0;
+            slider_first.textContent = sel_min.value;
+            min == '0.5' ? slider.classList.add('zdf') : slider.classList.remove('zdf');
+            d_range.min_update(min);
+        });
+    }
+    range_func('.range-set');
+
+</script>
+</body>
+</html>
