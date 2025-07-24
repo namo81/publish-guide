@@ -27,12 +27,16 @@ function layerHideAll() {
 function nlayer(option){
 	const layer = this;
 
-	let clsLayer	= option.layer_cls || '.layer', 		// 레이어 팝업 공통 클래스
+	let clsLayer	= option.layer_cls || 'layer', 		// 레이어 팝업 공통 클래스
 		clsCloseBtn	= option.btn_close || 'close-layer',	// 레이어 팝업 닫기버튼 클래스
-		clsShow		= option.show_cls || 'show';			// 레이어 show 용 상태 클래스
+		clsShow		= option.show_cls || 'show',			// 레이어 show 용 상태 클래스
+		focus_item  = undefined; 							// 레이어 닫기 후 focus 될 요소
 
-		layer.dom  = typeof option.layer === 'string' ? document.querySelector(option.layer) : option.layer; // 대상 레이어 (필수값)
-		layer.title = option.title ? option.title : layer.dom.querySelector('.layer-title').textContent;
+	layer.dom  = typeof option.layer === 'string' ? document.querySelector(option.layer) : option.layer; // 대상 레이어 (필수값)
+	layer.title = option.title ? option.title : layer.dom.querySelector('.layer-title').textContent;
+	if(option.focus_item) {
+		focus_item  = typeof option.focus_item === 'string' ? document.querySelector(option.focus_item) : option.focus_item;
+	}
 
 	layer.dom.setAttribute('role', 'dialog');
 	layer.dom.setAttribute('aria-labelledby', layer.title);
@@ -46,7 +50,7 @@ function nlayer(option){
 	function pageSet(){
 		tabEle = document.querySelectorAll('a, button, input, select, textarea');
 		tabEle.forEach(function(ele){
-			if(ele.closest(clsLayer) == layer.dom) {
+			if(ele.closest('.' + clsLayer) == layer.dom) {
 				ele.removeAttribute('inert');
 				return;
 			}
@@ -62,7 +66,7 @@ function nlayer(option){
 	function pageUnset() {
 		if(layer_arr.length > 0) {
 			tabEle.forEach(function(ele){
-				if(ele.closest(clsLayer) == layer_arr[layer_arr.length - 1].dom) ele.removeAttribute('inert');
+				if(ele.closest('.' + clsLayer + '.' + clsShow)) ele.removeAttribute('inert');
 			});
 			return;
 		} 
@@ -77,6 +81,8 @@ function nlayer(option){
 		layer.dom.classList.remove(clsShow);
 		layer.dom.removeAttribute('aria-modal');
 		pageUnset();
+		if(focus_item) focus_item.focus();
+		if(typeof option.activeClose === 'function') option.activeClose();
 	}
 
 	/** 레이어 보기 */
@@ -86,10 +92,10 @@ function nlayer(option){
 			layer.dom.classList.add(clsShow);
 			layer.dom.setAttribute('aria-modal', true);
 
-			let focus_item = layer.dom.querySelector('a, button, input, select, textarea');
+			let focus_tg = layer.dom.querySelector('a, button, input, select, textarea');
 			
 			pageSet();
-			focus_item.focus(); // focus 로 인해 화면 밖 > 안으로 이동하는 모션 무시될 가능성 있음. 확인 필요 - 필요 시 transitionend 이벤트 추가 후 적용
+			focus_tg.focus(); // focus 로 인해 화면 밖 > 안으로 이동하는 모션 무시될 가능성 있음. 확인 필요 - 필요 시 transitionend 이벤트 추가 후 적용
 			if(typeof option.activeShow === 'function') option.activeShow();
 		}, 10)
 	}
@@ -104,12 +110,12 @@ function nlayer(option){
 	closeBtnSet();
 
 	/** 외부호출함수 - 레이어 보이기 */
-	layer.show = function(btn){
+	layer.show = function(){
 		layerShow();
 	}
 	
 	/** 외부호출함수 - 레이어 닫기 */
-	layer.hide = function(btn){
+	layer.hide = function(){
 		layerHide();
 	}
 

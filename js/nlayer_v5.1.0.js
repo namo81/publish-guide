@@ -26,33 +26,45 @@
 // 현재 show 상태인 레이어 배열
 let layer_arr = [];
 
+/** 오픈된 레이어 전체 닫기 */
+function layerHideAll() {
+	for(let i = layer_arr.length - 1; i >= 0; i--){
+		layer_arr[i].hide();
+	}
+}
+
 /** 레이어 팝업 */
 function nlayer(option){
+	const layer = this;
+
 	let clsLayer	= option.layer_cls || 'layer', 		// 레이어 팝업 공통 클래스
 		clsCloseBtn	= option.btn_close || 'close-layer',	// 레이어 팝업 닫기버튼 클래스
 		clsShow		= option.show_cls || 'show',			// 레이어 show 용 상태 클래스
-		clsConfirm  = option.confirm_cls || 'confirm',  // 레이어 confirm 버튼 클래스
-		layer   	= this;
+		clsConfirm  = option.confirm_cls || 'confirm';  // 레이어 confirm 버튼 클래스
 
-		layer.tg_layer  = typeof option.layer === 'string' ? document.querySelector(option.layer) : option.layer; // 대상 레이어 (필수값)
+	layer.dom  = typeof option.layer === 'string' ? document.querySelector(option.layer) : option.layer; // 대상 레이어 (필수값)
+	layer.title = option.title ? option.title : layer.dom.querySelector('.layer-title').textContent;
 
 	let body = document.querySelector('body'),
-		bodyStyle = body.style,
-		btn_on_layer = null; // 레이어 내 호출버튼이 있을 경우 해당 레이어.
+		bodyStyle = body.style;
 
 	if(option.btn) layer.btn_open = typeof option.btn === 'string' ? document.querySelectorAll(option.btn) : option.btn;
+	
+	layer.dom.setAttribute('role', 'dialog');
+	layer.dom.setAttribute('aria-labelledby', layer.title);
 
-	let parent_dom, // tab 키 제어요소 검색할 영역
-		tabEle;     // 제어할 tab 키 요소 배열
+	let tabEle;     // 제어할 tab 키 요소 배열
 
 	/** 모 페이지 설정 함수 - tab 키 요소 제어 및 화면 overflow 설정 */
 	function pageSet(){
-		parent_dom = btn_on_layer || document;
-		tabEle = parent_dom.querySelectorAll('a, button, input, select, textarea');
+		tabEle = document.querySelectorAll('a, button, input, select, textarea');
 		tabEle.forEach(function(ele){
-			if(ele.closest('.' + clsLayer) && btn_on_layer == null) return;
+			if(ele.closest('.' + clsLayer) == layer.dom) {
+				ele.removeAttribute('inert');
+				return;
+			}
 			if(ele == document.activeElement) ele.blur();
-			ele.getAttribute('inert') ? ele.classList.add('inert') : ele.setAttribute('inert', true); // 이미 inert 속성이 있을 경우 inert 클래스 추가
+			ele.setAttribute('inert', true);
 			
 		});		
 		bodyStyle.overflow = 'hidden';
@@ -61,11 +73,13 @@ function nlayer(option){
 
 	/** 모 페이지 설정 해제 - tab 키 요소 제어 및 화면 overflow 설정 해제 */
 	function pageUnset() {
-		tabEle.forEach(function(ele){
-			if(ele.closest('.' + clsLayer) && btn_on_layer == null) return;
-			ele.classList.contains('inert') ? ele.classList.remove('inert') : ele.removeAttribute('inert');
-			//ele.removeAttribute('inert');
-		});
+		if(layer_arr.length > 0) {
+			tabEle.forEach(function(ele){
+				if(ele.closest('.' + clsLayer + '.' + clsShow)) ele.removeAttribute('inert');
+			});
+			return;
+		}
+		tabEle.forEach(function(ele){ ele.removeAttribute('inert'); });
 		bodyStyle.overflow = '';
 		body.classList.remove('hold');
 	}
@@ -73,12 +87,11 @@ function nlayer(option){
 	/** 레이어 닫기 (단순 닫기) */
 	function layerHide() {
 		arr_del(layer_arr, layer);
-		layer.tg_layer.classList.remove(clsShow);
-		layer.tg_layer.removeAttribute('role');
+		layer.dom.classList.remove(clsShow);
+		layer.dom.removeAttribute('role');
 		pageUnset();
 
 		if(layer.btn_active == null) return;
-		layer.btn_active.setAttribute('aria-expended', false);
 		setTimeout(function(){ // 모바일 talkback 상태일 경우 - pageUnset 와 focus 동시실행 관련 에러 해결
 			layer.btn_active.focus();
 			layer.btn_active = null;
@@ -97,38 +110,29 @@ function nlayer(option){
 		} else layerHide();
 	}
 
-	/** 오픈된 레이어 전체 닫기 */
-	function layerHideAll() {
-		for(let i = layer_arr.length - 1; i >= 0; i--){
-			layer_arr[i].hide();
-		}
-	}
-
 	/** 레이어 보기 */
 	function layerShow(){
 		if(typeof option.activeShowBefore === 'function') option.activeShowBefore();
 		setTimeout(function(){ // alert / confirm 일 경우 show 클래스 관련 transition 적용을 위한 delay
 			layer_arr.push(layer);
-			layer.tg_layer.classList.add(clsShow);
-			layer.tg_layer.setAttribute('role', 'dialog');
+			layer.dom.classList.add(clsShow);
 
-			let focus_item = layer.tg_layer.querySelector('a, button, input, select, textarea');
+			let focus_item = layer.dom.querySelector('a, button, input, select, textarea');
 			
 			pageSet();
 			focus_item.focus(); // focus 로 인해 화면 밖 > 안으로 이동하는 모션 무시될 가능성 있음. 확인 필요 - 필요 시 transitionend 이벤트 추가 후 적용
-			if(layer.btn_active != null) layer.btn_active.setAttribute('aria-expended', true);
 			if(typeof option.activeShow === 'function') option.activeShow();
 		}, 10)
 	}
 
 	/** 레이어 닫기 버튼 설정 */
 	function closeBtnSet(onceChk){
-		let btnCloses 	= layer.tg_layer.querySelectorAll('.' + clsCloseBtn);
+		let btnCloses 	= layer.dom.querySelectorAll('.' + clsCloseBtn);
 		btnCloses.forEach(function(cbtn){
 			cbtn.classList.contains('all') ? cbtn.addEventListener('click', layerHideAll, { once: onceChk }) : cbtn.addEventListener('click', layerHideClose, { once: onceChk });
 		});
 
-		let btnConfirm = layer.tg_layer.querySelectorAll('.' + clsConfirm);
+		let btnConfirm = layer.dom.querySelectorAll('.' + clsConfirm);
 		if(btnConfirm.length < 1) return;
 		btnConfirm.forEach(function(btn){
 			btn.addEventListener('click', layerHideConfirm, { once: onceChk });
@@ -146,10 +150,8 @@ function nlayer(option){
 
 	/** 오픈 버튼 기능 적용 */
 	function btn_set(btn){
-		btn.setAttribute('aria-controls', layer.tg_layer.getAttribute('id'));
+		btn.setAttribute('aria-controls', layer.dom.getAttribute('id'));
 		btn.setAttribute('aria-haspopup', 'dialog');
-		btn.setAttribute('aria-expended', false);
-		btn_on_layer = btn.closest('.'+ clsLayer +'');
 
 		btn.addEventListener('click', function(){
 			layer.btn_active = btn;
@@ -174,17 +176,16 @@ function nlayer(option){
 
 /** 알럿 기능 
 * nlayerAlert(option);
-* btn : 호출버튼 (필수)
 * ment : 문구 (필수)
 * title : 타이틀
+* focus_item : 팝업 닫기 후 focus 될 요소 지정
 * btnTx : 버튼 텍스트 - 없을 경우 '확인'
 * active : 확인 클릭 시 실행함수
-* focus_item : 팝업 닫기 후 focus 될 요소 지정
 */
 function nlayerAlert(option) {
+	const alert = this;
+
 	let body = document.querySelector('body'),
-		alert = this;
-	let btn_open = option.btn,
 		ment = option.ment,
 		title = option.title,
 		btn_tx = option.btnTx == null ? '확인' : option.btnTx,
@@ -194,7 +195,7 @@ function nlayerAlert(option) {
 	if(ment.split("\n").length>1) ment = ment.replace(/\n/gi,'<br>'); //줄바꿈 삽입
 	if(option.focus_item != undefined) focus_item = typeof option.focus_item === 'string' ? document.querySelector(option.focus_item) : option.focus_item;
 
-	let layerCnt = '<div class="layer alert" id="nAlert">';
+	let layerCnt = '<div class="layer alert" id="nAlert" role="alertdialog">';
 		layerCnt += '<div class="inbox">';
 		layerCnt += '<div class="layer-cnt">';
 		if(title != undefined && title.length > 0) layerCnt += '<div class="layer-top">'+ title +'</div>';
@@ -207,52 +208,36 @@ function nlayerAlert(option) {
 	body.insertAdjacentHTML('beforeend', layerCnt);
 	alert.dom = document.querySelector('#nAlert');
 
-	if(btn_open) {
-		btn_open.setAttribute('aria-controls', '#nConfirm');
-		btn_open.setAttribute('aria-haspopup', 'dialog');
-		btn_open.setAttribute('aria-expended', false);
-	}
-
 	let temp_alert = new nlayer({
 		layer : '#nAlert',
-		activeShow : function(){
-			if(btn_open) btn_open.setAttribute('aria-expended', true);
-		},
+		title : 'Alert',
 		activeClose : function(){
-			temp_alert.hide();
 			if(typeof active == 'function') active();
-			alert.hide();
+			alert_hide();
 		}
 	});
 	temp_alert.show();
 	
-	alert.hide = function(){
+	function alert_hide(){
 		alert.dom.parentNode.removeChild(alert.dom);
-		if(btn_open) {
-			btn_open.setAttribute('aria-expended', false);
-			btn_open.focus();
-			return;
-		}
-		if(focus_item) focus_item.focus();
 		temp_alert = null; // temp_alert 객제 제거용 (가비지)
+		if(focus_item) focus_item.focus();
 	}
 }
 
 /** 컨펌 기능 
 * nlayerConfirm(option);
-* btn : 호출버튼 (필수)
 * ment : 문구 (필수)
 * title : 타이틀
+* focus_item : 팝업 닫기 후 focus 될 요소 지정
 * btnTxConfirm : 컨펌 버튼 텍스트 - 없을 경우 '확인'
 * btnTxCancel : 취소 버튼 텍스트 - 없을 경우 '취소'
 * activeConfirm : 컨펌버튼 클릭 시 실행함수
 * activeCancel : 취소버튼 클릭 시 실행함수
-* focus_item : 팝업 닫기 후 focus 될 요소 지정
 */
 function nlayerConfirm(option) {
+	const confirm = this;
 	let body = document.querySelector('body'),
-		confirm = this;
-	let btn_open = option.btn,
 		ment = option.ment,
 		title = option.title,
 		btn_confirm_tx = option.btnTxConfirm == undefined ? '확인' : option.btnTxConfirm,
@@ -264,7 +249,7 @@ function nlayerConfirm(option) {
 	if (ment.split("\n").length>1) ment = ment.replace(/\n/gi,'<br />'); //줄바꿈 삽입
 	if(option.focus_item != undefined) focus_item = typeof option.focus_item === 'string' ? document.querySelector(option.focus_item) : option.focus_item;
 
-	let layerCnt = '<div class="layer confirm" id="nConfirm">';
+	let layerCnt = '<div class="layer confirm" id="nConfirm" role="alertdialog">';
 		layerCnt += '<div class="inbox">';
 		layerCnt += '<div class="layer-cnt">';
 		if(title != undefined && title.length > 0) layerCnt += '<div class="layer-top">'+ title +'</div>';
@@ -278,38 +263,25 @@ function nlayerConfirm(option) {
 	body.insertAdjacentHTML('beforeend', layerCnt);
 	confirm.dom	= document.querySelector('#nConfirm');
 
-	if(btn_open) {
-		btn_open.setAttribute('aria-controls', '#nConfirm');
-		btn_open.setAttribute('aria-haspopup', 'dialog');
-		btn_open.setAttribute('aria-expended', false);
-	}
-
 	let temp_confirm = new nlayer({
 		layer : '#nConfirm',
-		activeShow : function(){
-			if(btn_open) btn_open.setAttribute('aria-expended', true);
-		},
+		title : 'Confirm',
 		activeClose : function(){
 			temp_confirm.hide();
 			if(typeof activeCancel == 'function') activeCancel();
-			confirm.hide();
+			confirm_hide();
 		}, activeConfirm : function(){
 			temp_confirm.hide();
 			if(typeof activeConfirm == 'function') activeConfirm();
-			confirm.hide();
+			confirm_hide();
 		}
 	});
 	temp_confirm.show();
 
-	confirm.hide = function(){
+	function confirm_hide(){
 		confirm.dom.parentNode.removeChild(confirm.dom);
-		if(btn_open) {
-			btn_open.setAttribute('aria-expended', false);
-			btn_open.focus();
-			return;
-		}
-		if(focus_item) focus_item.focus();
 		temp_confirm = null; // temp_alert 객제 제거용 (가비지)
+		if(focus_item) focus_item.focus();
 	}
 }
 

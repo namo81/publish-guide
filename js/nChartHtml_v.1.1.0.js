@@ -9,9 +9,6 @@ area        : 그려질 영역 최상위 태그
 direction   : vertical(세로막대) = 기본값 / horison(가로막대)
 labels      : 데이터 구분 문구
  
-  // 일반 막대
-data        : 차트 데이터
-colors      : 차트 컬러
   // 그룹 막대
 dataset     : 차트 데이터
     name        : 데이터명
@@ -24,52 +21,122 @@ chart       : area 내 차트 영역
 title       : title 관련
     text        : title 텍스트
     show        : title 보이기 여부 (boolean)
-legend      : legend 보이기 여부 (boolean)
+legend      : legend 
+    show        : 보이기 여부 (boolean)
+    position    : 위치 (null : 상단 / 'bottom' : 하단)
+datalabel   : bar 내부에 값 표시 관련
+    show        : 보이기 여부 (boolean)
+    percent     : 실제 입력값대신 % 비율로 표출할지 여부 (boolean)
 tooltip     : 마우스 오버 시 표기되는 정보 창
     show        : 보이기 여부 (boolean)
     share       : 세트별 묶음보기 여부(boolean)
+    tx_group    : 제목 하단에 '그룹' 표시 여부 (boolean) - 그룹이 있는 데이터만 적용
+    area        : 세트별 묶음보기 - 묶음범위 (null : 기본, 세트전체, 'group' : 세트 내 group 단위 묶음)
+    unit        : 값 뒤에 붙일 단위 (건/ 명 등)
+    percent     : 입력된 값 기준 % 로 표시할지 여부 (boolean - 기본은 false) - true 일 경우 기본값 뒤에 (00%) 형식으로 표시
 tick        : 데이터 기준선 표시 간격 설정
+stack       : 중첩 막대 설정여부
+    enabled : 적용여부 (boolean)
+    intersection : 교집합 설정여부 (기본 false) - 각 값을 따로 표현할지, 가장 큰값 기준으로 나머지 값을 그 위에 표현할지 여부
 
 */
 
 function nChartHtml(option){
-    const wrap 		    = typeof option.area === 'string' ? document.querySelector(option.area) : option.area;
+    const nChart = this;
+    nChart.wrap 		    = typeof option.area === 'string' ? document.querySelector(option.area) : option.area;
+
     let labels          = option.labels,
-        stack           = option.stack ? option.stack : false,
+        stack           = option.stack,
         direction       = option.direction ? option.direction : 'vertical',
         dataset         = option.dataset,
 
         chartSize       = option.chart,
         titleOpt        = option.title,
-        legendOpt       = option.legend ? option.legend : true,
+        legendOpt       = option.legend,
         tick            = option.tick,
+
+        datalabelOpt    = option.datalabel,
 
         tooltipOpt      = option.tooltip;
 
     let dataLen         = labels.length,
         setLen          = dataset.length;
 
-    let chart, legend; 
-    let tooltip, tooltipTit, tooltipVal, tooltip_show, tooltip_share;
-    let lis, lgdBtns;
+    /** tooltip 관련 변수 초기 설정 */
+    if(tooltipOpt == undefined) {
+        tooltipOpt = new Object();
+        tooltipOpt.show = true;
+        tooltipOpt.share = false;
+        tooltipOpt.tx_group = false;
+        tooltipOpt.unit = '';
+        tooltipOpt.percent = false;
+    } else {
+        tooltipOpt.show = tooltipOpt.show != undefined ? tooltipOpt.show : true;
+        tooltipOpt.area = tooltipOpt.area ? tooltipOpt.area : null;
+        tooltipOpt.unit = tooltipOpt.unit ? tooltipOpt.unit : '';
+    }
 
-    let group_arr = [], group_color_arr = [];
+    /** legend 관련 변수 초기 설정 */
+    if(legendOpt == undefined) {
+        legendOpt = new Object();
+        legendOpt.show = true;
+        legendOpt.position = false;
+    } else {
+        legendOpt.show = legendOpt.show != undefined ? legendOpt.show : true;
+    }
 
-    wrap.style.position = 'relative';
-    if(direction == 'horison') wrap.classList.add('hor');
+    /** datalabel 관련 변수 초기 설정 */
+    if(datalabelOpt == undefined) {
+        datalabelOpt = new Object();
+        datalabelOpt.show = false;
+        datalabelOpt.percent = false;
+    }
+    
+    if(stack == undefined) {
+        stack = new Object();
+        stack.enabled = false;
+        stack.intersection = false;
+    } 
 
-    let wrapWidth, wrapHeight;
+    // 내부용 변수
+    let chart, chart_inner, bars_wid, legend, 
+        tooltip, tooltipTit, tooltipGroup, tooltipVal, tooltip_left,
+        lis, lgdBtns,
+        wrapWidth, wrapHeight,
+
+        tags = option.tags || null,
+
+        group = false,
+        group_arr = [], group_color_arr = [],
+
+        temp_dataset = structuredClone(dataset); // dataset 초기데이터 저장용 (특정 dataset - show/hide 용)
+
+    for(let key in dataset){
+	    if(dataset[key].group !== undefined) { group = true; break }
+	}
+    
+    // 기본 구조 생성 ------------
+    nChart.wrap.style.position = 'relative';
+    chart = createDom('div', 'chart');
+    chart_inner = createDom('div', 'chart-inner');
+    chart.appendChild(chart_inner);
+    nChart.wrap.appendChild(chart);
+
+    // 기본구조 - 클래스 설정
+    if(direction == 'horison') nChart.wrap.classList.add('hor');
+    if(stack.intersection == true) chart_inner.classList.add('intersection');
+
     /** 차트 크기 초기 설정 */
     function wrapSizeSet(){
         if(!chartSize) {
             wrapWidth   = 100 + '%';
-            wrapHeight  = (wrap.offsetWidth * 0.4) + 'px';
+            wrapHeight  = (nChart.wrap.offsetWidth * 0.6) + 'px';
         } else {
             wrapWidth   = chartSize.width ? chartSize.width : 100 + '%';
-            wrapHeight  = chartSize.height ? chartSize.height : (wrap.offsetWidth * 0.4) + 'px';
+            wrapHeight  = chartSize.height ? chartSize.height : (nChart.wrap.offsetWidth * 0.6) + 'px';
         }
-        wrap.style.width = wrapWidth;
-        direction == 'vertical' ? wrap.style.height = wrapHeight : wrap.style.height = 'auto';
+        nChart.wrap.style.width = wrapWidth;
+        direction == 'vertical' ? nChart.wrap.style.height = wrapHeight : nChart.wrap.style.height = 'auto';
     }
 
     /** 타이틀 관련 초기 설정 */
@@ -82,44 +149,35 @@ function nChartHtml(option){
             titleShow = titleOpt.show != undefined ? titleOpt.show : true;
             titleTx = titleOpt.text ? titleOpt.text : 'Chart Title';
         }
-        if(titleShow == true) wrap.insertAdjacentHTML('afterbegin', '<div class="chart-title">'+titleTx+'</div>');
-    }
-
-    /** tooltip 관련 초기 설정 */
-    if(tooltipOpt == undefined) {
-        tooltip_show = true;
-        tooltip_share = false;
-    } else {
-        tooltip_show = tooltipOpt.show != undefined ? tooltipOpt.show : true;
-        tooltip_share = tooltipOpt.share ? tooltipOpt.share : false;
+        if(titleShow == true) nChart.wrap.insertAdjacentHTML('afterbegin', '<div class="chart-title">'+titleTx+'</div>');
     }
 
     /** legend 설정 */
     function drawLegend(){
-        if(legendOpt == true) {
-            let lgdHtml = '<div class="legend"><ul class="legend-list">';
-            if(!dataset[0].group) {
-                for(let n = 0; n<setLen; n++){ lgdHtml += '<li data-setnum="'+n+'"><button type="button" class="name"><i class="bullet" style="background-color:'+dataset[n].color+'"></i>'+dataset[n].name+'</button></li>'; }
-            } else {
-                for(let n = 0; n<group_arr.length; n++){ lgdHtml += '<li data-setnum="'+n+'"><button type="button" class="name"><i class="bullet" style="background-color:'+group_color_arr[n]+'"></i>'+group_arr[n]+'</button></li>'; }
-            }
-            lgdHtml += '</ul></div>';
-            wrap.insertAdjacentHTML('beforeend', lgdHtml);
+        let lgdHtml = '<div class="legend"><ul class="legend-list">';
+        if(!group) {
+            for(let n = 0; n<setLen; n++){ lgdHtml += '<li data-setnum="'+n+'"><button type="button" class="name"><i class="bullet" style="background-color:'+dataset[n].color+'"></i>'+dataset[n].name+'</button></li>'; }
+        } else {
+            for(let n = 0; n<group_arr.length; n++){ lgdHtml += '<li data-setnum="'+n+'"><button type="button" class="name"><i class="bullet" style="background-color:'+group_color_arr[n]+'"></i>'+group_arr[n]+'</button></li>'; }
         }
-        legend  = wrap.querySelector('.legend');
+        lgdHtml += '</ul></div>';
+        legendOpt.position == 'bottom' ? nChart.wrap.insertAdjacentHTML('beforeend', lgdHtml) : nChart.wrap.insertAdjacentHTML('afterbegin', lgdHtml);
+        legend  = nChart.wrap.querySelector('.legend');
     }
     
     // tooltip 설정
     function set_tooltip(){
         let ttTag = '<div class="tooltip">';
             ttTag += '<p class="tt-title"></p>';
-            ttTag += tooltip_share ? '<div class="tt-value"><ul></ul></div>' : '<p class="tt-value"></p>';
+            ttTag += tooltipOpt.tx_group == true ? '<p class="tt-group"></p>' : '';
+            ttTag += tooltipOpt.share ? '<div class="tt-value"><ul></ul></div>' : '<p class="tt-value"></p>';
             ttTag += '</div>';
 
-        wrap.insertAdjacentHTML('beforeend', ttTag);
-        tooltip     = wrap.querySelector('.tooltip'),
-        tooltipTit  = tooltip.querySelector('.tt-title'),
+        chart.insertAdjacentHTML('beforeend', ttTag);
+        tooltip     = chart.querySelector('.tooltip');
+        tooltipTit  = tooltip.querySelector('.tt-title');
         tooltipVal  = tooltip.querySelector('.tt-value');
+        if(tooltipOpt.tx_group == true) tooltipGroup  = tooltip.querySelector('.tt-group');
     }
 
     /** 데이터 값 관련 */
@@ -136,18 +194,15 @@ function nChartHtml(option){
             }
             maxVal = Math.max.apply(null, maxArr);
             minVal = Math.min.apply(null, minArr);
+            if(tooltipOpt.percent == true) calcSetMax();
         } else {
             maxVal = Math.max.apply(null, dataset[0].data);
             minVal = Math.min.apply(null, dataset[0].data);
         }
     }
 
-    function calcMaxStackType(){
-        dataset[0].group ? calcMaxStack_group() : calcMaxStack();
-    }
-
-    /** 최대값/최소값 산출 - stack 형 */
-    function calcMaxStack(){
+    // 데이터 set 별 총합 계산 및 배열 반환
+    function calcSetMax(){
         stackArr = new Array();
         for(let d=0; d<dataLen; d++){
             let secArr = new Array();
@@ -156,8 +211,17 @@ function nChartHtml(option){
             }
             stackArr.push(secArr.reduce(function add(acc, curVal){ return acc + curVal}, 0));
         }
+    }
+
+    function calcMaxStackType(){
+        group ? calcMaxStack_group() : calcMaxStack();
+    }
+
+    /** 최대값/최소값 산출 - stack 형 */
+    function calcMaxStack(){
+        calcSetMax();
         stackMax = Math.max.apply(null, stackArr);
-        wrap.classList.add('stack');
+        nChart.wrap.classList.add('stack');
     }
 
     /** 최대값/최소값 산출 - stack 형 + group */
@@ -168,9 +232,11 @@ function nChartHtml(option){
         });
         return Math.max.apply(null, max_val_arr);
     }
+
     function calcMaxStack_group(){
         let max_arr = new Object();
         dataset.forEach((set, idx)=>{
+            if(set == '') return;
             if(!max_arr[set.group]) {
                 max_arr[set.group] = new Object;
                 max_arr[set.group].array = new Array();
@@ -182,20 +248,19 @@ function nChartHtml(option){
         });
         stackMax = calc_group_max(max_arr);
         group_arr_set();
-        wrap.classList.add('stack');
-        wrap.classList.add('group');
+        nChart.wrap.classList.add('stack');
+        nChart.wrap.classList.add('group');
     }
     
     let guideMax, tickGap, tickArr;
+
     /** 배경 라인 설정 */
     function calcTick(){
-        let setMax      = stack == true && setLen > 1 ? stackMax : maxVal;
-            zeroCount   = Number(String(setMax).length);
+        let setMax      = stack.enabled && setLen > 1 ? stackMax : maxVal;
+        if(stack.intersection == true) setMax = maxVal;
+        let zeroCount   = Number(String(setMax).length);
             unit        = Math.pow(10, zeroCount - 1),
             tickGap;
-            //tickGap     = unit / 5;
-        
-        //if(setMax < 100 || setMax > 50000) tickGap = Math.pow(10, zeroCount - 1);
         
         tickGap = tick_convert(setMax, unit);
         if(tick) tickGap = tick;
@@ -209,33 +274,43 @@ function nChartHtml(option){
             tickArr.push(t * tickGap);
         }
     }
+    // tick 기본값 계산
     function tick_convert(max, unit){
         let result,
-            int = Math.floor(max / 3);
+            int = Math.floor(max / 15);
         if(int < unit / 2) result = unit / 2
         else if ( int < unit && int > unit / 2 ) result = unit;
         else result = Math.ceil(int / unit) * unit;
         return result;
     }
 
-
+    /**
+     * 차트영역 그리기
+     */
     function drawChart(){
-        let chartHtml = '<div class="chart"><div class="chart-inner"><ul class="bar-list">';
+        let chartHtml = '<ul class="bar-list">';
         for(let n = 0; n<dataLen; n++){ chartHtml += '<li data-num="'+n+'"></li>'; }
-        chartHtml += '</ul></div></div>';
+        chartHtml += '</ul>';
 
-        wrap.insertAdjacentHTML('beforeend', chartHtml);
+        chart_inner.insertAdjacentHTML('beforeend', chartHtml);
 
-        chart   = wrap.querySelector('.chart'),
         lis     = chart.querySelectorAll('li');
-        
         lis.forEach(function(li, idx){
-            let name = createDom('p', 'name');
-            name.textContent = labels[idx];
+            let name = createDom('p', 'name'),
+                dataIdx = li.getAttribute('data-num');
+            if(typeof labels[idx] === 'string') name.textContent = labels[idx];
+            else {
+                labels[idx].forEach((tx)=>{
+                    let span = createDom('span');
+                    span.textContent = tx;
+                    name.appendChild(span);
+                });
+            }
 
             let bars, group_bars = [];
             
-            if(dataset[0].group) {
+            if(idx + 1 == dataLen) li.classList.add('last');
+            if(group) {
                 group_arr.forEach((group)=>{
                     let bar = createDom('div', 'bars');
                     group_bars.push(bar);
@@ -247,92 +322,250 @@ function nChartHtml(option){
             }
             
             for(let s=0; s<setLen; s++){
-                let item    = '',
-                    val     = dataset[s].data[idx],
-                    per     = (val / guideMax) * 100,
-                    color   = '#aaa', group_idx;
-                if(setLen > 1) color = dataset[s].color;
-                else color = dataset[s].color;
-                if(direction == 'vertical') item += '<p class="bar" data-val="'+val+'" data-setnum="'+s+'" style="height:'+per+'%"><span class="fill" style="background-color:'+color+'"><i>'+ comma(val) +'</i></span></p>';
-                else item += '<p class="bar" data-val="'+val+'" data-setnum="'+s+'" style="width:'+per+'%"><span class="fill" style="background-color:'+color+'"><i>'+ comma(val) +'</i></span></p>';
-                if(dataset[0].group) {
-                    group_idx = group_arr.indexOf(dataset[s].group);
-                    group_bars[group_idx].insertAdjacentHTML('beforeend', item)
-                } else bars.insertAdjacentHTML('beforeend', item)
+                if(dataset[s] != ''){
+                    let item,
+                        item_fill,
+                        item_tx,
+                        val     = dataset[s].data[idx],
+                        per     = (val / guideMax) * 100,
+                        color   = '#aaa', 
+                        max_wid = datalabelOpt.percent ? 22 : 40,
+                        group_idx;
+                    if(setLen > 1) color = dataset[s].color;
+                    else color = dataset[s].color;
+                    item = createDom('p', 'bar');
+                    item_fill = createDom('span', 'fill');
+                    item_tx = createDom('i');
+                    item.dataset.val = val;
+                    item.dataset.setnum = s;
+                    item_fill.style.backgroundColor = color;
+                    item_tx.textContent = datalabelOpt.percent ? Math.round(val / stackArr[dataIdx] * 100) + '%' : comma(val);
+                    item_fill.appendChild(item_tx);
+                    item.appendChild(item_fill);
+                    direction == 'vertical' ? item.style.height = per + '%' : item.style.width = per + '%';
+                    if(datalabelOpt.show == true) item_tx.classList.add('show');
+                    if(group) {
+                        group_idx = group_arr.indexOf(dataset[s].group);
+                        group_bars[group_idx].appendChild(item);
+                    } else bars.appendChild(item);
+                    
+                    if(dataset[s].accent_idx == idx) li.classList.add('accent');
+                    if(item.offsetWidth < max_wid ) item_tx.classList.remove('show');
+                }
             }
-            if(direction == 'horison') li.style.height = li.offsetHeight + 'px';
+            if(tags != null && !group) {
+                let tag = createDom('p', 'tag');
+                tag.textContent = tags[idx];
+                bars.appendChild(tag);
+                bars.classList.add('tag');
+            }
+
             li.appendChild(name);
-            if(tooltip_show == true) {
-                tooltip_share ? barOverSet_share(li) : barOverSet(li);
+            if(tooltipOpt.show == true) {
+                tooltipOpt.share ? barOverSet_share(li) : barOverSet(li);
             }
         });
+        
+        bars_wid = lis[0].offsetWidth * lis.length;
+        if(bars_wid > (chart_inner.offsetWidth + 5) && direction == 'vertical') chart_inner.classList.add('wid-over');
     }
 
     /** bar 영역 마우스 오버 시 툴팁 기능 - bar  */
     function barOverSet(tg){
-        let bars    = tg.querySelectorAll('.bar .fill'),
-            tit     = tg.querySelector('.name').innerText,
-            chart_left = chart.offsetLeft + 30;
-        Array.prototype.forEach.call(bars, function(bar){
+        let bars    = tg.querySelectorAll('.bar'),
+            tg_num  = tg.getAttribute('data-num'),
+            tit     = tg.querySelector('.name').textContent,
+            chart_left_pad = 50;
+
+        Array.prototype.forEach.call(bars, function(bar, idx){
             bar.addEventListener('mouseover', function(e){
                 e.stopPropagation();
-                let val     = this.querySelector('i').innerText,
-                    setNum  = this.parentNode.getAttribute('data-setnum');
-                    parent_left = chart_left + this.parentNode.offsetLeft;
-                tooltipTit.innerText = tit;
-                if(setLen > 1) tooltipVal.innerText = dataset[setNum].name + ':' + val;
-                else tooltipVal.innerText = val;
-                tooltip.style.opacity = 1;
-                tooltip.style.zIndex = 100;
-                tooltip.style.left = direction == 'vertical' ? parent_left + 'px' : parent_left + chart.offsetLeft + (this.offsetWidth/2) + 'px';
-                tooltip.style.top = ((this.parentNode.offsetTop + chart.offsetTop) - tooltip.offsetHeight) + 'px';
+                while (tooltipVal.firstChild) tooltipVal.removeChild(tooltipVal.firstChild);
+
+                let val     = dataset[0].data[tg_num],
+                    setNum  = bar.getAttribute('data-setnum'),
+                    cnt_tx;
+                tooltipTit.textContent = tit;
+                cnt_tx = '<span class="marker" style="background-color:'+dataset[setNum].color+'"></span><span class="label">'+dataset[setNum].name+'</span><span class="val">'+comma(val) + tooltipOpt.unit+'</span>';
+                tooltipVal.insertAdjacentHTML('beforeend', cnt_tx);
+                if(tooltipOpt.more != undefined) add_tooltip_more(tg_num);
+
+                tooltip.classList.add('show');
+
+                let parent_left = group ? tg.offsetLeft + bar.parentNode.offsetLeft : bar.offsetLeft,
+                    pos_top, pos_left;
+
+                if(direction == 'vertical') {
+                    pos_top = bar.offsetTop - tooltip.offsetHeight;
+                    pos_left = parent_left + (bar.offsetWidth / 2) + chart_left_pad - chart_inner.scrollLeft;
+                    if(pos_left + (tooltip.offsetWidth / 2) > chart.offsetWidth) pos_left = chart.offsetWidth - (tooltip.offsetWidth / 2);
+                } else {
+                    pos_top = tg.offsetTop;
+                    pos_left = bar.offsetWidth + chart_left_pad;
+                    if(pos_left + tooltip.offsetWidth > chart.offsetWidth) pos_left = chart.offsetWidth - tooltip.offsetWidth;
+                }
+
+                if(setLen > 1 && direction == 'horison') pos_top = tg.offsetTop + bar.offsetTop;
+
+                tooltip.style.left = pos_left + 'px';
+                tooltip.style.top = pos_top >= 10 ? pos_top + 'px' : 10  + 'px';
             });
             bar.addEventListener('mouseleave', function(e){
-                tooltip.style.opacity = 0;
-                tooltip.style.zIndex = -1;
+                tooltip.classList.remove('show');
             });
         });
     }
 
     /** bar 영역 마우스 오버 시 툴팁 기능 - set */
     function barOverSet_share(tg){
+        tooltip.classList.add('share');
+        tooltipOpt.area == 'group' ? barOverSet_share_group(tg) : barOverSet_share_set(tg);
+    }
+
+    // 툴팁 - 세트기준
+    function barOverSet_share_set(tg){
         let li      = tg,
             tit     = tg.querySelector('.name').textContent,
             tooltip_ul = tooltipVal.querySelector('ul'),
-            chart_left = chart.offsetLeft + 30;
-        tooltip.classList.add('share');
+            dataIdx = li.getAttribute('data-num'),
+            chart_left_pad = 50;
+
         li.addEventListener('mouseover', function(e){
             e.stopPropagation();
             while (tooltip_ul.firstChild) tooltip_ul.removeChild(tooltip_ul.firstChild);
 
-            let bars = li.querySelectorAll('.bar .fill'),
-                dataIdx = li.getAttribute('data-num');
+            let fills = li.querySelectorAll('.bar .fill'),
+                bar_wid = 0,
+                bar_hei = 0;
+
             tooltipTit.textContent = tit;
-            bars.forEach((bar)=>{
+            fills.forEach((fill, idx)=>{
                 let li = createDom('li'),
-                    marker = createDom('span', 'marker'),
-                    label = createDom('span', 'label'),
-                    val_tx = createDom('span', 'val'),
-                    setNum = bar.parentNode.getAttribute('data-setnum');
-                marker.style.backgroundColor = dataset[setNum].color;
-                label.textContent = dataset[setNum].name;
-                val_tx.textContent = dataset[setNum].data[dataIdx];
-                li.appendChild(marker);
-                li.appendChild(label);
-                li.appendChild(val_tx);
+                    setNum = fill.parentNode.getAttribute('data-setnum'),
+                    val = dataset[setNum].data[dataIdx],
+                    cnt_tx = '<span class="marker" style="background-color:'+dataset[setNum].color+'"></span><span class="label">'+dataset[setNum].name+'</span><span class="val">'+comma(val) + tooltipOpt.unit+'</span>';
+                li.insertAdjacentHTML('beforeend', cnt_tx);
+                if(tooltipOpt.percent == true) {
+                    let val_tx = li.querySelector('.val'),
+                        per = '(' + Math.round((val / stackArr[dataIdx]) * 1000) / 10 + '%)';
+                    val_tx.insertAdjacentHTML('beforeend', per);
+                }
                 tooltip_ul.appendChild(li);
+                if(stack.enabled == true && stack.intersection == false) {
+                    bar_wid += fill.offsetWidth;
+                    bar_hei += fill.offsetHeight;
+                } else {
+                    if(idx == 0) {
+                        bar_wid = fill.parentNode.offsetLeft;
+                        bar_hei = fill.parentNode.offsetTop;
+                    } else {
+                        bar_wid = fill.parentNode.offsetLeft < bar_wid ? fill.parentNode.offsetLeft : bar_wid;
+                        bar_hei = fill.parentNode.offsetTop < bar_hei ? fill.parentNode.offsetTop : bar_hei;
+                    }
+                }
             });
-            tooltip.style.opacity = 1;
-            tooltip.style.zIndex = 100;
-            tooltip.style.left = direction == 'vertical' ? chart_left + this.offsetLeft + (this.offsetWidth/2) + 'px' : chart.offsetLeft + (this.offsetWidth/2) + 'px';
-            tooltip.style.top = direction == 'vertical' ? chart.offsetTop + 'px' : ((this.offsetTop + chart.offsetTop)) + 'px';
-        });
+            if(tooltipOpt.more != undefined) add_tooltip_more(dataIdx);
+
+            let pos_top, pos_left;
+            if(direction == 'vertical') {
+                pos_top = bar_hei - tooltip.offsetHeight;
+                pos_left = li.offsetLeft + (li.offsetWidth/2) - chart_inner.scrollLeft + chart_left_pad;
+                if(pos_left + (tooltip.offsetWidth / 2) > chart.offsetWidth) pos_left = chart.offsetWidth - (tooltip.offsetWidth / 2);
+            } else {
+                pos_top = li.offsetTop + chart.offsetTop;
+                pos_left = chart.offsetLeft + bar_wid + chart_left_pad;
+                if(pos_left + tooltip.offsetWidth > chart.offsetWidth) pos_left = chart.offsetWidth - tooltip.offsetWidth;
+            }
+
+            tooltip.style.left = pos_left + 'px';
+            tooltip.style.top = pos_top >= 10 ? pos_top + 'px' : 10 + 'px';
+
+            tooltip.classList.add('show');
+            if(bars_wid > chart_inner.offsetWidth) {
+                tooltip_left = chart_inner.scrollLeft;
+                chart_inner.addEventListener('scroll', tooltip_scroll);
+            }
+        }, false);
         li.addEventListener('mouseleave', function(e){
-            tooltip.style.opacity = 0;
-            tooltip.style.zIndex = -1;
+            tooltip.classList.remove('show');
+            chart_inner.removeEventListener('scroll', tooltip_scroll);
+        });
+    }
+    
+    // 툹팁 - 그룹기준
+    function barOverSet_share_group(tg){
+        let area = tg,
+            tit = tg.querySelector('.name').textContent,
+            divs = area.querySelectorAll('.bars'),
+            tooltip_ul = tooltipVal.querySelector('ul'),
+            dataIdx = area.getAttribute('data-num'),
+            chart_left_pad = 50;
+
+        divs.forEach((div, idx)=>{
+            div.addEventListener('mouseover', function(e){
+                e.stopPropagation();
+                while (tooltip_ul.firstChild) tooltip_ul.removeChild(tooltip_ul.firstChild);
+
+                let bars = div.querySelectorAll('.bar .fill'),
+                    target_bar = stack.intersection ? div.querySelector('.bar:first-child') : div.querySelector('.bar:last-child');
+                tooltipTit.textContent = tit; //group_arr[idx];
+                if(tooltipOpt.tx_group == true) tooltipGroup.textContent = group_arr[idx];
+                bars.forEach((bar)=>{
+                    let li = createDom('li'),
+                        setNum = bar.parentNode.getAttribute('data-setnum'),
+                        val = dataset[setNum].data[dataIdx],
+                        cnt_tx = '<span class="marker" style="background-color:'+dataset[setNum].color+'"></span><span class="label">'+dataset[setNum].name+'</span><span class="val">'+comma(val) + tooltipOpt.unit+'</span>';
+                    li.insertAdjacentHTML('beforeend', cnt_tx);
+                    if(tooltipOpt.percent == true) {
+                        let val_tx = li.querySelector('.val'),
+                            per = '(' + Math.round((val / stackArr[dataIdx]) * 1000) / 10 + '%)';
+                        val_tx.insertAdjacentHTML('beforeend', per);
+                    }
+                    tooltip_ul.appendChild(li);
+                });
+                if(tooltipOpt.more != undefined) add_tooltip_more(dataIdx, idx);
+
+                let pos_top, pos_left;
+                if(direction == 'vertical') {
+                    pos_top = target_bar.offsetTop - tooltip.offsetHeight;
+                    pos_left = chart_left_pad + div.parentNode.offsetLeft + (div.offsetLeft + (div.offsetWidth / 2)) - chart_inner.scrollLeft;
+                    if(pos_left + (tooltip.offsetWidth / 2) > chart.offsetWidth) pos_left = chart.offsetWidth - (tooltip.offsetWidth / 2);
+                } else {
+                    pos_top = div.parentNode.offsetTop + div.offsetTop;
+                    pos_left = target_bar.offsetLeft + target_bar.offsetWidth;
+                    if(pos_left + tooltip.offsetWidth > chart.offsetWidth) pos_left = chart.offsetWidth - tooltip.offsetWidth;
+                }
+
+                tooltip.style.left = pos_left + 'px';
+                tooltip.style.top = pos_top >= 10 ? pos_top + 'px' : 10 + 'px';
+                tooltip.classList.add('show');
+                if(bars_wid > chart_inner.offsetWidth) {
+                    tooltip.style.marginLeft = '0px';
+                    tooltip_left = chart_inner.scrollLeft;
+                    chart_inner.addEventListener('scroll', tooltip_scroll);
+                }
+            });
+            div.addEventListener('mouseleave', function(e){
+                tooltip.classList.remove('show');
+                chart_inner.removeEventListener('scroll', tooltip_scroll);
+            });
         });
     }
 
+    function add_tooltip_more(idx, group_idx){
+        if(tooltipVal.querySelector('.more-info')) tooltipVal.removeChild(tooltipVal.querySelector('.more-info'));
+        let p = createDom('p', 'more-info'),
+            data_val = tooltipOpt.area == 'group' ? tooltipOpt.more.data[group_idx][idx] : tooltipOpt.more.data[idx];
+        p.insertAdjacentHTML('beforeend', '<span class="label">'+ tooltipOpt.more.tit +'</span><span class="val">'+ data_val +'</span>');
+        tooltipVal.appendChild(p);
+    }
+    
+    // chart 좌우 스크롤 시 툴팁 위치 조정
+    function tooltip_scroll(e){
+        let scl = e.target.scrollLeft - tooltip_left;
+        tooltip.style.marginLeft = -scl + 'px';
+    }
+    
     /** 특정 set 보이기 */
     function setShow(num){
         Array.prototype.forEach.call(lis, function(li){
@@ -340,12 +573,50 @@ function nChartHtml(option){
             tgBar.classList.remove('hide-set');
         });
     }
+    
     /** 특정 set 감추기 */
     function setHide(num){
         Array.prototype.forEach.call(lis, function(li){
             let tgBar = li.querySelector('[data-setnum="'+num+'"]');
             tgBar.classList.add('hide-set');
         });
+    }
+    
+    /** 특정 set - group 보이기 
+     * num : 그룹의 index
+    */
+    function setShow_group(num){
+        lis.forEach((li)=>{
+            let bar_items = li.querySelectorAll('.bars');
+            bar_items.forEach((bar)=>{
+                let items = bar.querySelectorAll('.bar');
+                items[num].classList.remove('hide-set');
+            });
+        });
+    }
+    
+    /** 특정 set - group 감추기 
+     * num : 그룹의 index
+    */
+    function setHide_group(num){
+        lis.forEach((li)=>{
+            let bar_items = li.querySelectorAll('.bars');
+            bar_items.forEach((bar)=>{
+                let items = bar.querySelectorAll('.bar');
+                items[num].classList.add('hide-set');
+            });
+        });
+    }
+
+    /** 특정 dataset 보이기 (dataset 변경 및 다시 그리기형식) */
+    function datasetShow(num){
+        dataset[num] = structuredClone(temp_dataset[num]);
+        chart_update();
+    }
+    /** 특정 dataset 감추기 (dataset 변경 및 다시 그리기형식) */
+    function datasetHide(num){
+        dataset[num] = '';
+        chart_update();
     }
 
     /** legend 버튼 클릭 기능 */
@@ -371,7 +642,7 @@ function nChartHtml(option){
                 group_arr.push(data.group);
                 group_color_arr.push(data.color);
             }
-        });
+        }); 
     }
 
     /** label / dataset 리로드 */
@@ -386,8 +657,13 @@ function nChartHtml(option){
     function guideLineSet(){
         let listTag = '<ul class="guide-line">';
         for(let t=0; t<tickArr.length; t++){
-            if(direction == 'vertical') listTag += '<li style="bottom:'+ (tickArr[t]/guideMax) * 100 +'%"><p class="guide-tx">'+ comma(tickArr[t]) +'</p></li>';
-            else listTag += '<li style="left:'+ (tickArr[t]/guideMax) * 100 +'%"><p class="guide-tx">'+ comma(tickArr[t]) +'</p></li>';
+            let tick_tx;
+            if(tickArr[t] >= 1000 && tickArr[t] < 10000) tick_tx = comma(tickArr[t] / 1000) + '천';
+            else if(tickArr[t] >= 10000) tick_tx = comma(tickArr[t] / 10000) + '만';
+            else tick_tx = tickArr[t];
+
+            if(direction == 'vertical') listTag += '<li style="bottom:'+ (tickArr[t]/guideMax) * 100 +'%"><p class="guide-tx">'+ tick_tx +'</p></li>';
+            else listTag += '<li style="left:'+ (tickArr[t]/guideMax) * 100 +'%"><p class="guide-tx">'+ tick_tx +'</p></li>';
         }
         listTag += '</ul>';
         chart.insertAdjacentHTML('afterbegin', listTag);
@@ -397,34 +673,48 @@ function nChartHtml(option){
         option_update();
         wrapSizeSet();
         titleSet();
-        set_tooltip();
 
         calcMaxMin();
-        if(stack == true && setLen > 1) calcMaxStackType();
+        if(stack.enabled && setLen > 1) calcMaxStackType();
 
-        drawLegend();        
         calcTick();
+        set_tooltip();
         drawChart();
-        if(setLen > 1) lgdBtnSet();
         guideLineSet();
+        if(legendOpt.show != true) return;
+        drawLegend();
+        if(setLen > 1 && !group) lgdBtnSet();
     }
     chart_init();
 
+    function chart_update(){
+        nChart.wrap.removeChild(chart);
+
+        calcMaxMin();
+        if(stack.enabled && setLen > 1) calcMaxStackType();
+        
+        calcTick();
+        drawChart();
+        guideLineSet();
+    }
+
     /** 다시 그리기 (모든 옵션) */
     this.reDraw = function(){
-        while (wrap.firstChild) wrap.removeChild(wrap.firstChild);
+        while (nChart.wrap.firstChild) nChart.wrap.removeChild(nChart.wrap.firstChild);
         chart_init();
     }
     
     /** dataset.data 만 변경 시 */
     this.data_update = function(){
-        wrap.removeChild(chart);
+        chart_update();
+    }
 
-        calcMaxMin();
-        if(stack == true && setLen > 1) calcMaxStackType();
-        
-        calcTick();
-        drawChart();
-        guideLineSet();
+    /** 특정 dataset 감추기 (stack + group 형태에서만 사용) */
+    this.dataset_hide = function(idx){
+        setHide_group(idx);
+    }
+    /** 특정 dataset 보이기 (stack + group 형태에서만 사용) */
+    this.dataset_show = function(idx){
+        setShow_group(idx);
     }
 }

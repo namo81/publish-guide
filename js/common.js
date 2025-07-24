@@ -300,7 +300,6 @@ function createDom(type, cls){
 	return dom;
 }
 
-
 /**
  * 특정 요소 전체의 특정 클래스 제거
  * @param {array} tg 요소 배열
@@ -312,64 +311,19 @@ function clsClear(tg, cls){
 	})
 }
 
-/** tab menu 기능 - 페이지 전체 동일 기능 적용(탭 안의 탭 등 depth 구조일 경우 사용불가) */
-function nTab(selector){
-	var nTabEle = document.querySelectorAll(selector);
-	if(nTabEle.length > 1) {
-		nTabEle.forEach(function(el, index, array){
-			nTabSet(el);
-		});
-	} 
-	else if (nTabEle.length == 1) nTabSet(nTabEle[0]);
-	else null;
+/**
+ * 특정 요소 내 자식요소 모두 제거
+ * @param {dom or string} tg 요소 dom or 선택자
+ */
+function del_child(tg){
+	while (tg.firstChild) tg.removeChild(tg.firstChild);
 }
 
-function nTabSet(Ele){
-	var tabWrap	= Ele,
-		tabBtn	= tabWrap.querySelectorAll('.tab-menu a'),
-		tabLi	= tabWrap.querySelectorAll('.tab-menu li'),
-		tabCnt	= tabWrap.querySelectorAll('.tab-cnt'),
-		tgCnt	= '',
-		showNum	= 0;
-
-	var tabCntHide = function(){
-		for(i=0; i<tabCnt.length; i++){
-			tabCnt[i].style.display = 'none';
-		}
-	}
-
-	// 화면 로드 시 활성화된 버튼에 맞는 컨텐츠 show
-	for(i=0; i<tabLi.length; i++){
-		if(tabLi[i].classList.contains('on')) showNum = i;
-	}
-	tabCntHide();
-	tabCnt[showNum].style.display = 'block';
-
-	// tab menu 클릭 기능
-	var tabClick = function(event){
-		var btn;
-		event.target.tagName != 'A' ? btn = event.target.parentElement : btn = event.target;
-		// 클릭 시 a 태그 내부에 있는 태그 클릭 시 btn 을 a 태그로 설정
-
-		tgCnt = btn.getAttribute('href');
-		for(i=0; i<tabLi.length; i++){
-			tabLi[i].classList.remove('on');
-		}
-		btn.parentElement.classList.add('on');
-		tabCntHide();
-		tabWrap.querySelector(tgCnt).style.display = 'block';
-	}
-
-	for(i=0; i<tabBtn.length; i++){
-		tabBtn[i].addEventListener('click', tabClick);
-	}	
-}
-
-/** tab 메뉴 개별 설정형
+/** tab 메뉴
  *	var 변수명 = new nTabMenu({
  *      wrap     : '.tab-wrap', - 탭 메뉴 및 컨텐츠를 포함하는 영역 선택자
  *      menu     : '.tab-menu', - 탭 메뉴 선택자
- *      tabCnt   : '.tab-cnt'   - 탭 컨텐츠 선택자,
+ *      cnt   	 : '.tab-cnt'   - 탭 컨텐츠 선택자,
  * 	   	active   : function(cnt, btn){ - 콜백함수
  * 			cnt - 활성화된 영역
  * 			btn - 클릭된 버튼
@@ -377,67 +331,150 @@ function nTabSet(Ele){
  *   });
 */
 function nTabMenu(option){
-	var tabWrap	= document.querySelector(option.wrap),
-		tabBtn	= tabWrap.querySelectorAll(option.menu + ' a'),
-		tabCnt	= tabWrap.querySelectorAll(option.tabCnt);
+	var tabWrap		= document.querySelector(option.wrap),
+		menuWrap	= tabWrap.querySelector(option.menu),
+		btns 		= menuWrap.querySelectorAll('.btn-tab'),
+		tabCnts		= tabWrap.querySelectorAll(option.cnt);
 
+	// 컨텐츠 모두 hide
 	function tabCntHide(){
-		tabCnt.forEach(function(cnt){
-			cnt.style.display = 'none';
+		tabCnts.forEach(function(cnt){
+			cnt.classList.remove('show');
 			cnt.setAttribute('aria-hidden', true);
+			if(cnt.tagName == 'FIELDSET') cnt.disabled = true;
 		});
 	}
 	tabCntHide();
 
+	// 탭 메뉴 모두 off
 	function tabBtnOff(){
-		tabBtn.forEach(function(btn){
+		btns.forEach(function(btn){
 			btn.classList.remove('on');
 			btn.setAttribute('aria-selected', false);
 		});
 	}
 
-	// tab menu 클릭 기능
-	function tabClick(e) {
-		let btn = e.target.tagName != 'A' ? e.target.closest('a') : e.target, // 클릭 시 a 태그 내부에 있는 태그 클릭 시 btn 을 a 태그로 설정
-			tg_cnt = tabWrap.querySelector(btn.getAttribute('href'));
+	menuWrap.setAttribute('role', 'tablist');
+	tabCnts.forEach(function(cnt){
+		cnt.setAttribute('role', 'tabpanel');
+		cnt.setAttribute('tabindex', '-1');
+	});
 
-		e.preventDefault(); // 클릭 시 scroll 이동 방지
+	// tab menu 클릭 기능
+	function tabClick(btn) {
+		let tg_cnt = tabWrap.querySelector('#' + btn.getAttribute('aria-controls'));
 
 		tabBtnOff();
 		btn.classList.add('on');
 		btn.setAttribute('aria-selected', true);
 
 		tabCntHide();
-		tg_cnt.style.display = '';
+		tg_cnt.classList.add('show');
 		tg_cnt.setAttribute('aria-hidden', false);
+		if(tg_cnt.tagName == 'FIELDSET') tg_cnt.disabled = false;
+		tg_cnt.focus({ preventScroll: true }); // focus 에 따른 강제 스크롤 제거 (모바일 화면 적용 시 적용가능 버전 확인 필요)
 
 		if(option.active === 'function') option.active(tg_cnt, btn);
 	}
 
-	tabBtn.forEach(function(btn){
+	btns.forEach(function(btn){
 		btn.setAttribute('role', 'tab');
-		btn.setAttribute('aria-controls', btn.getAttribute('href').split('#')[1]);
 		btn.setAttribute('aria-selected', false);
-		btn.addEventListener('click', tabClick);
-
-		let tg_cnt = tabWrap.querySelector(btn.getAttribute('href'));
-		tg_cnt.setAttribute('role', 'tabpanel');
-		tg_cnt.setAttribute('aria-labelledby', btn.getAttribute('id'));
+		btn.addEventListener('click', function(e){
+			e.preventDefault(); // 클릭 시 scroll 이동 방지
+			tabClick(btn);
+		});
 
 		if(btn.classList.contains('on')) {
-			btn.setAttribute('aria-selected', true);
-			tg_cnt.style.display = '';
-			tg_cnt.setAttribute('aria-hidden', false);
+			tabClick(btn);
 		}
 	});
 }
 
 /**
+ * 텍스트 입력형 input - 화면내 동일 선택자 전체 적용 시
+ * @param {string} selector 
+ */
+function nText(selector){
+	let nTextEle = document.querySelectorAll(selector);
+	if(nTextEle.length > 1) {
+		Array.prototype.forEach.call(nTextEle, function(el){
+			nTextSet(el);
+		});
+	} 
+	else if (nTextEle.length == 1) nTextSet(nTextEle[0]);
+	else null;
+}
+
+/**
+ * 실제 input 관련 기능 함수 - 개별 적용 시
+ * input 입력 시 내용 삭제 버튼 show 및 삭제 기능 적용
+ * @param {dom/string} Ele 대상 요소 dom / 선택자
+ */
+function nTextSet(Ele){
+	let textWrap	= typeof Ele === 'string' ? document.querySelector(Ele) : Ele,
+		inp 		= textWrap.querySelector('input');
+	
+	if(inp.disabled == true || inp.readOnly == true) return;
+
+	let btn_clear 	= document.createElement('button');
+	btn_clear.setAttribute('type', 'button');
+	btn_clear.setAttribute('tabindex', -1);
+	btn_clear.classList.add('btn-clear');
+	btn_clear.textContent = '내용 삭제';
+	textWrap.appendChild(btn_clear);
+
+	inp.addEventListener('focus', btnControl);
+	inp.addEventListener('focusout', btnHide);
+	inp.addEventListener('input', btnControl);
+	inp.addEventListener('propertychange', btnControl);
+
+	btn_clear.addEventListener('click', function(e){
+		inp.value = '';
+		inp.focus();
+		btn_clear.classList.remove('on');
+		let inputEvt = new Event('input', { bubbles: true, cancelable: true });
+		inp.dispatchEvent(inputEvt); // 내용 삭제 시 input 에 입력이벤트 발생 (vue v-model 동작관련)
+		inp.dispatchEvent(keyupEvt); // 내용 삭제 시 input 에 입력이벤트 발생 (vue v-model 동작관련)
+	});
+
+	function btnControl(e){
+		if(e.target.value.length > 0 && e.target.readOnly == false) btn_clear.classList.add('on');
+		else btn_clear.classList.remove('on');
+	};
+	function btnHide(){
+		setTimeout(function(){ btn_clear.classList.remove('on') }, 50);
+	};
+}
+
+/**
+ * input 입력 시 입력글자수 count
+ * @param {dom/string} area 영역 선택자 or dom
+ */
+function nTextCount(area){
+	let wrap = typeof area === 'string' ? document.querySelector(area) : area,
+		inp = wrap.querySelector('input, textarea'),
+		tx = wrap.querySelector('.inp-count .now'),
+		maxTx = wrap.querySelector('.inp-count .max'),
+		maxLength = inp.getAttribute('maxlength') ? parseInt(inp.getAttribute('maxlength'), 10) : null;
+	
+	function updateCount(e){
+		if(maxLength && inp.value.length > maxLength) inp.value = inp.value.slice(0, maxLength); // 길이 초과 시 추가입력부분 제거
+		tx.textContent = inp.value.length;
+
+		if (maxTx && maxLength) maxTx.textContent = maxLength;
+	}
+	
+	inp.addEventListener('input', updateCount);
+	updateCount();
+}
+
+/**
  * check 전체 선택 제어 기능
  * @param {string} allcls 전체 input 의 선택자
- * @param {string} inpcls 대상요소들의 name 명
+ * @param {string} inpName 대상요소들의 name 명
  */
-function checkAll(allcls, inpcls){
+function checkAll(allcls, inpName){
 	let allBtn = document.querySelector(allcls),
 		name   = inpName != undefined ? inpName : allBtn.getAttribute('data-name'),
 		inps   = document.querySelectorAll('input[name='+name+']'),

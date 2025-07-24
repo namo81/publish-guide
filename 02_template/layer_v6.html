@@ -35,6 +35,7 @@
 					<p>레이어 팝업별로 new nlayer 을 통해 ojbect 생성</p>
 					<p>option 항목은 아래 script 부분 확인</p>
 					<p>닫기 버튼에 'all' 클래스 있을 경우 - 현재 열린 모든 레이어 닫기 (별도 콜백함수 실행X)</p>
+					<p>v6 : 기존 v5 에서 버튼 관련 자동설정 및 연결 기능 제거 / active 콜백함수 정리 - 레이어를 show/hide 기능 위주로 기능 단순화</p>
 					<div class="guide-show">
 						<!-- 코드 작성 -->
 						<button type="button" class="btn medium open-layer1" aria-haspopup="dialog" aria-controls="#layer1">팝업 호출</button> <br /><br />
@@ -48,7 +49,7 @@
 .layer-cnt { position:relative; display:flex; flex-direction:column; width:700px; max-height:100%; margin:auto; padding:25px; background:#fff; box-sizing:border-box;}
 .layer-top { position:relative; height:50px; flex-basis:50px; flex-shrink:0; }
 .layer-mid { flex:1 1 auto; overflow-y:auto; }
-.layer.showOn { display:block; }
+.layer.show { display:block; }
 </code></pre>
 
 					<h4 class="guide-sstit">호출버튼</h4>
@@ -57,7 +58,32 @@
 </code></pre>
 
 <h4 class="guide-sstit">팝업 html 구조</h4>
-<pre><code class="html">&lt;div class="layer" id="layer2"&gt;
+<pre><code class="html">&lt;!-- 레이어 1 --&gt;
+&lt;div class="layer" id="layer1"&gt;
+	&lt;div class="inbox"&gt;
+		&lt;div class="layer-cnt"&gt;
+			&lt;div class="layer-top"&gt;
+				&lt;p class="layer-title"&gt;test&lt;/p&gt;
+			&lt;/div&gt;
+			&lt;div class="layer-mid"&gt;
+				&lt;p&gt;tx&lt;/p&gt;
+				&lt;p style="border-bottom:1px solid #eee;"&gt;tx&lt;/p&gt;&lt;br&gt;
+				&lt;button type="button" data-target="layer2" class="btn01 open-layer2" aria-haspopup="dialog" aria-controls="#layer2"&gt;레이어팝업&lt;/button&gt;&lt;br&gt;
+				&lt;p&gt;tx&lt;/p&gt;
+				&lt;p&gt;tx&lt;/p&gt;
+				&lt;p&gt;tx&lt;/p&gt;
+				&lt;p&gt;tx&lt;/p&gt;
+				&lt;p&gt;tx&lt;/p&gt;
+				&lt;input type="text"&gt;
+			&lt;/div&gt;
+			&lt;button type="button" class="confirm"&gt;확인&lt;/button&gt;
+			&lt;button type="button" class="close-layer"&gt;닫기&lt;/button&gt;
+		&lt;/div&gt;
+	&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;!-- 레이어 2 --&gt;
+&lt;div class="layer" id="layer2"&gt;
 	&lt;div class="inbox"&gt;
 		&lt;div class="layer-cnt"&gt;
 			&lt;div class="layer-top"&gt;
@@ -82,20 +108,38 @@
 * layer : 대상 레이어 선택자 ( type : string ) -- 필수
 * title : 레이어 타이틀
 * activeShow : 레이어 show 완료 후 실행되는 콜백함수
+* activeClose : 레이어 close 완료 후 실행되는 콜백함수
+*
+* 선언변수.dom : 레이어 html dom 요소
+* 선언변수.show() : 레이어 show
+* 선언변수.hide() : 레이어 hide
+* 선언변수.state() : 레이어 show/hide 상태 반환 (true / false)
 */
 
-/*
-* layer.dom : 레이어 html dom 요소
-*/
-
-let btn_open1 = document.querySelector('.open-layer1');
+let btn_open1 = document.querySelector('.open-layer1'); // 레이어1 호출버튼
+// 레이어1 선언
 let layer_test = new nlayer({
-      layer : '#layer1',
-	  activeShow : function(){ console.log('show!!') }
-    });
+	layer : '#layer1',
+	focus_item : btn_open1,
+	activeShow : function(){ console.log('show!!') }
+});
 btn_open1.addEventListener('click', ()=>{
-	layer_test.show(btn_open1);
+	layer_test.show();
 })
+
+let btn_open2 = document.querySelector('.open-layer2'); // 레이어2 호출버튼
+// 레이어2 선언
+let layer_test2 = new nlayer({
+	layer : '#layer2',
+	focus_item : btn_open2
+});
+btn_open2.addEventListener('click', ()=>{
+	layer_test2.show();
+})
+
+// 전체 닫기
+let btn_close_all = document.querySelector('.close-layer-all');
+btn_close_all.addEventListener('click', layerHideAll);
 </code></pre>
 				</div>
 
@@ -136,6 +180,7 @@ btn_alert.addEventListener('click', function(){
 	nlayerAlert({
 		ment : '테스트 알럿 입니다.', 
 		title : '타이틀', 
+		focus_item : btn_alert,
 		active : function(){ 
 			console.log('alert 닫았습니다.!!')
 		}
@@ -192,6 +237,7 @@ btn_confirm.addEventListener('click', function(){
 	nlayerConfirm({
 		ment : '테스트 컨펌 입니다.', 
 		title : '타이틀', 
+		focus_item : btn_confirm,
 		activeConfirm : confirm_run, 
 		activeCanCel : confirm_cancel
 	});
@@ -270,7 +316,7 @@ btn_toast2.addEventListener('click', function(){
 					<p class="layer-title">test2</p>
 				</div>
 				<div class="layer-mid">
-					<button type="button" class="close-layer all">전체닫기</button>
+					<button type="button" class="close-layer-all">전체닫기</button>
 				</div>
 				<button type="button" class="close-layer">닫기</button>
 			</div>
@@ -285,6 +331,7 @@ btn_toast2.addEventListener('click', function(){
 		let btn_open1 = document.querySelector('.open-layer1'),
 			layer_test = new nlayer({
 			layer : '#layer1',
+			focus_item : btn_open1,
 			activeShow : function(){ console.log('show!!') }
 		});
 		btn_open1.addEventListener('click', ()=>{
@@ -293,11 +340,16 @@ btn_toast2.addEventListener('click', function(){
 
 		let btn_open2 = document.querySelector('.open-layer2'),
 			layer_test2 = new nlayer({
-			layer : '#layer2'
+			layer : '#layer2',
+			focus_item : btn_open2
 		});
 		btn_open2.addEventListener('click', ()=>{
 			layer_test2.show();
 		})
+
+		// 전체 닫기
+		let btn_close_all = document.querySelector('.close-layer-all');
+		btn_close_all.addEventListener('click', layerHideAll);
 
 
 		let btn_alert = document.querySelector('.open-alert');

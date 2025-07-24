@@ -32,117 +32,58 @@
 			<section id="guide-basic">
 				<h2 class="guide-sec-tit">탭 메뉴</h2>
 				<div class="guide-sec">
-					<h3 class="guide-stit">메뉴만</h3>
-					<p>기본형 탭 메뉴.</p>
-					<p><strong>tab-menu</strong> : 기능 클래스 / <strong>tab-type1</strong> : 스타일 클래스</p>
-					<p>탭 버튼은 'a'태그 사용 (웹 접근성 고려)</p>
-					<div class="guide-show">
-						<div class="tab-menu tab-type1">
-							<ul>
-								<li class="on"><a href="#tab-cnt1">탭메뉴 1</a></li>
-								<li><a href="#tab-cnt2">탭메뉴 2</a></li>
-							</ul>
-						</div>
-						<div class="tab-menu tab-type1 count4">
-							<ul>
-								<li class="on"><a href="#tab-cnt1">탭메뉴 1</a></li>
-								<li><a href="#tab-cnt2">탭메뉴 2</a></li>
-								<li><a href="#tab-cnt2">탭메뉴 3</a></li>
-								<li><a href="#tab-cnt2">탭메뉴 4</a></li>
-							</ul>
-						</div>
-					</div>
-<pre><code class="html">&lt;div class="tab-menu tab-type1"&gt;
-	&lt;ul&gt;
-		&lt;li class="on"&gt;&lt;a href="#tab-cnt1"&gt;탭메뉴 1&lt;/a&gt;&lt;/li&gt;
-		&lt;li&gt;&lt;a href="#tab-cnt2"&gt;탭메뉴 2&lt;/a&gt;&lt;/li&gt;
-	&lt;/ul&gt;
-&lt;/div&gt;
-&lt;div class="tab-menu tab-type1 count4"&gt;
-	&lt;ul&gt;
-		&lt;li class="on"&gt;&lt;a href="#tab-cnt1"&gt;탭메뉴 1&lt;/a&gt;&lt;/li&gt;
-		&lt;li&gt;&lt;a href="#tab-cnt2"&gt;탭메뉴 2&lt;/a&gt;&lt;/li&gt;
-		&lt;li&gt;&lt;a href="#tab-cnt2"&gt;탭메뉴 3&lt;/a&gt;&lt;/li&gt;
-		&lt;li&gt;&lt;a href="#tab-cnt2"&gt;탭메뉴 4&lt;/a&gt;&lt;/li&gt;
-	&lt;/ul&gt;
-&lt;/div&gt;
-</code></pre>
-				</div>
-				<div class="guide-sec">
-					<h3 class="guide-stit">컨텐츠 포함</h3>
-					<p>컨텐츠와 묶어서 사용할 경우</p>
-					<p>탭메뉴 버튼의 href 값을 통해 해당 컨텐츠 hide / show</p>
-					<p>탭메뉴의 갯수와 컨텐츠 갯수는 일치시켜야 함.</p>
+					<h3 class="guide-stit">메뉴 + 컨텐츠</h3>
+					<p>메뉴와 컨텐츠를 묶는 wrapping 영역 필요.</p>
+					<p>탭 버튼 : id / class="btn-tab" / aria-controls="연결 컨텐츠 영역 id" 속성 필수</p>
+					<p>탭 컨텐츠 : id / class="btn-tab" / aria-labelledby="연결 버튼의 id" 속성 필수</p>
 					<div class="guide-show">
 						<div class="tab-wrap ex1">
-							<div class="tab-menu tab-type1 count3">
-								<ul>
-									<li class="on"><a href="#tab-cnt1">탭메뉴 1</a></li>
-									<li><a href="#tab-cnt2">탭메뉴 2</a></li>
-									<li><a href="#tab-cnt3">탭메뉴 3</a></li>
-								</ul>
-							</div>
+							<ul class="tab-menu tab-type1">
+								<li><button type="button" id="tab-ex-1" aria-controls="tab-cnt1" class="btn-tab on">탭메뉴 1</button></li>
+								<li><button type="button" id="tab-ex-2" aria-controls="tab-cnt2" class="btn-tab">탭메뉴 2</button></li>
+								<li><button type="button" id="tab-ex-3" aria-controls="tab-cnt3" class="btn-tab">탭메뉴 3</button></li>
+							</ul>
 
 							<!-- 탭 컨텐츠 1 -->
-							<div class="tab-cnt" id="tab-cnt1">
+							<div class="tab-cnt" id="tab-cnt1" aria-labelledby="tab-ex-1">
 								탭 컨텐츠 111
 							</div>
 
 							<!-- 탭 컨텐츠 2 -->
-							<div class="tab-cnt" id="tab-cnt2">
+							<div class="tab-cnt" id="tab-cnt2" aria-labelledby="tab-ex-2">
 								탭 컨텐츠 222
 							</div>
 
 							<!-- 탭 컨텐츠 3 -->
-							<div class="tab-cnt" id="tab-cnt3">
+							<div class="tab-cnt" id="tab-cnt3" aria-labelledby="tab-ex-3">
 								탭 컨텐츠 333
 							</div>
 						</div>
 					</div>
 <pre><code class="html">&lt;div class="tab-wrap ex1"&gt;
-	&lt;div class="tab-menu tab-type1 count3"&gt;
-		&lt;ul&gt;
-			&lt;li class="on"&gt;&lt;a href="#tab-cnt1"&gt;탭메뉴 1&lt;/a&gt;&lt;/li&gt;
-			&lt;li&gt;&lt;a href="#tab-cnt2"&gt;탭메뉴 2&lt;/a&gt;&lt;/li&gt;
-			&lt;li&gt;&lt;a href="#tab-cnt3"&gt;탭메뉴 3&lt;/a&gt;&lt;/li&gt;
-		&lt;/ul&gt;
-	&lt;/div&gt;
+	&lt;ul class="tab-menu tab-type1"&gt;
+		&lt;li class="on"&gt;&lt;button type="button" id="tab-ex-1" aria-controls="tab-cnt1" class="btn-tab"&gt;탭메뉴 1&lt;/button&gt;&lt;/li&gt;
+		&lt;li&gt;&lt;button type="button" id="tab-ex-2" aria-controls="tab-cnt2" class="btn-tab"&gt;탭메뉴 2&lt;/button&gt;&lt;/li&gt;
+		&lt;li&gt;&lt;button type="button" id="tab-ex-3" aria-controls="tab-cnt3" class="btn-tab"&gt;탭메뉴 3&lt;/button&gt;&lt;/li&gt;
+	&lt;/ul&gt;
 
 	&lt;!-- 탭 컨텐츠 1 --&gt;
-	&lt;div class="tab-cnt" id="tab-cnt1"&gt;
+	&lt;div class="tab-cnt" id="tab-cnt1" aria-labelledby="tab-ex-1"&gt;
 		탭 컨텐츠 111
 	&lt;/div&gt;
 
 	&lt;!-- 탭 컨텐츠 2 --&gt;
-	&lt;div class="tab-cnt" id="tab-cnt2"&gt;
+	&lt;div class="tab-cnt" id="tab-cnt2" aria-labelledby="tab-ex-2"&gt;
 		탭 컨텐츠 222
 	&lt;/div&gt;
 
 	&lt;!-- 탭 컨텐츠 3 --&gt;
-	&lt;div class="tab-cnt" id="tab-cnt3"&gt;
+	&lt;div class="tab-cnt" id="tab-cnt3" aria-labelledby="tab-ex-3"&gt;
 		탭 컨텐츠 333
 	&lt;/div&gt;
 &lt;/div&gt;
 </code></pre>
 				</div>
-				
-				<div class="guide-sec">
-					<h3 class="guide-stit">JS 설정</h3>
-					<h4 class="guide-sstit">1개 단독 설정</h4>
-<pre><code class="js">var 변수명 = new nTabMenu({
-	wrap         : '.tab-wrap', - 탭 메뉴 및 컨텐츠를 포함하는 영역 선택자
-	menuWrap     : '.tab-menu', - 탭 메뉴 선택자
-	tabCnt       : '.tab-cnt'   - 탭 컨텐츠 선택자
-});
-</code></pre>
-					<h4 class="guide-sstit">동일구조 다수 tab 전체 적용</h4>
-					<p>버튼 영역 클래스는 <strong>'tab-menu'</strong></p>
-					<p>컨텐츠 영역 클래스는 <strong>'tab-cnt'</strong></p>
-					<p>탭 안의 탭 같은 depth 구조에서는 사용불가</p>
-<pre><code class="js">nTab('css 선택자'); - 탭 메뉴 및 컨텐츠를 포함하는 영역 선택자
-</code></pre>
-				</div>
-
 			</section>
 		</div>
 		<a href="#work-list" class="guide-top">Top</a>	
@@ -152,10 +93,10 @@
 	<script>
 		hljs.initHighlightingOnLoad();
 
-		var tab1 = new nTabMenu({
-			wrap 		: '.tab-wrap.ex1',
-			menuWrap 	: '.tab-menu',
-			tabCnt 		: '.tab-cnt'
+		let tab1 = new nTabMenu({
+			wrap 	: '.tab-wrap.ex1',
+			menu 	: '.tab-menu',
+			cnt 	: '.tab-cnt'
 		});
 	</script>
 </body>

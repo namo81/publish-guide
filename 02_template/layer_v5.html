@@ -50,7 +50,7 @@
 .layer-cnt { position:relative; display:flex; flex-direction:column; width:700px; max-height:100%; margin:auto; padding:25px; background:#fff; box-sizing:border-box;}
 .layer-top { position:relative; height:50px; flex-basis:50px; flex-shrink:0; }
 .layer-mid { flex:1 1 auto; overflow-y:auto; }
-.layer.showOn { display:block; }
+.layer.show { display:block; }
 </code></pre>
 
 <h4 class="guide-sstit">호출버튼</h4>
@@ -60,11 +60,13 @@
 </code></pre>
 
 <h4 class="guide-sstit">팝업 html 구조</h4>
-<pre><code class="html">&lt;div class="layer" id="layer2"&gt;
-	&lt;div class="inbox"&gt; &lt;!-- in-scroll 추가 시 내부 스크롤 --&gt;
+<pre><code class="html">&lt;div class="layer" id="layer id"&gt;
+	&lt;div class="inbox"&gt;
 		&lt;div class="layer-cnt"&gt;
-			&lt;div class="layer-top"&gt;test&lt;/div&gt;
+			&lt;div class="layer-top"&gt;&lt;p class="layer-title"&gt;test&lt;/p&gt;&lt;/div&gt;
 			&lt;div class="layer-mid"&gt;
+				&lt;!-- 컨텐츠 영역 --&gt;
+
 				&lt;button type="button" class="close-layer all"&gt;전체닫기&lt;/button&gt;
 				&lt;button type="button" class="confirm"&gt;확인&lt;/button&gt;
 			&lt;/div&gt;
@@ -114,9 +116,9 @@
 					<p>팝업 style은 css 로 설정 / 특정 클래스 필요 시 layerpop-v5.0.0.js 파일 내 항목 수정</p><br />
 					<p>알럿 옵션 : nlayerAlert({ 하단 옵션 });</p>
 					<ul>
-						<li>- btn : 호출버튼 ( type : dom 요소 ) ( 예시 : this, e.target .. ) <strong class="tx-red">필수</strong> </li>
 						<li>- ment : 내용 ( type : string ) <strong class="tx-red">필수</strong></li>
 						<li>- title : 타이틀 ( type : string )</li>
+						<li>- focus_item : 창 닫은 후 focus 될 요소 ( type : string or dom )</li>
 						<li>- btnTx : 버튼 텍스트 ( type : string )</li>
 						<li>- active : 확인 후 실행할 함수 ( type : function )</li>
 					</ul>
@@ -129,9 +131,9 @@
 
 <pre><code class="js">/** 알럿 기능 
 * nlayerAlert(option);
-* btn : 호출버튼 (필수)
 * ment : 문구 (필수)
 * title : 타이틀
+* focus_item : 팝업 닫기 후 focus 될 요소 지정
 * btnTx : 버튼 텍스트 - 없을 경우 '확인'
 * active : 확인 클릭 시 실행함수
 */
@@ -142,6 +144,7 @@ btn_alert.addEventListener('click', function(){
 		btn : this,
 		ment : '테스트 알럿 입니다.', 
 		title : '타이틀', 
+		focus_item : btn_alert,
 		active : function(){ 
 			console.log('alert 닫았습니다.!!')
 		}
@@ -158,9 +161,9 @@ btn_alert.addEventListener('click', function(){
 					<p>팝업 style은 css 로 설정 / 특정 클래스 필요 시 layerpop-v5.0.0.js 파일 내 항목 수정</p> <br />
 					<p>컨펌 함수 파라미터 : nlayerConfirm({ 하단 옵션 });</p>
 					<ul>
-						<li>- btn : 호출버튼 ( type : dom 요소 ) ( 예시: this, e.target .. ) <strong class="tx-red">필수</strong> </li>
 						<li>- ment : 내용 ( type : string ) <strong class="tx-red">필수</strong></li>
 						<li>- title : 타이틀 ( type : string )</li>
+						<li>- focus_item : 창 닫은 후 focus 될 요소 ( type : string or dom )</li>
 						<li>- activeConfirm : 확인 시 실행할 함수 ( type : function )</li>
 						<li>- activeCancel : 취소 시 실행할 함수 ( type : function )</li>
 						<li>- btnTxConfirm : 확인 버튼 텍스트 ( type : string )</li>
@@ -176,9 +179,9 @@ btn_alert.addEventListener('click', function(){
 
 <pre><code class="js">/** 컨펌 기능 
 * nlayerConfirm(option);
-* btn : 호출버튼 (필수)
 * ment : 문구 (필수)
 * title : 타이틀
+* focus_item : 팝업 닫기 후 focus 될 요소 지정
 * btnTxConfirm : 컨펌 버튼 텍스트 - 없을 경우 '확인'
 * btnTxCancel : 취소 버튼 텍스트 - 없을 경우 '취소'
 * activeConfirm : 컨펌버튼 클릭 시 실행함수
@@ -198,6 +201,7 @@ btn_confirm.addEventListener('click', function(){
 		btn : this, 
 		ment : '테스트 컨펌 입니다.', 
 		title : '타이틀', 
+		focus_item : btn_confirm,
 		activeConfirm : confirm_run, 
 		activeCanCel : confirm_cancel
 	});
@@ -248,7 +252,7 @@ btn_toast2.addEventListener('click', function(){
 	<div class="layer" id="layer1">
 		<div class="inbox">
 			<div class="layer-cnt">
-				<div class="layer-top">test</div>
+				<div class="layer-top"><p class="layer-title">test</p></div>
 				<div class="layer-mid">
 					<p>tx</p>
 					<p style="border-bottom:1px solid #eee;">tx</p><br>
@@ -270,6 +274,7 @@ btn_toast2.addEventListener('click', function(){
 	<div class="layer" id="layer2">
 		<div class="inbox">
 			<div class="layer-cnt">
+				<div class="layer-top"><p class="layer-title">test</p></div>
 				<div class="layer-mid">
 					<button type="button" class="close-layer all">전체닫기</button>
 				</div>
@@ -324,6 +329,7 @@ btn_toast2.addEventListener('click', function(){
 				btn : this,
 				ment : '테스트 알럿 입니다.', 
 				title : '타이틀', 
+				focus_item : btn_alert,
 				active : function(){ 
 					console.log('alert 닫았습니다.!!')
 				}
@@ -342,6 +348,7 @@ btn_toast2.addEventListener('click', function(){
 				btn : this, 
 				ment : '테스트 컨펌 입니다.', 
 				title : '타이틀', 
+				focus_item : btn_confirm,
 				activeConfirm : function(){ confirm_run() }, 
 				activeCancel : function(){ confirm_cancel() }
 			});

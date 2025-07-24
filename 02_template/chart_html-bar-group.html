@@ -26,47 +26,57 @@
 	<link rel="stylesheet" href="/css/layout.css" media="screen, print" />
 
 	<style>
-		.nChart-wrap { display:flex; flex-direction:column; padding:20px; border:1px solid #ccc; box-sizing:border-box; }
+		.nChart-wrap { padding:20px 20px 15px; }
+		.nChart-wrap { display:flex; flex-direction:column; border:1px solid #ccc; box-sizing:border-box; }
 		.nChart-wrap .chart-title { font-size:20px; text-align:center; font-weight:bold; }
 		.nChart-wrap .legend { margin:10px 0; text-align:right; }
 		.nChart-wrap .legend li { display:inline-block; margin-left:15px; font-size:14px; line-height:18px; }
 		.nChart-wrap .legend .name.del { opacity:.5; text-decoration:line-through; }
 		.nChart-wrap .legend .bullet { display:inline-block; width:8px; height:8px; margin-right:3px; border-radius:4px; }
-		.nChart-wrap .chart { position:relative; padding-left:30px; flex:1; }
-		.nChart-wrap .chart .guide-line { position:absolute; display:flex; flex-direction:column; justify-content:space-between; margin-left:-30px; height:calc(100% - 25px); z-index:0; }
-		.nChart-wrap .chart .guide-line li { position:absolute; width:calc(100% - 30px); }
-		.nChart-wrap .chart .guide-line li:after { content:''; position:absolute; width:100%; bottom:-1px; left:30px; border-top:1px dashed #ccc; }
-		.nChart-wrap .chart .guide-line li .guide-tx { margin:0 0 -8px !important; font-size:12px; line-height:20px; }
+		.nChart-wrap .chart { position:relative; padding-left:50px; flex:1; }
+		.nChart-wrap .chart .chart-inner { width:100%; height:100%; overflow-x:scroll;}
+		.nChart-wrap .chart .guide-line { position:absolute; display:flex; flex-direction:column; justify-content:space-between; margin-left:-50px; height:calc(100% - 50px); z-index:0; }
+		.nChart-wrap .chart .guide-line li { position:absolute; width:calc(100% - 50px); }
+		.nChart-wrap .chart .guide-line li::after { content:''; position:absolute; width:100%; bottom:-1px; left:50px; border-top:1px dashed #ccc; }
+		.nChart-wrap .chart .guide-line li:first-child::after { border-top-style:solid; }
+		.nChart-wrap .chart .guide-line li .guide-tx { margin:0 0 -8px !important; padding-left:10px; font-size:12px; line-height:20px; }
 		.nChart-wrap .chart .bar-list { position:relative; display:flex; width:100%; height:100%; z-index:1; }
-		.nChart-wrap .chart .bar-list > li { display:flex; flex-direction:column; flex:1; }
-		.nChart-wrap .chart .name { margin:0 !important; padding:3px; text-align:center; font-size:12px; line-height:18px; box-sizing:border-box; border-top:1px solid #bbb; }
-		.nChart-wrap .chart .bars { display:flex; flex:1; align-items:flex-end; justify-content: center; }
-		.nChart-wrap .chart .bar { position:relative; width:30px; margin:0 0 0 5px !important; text-align:center; transition:width .2s, height .2s; }
+		.nChart-wrap .chart .wid-over .bar-list { width:auto !important; }
+		.nChart-wrap .chart .bar-list > li { display:flex; flex-direction:column; flex:1; padding-left:10px; padding-right:10px; }
+		.nChart-wrap .chart .name { height:45px; margin:0 !important; padding:3px; text-align:center; font-size:12px; line-height:18px; box-sizing:border-box; }
+		.nChart-wrap .chart .bars { display:flex; flex:1; align-items:flex-end; justify-content:center; gap:0 5px; }
+		.nChart-wrap .chart .bar { position:relative; width:40px; text-align:center; transition:width .2s, height .2s; }
+		.nChart-wrap .chart .bar:hover { filter:brightness(0.9); }
 		.nChart-wrap .chart .bar .fill { position:absolute; display:block; width:100%; height:100%; border-radius:2px 2px 0 0; cursor:default; }
 		.nChart-wrap .chart .bar .fill > i { display:block; color:#fff; overflow:hidden; transition:.2s;}
 		.nChart-wrap .chart .bar.hide-set { width:0px; margin:0 !important; }
 		.nChart-wrap .chart .bar.hide-set .fill,
 		.nChart-wrap .chart .bar.hide-set .fill > i { width:0; }
-		.nChart-wrap .tooltip { position:absolute; opacity:0; border:1px solid #ccc; border-radius:3px; background-color:#fff; transition:.2s cubic-bezier(.13,.01,.08,.98); white-space:nowrap; }
+		.nChart-wrap .chart .chart-inner::-webkit-scrollbar { width:5px; height:5px; }
+		.nChart-wrap .chart .chart-inner::-webkit-scrollbar-thumb { background:#cdcdcd; border-radius:8px; }
+
+		.nChart-wrap .tooltip { position:absolute; display:block; width:auto; bottom:auto; opacity:0; border:1px solid #ccc; border-radius:3px; background-color:#fff; transform:translate3d(-50%, -10px, 0); transition:top .2s cubic-bezier(.13,.01,.08,.98), left .2s cubic-bezier(.13,.01,.08,.98); white-space:nowrap; }
+		.nChart-wrap .tooltip.show { opacity:1; z-index:100; }
 		.nChart-wrap .tooltip p { margin:0 !important; }
 		.nChart-wrap .tooltip .tt-title { padding:5px 8px; background:#ccc; }
-		.nChart-wrap .tooltip .tt-value { padding:5px 8px; }
+		.nChart-wrap .tooltip .tt-value { display:flex; justify-content:space-between; align-items:center; gap:6px; padding:5px 8px; }
 		.nChart-wrap .tooltip .marker { display:inline-block; width:8px; height:8px; border-radius:50%; }
 
-		.nChart-wrap.hor { padding:20px 30px 40px 20px; }
-		.nChart-wrap.hor .chart .guide-line { flex-direction:row; width:calc(100% - 50px) !important; height:100%; margin:0 0 0 50px; }
+		.nChart-wrap.hor { padding-bottom:40px; }
+		.nChart-wrap.hor .chart .guide-line { flex-direction:row; width:calc(100% - 80px) !important; height:100%; margin:0 30px 0 50px; }
 		.nChart-wrap.hor .chart .guide-line li { width:1px; height:100%; }
 		.nChart-wrap.hor .chart .guide-line li:after { width:1px; height:100%; left:-1px; border:none; border-left:1px dashed #ccc; }
-		.nChart-wrap.hor .chart .guide-line .guide-tx { position:absolute; width:50px; top:100%; margin:0 0 0 -25px !important; text-align:center;}
+		.nChart-wrap.hor .chart .guide-line .guide-tx { position:absolute; width:50px; top:100%; margin:0 0 0 -25px !important; padding:0; text-align:center;}
 		.nChart-wrap.hor .chart { padding-left:0; }
+		.nChart-wrap.hor .chart .chart-inner { overflow:hidden; }
 		.nChart-wrap.hor .chart .bar-list { flex-direction:column; }
-		.nChart-wrap.hor .chart .bar-list > li { flex-direction:row-reverse; flex:0 1 auto; }
-		.nChart-wrap.hor .chart .bar-list .name { display:flex; width:50px; align-items:center; justify-content:end; border-top:none; text-align:right; border-right:1px solid #bbb; }
-		.nChart-wrap.hor .chart .bars { padding:10px 0; flex-direction:column; align-items:flex-start;}
-		.nChart-wrap.hor .chart .bar { width:auto; height:18px; margin:2px 0 !important; text-align:right; }
+		.nChart-wrap.hor .chart .bar-list > li { position:relative; flex-direction:row-reverse; flex:0 1 auto; padding:10px 30px 10px 50px; }
+		.nChart-wrap.hor .chart .bar-list .name { position:absolute; display:flex; top:0; left:0; width:50px; height:100%; padding:3px 6px; align-items:center; justify-content:end; border-top:none; text-align:right; border-right:1px solid #bbb; }
+		.nChart-wrap.hor .chart .bars { flex-direction:column; align-items:flex-start; gap:4px 0 ; }
+		.nChart-wrap.hor .chart .bar { width:auto; height:18px; text-align:right; }
 		.nChart-wrap.hor .chart .bar .fill > i { display:inline-block; padding:0 3px; line-height:18px; }
 		.nChart-wrap.hor .chart .bar.hide-set { height:0px; margin:0 !important; }
-		.nChart-wrap.hor .tooltip { margin:0 0 0 22px; }
+		.nChart-wrap.hor .tooltip { transform:translate3d(10px, 0, 0); }
 
 		.nChart-wrap.stack .chart .bars { flex-direction:column-reverse; align-items:center; justify-content:flex-start; }
 		.nChart-wrap.stack .chart .bar .fill { border-radius:0; }
@@ -75,12 +85,16 @@
 		.nChart-wrap.hor.stack .chart .bars { flex-direction:row; align-items:center; }
 		.nChart-wrap.hor.stack .fill { text-align:center; }
 		.nChart-wrap.hor.stack .chart .bar.hide-set { width:0 !important; height:18px !important; }
-		.nChart-wrap.stack .bars > .bar:last-child > .fill { border-radius:10px 10px 0 0; }
+		.nChart-wrap.stack .bars > .bar:last-child > .fill { border-radius:2px 2px 0 0; }
 
-		.nChart-wrap.group .chart .bar-list > li { position:relative; flex-direction:row; justify-content:center; padding-bottom:25px; overflow:hidden; }
+		.nChart-wrap.group .chart .bar-list > li { position:relative; flex-direction:row; justify-content:center; padding-bottom:45px; gap:4px; }
 		.nChart-wrap.group .chart .bar-list > li .bars { flex:0; }
 		.nChart-wrap.group .chart .bar-list > li .name { position:absolute; width:100%; bottom:0; }
-		.nChart-wrap .tooltip.share { transform:translate3d(-50%, 0, 0) }
+		.nChart-wrap.group.hor .chart .bar-list > li { flex-direction:column; justify-content:flex-start; padding-bottom:10px; }
+		.nChart-wrap.group.hor .chart .bars { gap:0; }
+		.nChart-wrap.group.hor .bars > .bar:last-child > .fill { border-radius:0 2px 2px 0; }
+		.nChart-wrap.group.hor .bar-list > li .name { height:100%; width:50px; top:0; left:0; }
+
 		.nChart-wrap .tooltip li { display:flex; justify-content:space-between; align-items:center; gap:6px; }
 		.nChart-wrap .tooltip li .label { flex:1; text-align:left; }
 	</style>
@@ -104,46 +118,57 @@
 					<!-- // 코드 작성 -->
 					</div>
 <pre><code class="html">&lt;div class="nChart-wrap"&gt;&lt;/div&gt;</code></pre><br>
-<pre><code class="css">.nChart-wrap { display:flex; flex-direction:column; padding:20px; border:1px solid #ccc; box-sizing:border-box; }
+<pre><code class="css">.nChart-wrap { padding:20px 20px 15px; }
+.nChart-wrap { display:flex; flex-direction:column; border:1px solid #ccc; box-sizing:border-box; }
 .nChart-wrap .chart-title { font-size:20px; text-align:center; font-weight:bold; }
 .nChart-wrap .legend { margin:10px 0; text-align:right; }
 .nChart-wrap .legend li { display:inline-block; margin-left:15px; font-size:14px; line-height:18px; }
 .nChart-wrap .legend .name.del { opacity:.5; text-decoration:line-through; }
 .nChart-wrap .legend .bullet { display:inline-block; width:8px; height:8px; margin-right:3px; border-radius:4px; }
-.nChart-wrap .chart { position:relative; padding-left:30px; flex:1; }
-.nChart-wrap .chart .guide-line { position:absolute; display:flex; flex-direction:column; justify-content:space-between; margin-left:-30px; height:calc(100% - 25px); z-index:0; }
-.nChart-wrap .chart .guide-line li { position:absolute; width:calc(100% - 30px); }
-.nChart-wrap .chart .guide-line li:after { content:''; position:absolute; width:100%; bottom:-1px; left:30px; border-top:1px dashed #ccc; }
-.nChart-wrap .chart .guide-line li .guide-tx { margin:0 0 -8px !important; font-size:12px; line-height:20px; }
+.nChart-wrap .chart { position:relative; padding-left:50px; flex:1; }
+.nChart-wrap .chart .chart-inner { width:100%; height:100%; overflow-x:scroll;}
+.nChart-wrap .chart .guide-line { position:absolute; display:flex; flex-direction:column; justify-content:space-between; margin-left:-50px; height:calc(100% - 50px); z-index:0; }
+.nChart-wrap .chart .guide-line li { position:absolute; width:calc(100% - 50px); }
+.nChart-wrap .chart .guide-line li::after { content:''; position:absolute; width:100%; bottom:-1px; left:50px; border-top:1px dashed #ccc; }
+.nChart-wrap .chart .guide-line li:first-child::after { border-top-style:solid; }
+.nChart-wrap .chart .guide-line li .guide-tx { margin:0 0 -8px !important; padding-left:10px; font-size:12px; line-height:20px; }
 .nChart-wrap .chart .bar-list { position:relative; display:flex; width:100%; height:100%; z-index:1; }
-.nChart-wrap .chart .bar-list > li { display:flex; flex-direction:column; flex:1; }
-.nChart-wrap .chart .name { margin:0 !important; padding:3px; text-align:center; font-size:12px; line-height:18px; box-sizing:border-box; border-top:1px solid #bbb; }
-.nChart-wrap .chart .bars { display:flex; flex:1; align-items:flex-end; justify-content: center; }
-.nChart-wrap .chart .bar { position:relative; width:30px; margin:0 0 0 5px !important; text-align:center; transition:width .2s, height .2s; }
+.nChart-wrap .chart .wid-over .bar-list { width:auto !important; }
+.nChart-wrap .chart .bar-list > li { display:flex; flex-direction:column; flex:1; padding-left:10px; padding-right:10px; }
+.nChart-wrap .chart .name { height:45px; margin:0 !important; padding:3px; text-align:center; font-size:12px; line-height:18px; box-sizing:border-box; }
+.nChart-wrap .chart .bars { display:flex; flex:1; align-items:flex-end; justify-content:center; gap:0 5px; }
+.nChart-wrap .chart .bar { position:relative; width:40px; text-align:center; transition:width .2s, height .2s; }
+.nChart-wrap .chart .bar:hover { filter:brightness(0.9); }
 .nChart-wrap .chart .bar .fill { position:absolute; display:block; width:100%; height:100%; border-radius:2px 2px 0 0; cursor:default; }
 .nChart-wrap .chart .bar .fill > i { display:block; color:#fff; overflow:hidden; transition:.2s;}
 .nChart-wrap .chart .bar.hide-set { width:0px; margin:0 !important; }
 .nChart-wrap .chart .bar.hide-set .fill,
 .nChart-wrap .chart .bar.hide-set .fill > i { width:0; }
-.nChart-wrap .tooltip { position:absolute; width:60px; opacity:0; margin:-2px 0 0 60px; border:1px solid #ccc; border-radius:3px; background-color:#fff; transition:.2s cubic-bezier(.13,.01,.08,.98); }
+.nChart-wrap .chart .chart-inner::-webkit-scrollbar { width:5px; height:5px; }
+.nChart-wrap .chart .chart-inner::-webkit-scrollbar-thumb { background:#cdcdcd; border-radius:8px; }
+
+.nChart-wrap .tooltip { position:absolute; display:block; width:auto; bottom:auto; opacity:0; border:1px solid #ccc; border-radius:3px; background-color:#fff; transform:translate3d(-50%, -10px, 0); transition:top .2s cubic-bezier(.13,.01,.08,.98), left .2s cubic-bezier(.13,.01,.08,.98); white-space:nowrap; }
+.nChart-wrap .tooltip.show { opacity:1; z-index:100; }
 .nChart-wrap .tooltip p { margin:0 !important; }
 .nChart-wrap .tooltip .tt-title { padding:5px 8px; background:#ccc; }
-.nChart-wrap .tooltip .tt-value { padding:5px 8px; }
+.nChart-wrap .tooltip .tt-value { display:flex; justify-content:space-between; align-items:center; gap:6px; padding:5px 8px; }
+.nChart-wrap .tooltip .marker { display:inline-block; width:8px; height:8px; border-radius:50%; }
 
-.nChart-wrap.hor { padding:20px 30px 40px 20px; }
-.nChart-wrap.hor .chart .guide-line { flex-direction:row; width:calc(100% - 50px) !important; height:100%; margin:0 0 0 50px; }
+.nChart-wrap.hor { padding-bottom:40px; }
+.nChart-wrap.hor .chart .guide-line { flex-direction:row; width:calc(100% - 80px) !important; height:100%; margin:0 30px 0 50px; }
 .nChart-wrap.hor .chart .guide-line li { width:1px; height:100%; }
 .nChart-wrap.hor .chart .guide-line li:after { width:1px; height:100%; left:-1px; border:none; border-left:1px dashed #ccc; }
-.nChart-wrap.hor .chart .guide-line .guide-tx { position:absolute; width:50px; top:100%; margin:0 0 0 -25px !important; text-align:center;}
+.nChart-wrap.hor .chart .guide-line .guide-tx { position:absolute; width:50px; top:100%; margin:0 0 0 -25px !important; padding:0; text-align:center;}
 .nChart-wrap.hor .chart { padding-left:0; }
+.nChart-wrap.hor .chart .chart-inner { overflow:hidden; }
 .nChart-wrap.hor .chart .bar-list { flex-direction:column; }
-.nChart-wrap.hor .chart .bar-list > li { flex-direction:row-reverse; flex:0 1 auto; }
-.nChart-wrap.hor .chart .bar-list .name { display:flex; width:50px; align-items:center; justify-content:end; border-top:none; text-align:right; border-right:1px solid #bbb; }
-.nChart-wrap.hor .chart .bars { padding:10px 0; flex-direction:column; align-items:flex-start;}
-.nChart-wrap.hor .chart .bar { width:auto; height:18px; margin:2px 0 !important; text-align:right; }
+.nChart-wrap.hor .chart .bar-list > li { position:relative; flex-direction:row-reverse; flex:0 1 auto; padding:10px 30px 10px 50px; }
+.nChart-wrap.hor .chart .bar-list .name { position:absolute; display:flex; top:0; left:0; width:50px; height:100%; padding:3px 6px; align-items:center; justify-content:end; border-top:none; text-align:right; border-right:1px solid #bbb; }
+.nChart-wrap.hor .chart .bars { flex-direction:column; align-items:flex-start; gap:4px 0 ; }
+.nChart-wrap.hor .chart .bar { width:auto; height:18px; text-align:right; }
 .nChart-wrap.hor .chart .bar .fill > i { display:inline-block; padding:0 3px; line-height:18px; }
 .nChart-wrap.hor .chart .bar.hide-set { height:0px; margin:0 !important; }
-.nChart-wrap.hor .tooltip { margin:0 0 0 22px; }
+.nChart-wrap.hor .tooltip { transform:translate3d(10px, 0, 0); }
 
 .nChart-wrap.stack .chart .bars { flex-direction:column-reverse; align-items:center; justify-content:flex-start; }
 .nChart-wrap.stack .chart .bar .fill { border-radius:0; }
@@ -152,29 +177,59 @@
 .nChart-wrap.hor.stack .chart .bars { flex-direction:row; align-items:center; }
 .nChart-wrap.hor.stack .fill { text-align:center; }
 .nChart-wrap.hor.stack .chart .bar.hide-set { width:0 !important; height:18px !important; }
+.nChart-wrap.stack .bars > .bar:last-child > .fill { border-radius:2px 2px 0 0; }
+
+.nChart-wrap.group .chart .bar-list > li { position:relative; flex-direction:row; justify-content:center; padding-bottom:45px; gap:4px; }
+.nChart-wrap.group .chart .bar-list > li .bars { flex:0; }
+.nChart-wrap.group .chart .bar-list > li .name { position:absolute; width:100%; bottom:0; }
+.nChart-wrap.group.hor .chart .bar-list > li { flex-direction:column; justify-content:flex-start; padding-bottom:10px; }
+.nChart-wrap.group.hor .chart .bars { gap:0; }
+.nChart-wrap.group.hor .bars > .bar:last-child > .fill { border-radius:0 2px 2px 0; }
+.nChart-wrap.group.hor .bar-list > li .name { height:100%; width:50px; top:0; left:0; }
+
+.nChart-wrap .tooltip li { display:flex; justify-content:space-between; align-items:center; gap:6px; }
+.nChart-wrap .tooltip li .label { flex:1; text-align:left; }
 </code></pre><br>
 <pre><code class="js">var chartHtml = new nChartHtml({
-	area : '.nChart-wrap', 									// chart 그려질 영역
-	stack : false,										// true 설정 시 적층구조로 표현 - 기본은 false (단 dataset 이 2개 이상일 경우 작동)
-	direction : 'vertical', 								// 가로형(vertical) / 세로형(horison) - 기본은 가로형
-	labels : ['sec01', 'sec02', 'sec03', 'sec04'],						// 하단 데이터 구분자	
-	dataset : [										// 데이터 그룹
-		{ name : 'my', data : [15, 40, 24, 33], color : '#ff4444'},			// name : 그룹명, data : 실제 데이터 배열, color : 해당 그룹 bar 컬러
+	area : '.nChart-wrap', 							// chart 그려질 영역
+	direction : 'vertical', 							// 가로형(vertical) / 세로형(horison) - 기본은 가로형
+	labels : ['sec01', 'sec02', 'sec03', 'sec04'],				// 하단 데이터 구분자	
+	stack : {								// 적층구조로 표현 - (dataset 이 2개 이상일 경우 작동)
+		enabled : false,							// 적용여부 (boolean)
+		intersection : false 						// 교집합 설정여부 (기본 false) - 각 값을 따로 표현할지, 가장 큰값 기준으로 나머지 값을 그 위에 겹쳐 표현할지 여부
+	},
+	chart : {
+		width : 500,							// 차트 영역 전체 너비 - 미지정 시 100%
+		height : 200							// 차트 영역 전체 높이 - 미지정 시 너비 대비 60%
+	},
+	title : {
+		show : true,							// 타이틀 노출 여부 - 기본 true
+		text : 'Chart title'						// 타이틀 텍스트 - 기본 Chart title
+	},
+	legend : {								// label 에 대한 안내
+		show : true,							// legend 노출 여부 - 기본 true
+		position : null							// 위치 (null : 상단 / 'bottom' : 하단)
+	},								
+	tooltip : {								// tooltip (bar 마우스 오버 시 말풍선)
+		show : true, 							// 노출 여부 - 기본 true
+		share : false, 							// 세트별 묶음보기 여부(boolean)부 - 기본 false
+		area : null, 							// 세트별 묶음보기 - 묶음범위 (null : 기본 - 세트전체, 'group' : 세트 내 group 단위 묶음)
+		tx_group : true, 						// : 제목 하단에 '그룹' 표시 여부 (boolean) - 그룹이 있는 데이터만 적용
+		unit : null, 							// 값 뒤에 붙일 단위 (건/ 명 등)
+		percent : false 							// 입력된 값 기준 % 로 표시할지 여부 (boolean - 기본은 false) - true 일 경우 기본값 뒤에 (00%) 형식으로 표시
+		more : {								// 툴팁에 dataset 외 별도 값을 하나 추가표현할 경우
+			tit : '텍스트',						// 값 타이틀
+			data : [[], [], []]					// 표출 값
+		}
+	},
+	tick : 0,								// 기준선 간격 값 지정 - 미지정 시 자동계산
+	tags : ['11', '22', '33', '44'], 		// 별도 태그 텍스트 표시 (label 별로 bar 옆(아래)에 별도 text 추가 시) - group 는 제외
+	dataset : [								// 데이터 그룹
+		{ name : 'my', data : [15, 40, 24, 33], color : '#ff4444', accent_idx : 1},	// name : 그룹명, data : 실제 데이터 배열, color : 해당 그룹 bar 컬러, accent_idx : 강조할 li index
 		{ name : 'you', data : [5, 14, 30, 21], color : '#4466ff'},
 		{ name : 'we', data : [12, 20, 25, 12], color : '#aacc55'},
 		{ name : 'they', data : [10, 6, 21, 14], color : '#55aacc'}
 	],
-	chart : {
-		width : 500,									// 차트 영역 전체 너비 - 미지정 시 100%
-		height : 200									// 차트 영역 전체 높이 - 미지정 시 너비 대비 40%
-	},
-	title : {
-		show : true,									// 타이틀 노출 여부 - 기본 true
-		text : 'Chart title'								// 타이틀 텍스트 - 기본 Chart title
-	},
-	legend : true,										// legend 노출 여부 - 기본 true
-	tooltip : true,										// tooltip 노출 여부 (bar 마우스 오버 시 말풍선) - 기본 true
-	tick : 0										// 기준선 간격 값 지정 - 미지정 시 자동계산
 });</code></pre>
 
 				</div>
@@ -188,10 +243,10 @@
 	<script>
 		hljs.initHighlightingOnLoad();
 
-		var chartHtml_opt = {
+		let chartHtml_opt = {
 			area : '.nChart-wrap',
 			//stack : true,
-			//direction : 'horison',
+			direction : 'horison',
 			labels : ['10-03', '10-04', '10-05', '10-07'],
 			title : {
 				show : true
@@ -204,7 +259,7 @@
 				share : false
 			}
 		}
-		var chartHtml_opt_set = {
+		let chartHtml_opt_set = {
 			area : '.nChart-wrap.set',
 			//stack : true,
 			//direction : 'horison',
@@ -213,7 +268,14 @@
 				show : true
 			},
 			tooltip : {
-				share : true
+				share : true,
+				//percent : true,
+				more : {
+					tit : '테스트 :',
+					data : [
+						['12%'], ['16%'],['18%'],['21%']
+					]
+				}
 			},
 			dataset : [
 				{ name : 'my', data : [25, 42, 96, 262], color : '#ff4444'},
@@ -222,23 +284,35 @@
 				{ name : 'they', data : [21, 26, 6, 22], color : '#55aacc'}
 			]
 		}
-		var chartHtml_opt_group = {
+		let chartHtml_opt_group = {
 			area : '.nChart-wrap.group',
-			stack : true,
+			stack : {
+				enabled : true
+			},
 			//direction : 'horison',
-			labels : ['10-03', '10-04', '10-05', '10-07'],
+			labels : ['10-03', '10-04', '10-05', '10-07', '10-07', '10-07', '10-07', '10-07'],
 			title : {
 				show : true
 			},
 			tooltip : {
-				share : true
+				share : true,
+				area : 'group',
+				percent : true,
+				more : {
+					tit : '테스트 :',
+					data : [
+						['12%', '15%', '11%' ,'14%', '21%', '11%', '11%', '13%'],
+						['12%', '15%', '11%' ,'14%', '21%', '11%', '11%', '13%'],
+						['12%', '15%', '11%' ,'14%', '21%', '11%', '11%', '13%']
+					]
+				}
 			},
 			dataset : [
-				{ name : '성인/청소년', group : '남성', data : [115, 240, 24, 133], color : '#1A3868'},
-				{ name : '성인/청소년', group : '여성', data : [15, 614, 320, 121], color : '#C267F6'},
-				{ name : '어린이', group : '남성', data : [122, 20, 115, 112], color : '#7588A7'},
-				{ name : '어린이', group : '여성', data : [110, 226, 521, 214], color : '#DA9BFF'},
-				{ name : '미상', group : '미상', data : [30, 16, 41, 114], color : '#B7C2D2'}
+				{ name : '성인/청소년', group : '남성', data : [115, 240, 24, 133, 240, 24, 133, 240], color : '#1A3868', accent_idx : 2},
+				{ name : '성인/청소년', group : '여성', data : [15, 614, 320, 121, 240, 24, 133, 240], color : '#C267F6'},
+				{ name : '어린이', group : '남성', data : [122, 20, 115, 112, 240, 24, 133, 240], color : '#7588A7'},
+				{ name : '어린이', group : '여성', data : [110, 226, 521, 214, 240, 24, 133, 240], color : '#DA9BFF'},
+				{ name : '미상', group : '미상', data : [30, 16, 41, 114, 240, 24, 133, 240], color : '#B7C2D2'}
 			]
 		}
 
