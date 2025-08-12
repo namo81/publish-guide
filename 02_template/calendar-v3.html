@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+	<meta charset="UTF-8" >
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="user-scalable=yes, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, width=device-width">
+	<meta name="author" content="seonamho - SK MNS" >
+	<meta name="description" content="">
+	<meta name="keywords" content="Site Template">
+	<meta property="og:type" content="website">
+	<meta property="og:title" content="Site Template">
+	<meta property="og:description" content="">
+	<meta property="og:image" content="">
+	<meta property="og:url" content="">
+	<link rel="shortcut icon" href="data:;base64,iVBORwOKGO=" />
+
+	<title>달력(기간) | 기본 가이드</title>
+
+	<!-- 가이드 관련 -->
+	<link rel="stylesheet" href="../guide/list-guide.css" media="screen, print" />
+	<link rel="stylesheet" href="../guide/vendor/railscasts.css">
+	<script src="../guide/vendor/highlight.js"></script>
+
+	<!-- 프로젝트 관련 CSS 및 JS 파일 로드 -->
+	<link rel="stylesheet" href="/css/layout.css" media="screen, print" />
+	<script src="../js/jquery-3.2.1.min.js"></script>
+</head>
+<body>
+	<div id="work-list">
+		<div class="guide">
+			
+
+			<!-- input ================================================================ -->
+			<section id="guide-input">
+				<h2 class="guide-sec-tit">Calendar</h2>
+
+				<div class="guide-sec">
+					<h3 class="guide-stit">일간 달력</h3>
+					<p>width 값은 별도 지정 / min-width 는 320px 로 지정</p>
+					<div class="guide-show">
+						<div class="inp-cal" style="width:320px">
+							<input type="text" name="" placeholder="" class="input-box cal" value="2025-08-08"/>
+						</div>
+					</div>
+<pre><code class="html">&lt;div class="inp-cal range" style="width:320px"&gt;
+	&lt;span&gt;&lt;input type="text" name="" placeholder="" class="cal start"/&gt;&lt;/span&gt;
+	&lt;i&gt;~&lt;/i&gt;
+	&lt;span&gt;&lt;input type="text" name="" placeholder="" class="cal end"/&gt;&lt;/span&gt;
+&lt;/div&gt;
+&lt;div class="inp-cal single-range" style="width:320px"&gt;
+	&lt;input type="text" name="" placeholder="" class="cal start"/&gt;
+&lt;/div&gt;
+</code></pre>
+				</div>
+
+				<div class="guide-sec">
+					<h3 class="guide-stit">주간 달력</h3>
+					<p>width 값은 별도 지정 / min-width 는 320px 로 지정</p>
+					<div class="guide-show">
+						<div class="inp-cal week" style="width:320px">
+							<input type="text" name="" placeholder="" class="input-box cal"  value="2025-07-27 ~ 2025-08-02"/>
+						</div>
+					</div>
+<pre><code class="html">&lt;div class="inp-cal range" style="width:320px"&gt;
+	&lt;span&gt;&lt;input type="text" name="" placeholder="" class="cal start"/&gt;&lt;/span&gt;
+	&lt;i&gt;~&lt;/i&gt;
+	&lt;span&gt;&lt;input type="text" name="" placeholder="" class="cal end"/&gt;&lt;/span&gt;
+&lt;/div&gt;
+&lt;div class="inp-cal single-range" style="width:320px"&gt;
+	&lt;input type="text" name="" placeholder="" class="cal start"/&gt;
+&lt;/div&gt;
+</code></pre>
+				</div>
+
+				<div class="guide-sec">
+					<h3 class="guide-stit">월간 달력</h3>
+					<p>width 값은 별도 지정 / min-width 는 320px 로 지정</p>
+					<div class="guide-show">
+						<div class="inp-cal month" style="width:320px">
+							<input type="text" name="" placeholder="" class="input-box cal"/>
+						</div>
+					</div>
+<pre><code class="html">&lt;div class="inp-cal range" style="width:320px"&gt;
+	&lt;span&gt;&lt;input type="text" name="" placeholder="" class="cal start"/&gt;&lt;/span&gt;
+	&lt;i&gt;~&lt;/i&gt;
+	&lt;span&gt;&lt;input type="text" name="" placeholder="" class="cal end"/&gt;&lt;/span&gt;
+&lt;/div&gt;
+&lt;div class="inp-cal single-range" style="width:320px"&gt;
+	&lt;input type="text" name="" placeholder="" class="cal start"/&gt;
+&lt;/div&gt;
+</code></pre>
+				</div>
+
+				<div class="guide-sec">
+					<h3 class="guide-stit">기간선택</h3>
+					<p>range 클래스 추가</p>
+					<p>width 값은 별도 지정 / min-width 는 320px 로 지정</p>
+					<div class="guide-show">
+						<div class="inp-cal range" style="width:320px">
+							<span><input type="text" name="" placeholder="" class="input-box cal"/></span>
+							<i>~</i>
+							<span><input type="text" name="" placeholder="" class="input-box cal end"/></span>
+						</div>
+						
+						<div class="inp-cal single-range" style="width:320px">
+							<input type="text" name="" placeholder="" class="input-box cal start"/>
+						</div>
+					</div>
+<pre><code class="html">&lt;div class="inp-cal range" style="width:320px"&gt;
+	&lt;span&gt;&lt;input type="text" name="" placeholder="" class="cal start"/&gt;&lt;/span&gt;
+	&lt;i&gt;~&lt;/i&gt;
+	&lt;span&gt;&lt;input type="text" name="" placeholder="" class="cal end"/&gt;&lt;/span&gt;
+&lt;/div&gt;
+&lt;div class="inp-cal single-range" style="width:320px"&gt;
+	&lt;input type="text" name="" placeholder="" class="cal start"/&gt;
+&lt;/div&gt;
+</code></pre>
+				</div>
+			</section>
+
+
+		</div>
+		<a href="#work-list" class="guide-top">Top</a>	
+	</div>
+
+	<!-- calendar 관련 설정 -->
+	<link rel="stylesheet" href="/css/n_Calendar.css" media="screen, print"/>
+	<script src="/js/common.js"></script>
+	<script src="/js/nCalendar_v3.0.0.js"></script>
+	<script>
+		hljs.initHighlightingOnLoad(); 
+
+		let cal_day = new N_calendar({
+			wrap : '.inp-cal',
+			type : 'day',
+			controls : 'btn'
+		});
+
+		let cal_week = new N_calendar({
+			wrap : '.inp-cal.week',
+			type : 'week',
+			controls : 'all',
+			dual : true
+		});
+
+		let cal_month = new N_calendar({
+			wrap : '.inp-cal.month',
+			type : 'month',
+			controls : 'btn'
+		});
+
+		
+		let cal_range = new N_calendar({
+			wrap : '.inp-cal.range',
+			type : 'range',
+			dual : true,
+			controls : 'btn'
+		});
+		
+		let cal_range_mon = new N_calendar({
+			wrap : '.inp-cal.single-range',
+			type : 'range_month',
+			dual : true,
+			controls : 'btn'
+		});
+
+	</script>
+
+</body>
+</html>

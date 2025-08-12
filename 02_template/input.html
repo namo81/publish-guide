@@ -37,26 +37,25 @@
 					<h3 class="guide-stit">Text</h3>
 					<h4 class="guide-sstit">기본형</h3>
 					<div class="guide-show">
-						<input type="text" name="" title="" placeholder="기본형">
+						<input type="text" name="" title="" class="input-box" placeholder="기본형">
 					</div>
 <pre><code class="html">&lt;input type="text" name="" title="" placeholder="기본형"&gt;
 </code></pre>
 					<h4 class="guide-sstit">기본형 + 삭제 + 오류</h3>
-					<p>inp-label 에 'error' 클래스 추가 시 오류 메세지 표출됨</p>
+					<p>inp-set 에 'error' 클래스 추가 시 오류 메세지 표출됨</p>
+					<p>inp-del 내부에 text input 넣고 기능 적용</p>
 					<div class="guide-show">
-						<div class="inp-label">
-							<label for="" class="hide">기본형 텍스트</label>
-							<input type="text" name="" placeholder="기본형">
-							<button type="button" class="btn-clear"><span>내용 삭제</span></button>
+						<div class="inp-set">
+							<label for="inp-test">기본형 텍스트</label>
+							<span class="inp-del"><input type="text" name="" id="inp-test" class="input-box" placeholder="기본형"></span>
 							<div class="error-msg">
 								<span class="tx-red">내용을 입력해주세요.</span>
 							</div>
 						</div>
 					</div>
-<pre><code class="html">&lt;div class="inp-label"&gt;
-	&lt;label for="" class="hide"&gt;기본형 텍스트&lt;/label&gt;
-	&lt;input type="text" name="" placeholder="기본형"&gt;
-	&lt;button type="button" class="btn-clear"&gt;&lt;span&gt;내용 삭제&lt;/span&gt;&lt;/button&gt;
+<pre><code class="html">&lt;div class="inp-set"&gt;
+	&lt;label for="inp-test"&gt;기본형 텍스트&lt;/label&gt;
+	&lt;span class="inp-del"&gt;&lt;input type="text" name="" id="inp-test" class="input-box" placeholder="기본형"&gt;&lt;/span&gt;
 	&lt;div class="error-msg"&gt;
 		&lt;span class="tx-red"&gt;내용을 입력해주세요.&lt;/span&gt;
 	&lt;/div&gt;
@@ -64,10 +63,10 @@
 </code></pre>
 	<br>
 <pre><code class="js">// 단독요소 설정
-var inptName = new nTextSet('.inp-label');
+let inptName = new nTextSet('.inp-del');
 
 // 다수 요소 설정
-nText('.inp-label');
+nText('.inp-del');
 </code></pre>
 				</div>
 
@@ -122,6 +121,12 @@ nText('.inp-label');
 							<input type="checkbox" name="" id="" class="checkbox">
 						</div>
 <pre><code class="html">&lt;input type="checkbox" name="" id="" class="checkbox"&gt;
+</code></pre>
+						<h4 class="guide-sstit">토글형</h3>
+						<div class="guide-show">
+							<input type="checkbox" name="" id="" class="check_tgl">
+						</div>
+<pre><code class="html">&lt;input type="checkbox" name="" id="" class="check_tgl"&gt;
 </code></pre>
 					<h4 class="guide-sstit">IE대응 (radio + label)</h3>
 					<p>label 의 for 값과 input radio 의 id 값을 일치 시켜주어야 함.</p>
@@ -257,7 +262,7 @@ option { color:#000 }
 </code></pre>
 <br>
 <pre><code class="js">// 단독요소 설정
-var selectName = new nSelectSet('.inp-select');
+let selectName = new nSelectSet('.inp-select');
 
 // 다수 요소 설정
 nSelect('.inp-select');
@@ -272,13 +277,11 @@ nSelect('.inp-select');
 						<div class="inp-file">
 							<label for="file" class="btn medium">파일첨부</label>
 							<input type="file" class="" id="file">
-							<button type="button" class="btn-clear" title="파일 경로 삭제"><span>X</span></button>
 						</div>
 					</div>
 <pre><code class="html">&lt;div class="inp-file"&gt;
 	&lt;label for="file" class="btn medium"&gt;파일첨부&lt;/label&gt;
 	&lt;input type="file" class="" id="file"&gt;
-	&lt;button type="button" class="btn-clear" title="파일 경로 삭제"&gt;&lt;span&gt;X&lt;/span&gt;&lt;/button&gt;
 &lt;/div&gt;
 </code></pre>
 <br>
@@ -346,8 +349,8 @@ nFile('.inp-file');
 	<script>
 		hljs.initHighlightingOnLoad();
 
-		var inpName = new nTextSet('.inp-label');
-		var selectName = new nSelectSet('.inp-select');
+		let inpName = new nTextSet('.inp-del');
+		let selectName = new nSelectSet('.inp-select');
 		nFile('.inp-file');
 
 		let d_range = new doubleRange('.double-range', 'ppm', 10);

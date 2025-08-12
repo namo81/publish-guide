@@ -18,7 +18,7 @@ function nCalendar(option){
 	calendar.wrap;
 	calendar.num;
 
-	let showType        = option.showType || 'button',									// both / button / input
+	const showType        = option.showType || 'button',									// both / button / input
 		calType         = option.calType || null,										// null: 일반 기본형 ,  month : 월간달력
 		week 			= option.week || false,											// 일간달력 전용 - 주간표기 설정
 		enabled_array	= option.enabled_array,											// 활성화할 버튼 배열 (특정 일자만 활성화 하고자 할 경우)
@@ -34,7 +34,7 @@ function nCalendar(option){
 		gapTop			= option.gapTop || 0,											// 달력 top 위치 gap
 		gapLeft			= option.gapLeft || 0,											// 달력 left 위치 gap
 		onModal 		= option.onModal || false,										// 팝업 띄울 때 body 스크롤 제거 관련 옵션(true 일 경우 달력 띄우면 body scroll 방지)
-		inCalWrap		= option.inCalWrap || false,									// 달력의 body 가 아닌 input 과 동일레벨에 위치할지 여부
+		inCalWrap		= option.inCalWrap || false,									// 달력 dom 이 body 가 아닌 input 과 동일 부모요소 아래에 위치할지 여부
 		
 		controls        = option.controls != undefined ? option.controls : true,		// 이전달/다음달 버튼 show/hide 선택
 		changeMon       = option.changeMon || false,									// 월 선택 select 활성 여부
@@ -45,7 +45,7 @@ function nCalendar(option){
 		todayLimit      = option.todayLimit || false,									// 오늘 기준 선택 제한
 		todayGap 		= option.todayGap || '0D', 										// 오늘 기준일의 gap 설정 (ex. 내일부터 제한, 5일전까지 제한 등)
 		limitType       = option.limitType || 'before',									// 제한 방향 설정 - before : 오늘 이전 날짜 선택 제한 / after : 오늘 이후 날짜 선택 제한
-		limitGap 		= option.limitGap || null, 										// 제한 기간 설정 - null : 기한 없음 / nY : n년 / nM : n개월 / nD : n일 / nW : n주 (일요일 기준)
+		limitGap 		= option.limitGap || null, 										// 선택 제한 기간 설정 - null : 기한 없음 / nY : n년 / nM : n개월 / nD : n일 / nW : n주 (일요일 기준)
 		
 		inPage			= option.inPage || false,										// 페이지 고정형 선택
 		inTarget		= option.inTarget || null; 										// 페이지 고정할 영역 선택
@@ -60,8 +60,10 @@ function nCalendar(option){
 		shiftState = false,   				// 월 > 일간 달력 전환 상태 변수
 		all_disabled = false;				// 날짜버튼 전체 disabled 설정여부 변수 (외부에서 제어가능)
 	
-	let body = document.querySelector('body'),
+	const body = document.querySelector('body'),
 		bodyStyle = body.style;
+
+	const changeEvt = new Event('change', { bubbles: true, cancelable: true });
 
 	// 언어별 요일
 	/** 일~토 표기 텍스트 */
@@ -134,7 +136,7 @@ function nCalendar(option){
 		if(shiftState == true) return;
 		showYear = today.getFullYear();
 		showMonth = today.getMonth();
-		activeDay = null;
+		//activeDay = null;
 	}
 
 	/** inp 입력값 대응하여 연/월/일 산출 */
@@ -406,7 +408,6 @@ function nCalendar(option){
 		calendar.wrap.style.top = '';
 		calendar.wrap.style.left = '';
 		calendar.wrap.classList.remove('on');
-		calendar.wrap.setAttribute('aria-modal', false);
 		calendar.input.focus();
 		shiftState = false;
 		if(inPage == true || onModal == false) return;
@@ -421,7 +422,6 @@ function nCalendar(option){
 			wrapAll[a].style.top = '';
 			wrapAll[a].style.left = '';
 			wrapAll[a].classList.remove('on');
-			wrapAll[a].setAttribute('aria-modal', false);
 		}
 		if(inPage == true || onModal == false) return;
 		body.classList.remove('hold');
@@ -492,7 +492,6 @@ function nCalendar(option){
 		
 		if(inPage == false) {
 			com_outSideClick(); // 달력 외 영역 클릭 시 달력 hide
-			calendar.wrap.setAttribute('aria-modal', true);
 			calendar.wrap.focus();
 		}
 		if(inPage == true || onModal == false) return;

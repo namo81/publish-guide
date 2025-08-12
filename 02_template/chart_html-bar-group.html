@@ -60,6 +60,7 @@
 		.nChart-wrap .tooltip p { margin:0 !important; }
 		.nChart-wrap .tooltip .tt-title { padding:5px 8px; background:#ccc; }
 		.nChart-wrap .tooltip .tt-value { display:flex; justify-content:space-between; align-items:center; gap:6px; padding:5px 8px; }
+		.nChart-wrap .tooltip.share .tt-value { display:block; }
 		.nChart-wrap .tooltip .marker { display:inline-block; width:8px; height:8px; border-radius:50%; }
 
 		.nChart-wrap.hor { padding-bottom:40px; }
@@ -152,6 +153,7 @@
 .nChart-wrap .tooltip p { margin:0 !important; }
 .nChart-wrap .tooltip .tt-title { padding:5px 8px; background:#ccc; }
 .nChart-wrap .tooltip .tt-value { display:flex; justify-content:space-between; align-items:center; gap:6px; padding:5px 8px; }
+.nChart-wrap .tooltip.share .tt-value { display:block; }
 .nChart-wrap .tooltip .marker { display:inline-block; width:8px; height:8px; border-radius:50%; }
 
 .nChart-wrap.hor { padding-bottom:40px; }
@@ -217,13 +219,13 @@
 		tx_group : true, 						// : 제목 하단에 '그룹' 표시 여부 (boolean) - 그룹이 있는 데이터만 적용
 		unit : null, 							// 값 뒤에 붙일 단위 (건/ 명 등)
 		percent : false 							// 입력된 값 기준 % 로 표시할지 여부 (boolean - 기본은 false) - true 일 경우 기본값 뒤에 (00%) 형식으로 표시
-		more : {								// 툴팁에 dataset 외 별도 값을 하나 추가표현할 경우
+		more : {							// 툴팁에 dataset 외 별도 값을 하나 추가표현할 경우
 			tit : '텍스트',						// 값 타이틀
 			data : [[], [], []]					// 표출 값
 		}
 	},
 	tick : 0,								// 기준선 간격 값 지정 - 미지정 시 자동계산
-	tags : ['11', '22', '33', '44'], 		// 별도 태그 텍스트 표시 (label 별로 bar 옆(아래)에 별도 text 추가 시) - group 는 제외
+	tags : ['11', '22', '33', '44'], 						// 별도 태그 텍스트 표시 (label 별로 bar 옆(아래)에 별도 text 추가 시) - group 는 제외
 	dataset : [								// 데이터 그룹
 		{ name : 'my', data : [15, 40, 24, 33], color : '#ff4444', accent_idx : 1},	// name : 그룹명, data : 실제 데이터 배열, color : 해당 그룹 bar 컬러, accent_idx : 강조할 li index
 		{ name : 'you', data : [5, 14, 30, 21], color : '#4466ff'},
@@ -246,7 +248,7 @@
 		let chartHtml_opt = {
 			area : '.nChart-wrap',
 			//stack : true,
-			direction : 'horison',
+			//direction : 'horison',
 			labels : ['10-03', '10-04', '10-05', '10-07'],
 			title : {
 				show : true
@@ -261,7 +263,6 @@
 		}
 		let chartHtml_opt_set = {
 			area : '.nChart-wrap.set',
-			//stack : true,
 			//direction : 'horison',
 			labels : ['10-03', '10-04', '10-05', '10-07'],
 			title : {

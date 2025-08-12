@@ -36,13 +36,13 @@
 					<p>block 타입 요소들의 배치에 사용</p>
 					<div class="guide-show">
 					<!-- 코드 작성 -->
-						<div class="flex-wrap">
+						<div class="flex-box">
 							<div>Left Content</div>
 							<div>Right Content</div>
 						</div>
 					<!-- // 코드 작성 -->
 					</div>
-<pre><code class="html">&lt;div class="flex-wrap"&gt;
+<pre><code class="html">&lt;div class="flex-box"&gt;
 	&lt;div&gt;Left Content&lt;/div&gt;
 	&lt;div&gt;Right Content&lt;/div&gt;
 &lt;/div&gt;
@@ -53,21 +53,21 @@
 					<p>가변적인 요소가 있는 영역에 'flex1' 클래스 적용 (or flex:1 style 을 css 에서 설정)</p>
 					<div class="guide-show">
 					<!-- 코드 작성 -->
-						<div class="flex-wrap">
+						<div class="flex-box">
 							<div>Left : </div>
 							<div class="flex1"> Right Content Right Content Right Content Right Content Right Content Right Content Right Content Right Content Right Content Right Content Right Content Right Content Right Content Right Content Right Content Right Content Right Content Right Content Right Content Right Content Right Content</div>
 						</div>
-						<div class="flex-wrap">
+						<div class="flex-box">
 							<div>Left Content : </div>
 							<div class="flex1"> Right Content Right Content Right Content Right Content Right Content Right Content Right Content Right Content Right Content Right Content Right Content Right Content Right Content Right Content Right Content Right Content Right Content Right Content Right Content Right Content Right Content</div>
 						</div>
 					<!-- // 코드 작성 -->
 					</div>
-<pre><code class="html">&lt;div class="flex-wrap"&gt;
+<pre><code class="html">&lt;div class="flex-box"&gt;
 	&lt;div&gt;Left : &lt;/div&gt;
 	&lt;div class="flex1"&gt; Right Content Right Content Right Content Right Content Right Content Right Content Right Content Right Content Right Content Right Content Right Content Right Content Right Content Right Content Right Content Right Content Right Content Right Content Right Content Right Content Right Content&lt;/div&gt;
 &lt;/div&gt;
-&lt;div class="flex-wrap"&gt;
+&lt;div class="flex-box"&gt;
 	&lt;div&gt;Left Content : &lt;/div&gt;
 	&lt;div class="flex1"&gt; Right Content Right Content Right Content Right Content Right Content Right Content Right Content Right Content Right Content Right Content Right Content Right Content Right Content Right Content Right Content Right Content Right Content Right Content Right Content Right Content Right Content&lt;/div&gt;
 &lt;/div&gt;
@@ -76,11 +76,11 @@
 				<div class="guide-sec">
 					<h3 class="guide-stit">style 속성안내</h3>
 					<p>flex 관련된 속성에 대한 간략 안내</p>
-<pre><code class="css">.flex-wrap { 
+<pre><code class="css">.flex-box { 
 	display:flex; 
 	flex-direction:row; /* 하위 아이템 배치 방향 설정 */
 	align-items:flex-start; /* flex-direction 에서 설정된 방향의 반대축에 대한 하위 아이템 배치 방향 설정 : baseline - 하위요소 텍스트 기준 정렬 */
-	flex-wrap:nowrap; /* 배치 시 줄바뀜 설정 */
+	flex-box:nowrap; /* 배치 시 줄바뀜 설정 */
 	/*flex-flow:row nowrap; - direction + wrap 동시 작성 */
 
 	justify-content:space-evenly; /* 중심축 기준 아이템 정렬 및 배치 설정 */

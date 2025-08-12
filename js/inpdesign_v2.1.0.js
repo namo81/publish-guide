@@ -43,99 +43,163 @@ function nSelect(selector) {
 
 /** 실제 select 관련 기능 함수 */
 function nSelectSet(Ele){
-	var selWrap		= typeof Ele === 'string' ? document.querySelector(Ele) : Ele,
-		sel			= selWrap.querySelector('select'),
-		opts		= sel.querySelectorAll('option'),
+	const nSelect = this;
+	nSelect.wrap		= typeof Ele === 'string' ? document.querySelector(Ele) : Ele;
+
+	const sel 		= nSelect.wrap.querySelector('select'),
 		selTitle	= sel.getAttribute('title'),
-		firstOp		= '',
-		selHtml		= '',
-		selList		= null,
-		selUl		= null,
-		selBtn		= null,
-		selBtnTx	= null,
-		optHtml		= '';
+		selList		= createDom('div', 'select-list'),
+		selUl		= createDom('ul'),
+		selBtn		= createDom('button', 'btn-select');
+	
+	let opts		= sel.querySelectorAll('option'),
+		now_sel_btn,
+		now_sel_num = 0,
+		btn_opts    = [];
 
-	/** select 대체 태그 생성 영역 */
-	var optionCreate = function(){
-		optHtml = '';
-		for(i=0; i<opts.length; i++){
-			if(opts[i].disabled == true) optHtml += '<li><button type="button" class="btn-sel" disabled>'+opts[i].text+'</button></li>'; 
-			else {
-				if(opts[i].hidden == true) optHtml += '<li class="hidden"></li>'; 
-				else {
-					if(opts[i].className) optHtml += '<li><button type="button" class="btn-sel '+ opts[i].className +'">'+opts[i].text+'</button></li>';
-					else optHtml += '<li><button type="button" class="btn-sel">'+opts[i].text+'</button></li>';
-				}
-			}
-			if(opts[i].selected == true) firstOp = opts[i].text;
-		}
-	}, selectCreate = function(){
-		if(sel.disabled == true) {
-			selHtml += '<button type="button" class="btn-select" title="'+selTitle+'" disabled><span></span></button>';
-		} else {
-			selHtml += '<button type="button" class="btn-select" title="'+selTitle+'"><span></span></button>',
-			selHtml += '<div class="select-list"><ul></ul></div>';
-		}
-		selWrap.insertAdjacentHTML('beforeend', selHtml);
+	let clickEvt = new Event('click');
 
-		selList		= selWrap.querySelector('.select-list'),
-		selUl 		= selList.querySelector('ul'),
-		selBtn		= selWrap.querySelector('.btn-select'),
-		selBtnTx 	= selBtn.querySelector('span');
-	}
-	selectCreate();	
-
-	function optionAdd(){		
-		opts		= sel.querySelectorAll('option');
+	/** 옵션 리스트 생성 - 리스트 호출 시 매번 실행 */
+	function optionCreate(){
 		while ( selUl.hasChildNodes() ) { selUl.removeChild( selUl.firstChild ); }
-		
-		optionCreate();
-		selBtnTx.innerText = firstOp;
-		selUl.insertAdjacentHTML('beforeend', optHtml);
+		btn_opts    = [];
+		opts.forEach((opt, idx)=>{
+			if(opt.hidden == true) return;
+			let li = createDom('li'),
+				btn = createDom('button', 'btn-sel');
+			btn.textContent = opt.textContent;
+			btn.dataset.val = opt.value;
+			if(opt.disabled == true) btn.disabled = true;
+			if(opt.className) btn.className = opt.className;
+			if(opt.selected == true) {
+				selBtn.textContent = opt.textContent;
+				btn.classList.add('select');
+				btn.setAttribute('aria-selected', true);
+				now_sel_btn = btn;
+				now_sel_num = idx;
+			} else {
+				btn.classList.remove('select');
+				btn.setAttribute('aria-selected', false);
+			}
+			btn.setAttribute('role', 'option');
+			btn.setAttribute('tabindex', -1);
+			btn.addEventListener('click', optBtnClick);
+			li.appendChild(btn);
+			selUl.appendChild(li);
+			btn_opts.push(btn);
+		});
 	}
-	optionAdd();
 
-	/** 대체 태그 기능 설정 영역 */
-	var selBtnClick = function(){
-		optionAdd();
-		selWrap.classList.add('on');
-		selWrap.style.zIndex = 200;
-	}, selLeave = function(){
-		selWrap.classList.remove('on');
-		selWrap.style.zIndex = '';
-	}, optBtnClick = function(event){
-		var tg		= event.target;
-			tgTx	= tg.innerText;
-		
-		selBtnTx.innerText = tgTx;
-		selLeave();
-		selBtn.focus();
-		for(o=0; o<opts.length; o++){
-			if(opts[o].innerText == tgTx) opts[o].selected = true;
+	/** select 리스트 영역 생성 - 호출 시 1회 실행 */
+	function selectCreate(){
+		if(selTitle != undefined) selBtn.setAttribute('title', selTitle);
+		if(sel.disabled == true) selBtn.disabled = true;
+		if(sel.classList.contains('readonly')) {
+			selBtn.disabled = true;
+			selBtn.classList.add('readonly');
 		}
+
+		selBtn.setAttribute('role', 'button');
+		selBtn.setAttribute('aria-expanded', false);
+		selBtn.setAttribute('aria-haspopup', 'listbox');
+		selList.setAttribute('role', 'listbox');
+
+		nSelect.wrap.appendChild(selBtn);
+		nSelect.wrap.appendChild(selList);
+		selList.appendChild(selUl);
+	}
+	selectCreate();
+
+	/** 버튼 텍스트 설정 */
+	function set_selBtn_tx(){
+		let tx = opts[0].textContent;
+		opts.forEach(function(opt){
+			if(opt.selected == true) tx = opt.textContent;
+			if(opt.selected && opt.hidden) nSelect.wrap.classList.add('not-sel');
+		});
+		selBtn.textContent = tx;
+	}
+	set_selBtn_tx();
+
+	/** 리스트 오픈 시 키보드 기능 설정 */
+	function selKeySet(e){
+		if(e.key == 'Escape' || e.key == 'Tab') selLeave();
+		else if(e.key == 'ArrowUp') {
+			e.preventDefault();
+			if(now_sel_num > 0) now_sel_num--;
+			optHover(now_sel_num);
+		} else if(e.key == 'ArrowDown') {
+			e.preventDefault();
+			if(now_sel_num < btn_opts.length - 1) now_sel_num++;
+			optHover(now_sel_num);
+		} else if(e.key == 'Enter') btn_opts[now_sel_num].dispatchEvent(clickEvt);
+	}
+
+	/** 키보드 관련 버튼 hover 설정 */
+	function optHover(idx){
+		btn_opts.forEach((btn, index)=>{ 
+			index == idx ? btn.classList.add('hover') : btn.classList.remove('hover');
+		});
+	}
+
+	/** option 목록 그리기 */
+	function optionAdd(){
+		opts		= sel.querySelectorAll('option');
+		optionCreate();
+		set_selBtn_tx();
+	}
+
+	/** 리스트 열기 */
+	function selBtnClick(){
+		optionAdd();
+		if(now_sel_btn) now_sel_btn.classList.add('hover');
+		nSelect.wrap.classList.add('on');
+		nSelect.wrap.style.zIndex = 200;
+		selBtn.setAttribute('aria-expanded', true);
+		document.addEventListener('keydown', selKeySet);
+	}
+
+	/** 리스트 닫기 */
+	function selLeave(){
+		nSelect.wrap.classList.remove('on');
+		nSelect.wrap.style.zIndex = '';
+		selBtn.setAttribute('aria-expanded', false);
+		document.removeEventListener('keydown', selKeySet);
+	}
+
+	/** 리스트 내 option 버튼 클릭 시 */
+	function optBtnClick(event){
+		let tg		= event.target;
+			tgTx	= tg.textContent,
+			tgVal   = tg.dataset.val;
+		
+		selBtn.textContent = tgTx;
+		selBtn.focus();
+		opts.forEach(function(opt){
+			if(opt.value == tgVal) opt.selected = true;
+		});
+		nSelect.wrap.classList.remove('not-sel');
 		
 		// select - change 이벤트 트리거
-		/* 크롭은 한줄로 가능
-		var changeEvt = new Event('change');*/
-		/* IE 등 타 브라우저 */
-		var changeEvt = new Event('change', { bubbles: true, cancelable: true });
+		/* 크롭은 한줄로 가능 */	
+		let changeEvt = new Event('change');
 		sel.dispatchEvent(changeEvt); // 공통문구
+
+		setTimeout(()=>{ selLeave() }, 10);
 	}
 
 	selBtn.addEventListener('click', selBtnClick);
-	selWrap.addEventListener('mouseleave',selLeave);
-	selUl.addEventListener('click', optBtnClick);
+	nSelect.wrap.addEventListener('mouseleave',selLeave);
 	sel.addEventListener('change', function(){
 		optionAdd();
-		selBtn.innerText = this.options[this.selectedIndex].textContent;
+		selBtn.textContent = this.options[this.selectedIndex].textContent;
 	});
 
-	return {
-		selectDisable : function(bln){
-			bln == true ? selBtn.disabled = true : selBtn.disabled = false;
-		}
+	this.select = sel;
+	this.btn = selBtn;
+	this.selectDisable = function(bln){
+		selBtn.disabled = bln;
 	}
-	
 }
 
 
@@ -161,52 +225,60 @@ function nFile(selector) {
  * @param {dom/string} Ele 파일기능 적용할 영역 선택자 or dom
  */
 function nFileSet(Ele){
-	var fileWrap	= typeof Ele === 'string' ? document.querySelector(Ele) : Ele,
-		fileInp		= fileWrap.querySelector('input[type=file]'),
-		placeholder = fileInp.getAttribute('placeholder') == null ? '' : fileInp.getAttribute('placeholder'),
+	const nFile = this;
+	nFile.wrap = typeof Ele === 'string' ? document.querySelector(Ele) : Ele,
+	nFile.input = nFile.wrap.querySelector('input[type=file]');
+
+	let placeholder = nFile.input.getAttribute('placeholder') == null ? '' : nFile.input.getAttribute('placeholder'),
 		btnClear,
 		urlInp		= null,
 		inpHtml		= '';	
+		
+	let inputEvt = new Event('input', { bubbles: true, cancelable: true });
 
-	if(fileInp.disabled == true) {
-		fileWrap.classList.add('disabled');
-		inpHtml += '<input type="text" class="inp-file-url" title="파일 경로" placeholder="'+placeholder+'" readonly disabled>';
-	} else inpHtml += '<input type="text" class="inp-file-url" title="파일 경로" placeholder="'+placeholder+'" readonly>';
+	if(nFile.input.disabled == true) {
+		nFile.wrap.classList.add('disabled');
+		inpHtml += '<input type="text" class="inp-file-url input-box" title="파일 경로" placeholder="'+placeholder+'" tabindex="-1" readonly disabled>';
+	} else inpHtml += '<input type="text" class="inp-file-url input-box" title="파일 경로" placeholder="'+placeholder+'" tabindex="-1" readonly>';
 
-	let dom_btn = document.createElement('button');
-	dom_btn.classList.add('btn-clear');
+	let in_set = createDom('span', 'in-set'),
+	dom_btn = createDom('button', 'btn-clear');
 	dom_btn.setAttribute('type', 'button');
 	dom_btn.textContent = '첨부파일 제거';
 	btnClear = dom_btn;
-	fileWrap.appendChild(btnClear);
+	
+	in_set.insertAdjacentHTML('beforeend', inpHtml);
+	in_set.appendChild(btnClear);
+	nFile.input.after(in_set);
 
+	urlInp = nFile.wrap.querySelector('.inp-file-url');
 
-	fileWrap.insertAdjacentHTML('beforeend', inpHtml);
-	urlInp = fileWrap.querySelector('.inp-file-url');
-
-	var valueSet = function(){
-		urlInp.value = fileInp.value;
-		btnClear.style.display = 'block';
-	}, valueClear = function(){
-		fileInp.value = '';
+	function valueSet(){
+		urlInp.value = nFile.input.value;
+		if(nFile.input.disabled != true) btnClear.style.display = 'block';
+	}
+	function valueClear(){
+		nFile.input.value = '';
 		urlInp.value = '';
 		btnClear.style.display = 'none';
-		fileInp.dispatchEvent(inputEvt);
+		nFile.input.dispatchEvent(inputEvt);
+		nFile.input.focus();
 	}
-	if(fileInp.value.length > 0) valueSet();
-	fileInp.addEventListener('change', valueSet);
+	if(nFile.input.value.length > 0) valueSet();
 
-	if(btnClear != null) {
-		btnClear.addEventListener('click',valueClear);
-	}
+	nFile.input.addEventListener('change', valueSet);
+	nFile.input.addEventListener('focusin', ()=>{ nFile.wrap.classList.add('focus') });
+	nFile.input.addEventListener('focusout', ()=>{ nFile.wrap.classList.remove('focus') });
+
+	btnClear.addEventListener('click',valueClear);
 	
 	// 외부호출 함수
-	this.inpReset = function(){
+	nFile.inpReset = function(){
 		valueClear();
 	}
-	this.inpFileNameShow = function(filename){
+	nFile.inpFileNameShow = function(filename){
 		urlInp.value = filename;
-		btnClear.style.display = 'block';
+		if(nFile.input.disabled != true) btnClear.style.display = 'block';
 	}
 }
 
@@ -236,7 +308,7 @@ function nText(selector){
  */
 function nTextSet(Ele){
 	let textWrap	= typeof Ele === 'string' ? document.querySelector(Ele) : Ele,
-		inp 		= textWrap.querySelector('input');
+		inp 		= textWrap.querySelector('input.input-box');
 	
 	if(inp.disabled == true || inp.readOnly == true) return;
 
@@ -252,9 +324,11 @@ function nTextSet(Ele){
 	inp.addEventListener('propertychange', btnControl);
 
 	btn_clear.addEventListener('click', function(e){
+		console.log('tt')
 		inp.value = '';
 		inp.focus();
 		btn_clear.classList.remove('on');
+		let inputEvt = new Event('input', { bubbles: true, cancelable: true });
 		inp.dispatchEvent(inputEvt);
 	});
 
@@ -281,6 +355,8 @@ function nTextSet(Ele){
 function doubleRange(area, unit, gap){
 	const wrap = typeof area === 'string' ? document.querySelector(area) : area,
 		r_gap = gap ? parseInt(gap) : 1;
+
+	let inputEvt = new Event('input', { bubbles: true, cancelable: true });
 
 	let inp_left = wrap.querySelector('.r_left'),
 		inp_right = wrap.querySelector('.r_right'),
@@ -318,8 +394,7 @@ function doubleRange(area, unit, gap){
 */
 
 
-
-/** 2중 Range input */
+/** 2중 Range input - 영역 설정 */
 function doubleRange_area(option){
 	const range = this;
 	range.wrap = typeof option.area === 'string' ? document.querySelector(option.area) : option.area;
@@ -674,4 +749,81 @@ function cal_range_chk(s_input, e_input, time){
 			this.value = null;
 		}
 	});
+}
+
+/* input 입력 '-' 추가 관련 */
+/**
+ * input - 전화번호 자동 하이픈
+ * @param {string / dom} inp 대상 input
+ * @param {string} type 휴대폰 / 로컬전화(local) / 사업자번호(company) / 생년월일(birth) 구분
+ */
+function input_num_chk(inp, type){
+	let input = typeof inp === 'string' ? document.querySelector(inp) : inp;
+
+	function inp_set(type){
+		input.addEventListener('input', function(){
+			switch(type) {
+				case 'local' :
+					autoHypen_Local(this);
+					break;
+				case 'company' :
+					autoHypen_company(this);
+					break;
+				case 'birth' :
+					autoHypen_birth(this);
+					break;
+				default:
+					autoHypen_phone(this);
+					break;
+			}
+		});
+	}
+	inp_set(type);
+
+	this.changeType = function(type){
+		inp_set(type);
+	}
+	this.input = input;
+}
+
+/** 휴대폰 */
+function autoHypen_phone(target) {
+	target.value = target.value
+		.replace(/[^0-9]/g, '')
+		.replace(/^(\d{0,3})(\d{0,4})(\d{0,4})$/g, "$1-$2-$3").replace(/(\-{1,2})$/g, "");
+}
+/** 로컬 전화 */
+function autoHypen_Local(target) {
+	let val = target.value;
+	if(val.startsWith("02")) {
+		target.setAttribute('maxlength', 12);
+		target.value = target.value
+		.replace(/[^0-9]/g, '')
+		.replace(/^(\d{2})(\d{3,4})(\d{4})$/, `$1-$2-$3`);
+	} else {
+		target.setAttribute('maxlength', 13);
+		target.value = target.value
+		.replace(/[^0-9]/g, '')
+		.replace(/^(\d{3})(\d{3,4})(\d{4})$/, `$1-$2-$3`);
+	}
+}
+/** 사업자번호 */
+function autoHypen_company(target) {
+	target.value = target.value
+	.replace(/[^0-9]/g, '')
+	.replace(/^(\d{0,3})(\d{0,2})(\d{0,5})$/g, "$1-$2-$3").replace(/(\-{1,2})$/g, "");
+}
+/** 생년월일 */
+function autoHypen_birth(target) {
+	target.value = target.value
+	.replace(/[^0-9]/g, '')
+	.replace(/^(\d{0,4})(\d{0,2})(\d{0,2})$/g, "$1-$2-$3").replace(/(\-{1,2})$/g, "");
+}
+
+/** 숫자만 입력 */
+function inp_only_num(inp) {
+	let target = typeof inp === 'string' ? document.querySelector(inp) : inp;
+	target.addEventListener('input', function(){
+		target.value = target.value.replace(/[^0-9]/g, '');
+	})
 }

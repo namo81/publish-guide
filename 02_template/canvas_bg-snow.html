@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+	<meta charset="UTF-8" >
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="user-scalable=yes, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, width=device-width">
+	<meta name="author" content="seonamho - SK MNS" >
+	<meta name="description" content="">
+	<meta name="keywords" content="Site Template">
+	<meta property="og:type" content="website">
+	<meta property="og:title" content="Site Template">
+	<meta property="og:description" content="">
+	<meta property="og:image" content="">
+	<meta property="og:url" content="">
+	<link rel="shortcut icon" href="data:;base64,iVBORwOKGO=" />
+
+	<title>Canvas</title>
+
+	<!-- 가이드 관련 -->
+	<link rel="stylesheet" href="../guide/list-guide.css" media="screen, print" />
+	<link rel="stylesheet" href="../guide/vendor/railscasts.css">
+	<script src="../guide/vendor/highlight.js"></script>
+
+	<!-- 프로젝트 관련 CSS 및 JS 파일 로드 -->
+	<link rel="stylesheet" href="/css/layout.css" media="screen, print" />
+</head>
+<body>
+	<div id="work-list">
+		<div class="guide">
+
+			<section id="guide-basic">
+				<h2 class="guide-sec-tit">Canvas</h2>
+				<div class="guide-sec">
+					<div class="guide-show">
+					<!-- 코드 작성 -->
+						<div class="canvas-area">
+							<canvas id="glcanvas" width="1140" height="640"></canvas>
+						</div>
+					<!-- // 코드 작성 -->
+					</div>
+<pre><code class="html">
+</code></pre>
+				</div>
+			</section>
+		</div>
+		<a href="#work-list" class="guide-top">Top</a>	
+	</div>
+	<script>
+		const canvas = document.getElementById("glcanvas"),
+			ctx = canvas.getContext("2d");
+		
+		let items = [],
+			interval_item;
+
+		function make_items(){
+			items.push({
+				x : Math.floor(Math.random() * canvas.width),
+				y : 0,
+				gravity : (Math.random() * 2) + 1,
+				size : (Math.random() * 5) + 1,
+				x_gap : (Math.random() * 100) * (Math.random() * 1.5) - 1,
+				x_speed : Math.random() * 0.02,
+				vy : 0,
+				color : getRandomRgbColor()
+			});
+		}
+
+		function motion(){
+			ctx.clearRect(0,0,canvas.width, canvas.height);
+			ctx.fillStyle = '0x333333';
+			ctx.fillRect(0,0,canvas.width, canvas.height);
+			items.forEach((item)=>{
+				item.y += item.gravity;
+				let posX  = item.x + Math.cos(item.y * item.x_speed) * item.x_gap * (1 - item.y / canvas.height);
+
+				if(item.y > canvas.height){
+					item.y = canvas.height;
+				}
+				ctx.save();
+				ctx.beginPath();
+				ctx.arc(posX, item.y, item.size, 0, 2 * Math.PI);
+				ctx.fillStyle = item.color;
+				ctx.fill();
+				ctx.restore();
+			});
+			requestAnimationFrame(motion);
+		}
+		motion();
+
+		interval_item = setInterval(make_items, 100);
+
+		function getRandomRgbColor(size) {
+			let r = Math.floor(Math.random() * 256),
+				g = Math.floor(Math.random() * 256),
+				b = Math.floor(Math.random() * 256),
+				a = Math.random() * 1;
+			return `rgba(255, 255, 255, ${a})`;
+		}
+
+		function arr_del(arr, tx){
+			let findIndex = arr.indexOf(tx);
+			if(findIndex > -1) { arr.splice(findIndex, 1); }
+		}
+
+	</script>
+</body>
+</html>

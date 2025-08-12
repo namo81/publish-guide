@@ -67,12 +67,12 @@
 		let areaWidth 	= 720,
 			areaHeight 	= 480;
 		let geo 		= new THREE.TorusGeometry(5, 1, 16, 100); // 형태
-		let material 	= new THREE.MeshPhongMaterial({color : 0x0000ff}); // 색상
+		let material 	= new THREE.MeshPhongMaterial({color : 0x1A2A80}); // 색상
 		let mesh 		= new THREE.Mesh(geo, material); // 형태 + 색상을 조합한 object 자체
 
 		let box_mesh    = new THREE.Mesh(
 			new THREE.BoxGeometry(1, 1, 1),
-  			new THREE.MeshBasicMaterial({ color: 0x0000ff })
+  			new THREE.MeshBasicMaterial({ color: 0x1A2A80 })
 		)
 
 		testScene.add(mesh);
@@ -101,8 +101,10 @@
 		
 		let renderer 	= new THREE.WebGLRenderer({
 			canvas : tgCanvas,
-			antialias : true
+			antialias : true,
+			alpha : true // 렌더러 - 알파 활성화
 		});
+		renderer.setClearColor(0x000000, 0.5); // 렌더러 배경색 투명
 
 		let controls = new OrbitControls(camera, renderer.domElement);
 		controls.enableDamping = true;

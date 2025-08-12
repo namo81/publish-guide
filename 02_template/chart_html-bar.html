@@ -26,49 +26,58 @@
 	<link rel="stylesheet" href="/css/layout.css" media="screen, print" />
 
 	<style>
+		.nChart-wrap { padding:20px 20px 15px; }
 		.nChart-wrap { display:flex; flex-direction:column; border:1px solid #ccc; box-sizing:border-box; }
 		.nChart-wrap .chart-title { font-size:20px; text-align:center; font-weight:bold; }
 		.nChart-wrap .legend { margin:10px 0; text-align:right; }
 		.nChart-wrap .legend li { display:inline-block; margin-left:15px; font-size:14px; line-height:18px; }
 		.nChart-wrap .legend .name.del { opacity:.5; text-decoration:line-through; }
 		.nChart-wrap .legend .bullet { display:inline-block; width:8px; height:8px; margin-right:3px; border-radius:4px; }
-		.nChart-wrap .chart { position:relative; padding-left:40px; flex:1; }
-		.nChart-wrap .chart .chart-inner { width:100%; height:100%; overflow-x:scroll; }
-		.nChart-wrap .chart .guide-line { position:absolute; display:flex; flex-direction:column; justify-content:space-between; margin-left:-40px; height:calc(100% - 40px); z-index:0; }
-		.nChart-wrap .chart .guide-line li { position:absolute; width:calc(100% - 40px); }
-		.nChart-wrap .chart .guide-line li:after { content:''; position:absolute; width:100%; bottom:-1px; left:40px; border-top:1px dashed #ccc; }
-		.nChart-wrap .chart .guide-line li .guide-tx { margin:0 0 -8px !important; font-size:12px; line-height:20px; }
+		.nChart-wrap .chart { position:relative; padding-left:50px; flex:1; }
+		.nChart-wrap .chart .chart-inner { width:100%; height:100%; overflow-x:scroll;}
+		.nChart-wrap .chart .guide-line { position:absolute; display:flex; flex-direction:column; justify-content:space-between; margin-left:-50px; height:calc(100% - 50px); z-index:0; }
+		.nChart-wrap .chart .guide-line li { position:absolute; width:calc(100% - 50px); }
+		.nChart-wrap .chart .guide-line li::after { content:''; position:absolute; width:100%; bottom:-1px; left:50px; border-top:1px dashed #ccc; }
+		.nChart-wrap .chart .guide-line li:first-child::after { border-top-style:solid; }
+		.nChart-wrap .chart .guide-line li .guide-tx { margin:0 0 -8px !important; padding-left:10px; font-size:12px; line-height:20px; }
 		.nChart-wrap .chart .bar-list { position:relative; display:flex; width:100%; height:100%; z-index:1; }
-		.nChart-wrap .chart .bar-list > li { display:flex; flex-direction:column; flex:1; }
-		.nChart-wrap .chart .name { margin:0 !important; padding:3px; text-align:center; font-size:12px; line-height:18px; box-sizing:border-box; border-top:1px solid #bbb; }
-		.nChart-wrap .chart .bars { display:flex; flex:1; align-items:flex-end; justify-content: center; gap:5px; }
+		.nChart-wrap .chart .wid-over .bar-list { width:auto !important; }
+		.nChart-wrap .chart .bar-list > li { display:flex; flex-direction:column; flex:1; padding-left:10px; padding-right:10px; }
+		.nChart-wrap .chart .name { height:45px; margin:0 !important; padding:3px; text-align:center; font-size:12px; line-height:18px; box-sizing:border-box; }
+		.nChart-wrap .chart .bars { display:flex; flex:1; align-items:flex-end; justify-content:center; gap:0 5px; }
 		.nChart-wrap .chart .bar { position:relative; width:40px; text-align:center; transition:width .2s, height .2s; }
+		.nChart-wrap .chart .bar:hover { filter:brightness(0.9); }
 		.nChart-wrap .chart .bar .fill { position:absolute; display:block; width:100%; height:100%; border-radius:2px 2px 0 0; cursor:default; }
 		.nChart-wrap .chart .bar .fill > i { display:block; color:#fff; overflow:hidden; transition:.2s;}
 		.nChart-wrap .chart .bar.hide-set { width:0px; margin:0 !important; }
 		.nChart-wrap .chart .bar.hide-set .fill,
 		.nChart-wrap .chart .bar.hide-set .fill > i { width:0; }
-		.nChart-wrap .tooltip { position:absolute; display:block; width:auto; bottom:auto; opacity:0; border:1px solid #ccc; border-radius:3px; background-color:#fff; transform:translate3d(-50%, -10px, 0); transition:.2s cubic-bezier(.13,.01,.08,.98); }
+		.nChart-wrap .chart .chart-inner::-webkit-scrollbar { width:5px; height:5px; }
+		.nChart-wrap .chart .chart-inner::-webkit-scrollbar-thumb { background:#cdcdcd; border-radius:8px; }
+
+		.nChart-wrap .tooltip { position:absolute; display:block; width:auto; bottom:auto; opacity:0; border:1px solid #ccc; border-radius:3px; background-color:#fff; transform:translate3d(-50%, -10px, 0); transition:top .2s cubic-bezier(.13,.01,.08,.98), left .2s cubic-bezier(.13,.01,.08,.98); white-space:nowrap; }
 		.nChart-wrap .tooltip.show { opacity:1; z-index:100; }
 		.nChart-wrap .tooltip p { margin:0 !important; }
 		.nChart-wrap .tooltip .tt-title { padding:5px 8px; background:#ccc; }
 		.nChart-wrap .tooltip .tt-value { display:flex; justify-content:space-between; align-items:center; gap:6px; padding:5px 8px; }
+		.nChart-wrap .tooltip.share .tt-value { display:block; }
 		.nChart-wrap .tooltip .marker { display:inline-block; width:8px; height:8px; border-radius:50%; }
 
 		.nChart-wrap.hor { padding-bottom:40px; }
-		.nChart-wrap.hor .chart .guide-line { flex-direction:row; width:calc(100% - 50px) !important; height:100%; margin:0 0 0 50px; }
+		.nChart-wrap.hor .chart .guide-line { flex-direction:row; width:calc(100% - 80px) !important; height:100%; margin:0 30px 0 50px; }
 		.nChart-wrap.hor .chart .guide-line li { width:1px; height:100%; }
 		.nChart-wrap.hor .chart .guide-line li:after { width:1px; height:100%; left:-1px; border:none; border-left:1px dashed #ccc; }
-		.nChart-wrap.hor .chart .guide-line .guide-tx { position:absolute; width:50px; top:100%; margin:0 0 0 -25px !important; text-align:center;}
+		.nChart-wrap.hor .chart .guide-line .guide-tx { position:absolute; width:50px; top:100%; margin:0 0 0 -25px !important; padding:0; text-align:center;}
 		.nChart-wrap.hor .chart { padding-left:0; }
+		.nChart-wrap.hor .chart .chart-inner { overflow:hidden; }
 		.nChart-wrap.hor .chart .bar-list { flex-direction:column; }
-		.nChart-wrap.hor .chart .bar-list > li { flex-direction:row-reverse; flex:0 1 auto; }
-		.nChart-wrap.hor .chart .bar-list .name { display:flex; width:50px; align-items:center; justify-content:end; border-top:none; text-align:right; border-right:1px solid #bbb; }
-		.nChart-wrap.hor .chart .bars { padding:10px 0; flex-direction:column; align-items:flex-start;}
-		.nChart-wrap.hor .chart .bar { width:auto; height:18px; margin:2px 0 !important; text-align:right; }
+		.nChart-wrap.hor .chart .bar-list > li { position:relative; flex-direction:row-reverse; flex:0 1 auto; padding:10px 30px 10px 50px; }
+		.nChart-wrap.hor .chart .bar-list .name { position:absolute; display:flex; top:0; left:0; width:50px; height:100%; padding:3px 6px; align-items:center; justify-content:end; border-top:none; text-align:right; border-right:1px solid #bbb; }
+		.nChart-wrap.hor .chart .bars { flex-direction:column; align-items:flex-start; gap:4px 0 ; }
+		.nChart-wrap.hor .chart .bar { width:auto; height:18px; text-align:right; }
 		.nChart-wrap.hor .chart .bar .fill > i { display:inline-block; padding:0 3px; line-height:18px; }
 		.nChart-wrap.hor .chart .bar.hide-set { height:0px; margin:0 !important; }
-		.nChart-wrap.hor .tooltip { margin:0 0 0 22px; }
+		.nChart-wrap.hor .tooltip { transform:translate3d(10px, 0, 0); }
 
 		.nChart-wrap.stack .chart .bars { flex-direction:column-reverse; align-items:center; justify-content:flex-start; }
 		.nChart-wrap.stack .chart .bar .fill { border-radius:0; }
@@ -77,6 +86,18 @@
 		.nChart-wrap.hor.stack .chart .bars { flex-direction:row; align-items:center; }
 		.nChart-wrap.hor.stack .fill { text-align:center; }
 		.nChart-wrap.hor.stack .chart .bar.hide-set { width:0 !important; height:18px !important; }
+		.nChart-wrap.stack .bars > .bar:last-child > .fill { border-radius:2px 2px 0 0; }
+
+		.nChart-wrap.group .chart .bar-list > li { position:relative; flex-direction:row; justify-content:center; padding-bottom:45px; gap:4px; }
+		.nChart-wrap.group .chart .bar-list > li .bars { flex:0; }
+		.nChart-wrap.group .chart .bar-list > li .name { position:absolute; width:100%; bottom:0; }
+		.nChart-wrap.group.hor .chart .bar-list > li { flex-direction:column; justify-content:flex-start; padding-bottom:10px; }
+		.nChart-wrap.group.hor .chart .bars { gap:0; }
+		.nChart-wrap.group.hor .bars > .bar:last-child > .fill { border-radius:0 2px 2px 0; }
+		.nChart-wrap.group.hor .bar-list > li .name { height:100%; width:50px; top:0; left:0; }
+
+		.nChart-wrap .tooltip li { display:flex; justify-content:space-between; align-items:center; gap:6px; }
+		.nChart-wrap .tooltip li .label { flex:1; text-align:left; }
 	</style>
 </head>
 <body>
@@ -98,46 +119,58 @@
 					<!-- // 코드 작성 -->
 					</div>
 <pre><code class="html">&lt;div class="nChart-wrap"&gt;&lt;/div&gt;</code></pre><br>
-<pre><code class="css">.nChart-wrap { display:flex; flex-direction:column; padding:20px; border:1px solid #ccc; box-sizing:border-box; }
+<pre><code class="css">.nChart-wrap { padding:20px 20px 15px; }
+.nChart-wrap { display:flex; flex-direction:column; border:1px solid #ccc; box-sizing:border-box; }
 .nChart-wrap .chart-title { font-size:20px; text-align:center; font-weight:bold; }
 .nChart-wrap .legend { margin:10px 0; text-align:right; }
 .nChart-wrap .legend li { display:inline-block; margin-left:15px; font-size:14px; line-height:18px; }
 .nChart-wrap .legend .name.del { opacity:.5; text-decoration:line-through; }
 .nChart-wrap .legend .bullet { display:inline-block; width:8px; height:8px; margin-right:3px; border-radius:4px; }
-.nChart-wrap .chart { position:relative; padding-left:30px; flex:1; }
-.nChart-wrap .chart .guide-line { position:absolute; display:flex; flex-direction:column; justify-content:space-between; margin-left:-30px; height:calc(100% - 25px); z-index:0; }
-.nChart-wrap .chart .guide-line li { position:absolute; width:calc(100% - 30px); }
-.nChart-wrap .chart .guide-line li:after { content:''; position:absolute; width:100%; bottom:-1px; left:30px; border-top:1px dashed #ccc; }
-.nChart-wrap .chart .guide-line li .guide-tx { margin:0 0 -8px !important; font-size:12px; line-height:20px; }
+.nChart-wrap .chart { position:relative; padding-left:50px; flex:1; }
+.nChart-wrap .chart .chart-inner { width:100%; height:100%; overflow-x:scroll;}
+.nChart-wrap .chart .guide-line { position:absolute; display:flex; flex-direction:column; justify-content:space-between; margin-left:-50px; height:calc(100% - 50px); z-index:0; }
+.nChart-wrap .chart .guide-line li { position:absolute; width:calc(100% - 50px); }
+.nChart-wrap .chart .guide-line li::after { content:''; position:absolute; width:100%; bottom:-1px; left:50px; border-top:1px dashed #ccc; }
+.nChart-wrap .chart .guide-line li:first-child::after { border-top-style:solid; }
+.nChart-wrap .chart .guide-line li .guide-tx { margin:0 0 -8px !important; padding-left:10px; font-size:12px; line-height:20px; }
 .nChart-wrap .chart .bar-list { position:relative; display:flex; width:100%; height:100%; z-index:1; }
-.nChart-wrap .chart .bar-list > li { display:flex; flex-direction:column; flex:1; }
-.nChart-wrap .chart .name { margin:0 !important; padding:3px; text-align:center; font-size:12px; line-height:18px; box-sizing:border-box; border-top:1px solid #bbb; }
-.nChart-wrap .chart .bars { display:flex; flex:1; align-items:flex-end; justify-content: center; }
-.nChart-wrap .chart .bar { position:relative; width:30px; margin:0 0 0 5px !important; text-align:center; transition:width .2s, height .2s; }
+.nChart-wrap .chart .wid-over .bar-list { width:auto !important; }
+.nChart-wrap .chart .bar-list > li { display:flex; flex-direction:column; flex:1; padding-left:10px; padding-right:10px; }
+.nChart-wrap .chart .name { height:45px; margin:0 !important; padding:3px; text-align:center; font-size:12px; line-height:18px; box-sizing:border-box; }
+.nChart-wrap .chart .bars { display:flex; flex:1; align-items:flex-end; justify-content:center; gap:0 5px; }
+.nChart-wrap .chart .bar { position:relative; width:40px; text-align:center; transition:width .2s, height .2s; }
+.nChart-wrap .chart .bar:hover { filter:brightness(0.9); }
 .nChart-wrap .chart .bar .fill { position:absolute; display:block; width:100%; height:100%; border-radius:2px 2px 0 0; cursor:default; }
 .nChart-wrap .chart .bar .fill > i { display:block; color:#fff; overflow:hidden; transition:.2s;}
 .nChart-wrap .chart .bar.hide-set { width:0px; margin:0 !important; }
 .nChart-wrap .chart .bar.hide-set .fill,
 .nChart-wrap .chart .bar.hide-set .fill > i { width:0; }
-.nChart-wrap .tooltip { position:absolute; width:60px; opacity:0; margin:-2px 0 0 60px; border:1px solid #ccc; border-radius:3px; background-color:#fff; transition:.2s cubic-bezier(.13,.01,.08,.98); }
+.nChart-wrap .chart .chart-inner::-webkit-scrollbar { width:5px; height:5px; }
+.nChart-wrap .chart .chart-inner::-webkit-scrollbar-thumb { background:#cdcdcd; border-radius:8px; }
+
+.nChart-wrap .tooltip { position:absolute; display:block; width:auto; bottom:auto; opacity:0; border:1px solid #ccc; border-radius:3px; background-color:#fff; transform:translate3d(-50%, -10px, 0); transition:top .2s cubic-bezier(.13,.01,.08,.98), left .2s cubic-bezier(.13,.01,.08,.98); white-space:nowrap; }
+.nChart-wrap .tooltip.show { opacity:1; z-index:100; }
 .nChart-wrap .tooltip p { margin:0 !important; }
 .nChart-wrap .tooltip .tt-title { padding:5px 8px; background:#ccc; }
-.nChart-wrap .tooltip .tt-value { padding:5px 8px; }
+.nChart-wrap .tooltip .tt-value { display:flex; justify-content:space-between; align-items:center; gap:6px; padding:5px 8px; }
+.nChart-wrap .tooltip.share .tt-value { display:block; }
+.nChart-wrap .tooltip .marker { display:inline-block; width:8px; height:8px; border-radius:50%; }
 
-.nChart-wrap.hor { padding:20px 30px 40px 20px; }
-.nChart-wrap.hor .chart .guide-line { flex-direction:row; width:calc(100% - 50px) !important; height:100%; margin:0 0 0 50px; }
+.nChart-wrap.hor { padding-bottom:40px; }
+.nChart-wrap.hor .chart .guide-line { flex-direction:row; width:calc(100% - 80px) !important; height:100%; margin:0 30px 0 50px; }
 .nChart-wrap.hor .chart .guide-line li { width:1px; height:100%; }
 .nChart-wrap.hor .chart .guide-line li:after { width:1px; height:100%; left:-1px; border:none; border-left:1px dashed #ccc; }
-.nChart-wrap.hor .chart .guide-line .guide-tx { position:absolute; width:50px; top:100%; margin:0 0 0 -25px !important; text-align:center;}
+.nChart-wrap.hor .chart .guide-line .guide-tx { position:absolute; width:50px; top:100%; margin:0 0 0 -25px !important; padding:0; text-align:center;}
 .nChart-wrap.hor .chart { padding-left:0; }
+.nChart-wrap.hor .chart .chart-inner { overflow:hidden; }
 .nChart-wrap.hor .chart .bar-list { flex-direction:column; }
-.nChart-wrap.hor .chart .bar-list > li { flex-direction:row-reverse; flex:0 1 auto; }
-.nChart-wrap.hor .chart .bar-list .name { display:flex; width:50px; align-items:center; justify-content:end; border-top:none; text-align:right; border-right:1px solid #bbb; }
-.nChart-wrap.hor .chart .bars { padding:10px 0; flex-direction:column; align-items:flex-start;}
-.nChart-wrap.hor .chart .bar { width:auto; height:18px; margin:2px 0 !important; text-align:right; }
+.nChart-wrap.hor .chart .bar-list > li { position:relative; flex-direction:row-reverse; flex:0 1 auto; padding:10px 30px 10px 50px; }
+.nChart-wrap.hor .chart .bar-list .name { position:absolute; display:flex; top:0; left:0; width:50px; height:100%; padding:3px 6px; align-items:center; justify-content:end; border-top:none; text-align:right; border-right:1px solid #bbb; }
+.nChart-wrap.hor .chart .bars { flex-direction:column; align-items:flex-start; gap:4px 0 ; }
+.nChart-wrap.hor .chart .bar { width:auto; height:18px; text-align:right; }
 .nChart-wrap.hor .chart .bar .fill > i { display:inline-block; padding:0 3px; line-height:18px; }
 .nChart-wrap.hor .chart .bar.hide-set { height:0px; margin:0 !important; }
-.nChart-wrap.hor .tooltip { margin:0 0 0 22px; }
+.nChart-wrap.hor .tooltip { transform:translate3d(10px, 0, 0); }
 
 .nChart-wrap.stack .chart .bars { flex-direction:column-reverse; align-items:center; justify-content:flex-start; }
 .nChart-wrap.stack .chart .bar .fill { border-radius:0; }
@@ -146,6 +179,18 @@
 .nChart-wrap.hor.stack .chart .bars { flex-direction:row; align-items:center; }
 .nChart-wrap.hor.stack .fill { text-align:center; }
 .nChart-wrap.hor.stack .chart .bar.hide-set { width:0 !important; height:18px !important; }
+.nChart-wrap.stack .bars > .bar:last-child > .fill { border-radius:2px 2px 0 0; }
+
+.nChart-wrap.group .chart .bar-list > li { position:relative; flex-direction:row; justify-content:center; padding-bottom:45px; gap:4px; }
+.nChart-wrap.group .chart .bar-list > li .bars { flex:0; }
+.nChart-wrap.group .chart .bar-list > li .name { position:absolute; width:100%; bottom:0; }
+.nChart-wrap.group.hor .chart .bar-list > li { flex-direction:column; justify-content:flex-start; padding-bottom:10px; }
+.nChart-wrap.group.hor .chart .bars { gap:0; }
+.nChart-wrap.group.hor .bars > .bar:last-child > .fill { border-radius:0 2px 2px 0; }
+.nChart-wrap.group.hor .bar-list > li .name { height:100%; width:50px; top:0; left:0; }
+
+.nChart-wrap .tooltip li { display:flex; justify-content:space-between; align-items:center; gap:6px; }
+.nChart-wrap .tooltip li .label { flex:1; text-align:left; }
 </code></pre><br>
 <pre><code class="js">var chartHtml = new nChartHtml({
 	area : '.nChart-wrap', 									// chart 그려질 영역

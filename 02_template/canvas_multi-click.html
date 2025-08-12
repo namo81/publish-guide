@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+	<meta charset="UTF-8" >
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="user-scalable=yes, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, width=device-width">
+	<meta name="author" content="seonamho - SK MNS" >
+	<meta name="description" content="">
+	<meta name="keywords" content="Site Template">
+	<meta property="og:type" content="website">
+	<meta property="og:title" content="Site Template">
+	<meta property="og:description" content="">
+	<meta property="og:image" content="">
+	<meta property="og:url" content="">
+	<link rel="shortcut icon" href="data:;base64,iVBORwOKGO=" />
+
+	<title>Canvas</title>
+
+	<!-- 가이드 관련 -->
+	<link rel="stylesheet" href="../guide/list-guide.css" media="screen, print" />
+	<link rel="stylesheet" href="../guide/vendor/railscasts.css">
+	<script src="../guide/vendor/highlight.js"></script>
+
+	<!-- 프로젝트 관련 CSS 및 JS 파일 로드 -->
+	<link rel="stylesheet" href="/css/layout.css" media="screen, print" />	
+</head>
+<body>
+	<div id="work-list">
+		<div class="guide">
+
+			<section id="guide-basic">
+				<h2 class="guide-sec-tit">Canvas</h2>
+				<div class="guide-sec">
+					<div class="guide-show">
+					<!-- 코드 작성 -->
+						<div class="canvas-area">
+							<canvas id="glcanvas" width="720" height="480"></canvas>
+						</div>
+					<!-- // 코드 작성 -->
+					</div>
+<pre><code class="html">
+</code></pre>
+				</div>
+			</section>
+		</div>
+		<a href="#work-list" class="guide-top">Top</a>	
+	</div>
+	<script>
+		const canvas = document.getElementById('glcanvas');
+		const ctx = canvas.getContext('2d');
+
+		const gravity = 0.5;
+		const bounce = 0.7;
+		const ground = canvas.height - 20;
+		const balls = [];
+
+		// 마우스 클릭 이벤트로 새로운 공 추가
+		canvas.addEventListener('mousedown', function(e) {
+			balls.push({
+				x: Math.random() * (canvas.width - 40) + 20, // x위치 무작위
+				y: 0,
+				vy: 0,
+				color: ['red', 'green', 'blue', 'orange'][Math.floor(Math.random() * 4)]
+			});
+		});
+
+		function animate() {
+			ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+			balls.forEach(ball => {
+				ball.vy += gravity;
+				ball.y  += ball.vy;
+
+				if(ball.y > ground) {
+				ball.y = ground;
+				ball.vy = -ball.vy * bounce;
+				if(Math.abs(ball.vy) < 1) ball.vy = 0;
+				}
+
+				ctx.beginPath();
+				ctx.arc(ball.x, ball.y, 20, 0, 2 * Math.PI);
+				ctx.fillStyle = ball.color;
+				ctx.fill();
+			});
+
+			requestAnimationFrame(animate);
+		}
+
+		animate();
+	</script>
+</body>
+</html>

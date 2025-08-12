@@ -1,3 +1,4 @@
+
 function getIndex( elm ){ 
     var c = elm.parentNode.children, i = 0;
     for(; i < c.length; i++ )
@@ -15,11 +16,12 @@ function elemsRemoveClass(elem, cls){
 	});
 }
 
+var tblTotal = 0;
+
 function guide_tblSet(tbl){
 	var trs 		= tbl.querySelectorAll('tbody tr'),
 		previewChk 	= document.querySelector('#view-chk'),
-		mobileChk   = document.querySelector('#view-mobile'),
-		tblTotal;
+		mobileChk   = document.querySelector('#view-mobile');
 
 	var	frameWrap	= document.querySelector('.iframe');
 	if(frameWrap){
@@ -34,7 +36,7 @@ function guide_tblSet(tbl){
 	Array.prototype.forEach.call(td_no, function(td){
 		var num = getIndex(td.parentNode);
 		td.innerText = num + 1;
-		tblTotal = num;
+		tblTotal++;
 		td.parentNode.idx = num;
 	});
 
@@ -42,16 +44,16 @@ function guide_tblSet(tbl){
 	var tglBtnTx = '<button type="button" class="btn-tr-tgl" title="ctrl 누른 채 클릭 시 전체 제어">Toggle</button>',
 		ctrl = false;
 	Array.prototype.forEach.call(td_dep1, function(td){
-		if(td.textContent.length > 0){
+		if(td.innerText.length > 0){
 			td.parentNode.classList.add('div');
-			td.insertAdjacentHTML('beforeend', tglBtnTx);
+			if(trs.length > 30) td.insertAdjacentHTML('beforeend', tglBtnTx);
 		} else td.style.borderTop = 'none';
 	});
 
 	// 섹션별 토글기능
 	var divArr = new Array(),
-		trDivs = tbl.querySelectorAll('tr.div'),
-		tglBtns = tbl.querySelectorAll('.btn-tr-tgl');
+		trDivs = document.querySelectorAll('tr.div'),
+		tglBtns = document.querySelectorAll('.btn-tr-tgl');
 
 	Array.prototype.forEach.call(trDivs, function(div){
 		divArr.push(div);
@@ -64,44 +66,46 @@ function guide_tblSet(tbl){
 		ctrl = false;
 	});
 
-	Array.prototype.forEach.call(tglBtns, function(btn){
-		btn.addEventListener('click', function(){
-			var parTr 		= btn.parentNode.parentNode,
-				parTrIdx 	= parTr.idx,
-				parArrIdx 	= divArr.indexOf(parTr);
-			if(ctrl){
-				if(btn.classList.contains('open')) {
-					Array.prototype.forEach.call(trs, function(tr){
-						if(!tr.classList.contains('div')) tr.classList.remove('hide');
-					});
-					elemsRemoveClass(tglBtns, 'open');
+	if(trs.length > 30){
+		Array.prototype.forEach.call(tglBtns, function(btn){
+			btn.addEventListener('click', function(){
+				var parTr 		= btn.parentNode.parentNode,
+					parTrIdx 	= parTr.idx,
+					parArrIdx 	= divArr.indexOf(parTr);
+				if(ctrl){
+					if(btn.classList.contains('open')) {
+						Array.prototype.forEach.call(trs, function(tr){
+							if(!tr.classList.contains('div')) tr.classList.remove('hide');
+						});
+						elemsRemoveClass(tglBtns, 'open');
+					} else {
+						Array.prototype.forEach.call(trs, function(tr){
+							if(!tr.classList.contains('div')) tr.classList.add('hide');
+						});
+						elemsAddClass(tglBtns, 'open');
+					}
 				} else {
 					Array.prototype.forEach.call(trs, function(tr){
-						if(!tr.classList.contains('div')) tr.classList.add('hide');
+						if(parArrIdx < divArr.length - 1) {
+							if(tr.idx > parTrIdx && tr.idx < divArr[parArrIdx + 1].idx) {
+								tr.classList.contains('hide') ? tr.classList.remove('hide') : tr.classList.add('hide');
+							}
+						} else {
+							if(tr.idx > parTrIdx && tr.idx) {
+								tr.classList.contains('hide') ? tr.classList.remove('hide') : tr.classList.add('hide');
+							}
+						}
 					});
-					elemsAddClass(tglBtns, 'open');
+					btn.classList.contains('open') ? btn.classList.remove('open') : btn.classList.add('open');
 				}
-			} else {
-				Array.prototype.forEach.call(trs, function(tr){
-					if(parArrIdx < divArr.length - 1) {
-						if(tr.idx > parTrIdx && tr.idx < divArr[parArrIdx + 1].idx) {
-							tr.classList.contains('hide') ? tr.classList.remove('hide') : tr.classList.add('hide');
-						}
-					} else {
-						if(tr.idx > parTrIdx && tr.idx) {
-							tr.classList.contains('hide') ? tr.classList.remove('hide') : tr.classList.add('hide');
-						}
-					}
-				});
-				btn.classList.contains('open') ? btn.classList.remove('open') : btn.classList.add('open');
+			});
+			
+			// 미사용 화면 리스트 닫기
+			if(btn.parentNode.parentNode.classList.contains('notuse')) {
+				btn.dispatchEvent(clickEvt);
 			}
 		});
-		
-		// 미사용 화면 리스트 닫기
-		if(btn.parentNode.parentNode.classList.contains('notuse')) {
-			btn.dispatchEvent(clickEvt);
-		}
-	});
+	}
 
 
 	// 링크값 유무 + 종료일 유무에 따른 표기 / 미리보기 기능 설정
@@ -145,11 +149,26 @@ function guide_tblSet(tbl){
 		});
 		if(mobileChk) {
 			mobileChk.addEventListener('click', function(){
-				this.checked == true ? frameWrap.classList.add('mobile') : frameWrap.classList.remove('mobile');
+				mobileChk.checked == true ? frameWrap.classList.add('mobile') : frameWrap.classList.remove('mobile');
 			});
 			mobileChk.checked == true ? frameWrap.classList.add('mobile') : frameWrap.classList.remove('mobile');
 		}
 	}
+
+
+	// 전체 페이지 수 및 완료 페이지 표기
+	var pageTotal   = document.querySelector('.total-page'),
+		pageEnd 	= document.querySelector('.end-page'),
+		pagePer 	= document.querySelector('.per'),
+		endCount  	= document.querySelectorAll('td.end').length + document.querySelectorAll('td.include').length,
+		endPer 		= (endCount / (tblTotal)) * 100;
+
+		if(pageTotal) {
+			pageTotal.innerText = tblTotal;
+			pageEnd.innerText = endCount;
+			pagePer.innerText = endPer.toFixed(1);
+		}
+
 	
 	// text 검색
 	var findBtn 	= document.querySelector('.btn-find-tx');
@@ -201,22 +220,9 @@ window.onload = function(){
 				guide_tblSet(tbl);
 			}
 		})
-
-		// 전체 페이지 수 및 완료 페이지 표기
-		var pageTotal   = document.querySelector('.total-page'),
-			trTotal 	= document.querySelectorAll('tbody tr'),
-			pageEnd 	= document.querySelector('.end-page'),
-			pagePer 	= document.querySelector('.per'),
-			endCount  	= document.querySelectorAll('.end').length + document.querySelectorAll('.include').length,
-			endPer 		= (endCount / (trTotal.length)) * 100;
-			
-		if(pageTotal) {
-			pageTotal.innerText = trTotal.length;
-			pageEnd.innerText = endCount;
-			pagePer.innerText = Math.round(endPer);
-		}
 	}
-
+	
+	
 	// 조직도 관련
 	var fldTree = document.querySelector('.folder-tree');
 	if(fldTree) {
@@ -237,5 +243,4 @@ window.onload = function(){
 	body.appendChild(topBtn);
 	topBtn.classList.add('btn-guide-top');
 	topBtn.setAttribute('href', '#work-list');
-
 };

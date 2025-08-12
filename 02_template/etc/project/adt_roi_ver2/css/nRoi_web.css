@@ -1,0 +1,95 @@
+/* 침입 탐지 영역 */
+.draw-listbox:after { content:''; display:block; clear:both; }
+.draw-listbox .list-area { display:flex; flex-direction:column; width:350px; }
+.draw-listbox .list-area .btn-s.draw {width:auto; line-height:1.25; border-radius: 3px;}
+
+.draw-listbox .inp-set label { margin-left:5px; font-size:14px; line-height:26px; vertical-align:middle; color:#444;}
+.draw-listbox input[type=text] { width:100%; padding:2px 10px; border:1px solid #ddd; font-size:14px; line-height:24px; border-radius:3px; vertical-align:middle; color:#666; box-sizing:border-box;}
+.draw-listbox input[disabled] { border-color:#444; opacity:.5}
+.draw-listbox .inp-set { display:inline-block; margin-right:15px; }
+
+.draw-listbox .img { width:100%; height:100%; }
+.draw-listbox .img > img { width:100%; }
+.draw-listbox .arrow { position:absolute; display:block; width:5px; height:5px; top:-1000px; }
+.draw-listbox .arrow > img { position:absolute; top:50%; left:50%; transform:translate(-50%, -50%); }
+.draw-listbox .arrow-dir { position:absolute; display:block; top:-1000px; }
+
+.roi-wrap { position:relative; width:100%; aspect-ratio:4/3; }
+
+.roi-board { position:absolute; width:100%; height:100%; top:0; left:0; }
+.roi-board svg { width:100%; height:100%; }
+
+.roi-board .btn { position:absolute; top:5px; right:10px; }
+.roi-board .btn-reverse { right:70px; }
+
+.roi-board circle { display:none; }
+.roi-board .modify circle,
+.roi-board .drawing circle { display:block; }
+.roi-board polygon { stroke-width:1px; }
+.roi-board .sel polygon,
+.roi-board .drawing polygon { fill:rgba(233,235,29,.6) !important; stroke-width:2px; }
+.roi-board .sel.modify polygon:hover,
+.roi-board .drawing polygon:hover { cursor:move; }
+.roi-board polyline { fill:none; stroke-width:1px; }
+.roi-board .ignore.sel polygon { fill:rgba(233, 235, 29, .7) !important; }
+
+/* 타입별 도형 컬러 */
+.roi-board .red polygon,
+.roi-board .invasion polygon { fill:rgba(248, 70, 70, 0.4); stroke:#F84646; }
+.roi-board .red circle, .roi-board .invasion circle { fill:#F84646; }
+.roi-board .drawing.red polyline, .roi-board .drawing.invasion polyline { stroke:#F84646; }
+
+.roi-board .blue polygon,
+.roi-board .inout polygon { fill:rgba(70,122,255,.1); stroke:#467aff; }
+.roi-board .blue circle, .roi-board .inout circle { fill:#467aff; }
+.roi-board .blue polyline, .roi-board .inout polyline { stroke:#467aff; }
+.roi-board .drawing.blue polyline, .roi-board .drawing.inout polyline { stroke:#467aff; }
+
+.roi-board .gray polygon,
+.roi-board .except polygon { fill:rgba(153,153,153,.6); stroke:#999; }
+.roi-board .gray circle, .roi-board .except circle { fill:#999; }
+.roi-board .drawing.gray polyline, .roi-board .drawing.except polyline { stroke:#999; }
+
+.roi-board .bk polygon,
+.roi-board .ignore polygon { fill:#000; stroke:rgb(53, 51, 2); }
+.roi-board .bk circle, .roi-board .ignore circle { fill:#000; }
+.roi-board .drawing.bk polyline, .roi-board .drawing.ignore polyline { stroke:#000; }
+
+.roi-board .purple polygon,
+.roi-board .carnum polygon { fill:rgba(144, 72, 216,.2); stroke:#9048D8; }
+.roi-board .purple circle, .roi-board .carnum circle { fill:#9048D8; }
+.roi-board .drawing.purple polyline, .roi-board .drawing.carnum polyline { stroke:#9048D8; }
+
+.roi-board .green polygon,
+.roi-board .loiter polygon { fill:rgba(69, 173, 108, 0.5); stroke:#45AD6C; }
+.roi-board .green circle, .roi-board .loiter circle { fill:#45AD6C; }
+.roi-board .drawing.green polyline, .roi-board .drawing.loiter polyline { stroke:#45AD6C; }
+
+.roi-board .fire polygon { fill:rgba(250, 125, 54,.2); stroke:#F3416C; }
+.roi-board .fire circle { fill:#F3416C; }
+.roi-board .drawing.fire polyline { stroke:#F3416C; }
+
+.nameTx { display:block; }
+/* .except .nameTx, */
+.ignore .nameTx { display:none; fill:#000; }
+.nameTx rect { height:20px; }
+.nameTx text { fill:#fff; font-size:13px; }
+
+.invasion .nameTx rect { height:20px; fill:#F84646; }
+.inout .nameTx rect { height:20px; fill:#467aff; }
+.except .nameTx rect { height:20px; fill:#999; }
+.carnum .nameTx rect { height:20px; fill:#9048D8; }
+.loiter .nameTx rect { height:20px; fill:#45AD6C; }
+.fire .nameTx rect { height:20px; fill:#F3416C; }
+
+.roi-board .arrow { position:absolute; display:none; width:40px; height:80px; transform-origin:50% 50%; }
+.roi-board .sel .arrow,
+.roi-board .drawing .arrow { display:block; }
+.roi-board .arrow polygon { fill:#1ae654 !important; stroke:#1ae654 !important; }
+.roi-board .arrow polyline, .roi-board .arrow line { stroke:#1ae654; }
+
+.roi-board .inout.sel circle { fill:#f7ee01; }
+.roi-board .inout.sel polyline,
+.roi-board .inout.drawing polyline { stroke-width:2px; stroke:#f7ee01; fill:transparent; }
+
+.roi-board .ignore.drawing polyline { stroke-width:2px; stroke:#000; }

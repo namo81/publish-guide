@@ -6,6 +6,8 @@
 // IE10 까지 정상작동 // IE9 는 classList.add, remove 가 지원 안됨.
 
 function nDragnDrop(option){
+	const nDrag = this;
+
 	// 외부 설정 변수
 	let wrap 		= typeof option.wrap === 'string' ? document.querySelector(option.wrap) : option.wrap,
 		objWrap 	= typeof option.objWrap === 'string' ? wrap.querySelector(option.objWrap) : option.objWrap,   	// 드래그 할 리스트 wrap
@@ -32,7 +34,7 @@ function nDragnDrop(option){
 	let mouseX, mouseY, 			// 마우스 최초 클릭 위치 값
 		mouseEX, mouseEY,			// 마우스 최종 위치 값
 		objTouchX, objTouchY, 		// 최초 클릭 시 드래그 요소 내 마우스 위치값 (드래그 시 위치 조정용)
-		docScrollT, docScrollL, 	// 최초 클릭 시 document 의 scroll 값 (  )
+		docScrollT, docScrollL, 	// 최초 클릭 시 document 의 scroll 값
 		wrapScrollT, wrapScrollL;	// 최초 클릭 시 wrap 의 scroll 값
 
 	// sequence 용 배열 ( 각 리스트 요소 상하좌우 값 )
@@ -265,7 +267,7 @@ function nDragnDrop(option){
 	dragInit();	
 
 	// 기능 제거
-	this.removeDrag = function(){
+	nDrag.removeDrag = function(){
 		for(let o=0; o<objLen; o++){
 			if(option.selector) obj[o].querySelector(option.selector).removeEventListener('mousedown', dragStart);
 			else obj[o].removeEventListener('mousedown', dragStart);
@@ -275,14 +277,14 @@ function nDragnDrop(option){
 		document.removeEventListener('mouseup', dragEnd);
 	}
 
-	this.dragUpdate = function(){
-		this.removeDrag();
+	nDrag.dragUpdate = function(){
+		nDrag.removeDrag();
 		obj 		= objWrap.querySelectorAll(option.obj),
 		objLen		= obj.length;
 		dragInit();
 	}
 
-	this.reStart = function(){
+	nDrag.reStart = function(){
 		dragInit();
 	}
 

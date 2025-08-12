@@ -1,0 +1,754 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+	<meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="author" content="seonamho - SK m&amp;service">
+    <meta name="description" content="SK쉴더스 캡스ON">
+    <meta name="keywords" content="SK쉴더스 경비 AI서비스 CCTV 영상확인">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="SK쉴더스 캡스ON">
+    <meta property="og:description" content="SK쉴더스 서비스 캡스ON">
+    <meta property="og:image" content="">
+    <meta property="og:url" content="">
+    <link rel="shortcut icon" href="../favicon_sk.ico"/>
+	<title>AI서비스 | ADT 캡스ON</title>
+    <link rel="stylesheet" href="../css/layout_web.css" media="screen, print" >
+    <link rel="stylesheet" href="../css/contents_web.css" media="screen, print" >
+    <link rel="stylesheet" href="../css/nRoi_web.css" media="screen, print" >
+    <link rel="stylesheet" href="../css/nCalendar_web.css" media="screen, print" >
+</head>
+<body>
+    <!-- skip Navi  -->
+    <div id="skip">
+        <a href="#content">본문 바로가기</a>
+    </div>
+
+    <div id="pc_wrap">
+        <header id="header">
+            <!-- head top -->
+            <!--#include file="include_head-top.html" -->
+
+            <!-- gnb -->
+            <!--#include file="include_gnb.html" -->
+        </header>
+
+        <main id="content">
+            <div class="sub-top ai-svc">
+                <div class="inner">
+                    <div class="location">
+                        <a href="#" class="home">home</a>
+                        <span>AI서비스</span>
+                        <span>AI서비스 관리</span>
+                    </div>
+                    <div class="sub-title">
+                        <h2 class="title_36">AI서비스 관리</h2>
+                        <p class="sub-tit-desc">캡스ON AI 서비스의 설정을 한곳에서 쉽고 빠르게 관리하세요.</p>
+                    </div>
+                </div>
+            </div>
+
+			<div class="sub-cnt inner">
+                <!-- 녹화기/카메라 선택 -->
+                <div class="tbl-srch">
+                    <ul class="tab-menu type2">
+                        <li><a href="ai_svc_detect-list.html" class="btn-tab on">탐지 영역 관리</a></li>
+                        <li><a href="ai_svc_detect-alarm.html" class="btn-tab">탐지 알림 설정</a></li>
+                        <li><a href="ai_svc_inout-time.html" class="btn-tab">입장/퇴장 검색 시간 설정</a></li>
+                        <li><a href="ai_svc_sensitive.html" class="btn-tab">감지 민감도 설정</a></li>
+                        <li><a href="ai_svc_img-quality.html" class="btn-tab">이미지 화질 설정</a></li>
+                    </ul>
+                </div>
+                <div class="cnt-rbox line flex-box detect-info">
+                    <p class="title_16">입장/퇴장 영역과 탐지 제외 영역을 확인할 수 있습니다.</p>
+                    <div class="btns">
+                        <button type="button" class="btn medium blue"><span class="ico-btn"><img src="../images/ico_pencil-wh.svg" alt=""></span>영역 그리기</button>
+                        <button type="button" class="btn medium blue-line">목록</button>
+                    </div>
+                </div>
+                
+                <div class="detect-draw_sec">
+                    <div class="draw-tit">
+                        <p class="tags">
+                            <span class="tag round line blue">입장/퇴장</span>
+                        </p>
+                        <div class="flex-box">
+                            <h3 class="title_20">$채널명$ $카메라명 최대 25자 말 줄임 없이 모두 노출$</h3>
+                            <ul class="draw-types">
+                                <li><span class="draw-blt red"></span> 침입 영역</li>
+                                <li><span class="draw-blt"></span> 탐지 제외 영역</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="draw-cnt">
+                        <!-- 좌측 리스트 영역 -->
+                        <div class="draw-list-area">
+                            <ul class="draw-count">
+                                <li>침입 <span class="count-circle">1</span></li>
+                                <li>탐지 제외 <span class="count-circle">1</span></li>
+                            </ul>
+                            <div class="draw-list">
+                                <ul></ul>
+                            </div>
+                            <div class="btns center">
+                                <button type="button" class="btn large main btn-area-add"><span class="ico-btn wh"><img src="../images/ico_plus.svg" alt=""></span>영역 추가</button>
+                            </div>
+                        </div>
+
+                        <!-- 영역 추가 -->
+                        <fieldset class="draw-ctrl add">
+                            <p class="ctrl-tit">영역 추가 등록</p>
+                            <div class="ctrl-area">
+                                <div class="ctrl-box ctrl-name">
+                                    <div class="inp-flex">
+                                        <label class="label" for="inp_add-name">영역 이름</label>
+                                        <span class="inp-del flex1"><input type="text" id="inp_add-name" class="input-box" maxlength="15" placeholder="영역 이름을 입력해 주세요."></span>
+                                    </div>
+                                    <div class="inp-count">
+                                        <p class="count">공백 포함 <span class="now"></span>/<span class="max">15</span>자</p>
+                                        <p class="tx-desc small">예시) 1층 입구 방문</p>
+                                    </div>
+                                </div>
+                                <div class="ctrl-box inp-flex">
+                                    <p class="label">탐지 종류</p>
+                                    <div class="inp-group">
+                                        <span class="inp-ver">
+                                            <input type="radio" class="radio large" name="rdo_type-add" value="invasion" id="rdo_type_invasion" checked>
+                                            <label for="rdo_type_invasion">침입</label>
+                                        </span>
+                                        <span class="inp-ver">
+                                            <input type="radio" class="radio large" name="rdo_type-add" value="except" id="rdo_type_except">
+                                            <label for="rdo_type_except">탐지 제외</label>
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="ctrl-box inp-flex ctrl-target">
+                                    <p class="label">탐지 대상</p>
+                                    <div class="inp-group">
+                                        <span class="inp-ver">
+                                            <input type="checkbox" class="checkbox large" name="chk_tg-add" value="사람" id="chk_tg_human" checked>
+                                            <label for="chk_tg_human">사람</label>
+                                        </span>
+                                        <span class="inp-ver">
+                                            <input type="checkbox" class="checkbox large" name="chk_tg-add" value="차량" id="chk_tg_car">
+                                            <label for="chk_tg_car">차량</label>
+                                        </span>
+                                        <span class="inp-ver">
+                                            <input type="checkbox" class="checkbox large" name="chk_tg-add" value="이륜차" id="chk_tg_bicycle">
+                                            <label for="chk_tg_bicycle">이륜차</label>
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="ctrl-box">
+                                    <div class="inp-flex f-top">
+                                        <p class="label">영역 그리기</p>
+                                        <div class="btn-area flex1">
+                                            <button type="button" class="btn small dgray btn-draw poly">다각형 그리기</button>
+                                            <button type="button" class="btn small dgray-line btn-draw-fin">완료</button>
+                                            <div class="in-btns">
+                                                <button type="button" class="btn-tx btn-undo"><span class="ico-btn blk"><img src="../images/ico_undo.png" alt=""></span><span class="btn-tx under">그리기 취소</span></button>
+                                                <button type="button" class="btn-tx btn-redo"><span class="ico-btn blk"><img src="../images/ico_redo.png" alt=""></span><span class="btn-tx under">그리기 다시 실행</span></button>
+                                                <button type="button" class="btn-tx btn-reset"><span class="ico-btn blk"><img src="../images/ico_reset.png" alt=""></span><span class="btn-tx under">초기화</span></button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <p class="ctrl-info">다각형 아이콘을 클릭해 그리기 모드를 실행해 주세요.</p>
+                                </div>
+                            </div>
+                            <div class="btns">
+                                <button type="button" class="btn large flex1 gray btn-add-cancel">취소</button>
+                                <button type="button" class="btn large flex1 main btn-add-confirm">확인</button>
+                            </div>
+                            <button type="button" class="btn-close btn-add-close">영역추가 닫기</button>
+                        </fieldset>
+
+                        <!-- 영역 수정 -->
+                        <fieldset class="draw-ctrl modify">
+                            <p class="ctrl-tit">영역 수정</p>
+                            <div class="ctrl-area">
+                                <div class="ctrl-box ctrl-name">
+                                    <div class="inp-flex">
+                                        <label class="label" for="inp_mod-name">영역 이름</label>
+                                        <span class="inp-del flex1"><input type="text" id="inp_mod-name" class="input-box" maxlength="15" placeholder="영역 이름을 입력해 주세요."></span>
+                                    </div>
+                                    <div class="inp-count">
+                                        <p class="count">공백 포함 <span class="now"></span>/<span class="max">15</span>자</p>
+                                        <p class="tx-desc small">예시) 1층 입구 방문</p>
+                                    </div>
+                                </div>
+                                <div class="ctrl-box inp-flex ctrl-target">
+                                    <p class="label">탐지 대상</p>
+                                    <div class="inp-group">
+                                        <span class="inp-ver">
+                                            <input type="checkbox" class="checkbox large" name="chk_tg-mod" value="사람" id="chk_tg_mod_human" checked>
+                                            <label for="chk_tg_mod_human">사람</label>
+                                        </span>
+                                        <span class="inp-ver">
+                                            <input type="checkbox" class="checkbox large" name="chk_tg-mod" value="차량" id="chk_tg_mod_car">
+                                            <label for="chk_tg_mod_car">차량</label>
+                                        </span>
+                                        <span class="inp-ver">
+                                            <input type="checkbox" class="checkbox large" name="chk_tg-mod" value="이륜차" id="chk_tg_mod_bicycle">
+                                            <label for="chk_tg_mod_bicycle">이륜차</label>
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="ctrl-box">
+                                    <div class="inp-flex f-top">
+                                        <p class="label">영역 그리기</p>
+                                        <div class="btn-area flex1">
+                                            <button type="button" class="btn small dgray btn-mod-reset"><span class="ico-btn wh"><img src="../images/ico_reset.png" alt=""></span>원래대로</button>
+                                        </div>
+                                    </div>
+                                    <p class="ctrl-info">오른쪽 이미지에서 <span class="tx">방문</span> 영역을 수정해 주세요.</p>
+                                </div>
+                            </div>
+                            <div class="btns">
+                                <button type="button" class="btn large flex1 gray btn-mod-del">삭제</button>
+                                <button type="button" class="btn large flex1 main btn-mod-confirm">확인</button>
+                            </div>
+                            <button type="button" class="btn-close btn-mod-close">영역수정 닫기</button>
+                        </fieldset>
+
+                        <!-- 우측 이미지 영역 -->
+                        <div class="draw-area">
+                            <p class="img"><img src="../images/temp/temp_img-area.jpg" alt=""></p>
+                            <div class="roi-board">
+								<svg version="1.1" xmlns="http://www.w3.org/2000/svg"></svg>
+							</div>
+                            <div class="ment-area">
+                                <p class="follow-ment add">최대 12개의 점을 그릴 수 있습니다. <br>ESC 키를 누르면 그리기가 종료됩니다.</p>
+                                <p class="follow-ment modify">점을 클릭해 위치를 이동하거나<br> 그려진 영역을 이동해 수정할 수 있습니다.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+			</div>
+
+		</main>
+        <!-- footer -->
+        <!--#include file="include_footer.html" -->
+    </div>
+
+	<script src="../js/common.js"></script>
+    <script src="../js/nlayer_v5.0.0.js"></script>
+    <script src="../js/nRoi_v.2.0.js"></script>
+
+	<script>
+        nText('.inp-del');
+
+        // 영역 그리기 관련 ========================================================================================================================
+        // 데이터
+        /* inputDataArr - 값 기준
+			name 		: 영역 이름
+			objType 	: 영역의 그리기 타입 (line : 라인 / poly : 다각형)
+			areaType 	: 탐지 종류 ( invasion : 침입 / inout : 입장퇴장 / loiter : 배회 / carnum : 차번 / fire : 화재 / except : 제외 / ignore : 객체제외 )
+			srchTarget  : 탐지 대상 배열 ( human : 사람 / car : 차량 / bicycle : 이륜차 )
+			detectTime  : 배회 / 차량탐지 관련 시간 (단위 : 초 / 기본값 : 0)
+			points  	: 각 꼭지점 위치값 배열
+		*/
+
+		// 데이터 Object
+		let inputDataArr = {
+            0 : {
+				name : '출입문 침입탐지',
+				objType : "poly",
+				areaType : 'invasion',
+				srchTarget : ['사람', '차량'],
+				points : [
+					[0.22656,0.25],[0.4,0.25],[0.4,0.604166],[0.22656,0.604166]
+				],					
+				direction : 1
+			}, 
+			1 : {
+				name : '출입문 탐지 제외',
+				objType : "poly",
+				areaType : 'except',
+				srchTarget : [],
+				points : [
+					[0.410937,0.166666],[0.632812,0.166666],[0.632812,0.375],[0.410937,0.375]
+				]
+			}, 
+			2 : {
+				name : '뒷문 배회 확인',
+				objType : "poly",
+				areaType : 'invasion',
+				srchTarget : ['사람'],
+				points : [
+					[0.203125,0.666666],[0.859375,0.708333],[0.804687,0.854166],[0.203125,0.833333]
+				]
+			}
+        };
+
+        // 공통 변수
+        const draw = document.querySelector('.draw-cnt');
+        let draw_list = draw.querySelector('.draw-list > ul'),
+            draw_list_items,
+            draw_area = draw.querySelector('.draw-area'),
+            draw_counts = draw.querySelectorAll('.draw-count .count-circle'),
+            btn_area_add = draw.querySelector('.btn-area-add'),
+            ment_area = draw_area.querySelector('.ment-area');
+
+        // 영역 추가 변수
+        let draw_add = draw.querySelector('.draw-ctrl.add'),  // 영역 추가 등록
+            inp_name = draw_add.querySelector('.ctrl-name input'), // 이름 input
+            add_inp_count = draw_add.querySelector('.ctrl-name .count .now'),  // 이름 입력
+            type_rdos = draw_add.querySelectorAll('input[name="rdo_type-add"]'), // 타입 선택 radio
+            tg_chk_area = draw_add.querySelector('.ctrl-target'), // 탐지대상 checkbox 영역
+            tg_chks = tg_chk_area.querySelectorAll('input'), // 탐지대상 선택 checkbox
+            btn_draw = draw_add.querySelector('.btn-draw'),   // 버튼 - 그리기 시작
+            btn_draw_fin = draw_add.querySelector('.btn-draw-fin'), // 버튼 - 그리기 완료
+            btn_undo = draw_add.querySelector('.btn-undo'),   // 버튼 - undo
+            btn_redo = draw_add.querySelector('.btn-redo'),   // 버튼 - redo
+            btn_reset = draw_add.querySelector('.btn-reset'), // 버튼 - 그리기 상태 reset
+            btn_add_cancel = draw_add.querySelector('.btn-add-cancel'), // 버튼 - 영역 추가 취소
+            btn_add_confirm = draw_add.querySelector('.btn-add-confirm'), // 버튼 - 영역 추가 적용
+            btn_add_close = draw_add.querySelector('.btn-add-close'), // 버튼 - 영역 추가 취소(X 버튼)
+            add_state = false;
+
+        // 영역 수정 변수
+        let draw_mod = draw.querySelector('.draw-ctrl.modify'), // 영역 수정
+            inp_mod_name = draw_mod.querySelector('.ctrl-name input'), // 이름 input
+            mod_inp_count = draw_mod.querySelector('.ctrl-name .count .now'),  // 이름 입력
+            tg_chk_area_mod = draw_mod.querySelector('.ctrl-target'), // 탐지대상 checkbox 영역
+            tg_chks_mod = tg_chk_area_mod.querySelectorAll('input'), // 탐지대상 선택 checkbox
+            btn_mod_reset = draw_mod.querySelector('.btn-mod-reset'),   // 버튼 - 원래대로
+            btn_mod_del = draw_mod.querySelector('.btn-mod-del'),       // 버튼 - 영역 삭제
+            btn_mod_confirm = draw_mod.querySelector('.btn-mod-confirm'), // 버튼 - 영역 수정 적용
+            btn_mod_close = draw_mod.querySelector('.btn-mod-close'),   // 버튼 - 영역 수정 취소(X 버튼)
+            mod_list_item = null, // 현재 수정중인 리스트
+            mod_num = null;
+
+        // 임시 변수
+        let area_type, // 영역 타입 (inout / except)
+            area_type_mod,  // 영역 타입 - 수정용
+            target_arr = [], // 탐지대상 배열
+            count_focus = 0, // 침입 영역 갯수
+            count_except = 0, // 탐지제외 영역 갯수
+            min_click = 3, // 도형 완성을 위한 최소 클릭 수 (line은 2 / poly 는 3)
+            max_click = 12; // 도형 최대 가능 클릭 수 (line은 6 / poly 는 12)
+
+        // svg 영역 기능 선언
+		let roiBoard = new nRoiSvg({
+			target : '.draw-area',
+			ignoreMode : false,
+			defaultArr : inputDataArr,
+            activeStart : function(){
+                btn_undo.disabled = true;
+                btn_reset.disabled = false;
+            }, activeClick : function(num){
+                if(num >= max_click) return;
+                if(num > 0) btn_undo.disabled = false;
+                if(num >= min_click) btn_draw_fin.disabled = false;
+            }, activeEnd : function(){
+                draw_fin();
+            }, activeObjClick : function(num){
+                list_item_sel_num(num);
+            }, activeUndo : function(num){
+                btn_redo.disabled = false;
+                if(num <= 0) btn_undo.disabled = true;
+                if(num < min_click) btn_draw_fin.disabled = true;
+            }, activeRedo : function(num, max){
+                if(num == max) btn_redo.disabled = true;
+                if(num >= min_click) btn_draw_fin.disabled = false;
+            }
+		});
+
+        // 공통 / 기타 함수 ------------------------------------------------------------------
+        let area_mouse_x, area_mouse_y;
+
+        /* 안내문구 박스 감추기 */
+        function ment_hide(){ ment_area.classList.remove('show'); }
+        /* 안내문구 박스 보이기 */
+        function ment_show(){ ment_area.classList.add('show'); }
+
+        /* 안내문구 박스 마우스 위치 적용 */
+        function ment_follow(e){
+            if(!ment_area.classList.contains('show')) ment_area.classList.add('show');
+            area_mouse_x = e.offsetX + 20;
+            area_mouse_y = e.offsetY + 20;
+            ment_area.style.transform = 'translate3d(' + area_mouse_x + 'px, '+ area_mouse_y +'px, 0)';
+        }
+        /* 안내문구 박스 기능 실행 */
+        function msg_follow_on(type){
+            if(type == 'add') {
+                ment_area.classList.remove('modify');
+                ment_area.classList.add('add');
+            } else {
+                ment_area.classList.remove('add');
+                ment_area.classList.add('modify');
+            }
+            draw_area.addEventListener('mousemove', ment_follow);
+            draw_area.addEventListener('mouseleave', ment_hide);
+            draw_area.addEventListener('mouseover', ment_show);
+        }
+        /* 안내문구 박스 기능 제거 */
+        function msg_follow_off(){
+            ment_area.classList.remove('show');
+            draw_area.removeEventListener('mousemove', ment_follow);
+            draw_area.removeEventListener('mouseleave', ment_hide);
+            draw_area.removeEventListener('mouseover', ment_show);
+        }
+
+        /* option 생성함수 (대상 select, 최소값, 최대값, 선택값) */
+        function add_options(tg, min, max, val){
+            for(let i=min; i<max; i++){
+                let opt = createDom('option');
+                opt.value = setZero(i);
+                opt.textContent = setZero(i);
+                tg.appendChild(opt);
+                if(val != undefined && i == val) tg.selectedIndex = i;
+            }
+        }
+
+        /* select option 제어함수 */
+        function sel_opt_set(tg, min, max, val){
+            let opts = tg.querySelectorAll('option'),
+                sel_idx;
+            opts.forEach((opt, idx)=>{
+                opt.value < min || opt.value > max ? opt.hidden = true : opt.hidden = false;
+                if(opt.value == val) sel_idx = idx;
+            });
+            if(val != undefined) tg.selectedIndex = sel_idx;
+            tg.dispatchEvent(changeEvt);
+        }
+        
+        /* 탐지대상 배열 설정 */
+        function target_arr_set(chks){
+            target_arr = [];
+            chks.forEach((chk)=>{
+                if(chk.checked == true) target_arr.push(chk.value);
+            });
+        }
+        
+        /* 체크박스 - 여러개 동시 체크/해제 설정 */
+        function arrCheckSet(items, bln){
+            items.forEach(function(item){
+                item.checked = bln;
+            });
+        }
+
+        /* 영역 삭제 후 focus 설정 */
+        function del_focus(){
+            draw_list_items.length > 0 ? draw_list_items[0].querySelector('button').focus() : btn_area_add.focus();
+        }
+        
+        // 리스트 - 영역 관련 ------------------------------------------------------------------
+        /* 리스트 선택 함수 - 리스트 버튼 클릭 시 */
+        function list_item_sel(e){
+            let li = e.target.closest('li'),
+                num = li.dataset.num;
+            area_type_mod = li.dataset.type;
+            roiBoard.objectSelect(num);
+            list_item_sel_num(num);
+        }
+
+        /* 리스트 선택 함수 - svg 도형 클릭 시 + list_item_sel 에서 활용 */
+        function list_item_sel_num(num){
+            if(draw_list_items == undefined) return;
+            if(num == null) mod_list_item = null;
+            draw_list_items.forEach((item)=>{
+                item.dataset.num == num ? item.classList.add('on') : item.classList.remove('on');
+            });
+        }
+
+        /* 리스트 생성 함수(영역이름, num) */
+        function list_add(name, type, num, target){
+            let li = createDom('li'),
+                li_tx = '<button type="button" class="btn-item"><span class="draw-blt"></span><span><i>'+ name +'</i><em class="target"></em></span></button><div class="btn-area"><button type="button" class="btn small dgray btn-modify">수정</button><button type="button" class="btn small dgray-line btn-del">삭제</button></div>';
+            li.insertAdjacentHTML('beforeend', li_tx);
+            li.dataset.num = num;
+            li.dataset.type = type;
+
+            let btn_item = li.querySelector('.btn-item'),
+                srch_target = btn_item.querySelector('.target'),
+                btn_item_del = li.querySelector('.btn-del'),
+                btn_item_mod = li.querySelector('.btn-modify');
+
+            if(target) srch_target.textContent = target.join(', ');
+
+            btn_item.addEventListener('click', list_item_sel);
+            btn_item_del.addEventListener('click', list_item_del);
+            btn_item_mod.addEventListener('click', list_item_modify);
+            draw_list.appendChild(li);
+            draw_list_items = draw_list.querySelectorAll('li');
+        }
+
+        /* 접속 후 실행 - 배열기준 리스트 생성함수 */
+        function list_item_set(data){
+            Object.keys(data).forEach(function(key) {
+                if(data[key].areaType == 'ignore') return;
+                list_add(data[key].name, data[key].areaType, key, data[key].srchTarget);
+            });
+            list_count_set();
+        }
+        list_item_set(inputDataArr);
+
+        /* 영역 삭제 기능 - 버튼호출용 */
+        function list_item_del(e){
+            nlayerConfirm({
+                ment : '<p class="msg-main">영역을 삭제하시겠습니까?</p>',
+                activeConfirm : function(){
+                    let li = e.target.closest('li'),
+                        num = li.dataset.num;
+                    area_del(num);
+                }
+            });
+        }
+
+        /* 영역 삭제 함수 */
+        function area_del(num){
+            roiBoard.objectDelete(num);
+            inputDataArr = roiBoard.getData();
+            draw_list_items.forEach((item)=>{
+                if(item.dataset.num == num) draw_list.removeChild(item);
+            });
+            list_count_set();
+            draw_list_items = draw_list.querySelectorAll('li');
+            del_focus();
+        }
+
+        /* 영역 수정 기능 */
+        function list_item_modify(e){
+            let li = e.target.closest('li'),
+                num = li.dataset.num;
+            mod_set(num);
+            mod_list_item = li;
+        }
+
+        /* 탐지 영역 갯수 확인 및 표시 */
+        function list_count_set(){
+            count_focus = roiBoard.getTypeNum('focus');
+            count_except = roiBoard.getTypeNum('except');
+            draw_counts[0].textContent = count_focus;
+            draw_counts[1].textContent = count_except;
+            count_focus == 5 && count_except == 5 ? btn_area_add.disabled = true : btn_area_add.disabled = false;
+        }
+
+        // 영역추가 버튼
+        btn_area_add.addEventListener('click', ()=>{
+            draw_add.classList.add('show');
+            add_reset();
+        });
+
+        // 영역 추가 ------------------------------------------------------------------
+        /* 추가화면 리셋 */
+        function add_reset(){
+            inp_name.value = '';
+            inp_name.dispatchEvent(inputEvt);
+            if(count_focus == 5) {
+                type_rdos[1].checked = true;
+                set_area_opt('except');
+            } else { 
+                type_rdos[0].checked = true;
+                set_area_opt('invasion');
+            }
+            type_rdo_set();
+            add_reset_btn();
+            msg_follow_off();
+            arrCheckSet(tg_chks, true);
+            target_arr_set(tg_chks);
+        }
+
+        /* 추가화면 내 버튼 상태 리셋 */
+        function add_reset_btn(){
+            btn_draw.disabled = false;
+            btn_draw_fin.disabled = true;
+            btn_undo.disabled = true;
+            btn_redo.disabled = true;
+            btn_reset.disabled = true;
+            btn_add_confirm.disabled = true;
+        }
+
+        /* 탐지/제외 영역 최대 갯수 관련 radio 활성/비활성 제어 */
+        function type_rdo_set(){
+            arrEnabled(type_rdos);
+            if(count_focus == 5) type_rdos[0].disabled = true;
+            if(count_except == 5) type_rdos[1].disabled = true;
+        }
+
+        /* 영역 변수 설정 / obj 타입변경 관련 text 수정 */
+        function set_area_opt(val){
+            area_type = val;
+            tg_chk_area.style.display = '';
+            if(val == 'except') tg_chk_area.style.display = 'none';
+        }
+
+        /* 그리기 완료 시 실행 */
+        function draw_fin(){
+            btn_undo.disabled = true;
+            btn_redo.disabled = true;
+            btn_draw_fin.disabled = true;
+            msg_follow_on('modify');
+            add_state = true;
+            if(inp_name.value.length > 0) btn_add_confirm.disabled = false;
+        }
+
+        /* 영역 추가 취소 */
+        function draw_add_cancel(){
+            nlayerConfirm({
+                ment : '<p class="msg-main">영역 추가 등록을 취소하시겠습니까?</p>',
+                activeConfirm : function(){
+                    draw_add.classList.remove('show'); 
+                    roiBoard.addCancel();
+                    add_state = false;
+                    msg_follow_off();
+                    btn_area_add.focus();
+                }
+            })
+        }
+
+        // 추가 - 이름 입력 시
+        inp_name.addEventListener('input', ()=>{
+            add_inp_count.textContent = inp_name.value.length;
+            inp_name.value.length > 0 && add_state == true ? btn_add_confirm.disabled = false : btn_add_confirm.disabled = true;
+        });
+        
+        // 추가 - 탐지종류 radio 설정
+        type_rdos.forEach((rdo)=>{
+            rdo.addEventListener('click', ()=>{
+                set_area_opt(rdo.value);
+            });
+        });
+
+        // 추가 - 탐지대상 checkbox 설정
+        tg_chks.forEach((chk)=>{
+            chk.addEventListener('click', function(){ target_arr_set(tg_chks) });
+        });
+
+        // 다각형그리기 버튼
+        btn_draw.addEventListener('click', ()=>{
+            msg_follow_on('add');
+            let name = inp_name.value.length > 1 ? inp_name.value : 'new Area';
+            roiBoard.drawStart(area_type, 'poly', name);
+            btn_draw.disabled = true;
+            arrDisabled(type_rdos);
+        });
+        btn_undo.addEventListener('click', ()=>{ roiBoard.clickUndo() });
+        btn_redo.addEventListener('click', ()=>{
+            roiBoard.clickRedo();
+            btn_undo.disabled = false;
+        });
+        btn_draw_fin.addEventListener('click', ()=>{ roiBoard.drawEnd() }); // '완료' 버튼
+        btn_reset.addEventListener('click', ()=>{
+            roiBoard.addCancel();
+            add_reset_btn();
+            type_rdo_set();
+            msg_follow_off();
+            add_state = false;
+        });
+
+        // 영역 추가 '취소 / x' 버튼
+        btn_add_close.addEventListener('click', draw_add_cancel);
+        btn_add_cancel.addEventListener('click', draw_add_cancel);
+
+        // 영역 추가 '확인' 버튼
+        btn_add_confirm.addEventListener('click', ()=>{
+            nlayerConfirm({
+                ment : '<p class="msg-main">영역 추가 등록을 완료하시겠습니까?</p>',
+                activeConfirm : function(){
+                    roiBoard.addConfirm(inp_name.value);
+                    let now_idx = roiBoard.getAllCount();
+                    draw_add.classList.remove('show');
+                    add_state = false;
+                    msg_follow_off();
+                    inputDataArr = roiBoard.getData();
+                    inputDataArr[now_idx].srchTarget = target_arr;
+                    list_add(inp_name.value, area_type, now_idx, target_arr);
+                    list_count_set();
+                    draw_list_items[draw_list_items.length].querySelector('button').focus();
+                }
+            })
+        });
+
+        // 영역 수정 ------------------------------------------------------------------
+        function mod_set(num){
+            mod_num = num;
+            inp_mod_name.value = inputDataArr[num].name;
+            inp_mod_name.dispatchEvent(inputEvt);
+            roiBoard.modifyOn(num);
+            list_item_sel_num(num);
+            area_type_mod = inputDataArr[num].areaType;
+            target_arr = inputDataArr[num].srchTarget;
+            area_type_mod == 'except' ? tg_chk_area_mod.style.display = 'none' : tg_chk_area_mod.style.display = '';
+            mod_tg_set();
+            draw_mod.classList.add('show');
+            msg_follow_on();
+            inp_mod_name.focus();
+        }
+
+        // 수정 - 이름 수정 시
+        inp_mod_name.addEventListener('input', ()=>{
+            mod_inp_count.textContent = inp_mod_name.value.length;
+            inp_mod_name.value.length > 0 ? btn_mod_confirm.disabled = false :  btn_mod_confirm.disabled = true;
+        });
+
+        // 수정 - 탐지대상 checkbox 설정
+        tg_chks_mod.forEach((chk)=>{
+            chk.addEventListener('click', function(){ target_arr_set(tg_chks_mod) });
+        });
+
+        /* 검색대상 checkbox 설정 */
+        function mod_tg_set(){
+            tg_chks_mod.forEach((chk)=>{
+                inputDataArr[mod_num].srchTarget.indexOf(chk.value) != -1 ? chk.checked = true : chk.checked = false;
+            });
+        }
+
+        btn_mod_reset.addEventListener('click', ()=>{
+            nlayerConfirm({
+                ment : '<p class="msg-main">영역에 적용된<br> 모든 수정 내용이 삭제됩니다.</p><p class="msg-sub">수정한 영역을 원래대로 되돌리시겠습니까?</p>',
+                activeConfirm : function(){
+                    roiBoard.modMoveReturn();
+                }
+            });
+        }); 
+
+        btn_mod_close.addEventListener('click', ()=>{
+            nlayerConfirm({
+                ment : '<p class="msg-main">영역 수정을<br> 취소하시겠습니까?</p>',
+                activeConfirm : function(){
+                    draw_mod.classList.remove('show');
+                    roiBoard.modifyCancel();
+                    mod_list_item.querySelector('button').focus();
+                    mod_num = null;
+                    mod_list_item = null;
+                    msg_follow_off();
+                }
+            });
+        });
+
+        btn_mod_del.addEventListener('click', ()=>{
+            nlayerConfirm({
+                ment : '<p class="msg-main">영역을 삭제하시겠습니까?</p>',
+                activeConfirm : function(){
+                    draw_mod.classList.remove('show');
+                    roiBoard.objectSelClear();
+                    area_del(mod_num);
+                    msg_follow_off();
+                }
+            });
+        });
+
+        btn_mod_confirm.addEventListener('click', ()=>{
+            nlayerConfirm({
+                ment : '<p class="msg-main">영역 수정을<br> 완료하시겠습니까?</p>',
+                activeConfirm : function(){
+                    draw_mod.classList.remove('show');
+                    roiBoard.modifyName(inp_mod_name.value);
+                    roiBoard.modifyConfirm();
+                    inputDataArr = roiBoard.getData();
+                    if(area_type_mod != 'except') {
+                        inputDataArr[mod_num].srchTarget = target_arr;
+                        mod_list_item.querySelector('.btn-item .target').textContent = target_arr.join(', ');
+                    }
+                    msg_follow_off();
+                    mod_list_item.querySelector('.btn-item i').textContent = inp_mod_name.value;
+                    mod_list_item.querySelector('button').focus();
+                }
+            });
+        });
+	</script>
+</body>
+</html>

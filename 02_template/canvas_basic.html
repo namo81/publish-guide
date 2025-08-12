@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+	<meta charset="UTF-8" >
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="user-scalable=yes, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, width=device-width">
+	<meta name="author" content="seonamho - SK MNS" >
+	<meta name="description" content="">
+	<meta name="keywords" content="Site Template">
+	<meta property="og:type" content="website">
+	<meta property="og:title" content="Site Template">
+	<meta property="og:description" content="">
+	<meta property="og:image" content="">
+	<meta property="og:url" content="">
+	<link rel="shortcut icon" href="data:;base64,iVBORwOKGO=" />
+
+	<title>Canvas</title>
+
+	<!-- 가이드 관련 -->
+	<link rel="stylesheet" href="../guide/list-guide.css" media="screen, print" />
+	<link rel="stylesheet" href="../guide/vendor/railscasts.css">
+	<script src="../guide/vendor/highlight.js"></script>
+
+	<!-- 프로젝트 관련 CSS 및 JS 파일 로드 -->
+	<link rel="stylesheet" href="/css/layout.css" media="screen, print" />	
+</head>
+<body>
+	<div id="work-list">
+		<div class="guide">
+
+			<section id="guide-basic">
+				<h2 class="guide-sec-tit">Canvas</h2>
+				<div class="guide-sec">
+					<div class="guide-show">
+					<!-- 코드 작성 -->
+						<div class="canvas-area">
+							<canvas id="glcanvas" width="720" height="480"></canvas>
+						</div>
+					<!-- // 코드 작성 -->
+					</div>
+<pre><code class="html">
+</code></pre>
+				</div>
+			</section>
+		</div>
+		<a href="#work-list" class="guide-top">Top</a>	
+	</div>
+	<script>
+		let canvas = document.getElementById("glcanvas"),
+			ctx = canvas.getContext("2d");
+			
+		ctx.fillStyle = "green";
+		ctx.fillRect(15, 15, 100, 100);
+
+		let raf;
+		let x = 0, // 시작 위치 x
+			y = 0; // 시작 위치 y
+		let vy = 0; // y방향 속도
+		const gravity = 1; // 중력 가속도
+		const bounce = 0.7; // 반발 계수(튕김 정도, 1에 가까울수록 더 높이 튕김)
+		const ground = 380;
+
+		function animate() {
+			ctx.clearRect(0,0,720,480);
+			vy += gravity; // 속도에 중력 더함
+			y  += vy;      // 위치 갱신
+
+			// 바닥에 닿았을 때
+			if (y > ground) {
+				y = ground;            // 위치 보정
+				vy = -vy * bounce;     // 속도를 반대 방향 + 감쇠
+				// 아주 작으면 완전히 멈춤 처리
+				if (Math.abs(vy) < 1) {
+					vy = 0;
+					cancelAnimationFrame(raf);
+				}
+			}
+			ctx.save();
+			ctx.fillRect(x, y, 100, 100);
+			ctx.restore();
+			raf = requestAnimationFrame(animate);
+		}
+		//animate();
+
+		canvas.addEventListener('click', (e)=>{
+			let posX = e.offsetX;
+				posY = e.offsetY;
+			ctx.clearRect(0,0,720,480);
+			ctx.fillRect(posX, posY, 100, 100);
+			x = posX;
+			y = posY;
+			vy = 0;
+			cancelAnimationFrame(raf);
+			animate();
+		});
+	</script>
+</body>
+</html>

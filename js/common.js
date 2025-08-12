@@ -1,16 +1,17 @@
 // javascript 함수 =====================================================
 
+/* - dispatchEvent 용 이벤트 선언 예시
 let clickEvt = new Event('click', { bubbles: true, cancelable: true }),
 	changeEvt = new Event('change', { bubbles: true, cancelable: true }),
 	inputEvt = new Event('input', { bubbles: true, cancelable: true });
+*/
 
 /** 안드로이드 / ios 구분 */
 function checkMobile() {
 	let mobileType = navigator.userAgent.toLowerCase();
 	if (mobileType.indexOf('android') > -1) {
 		return 'android';
-	}
-	else if (mobileType.indexOf('iphone') > -1 || mobileType.indexOf('ipad') > -1 || mobileType.indexOf('ipod') > -1) {
+	} else if (mobileType.indexOf('iphone') > -1 || mobileType.indexOf('ipad') > -1 || mobileType.indexOf('ipod') > -1) {
 		return 'ios';
 	}
 };
@@ -42,7 +43,7 @@ HTMLElement.prototype.onEvent = function (eventType, callBack, useCapture) {
 */
 HTMLElement.prototype.removeListeners = function () {
 	if (this.myListeners) {
-		for (var i = 0; i < this.myListeners.length; i++) {
+		for (let i = 0; i < this.myListeners.length; i++) {
 			this.removeEventListener(this.myListeners[i].eType, this.myListeners[i].callBack);
 		};
 		delete this.myListeners;
@@ -53,9 +54,9 @@ HTMLElement.prototype.removeListeners = function () {
  * ex : object.parents(selector)
 */
 Element.prototype.parents = function(selector) {
-	var elements = [];
-	var elem = this;
-	var ishaveselector = selector !== undefined;
+	let elements = [];
+	let elem = this;
+	let ishaveselector = selector !== undefined;
  
 	while ((elem = elem.parentElement) !== null) {
 		if (elem.nodeType !== Node.ELEMENT_NODE) continue;  
@@ -70,8 +71,8 @@ Element.prototype.parents = function(selector) {
 function offset(elem) {
     if(!elem) elem = this;
 
-    var x = elem.offsetLeft;
-    var y = elem.offsetTop;
+    let x = elem.offsetLeft;
+    let y = elem.offsetTop;
 
     while (elem = elem.offsetParent) {
         x += elem.offsetLeft;
@@ -85,7 +86,7 @@ function offset(elem) {
  * ex : getIndex(object)
 */
 function getIndex( elm ){ 
-    var c = elm.parentNode.children, i = 0;
+    let c = elm.parentNode.children, i = 0;
     for(; i < c.length; i++ )
         if( c[i] == elm ) return i;
 }
@@ -134,7 +135,7 @@ function deepCopy(obj) {
  * ex : getStyleArr('20px') / getStyleArr('20px 20px') ...
 */
 function getStyleArr(val){
-	var regex 		= /[^0-9]/g,
+	let regex 		= /[^0-9]/g,
 		valArr 		= val.split(' '),
 		styleArr 	= new Object();
 	valArr.forEach(function(val, idx){
@@ -217,7 +218,7 @@ function setZero(num){
  * @returns date 값
  */
 function convertToDate(e, sType){
-	var thisY = e.split(sType)[0],
+	let thisY = e.split(sType)[0],
 	thisM = e.split(sType)[1] - 1,
 	thisD = e.split(sType)[2],
 	nowDate = new Date(thisY, thisM, thisD);
@@ -231,7 +232,7 @@ function convertToDate(e, sType){
  * @returns YYYY.MM.DD 형식 반환
  */
 function convertToYMD(e, sType, y2){
-	var thisY = e.getFullYear(),
+	let thisY = e.getFullYear(),
 	thisM = e.getMonth() + 1,
 	thisD = e.getDate(),
 	nowDate;
@@ -246,13 +247,33 @@ function convertToYMD(e, sType, y2){
 }
 
 /**
+ * date 값을 yyyy-mm 형식으로 변환 
+ * @param {date} e date 값
+ * @param {string} sType 날짜 구분자 (./- 등)
+ * @param {boolean} y2 연도 2자릿수표현 boolean
+ * @returns YYYY.MM 형식 반환
+ */
+function convertToYM(e, sType, y2){
+	let thisY = e.getFullYear(),
+	thisM = e.getMonth() + 1,
+	nowDate;
+	if(y2 == true) {
+		thisY = thisY.toString();
+		thisY = thisY.substr(2, 3);
+	}
+	if(thisM < 10) thisM = '0'+thisM;
+	nowDate = thisY + sType + thisM;
+	return nowDate;
+}
+
+/**
  * date 값을 mm/dd 형식으로 변환
  * @param {date} e date 값
  * @param {string} sType 날짜 구분자 (./- 등)
  * @returns mm.dd 형식 string
  */
 function convertToMD(e, sType){
-    var thisM = e.getMonth() + 1,
+    let thisM = e.getMonth() + 1,
     thisD = e.getDate();
     return '' + setZero(thisM) + sType + setZero(thisD)+'';
 }
@@ -273,14 +294,14 @@ function convertToYMD_kr(date, sType){
  * @param {string} area 부모요소 검색용 css selector
  * @param {dom} target 제어될 html dom 요소
  * @param {string} cls 삭제할 class
- * ex : var wrapArea = document.querySelector('.chk-area');
+ * ex : let wrapArea = document.querySelector('.chk-area');
  * ex : outSideClick('.chk-area', wrapArea, 'show');
  */
 function outSideClick(area, target, cls){
-	var body = document.querySelector('body');
+	let body = document.querySelector('body');
 	body.addEventListener('mousedown', function(e){
-		var tg = e.target;
-		if( !tg.closest(area)) {
+		let tg = e.target;
+		if(!tg.closest(area)) {
 			target.classList.remove(cls);
 			body.removeEventListener('mousedown', arguments.callee);
 		}
@@ -320,7 +341,7 @@ function del_child(tg){
 }
 
 /** tab 메뉴
- *	var 변수명 = new nTabMenu({
+ *	let 변수명 = new nTabMenu({
  *      wrap     : '.tab-wrap', - 탭 메뉴 및 컨텐츠를 포함하는 영역 선택자
  *      menu     : '.tab-menu', - 탭 메뉴 선택자
  *      cnt   	 : '.tab-cnt'   - 탭 컨텐츠 선택자,
@@ -331,14 +352,23 @@ function del_child(tg){
  *   });
 */
 function nTabMenu(option){
-	var tabWrap		= document.querySelector(option.wrap),
-		menuWrap	= tabWrap.querySelector(option.menu),
-		btns 		= menuWrap.querySelectorAll('.btn-tab'),
-		tabCnts		= tabWrap.querySelectorAll(option.cnt);
+	const tab = this;
+	const tabWrap		= option.wrap || '.tab-wrap',
+		menuWrap	= option.menu || '.tab-menu',
+		tabBtns		= option.btn || '.btn-tab',
+		tabCnts		= option.cnt || '.tab-cnt';
+
+	tab.wrap = typeof tabWrap === 'string' ? document.querySelector(tabWrap) : tabWrap;
+	tab.menu = typeof menuWrap === 'string' ? tab.wrap.querySelector(menuWrap) : menuWrap;
+
+	let cnts = typeof tabCnts === 'string' ? tab.wrap.querySelectorAll(tabCnts) : tabCnts,
+		btns = typeof tabBtns === 'string' ? tab.menu.querySelectorAll(tabBtns) : tabBtns;
+
+	tab.menu.setAttribute('role', 'tablist');
 
 	// 컨텐츠 모두 hide
 	function tabCntHide(){
-		tabCnts.forEach(function(cnt){
+		cnts.forEach(function(cnt){
 			cnt.classList.remove('show');
 			cnt.setAttribute('aria-hidden', true);
 			if(cnt.tagName == 'FIELDSET') cnt.disabled = true;
@@ -354,15 +384,14 @@ function nTabMenu(option){
 		});
 	}
 
-	menuWrap.setAttribute('role', 'tablist');
-	tabCnts.forEach(function(cnt){
+	cnts.forEach(function(cnt){
 		cnt.setAttribute('role', 'tabpanel');
 		cnt.setAttribute('tabindex', '-1');
 	});
 
 	// tab menu 클릭 기능
-	function tabClick(btn) {
-		let tg_cnt = tabWrap.querySelector('#' + btn.getAttribute('aria-controls'));
+	function tabClick(btn, click) {
+		let tg_cnt = tab.wrap.querySelector('#' + btn.getAttribute('aria-controls'));
 
 		tabBtnOff();
 		btn.classList.add('on');
@@ -372,9 +401,9 @@ function nTabMenu(option){
 		tg_cnt.classList.add('show');
 		tg_cnt.setAttribute('aria-hidden', false);
 		if(tg_cnt.tagName == 'FIELDSET') tg_cnt.disabled = false;
-		tg_cnt.focus({ preventScroll: true }); // focus 에 따른 강제 스크롤 제거 (모바일 화면 적용 시 적용가능 버전 확인 필요)
+		if(click && option.focus) tg_cnt.focus({ preventScroll: true }); // focus 에 따른 강제 스크롤 제거 (모바일 화면 적용 시 적용가능 버전 확인 필요)
 
-		if(option.active === 'function') option.active(tg_cnt, btn);
+		if(typeof option.active === 'function') option.active(tg_cnt, btn);
 	}
 
 	btns.forEach(function(btn){
@@ -382,7 +411,7 @@ function nTabMenu(option){
 		btn.setAttribute('aria-selected', false);
 		btn.addEventListener('click', function(e){
 			e.preventDefault(); // 클릭 시 scroll 이동 방지
-			tabClick(btn);
+			tabClick(btn, true);
 		});
 
 		if(btn.classList.contains('on')) {
@@ -396,7 +425,7 @@ function nTabMenu(option){
  * @param {string} selector 
  */
 function nText(selector){
-	let nTextEle = document.querySelectorAll(selector);
+	const nTextEle = document.querySelectorAll(selector);
 	if(nTextEle.length > 1) {
 		Array.prototype.forEach.call(nTextEle, function(el){
 			nTextSet(el);
@@ -412,12 +441,12 @@ function nText(selector){
  * @param {dom/string} Ele 대상 요소 dom / 선택자
  */
 function nTextSet(Ele){
-	let textWrap	= typeof Ele === 'string' ? document.querySelector(Ele) : Ele,
+	const textWrap	= typeof Ele === 'string' ? document.querySelector(Ele) : Ele,
 		inp 		= textWrap.querySelector('input');
 	
 	if(inp.disabled == true || inp.readOnly == true) return;
 
-	let btn_clear 	= document.createElement('button');
+	const btn_clear 	= document.createElement('button');
 	btn_clear.setAttribute('type', 'button');
 	btn_clear.setAttribute('tabindex', -1);
 	btn_clear.classList.add('btn-clear');
@@ -480,7 +509,7 @@ function checkAll(allcls, inpName){
 		inps   = document.querySelectorAll('input[name='+name+']'),
 		inpLen = inps.length;
 
-	let changeEvt = new Event('change');
+	let changeEvt = new Event('change', { bubbles: true, cancelable: true });
 
 	let inpsOn = function(){
 		for(let i=0; i<inpLen; i++) {
@@ -515,7 +544,7 @@ function checkAll(allcls, inpName){
 
 // 말풍선 요소 - 단일 사용
 function nBalloonTgl(area) {
-	var wrap 	= typeof area === 'string' ? document.querySelector(area) : area,
+	let wrap 	= typeof area === 'string' ? document.querySelector(area) : area,
 		btn 	= wrap.querySelector('.btn-bln'),
 		clsBtn 	= wrap.querySelector('.btn-bln-close');
 		
@@ -526,7 +555,7 @@ function nBalloonTgl(area) {
 
 // 말풍선 요소 - 다수 적용
 function nBalloonTgls(selector) {
-	var nBallEle = document.querySelectorAll(selector);
+	let nBallEle = document.querySelectorAll(selector);
 
 	if(nBallEle.length > 1) {
 		nBallEle.forEach(function(el, index, array){
@@ -542,13 +571,13 @@ function nBalloonTgls(selector) {
 
 // 좌우 스크롤 메뉴 기능 (뷰가드ai 적용)
 function scrollMenuSet(area, gap){
-	var wrap	= typeof area === 'string' ? document.querySelector(area) : area,
+	let wrap	= typeof area === 'string' ? document.querySelector(area) : area,
 		list 	= wrap.querySelector('ul'),
 		items	= wrap.querySelectorAll('li'),
 		listW 	= 0,
-		gap 	= gap ? gap : 0;
+		gap_val 	= gap ? gap : 0;
 
-	var moveChk		= false, // pc일 경우 mousemove 여부 체크
+	let moveChk		= false, // pc일 경우 mousemove 여부 체크
 		clickChk 	= true,  // pc일 경우 mousemove 에 따른 click 기능 제어용 변수
 		nowScLeft	= 0;
 	
@@ -558,7 +587,7 @@ function scrollMenuSet(area, gap){
 	});
 	list.style.width = listW + 'px'; 
 
-	var classOff = function(){
+	let classOff = function(){
 		items.forEach(function(item){
 			item.classList.remove('on');
 		});
@@ -570,24 +599,24 @@ function scrollMenuSet(area, gap){
 			return;
 		}
 		if(e.target.tagName != 'BUTTON' && e.target.tagName != 'A' ) return;
-		var tgLi = e.target.parentNode;
+		let tgLi = e.target.parentNode;
 		classOff();
 		tgLi.classList.add('on');
-		var tgL = tgLi.offsetLeft - (wrap.offsetWidth / 2) + (tgLi.offsetWidth / 2) - gap;
+		let tgL = tgLi.offsetLeft - (wrap.offsetWidth / 2) + (tgLi.offsetWidth / 2) - gap_val;
 		animateScroll(wrap, tgL, 300);
 		nowScLeft = tgL;
 	}
 
 	function scrollInit(){
-		var tgLi = list.querySelector('li.on'),
-			tgL = tgLi.offsetLeft - (wrap.offsetWidth / 2) + (tgLi.offsetWidth / 2) - gap;
+		let tgLi = list.querySelector('li.on'),
+			tgL = tgLi.offsetLeft - (wrap.offsetWidth / 2) + (tgLi.offsetWidth / 2) - gap_val;
 		wrap.scrollLeft = tgL;
 	}
 	scrollInit();
 
 	// pc 일 경우
 	if ( !navigator.userAgent.match(/Android/i) && !navigator.userAgent.match(/iPhone/i) ){
-		var startX;
+		let startX;
 		wrap.addEventListener('mousedown', function(e){
 			moveChk = false;
 			startX = e.pageX;			
@@ -607,21 +636,21 @@ function scrollMenuSet(area, gap){
 
 /* scroll animation */
 function animateScroll(scrollObj, targetVal, duration, direction, gap){
-	var scrollEle 	= typeof scrollObj === 'string' ? document.querySelector(scrollObj) : scrollObj,
+	let scrollEle 	= typeof scrollObj === 'string' ? document.querySelector(scrollObj) : scrollObj,
 		gapPos 		= gap ? gap : 0,
 		dur			= duration ? duration : 500;
 	
-	var currentPos = direction == 'x' ? scrollEle.scrollLeft : scrollEle.scrollTop,
+	let currentPos = direction == 'x' ? scrollEle.scrollLeft : scrollEle.scrollTop,
 		targetPos  = targetVal - gapPos;
 	
 	animateScrollTo();
 
 	function animateScrollTo() {
-		var startTime = new Date().getTime();
-		var endTime = new Date().getTime() + dur;
+		let startTime = new Date().getTime();
+		let endTime = new Date().getTime() + dur;
 
-		var scrollTo = function() {
-			var now = new Date().getTime(),
+		let scrollTo = function() {
+			let now = new Date().getTime(),
 				passed = now - startTime,
 				ease = easeOutQuad(passed / dur);
 			if (now <= endTime) {

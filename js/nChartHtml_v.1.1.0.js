@@ -96,7 +96,7 @@ function nChartHtml(option){
         stack = new Object();
         stack.enabled = false;
         stack.intersection = false;
-    } 
+    }
 
     // 내부용 변수
     let chart, chart_inner, bars_wid, legend, 
@@ -451,19 +451,15 @@ function nChartHtml(option){
                     val_tx.insertAdjacentHTML('beforeend', per);
                 }
                 tooltip_ul.appendChild(li);
-                if(stack.enabled == true && stack.intersection == false) {
-                    bar_wid += fill.offsetWidth;
-                    bar_hei += fill.offsetHeight;
+                if(idx == 0) {
+                    bar_wid = (fill.offsetWidth + fill.parentNode.offsetLeft);
+                    bar_hei = fill.parentNode.offsetTop;
                 } else {
-                    if(idx == 0) {
-                        bar_wid = fill.parentNode.offsetLeft;
-                        bar_hei = fill.parentNode.offsetTop;
-                    } else {
-                        bar_wid = fill.parentNode.offsetLeft < bar_wid ? fill.parentNode.offsetLeft : bar_wid;
-                        bar_hei = fill.parentNode.offsetTop < bar_hei ? fill.parentNode.offsetTop : bar_hei;
-                    }
+                    bar_wid = (fill.offsetWidth + fill.parentNode.offsetLeft) > bar_wid ? (fill.offsetWidth + fill.parentNode.offsetLeft) : bar_wid;
+                    bar_hei = fill.parentNode.offsetTop < bar_hei ? fill.parentNode.offsetTop : bar_hei;
                 }
             });
+
             if(tooltipOpt.more != undefined) add_tooltip_more(dataIdx);
 
             let pos_top, pos_left;
@@ -472,8 +468,8 @@ function nChartHtml(option){
                 pos_left = li.offsetLeft + (li.offsetWidth/2) - chart_inner.scrollLeft + chart_left_pad;
                 if(pos_left + (tooltip.offsetWidth / 2) > chart.offsetWidth) pos_left = chart.offsetWidth - (tooltip.offsetWidth / 2);
             } else {
-                pos_top = li.offsetTop + chart.offsetTop;
-                pos_left = chart.offsetLeft + bar_wid + chart_left_pad;
+                pos_top = li.offsetTop;
+                pos_left = bar_wid;
                 if(pos_left + tooltip.offsetWidth > chart.offsetWidth) pos_left = chart.offsetWidth - tooltip.offsetWidth;
             }
 
@@ -555,7 +551,7 @@ function nChartHtml(option){
     function add_tooltip_more(idx, group_idx){
         if(tooltipVal.querySelector('.more-info')) tooltipVal.removeChild(tooltipVal.querySelector('.more-info'));
         let p = createDom('p', 'more-info'),
-            data_val = tooltipOpt.area == 'group' ? tooltipOpt.more.data[group_idx][idx] : tooltipOpt.more.data[idx];
+            data_val = tooltipOpt.area == 'group' ? tooltipOpt.more.data[group_idx][idx] : tooltipOpt.more.data[0][idx];
         p.insertAdjacentHTML('beforeend', '<span class="label">'+ tooltipOpt.more.tit +'</span><span class="val">'+ data_val +'</span>');
         tooltipVal.appendChild(p);
     }
