@@ -2,29 +2,47 @@
     2023-03-22 : v1.0.0 추가 - 기존 pc용을 mobile용으로 develop
 */
 
+/**
+ * area (dom/string) : 연계할 input 을 포함하는 영역 dom / 선택자
+ * input (dom/string) : 연계할 input dom / 선택자
+ * inPage (boolean) : 페이지 포함 여부 - 기본은 false
+ * inTarget (dom) : inPage ture 일 경우 달력 넣을 영역
+ * title (string) : 타이틀
+ * optHeight (number) : 숫자 1개 영역의 높이
+ * gap_count (number) : 선택 숫자 위아래에 추가로 표기될 숫자 갯수 (상하에 동시에 gap_count 만큼 적용)
+ * halfTime (boolean) : 오전/오후 기능 사용여부
+ * halfShow (boolean) : input 에 표기 시 오전/오후 포함하여 표기할지 여부
+ * 
+ * hourMin (number) : 시간최소값
+ * hourMax (number) : 시간최대값
+ * minMin (number) : 분최소값
+ * minMax (number) : 분최소값
+ * minStep (number) : 분 단위값 (기본 1분단위 - 10 입력 시 10분단위)
+ */
+
 /** time picker (bottom sheet) */
 function nTimeSetMobile(option){
     let wrap 		= typeof option.area === 'string' ? document.querySelector(option.area) : option.area,
         input 		= typeof option.input === 'string' ? wrap.querySelector(option.input) : option.input,
-		inPage		= option.inPage ? option.inPage : false, // 페이지 내 표기 선택
-		inTarget	= option.inTarget ? option.inTarget : null, // 페이지 표기 할 영역 선택
+		inPage		= option.inPage || false, // 페이지 내 표기 선택
+		inTarget	= option.inTarget || null, // 페이지 표기 할 영역 선택
         selTitle    = option.title,
-        optHeight   = option.optHeight ? option.optHeight : 30,
-        gap_count   = option.gap_count ? option.gap_count : 3,
-        halfTime    = option.halfTime ? option.halfTime : false, // 시간 선택 시 오전/오후 기능 사용 여부
-        halfShow    = option.halfShow ? option.halfShow : false; // 시간 표기 시 오전/오후 표기 사용 여부
-
+        optHeight   = option.optHeight || 30,
+        gap_count   = option.gap_count || 3,
+        halfTime    = option.halfTime || false, // 시간 선택 시 오전/오후 기능 사용 여부
+        halfShow    = option.halfShow || false, // 시간 표기 시 오전/오후 표기 사용 여부
+        sel24       = option.sel24 || false; // 24시 00분까지 선택 가능
     // 공통함수
     function setZero(num){
         return num < 10 ? '0' + num : num;
     }
 
     // input readonly 일때 android 에서 click 이벤트 안됨 -> input 위에 투명버튼 추가
-    let btn_open = document.createElement('button'),
+    let btn_open = option.btn ? option.btn : document.createElement('button'),
         btnOk		= document.createElement('button'),
         btnNo		= document.createElement('button');
 
-    if(inPage == false){
+    if(inPage == false && option.btn == undefined){
         btn_open.setAttribute('type', 'button');
         btn_open.setAttribute('aria-haspopup', 'dialog');
         btn_open.setAttribute('aria-expanded', 'false');
@@ -44,8 +62,9 @@ function nTimeSetMobile(option){
         hourMax 	= option.hourMax ? option.hourMax : hourMaxLimit,
         minMin 		= option.minMin ? option.minMin : 0,
         minMax 		= option.minMax ? option.minMax : 60,
-        minStep		= option.minStep ? option.minStep : 1;
-    
+        minStep		= option.minStep ? option.minStep : 1,
+        sel24_state = false;
+
     let scroll_padding = optHeight * gap_count;
 
     // 기본 구조 생성
@@ -57,6 +76,8 @@ function nTimeSetMobile(option){
         min_wrap	= document.createElement('div'),
         min			= document.createElement('div'),
         btns		= document.createElement('div');
+
+    if(option.class) time_wrap.classList.add(option.class);
 
     let body        = document.querySelector('body'),
         bodyStyle   = body.style;
@@ -73,7 +94,7 @@ function nTimeSetMobile(option){
                 set_min 	= input.value.length > 0 ? Number(input.value.split(' ')[1].split(':')[1]) : 0;
             } else {
                 set_hour 	= input.value.length > 0 ? Number(input.value.split(':')[0]) : 0;
-                set_min 	= input.value.length > 0 ?Number( input.value.split(':')[1]) : 0;
+                set_min 	= input.value.length > 0 ? Number(input.value.split(':')[1]) : 0;
                 if(set_hour >= 12) {
                     set_ampm    = '오후';
                     set_hour    = set_hour == 12 ? 12 : set_hour - 12;
@@ -83,7 +104,7 @@ function nTimeSetMobile(option){
             }
         } else {
             set_hour 	= input.value.length > 0 ? Number(input.value.split(':')[0]) : 0;
-            set_min 	= input.value.length > 0 ?Number( input.value.split(':')[1]) : 0;
+            set_min 	= input.value.length > 0 ? Number(input.value.split(':')[1]) : 0;
         }
     }
     setTxVal();
@@ -179,19 +200,28 @@ function nTimeSetMobile(option){
     }
     
     /** 시간/분 리스트 버튼 추가 */
-    for(let h = hourMin; h<hourMax; h++){
-        let tag_tx,
-            h_tx;
-        if(halfTime) h == 0 ? h_tx = 12 : h_tx = h;
-        else h_tx = h;
-        tag_tx = h == set_hour ? '<li><button type="button" title="시간" class="on" role="option" aria-selected="true">'+ h_tx +'</button></li>' : '<li><button type="button" title="시간" role="option" aria-selected="false">'+ h_tx +'</button></li>';
-        hour_ul.insertAdjacentHTML('beforeend', tag_tx);
+    function carete_hour_list(min, max){
+        while (hour_ul.firstChild) hour_ul.removeChild(hour_ul.firstChild);
+        max = sel24 ? max + 1 : max;
+        for(let h = min; h<max; h++){
+            let tag_tx,
+                h_tx;
+            if(halfTime) h == 0 ? h_tx = 12 : h_tx = h;
+            else h_tx = h;
+            tag_tx = h == set_hour ? '<li><button type="button" title="시간" class="on" role="option" aria-selected="true">'+ setZero(h_tx) +'</button></li>' : '<li><button type="button" title="시간" role="option" aria-selected="false">'+ setZero(h_tx) +'</button></li>';
+            hour_ul.insertAdjacentHTML('beforeend', tag_tx);
+        }
     }
+    carete_hour_list(hourMin, hourMax);
 
-    for(let m=minMin; m<minMax; m += minStep){
-        let tag_tx = m == set_min ?  '<li><button type="button"title="분" class="on" role="option" aria-selected="true">'+ m +'</button></li>' : '<li><button type="button" title="분" role="option" aria-selected="false">'+ m +'</button></li>';
-        min_ul.insertAdjacentHTML('beforeend', tag_tx);
+    function carete_min_list(min, max){
+        while (min_ul.firstChild) min_ul.removeChild(min_ul.firstChild);
+        for(let m=min; m<max; m += minStep){
+            let tag_tx = m == set_min ? '<li><button type="button"title="분" class="on" role="option" aria-selected="true">'+ setZero(m) +'</button></li>' : '<li><button type="button" title="분" role="option" aria-selected="false">'+ setZero(m) +'</button></li>';
+            min_ul.insertAdjacentHTML('beforeend', tag_tx);
+        }
     }
+    carete_min_list(minMin, minMax);
 
     // 오전/오후 기능 사용 시
     if(halfTime) {
@@ -235,7 +265,7 @@ function nTimeSetMobile(option){
         btnAll 		= total_wrap.querySelectorAll('li > button');
 
     // 시간/분 (오전/오후) 버튼 클릭 시 scroll 이동 설정
-    Array.prototype.forEach.call(btnAll, function(btn){
+    btnAll.forEach(function(btn){
         let areaWrap = btn.parentNode.parentNode.parentNode;
         btn.addEventListener('click', function(){
             let scrollVal = btn.offsetTop - (areaWrap.offsetHeight / 2) + (btn.offsetHeight / 2);
@@ -245,6 +275,23 @@ function nTimeSetMobile(option){
             else nextArea.querySelector('button.on').focus();
         });
     });
+
+    /**
+     * 24시일 경우 00분만 선택가능하도록
+     * @param {number} idx 현재 선택된 시 
+     */
+    function min_hidden(idx){
+        if(sel24_state == true) {
+            minBtns.forEach((btn)=>{ btn.parentNode.style.display = '' });
+            sel24_state = false;
+        }
+        if(!sel24 || idx != 24) return;
+        sel24_state = true;
+        set_min = 0;
+        minBtns.forEach((btn, index)=>{
+            index == 0 ? btn.parentNode.style.display = '' : btn.parentNode.style.display = 'none';
+        });
+    }
     
     /**
      * scroll 시 선택된 버튼의 값을 각 변수에 저장
@@ -252,7 +299,10 @@ function nTimeSetMobile(option){
      * @param {number} idx 현재 선택된 버튼의 idx값
      */
     function setVal(area, idx){
-        if(area == hour) set_hour = hourBtns[idx].textContent;
+        if(area == hour) {
+            set_hour = hourBtns[idx].textContent;
+            min_hidden(idx);
+        }
         else if(area == min) set_min = minBtns[idx].textContent;
         else if(area == ampm) set_ampm = ampmBtns[idx].textContent;
         if(inPage == true) inpValSet();
@@ -317,7 +367,7 @@ function nTimeSetMobile(option){
     /** show - input 값에 따른 scroll 위치 조정 */
     function scrollSet(){
         let onBtns = roll_wrap.querySelectorAll('button.on');
-        Array.prototype.forEach.call(onBtns, function(btn){
+        onBtns.forEach(function(btn){
             let areaWrap = btn.parentNode.parentNode.parentNode,
                 scrollVal = btn.offsetTop - (areaWrap.offsetHeight / 2) + (btn.offsetHeight / 2);
             areaWrap.scrollTop = scrollVal;
@@ -360,15 +410,15 @@ function nTimeSetMobile(option){
     /** input 에 선택된 값 넣기 */
     function inpValSet(){
         if(halfTime){
-            if(halfShow) input.value = set_ampm + ' ' + setZero(set_hour) + ':' + setZero(set_min)
+            if(halfShow) input.value = set_ampm + ' ' + setZero(Number(set_hour)) + ':' + setZero(Number(set_min))
             else {
                 let hourval;
                 if(set_ampm == '오전') set_hour == 12 ? hourval = 0 : hourval = set_hour;
                 else set_hour == 12 ? hourval = 12 : hourval = Number(set_hour) + 12;
-                input.value = setZero(hourval) + ':' + setZero(set_min);
+                input.value = setZero(Number(hourval)) + ':' + setZero(Number(set_min));
             }
-        } else input.value = setZero(set_hour) + ':' + setZero(set_min);
-        if(inPage == false) input.dispatchEvent(changeEvt);
+        } else input.value = setZero(Number(set_hour)) + ':' + setZero(Number(set_min));
+        if(inPage == false) input.dispatchEvent(new Event('change'));
     }
 
     /** time_wrap show 함수 */
@@ -402,6 +452,30 @@ function nTimeSetMobile(option){
     }
 
     /**
+     * 외부함수 - 시간 최소/최대값 재설정
+     * @param {number} min 최소값
+     * @param {number} max 최대값
+     */
+    this.limit_hour = function(val_min, val_max){
+        hourMin = val_min;
+        hourMax = val_max;
+        carete_hour_list(hourMin, hourMax);
+        hourBtns = hour.querySelectorAll('button');
+    };
+
+    /**
+     * 외부함수 - 분 최소/최대값 재설정
+     * @param {number} min 최소값
+     * @param {number} max 최대값
+     */
+    this.limit_min = function(val_min, val_max){
+        minMin = val_min;
+        minMax = val_max;
+        carete_min_list(minMin, minMax);
+        minBtns = min.querySelectorAll('button');
+    };
+
+    /**
      * 외부함수 - input 기준 오전오후/시간/분 scroll 위치 정렬
      */
     this.time_update = function(){
@@ -425,48 +499,66 @@ function nTimeSetMobile(option){
     btnOk.addEventListener('click', function(){
         inpValSet();
         timesetOff();
+        if(typeof option.active === 'function') option.active(input);
     });
 
     // 취소 버튼 클릭 시
     btnNo.addEventListener('click', timesetOff);
+    
+    // 외부호출 - input / btn
+    this.input = input;
+    this.btn = btn_open;
 }
 
 /**
- * number selector - scroll &amp; input
+ * number selector - scroll &amp; input ==============================================================================================================
  * @param {object} option option.area : 적용 영역 (선택자 string or dom 요소)
  * @returns null
+ * 
+ * area : 적용 영역 선택자
+ * min : 최소값
+ * max : 최대값
+ * step : 숫자 단위 (10 일 경우 10,20,30~)
+ * num_height : 1칸의 높이 값
  */
 function nNumberSelector(option){
-    const wrap = typeof option.area === 'string' ? document.querySelector(option.area) : option.area;
+    const item = this;
+    item.area = typeof option.area === 'string' ? document.querySelector(option.area) : option.area;
 
     let num_min = option.min ? option.min : 0,
-        num_max = option.max;
+        num_max = option.max,
+        num_step = option.step ? option.step : 1;
 
     if(num_max == undefined) return;
 
     let temp_val;
     
-    let inp = wrap.querySelector('input'),
+    let inp = item.area.querySelector('input'),
         num_height = option.num_height ? option.num_height : 30,
         total_height = num_height * 3;
 
     let scroll_wrap	= document.createElement('div'),
         scroll		= document.createElement('ul'),
+        lis,
         numbers;
     
     scroll_wrap.classList.add('scroll-wrap');
     scroll.classList.add('sel-list');
 
-    for(let i = num_min; i<num_max; i++){
-        let tag_tx;
-        tag_tx =  '<li><button type="button" class="num-tx">'+ i +'</button></li>';
-        scroll.insertAdjacentHTML('beforeend', tag_tx);
+    function createList(){
+        for(let i = num_min; i<num_max; i += num_step){
+            let tag_tx;
+            tag_tx =  '<li><button type="button" class="num-tx">'+ setZero(i) +'</button></li>';
+            scroll.insertAdjacentHTML('beforeend', tag_tx);
+        }
     }
+    createList();
     scroll_wrap.appendChild(scroll);
-    wrap.appendChild(scroll_wrap);
+    item.area.appendChild(scroll_wrap);
 
-    wrap.style.height = total_height + 'px';
+    item.area.style.height = total_height + 'px';
     scroll_wrap.style.padding = num_height + 'px 0px';
+    lis = scroll_wrap.querySelectorAll('li');
     numbers = scroll_wrap.querySelectorAll('.num-tx');
 
     observerOpt = {
@@ -479,12 +571,18 @@ function nNumberSelector(option){
         observerOpt.rootMargin = '10px 0px';
     }
     
-    obs = new IntersectionObserver(scrollCenterSet, observerOpt);
+    item.obs = new IntersectionObserver(scrollCenterSet, observerOpt);
 
     /** 스크롤 시 중앙위치 버튼 cls 제어 */
     function scrollCenterSet(ent){
         ent.forEach((entry) => {
-            entry.isIntersecting ? entry.target.parentNode.classList.add('on') : entry.target.parentNode.classList.remove('on');
+            if(entry.isIntersecting) {
+                entry.target.parentNode.classList.add('on');
+                entry.target.setAttribute('aria-selected', true);
+            } else {
+                entry.target.parentNode.classList.remove('on');
+                entry.target.setAttribute('aria-selected', false);
+            }
         });
     }
 
@@ -516,12 +614,13 @@ function nNumberSelector(option){
          * @param {number} sc Scroll top 값
          */
         function scSet(area, sc){
-            let scN     = sc % num_height,
-                scVal   = Math.floor(sc / num_height),
+            let scN     = sc < 0 ? 0 : sc % num_height,
+                scVal   = sc < 0 ? 0 : Math.floor(sc / num_height),
                 scIdx, tgSc;
 
             scN < num_height / 2 ? scIdx = scVal : scIdx = scVal + 1;
             tgSc = scIdx * num_height;
+            if(temp_val == numbers[scIdx].textContent) return;
             animateScroll(area, tgSc, 200);
             setVal(scIdx);
         }
@@ -542,26 +641,56 @@ function nNumberSelector(option){
     }
     scrollFuncSet(scroll_wrap);
 
-    numbers.forEach(function(btn){
-        btn.addEventListener('click', function(){ 
-            wrap.classList.add('inp');
-            inp.focus();
+    function btn_func_on(){
+        numbers.forEach(function(btn){
+            item.obs.observe(btn);
+            if(inp.readOnly == true) { // input 이 read-only 일 경우 직접입력 제한 및 클릭 콜백 실행
+                btn.addEventListener('click', function(){ if(typeof option.active === 'function') option.active(btn.textContent); });
+                return; 
+            }
+            btn.addEventListener('click', function(){ 
+                item.area.classList.add('inp');
+                inp.focus();
+            });
         });
-        obs.observe(btn);
-    });
+    }
+    btn_func_on();
 
     /** inp 에 현재 scroll된 숫자를 value 로 설정 */
     function setVal(idx) {
         inp.value = numbers[idx].textContent;
+        temp_val = inp.value;
+        
+        let changeEvt = new Event('change', { bubbles: true, cancelable: true });
+        inp.dispatchEvent(changeEvt);
     }
 
     /** show - input 값에 따른 scroll 위치 조정 */
     function scrollSet(){
         numbers.forEach(function(btn){
-            if(btn.textContent == inp.value) scroll_wrap.scrollTop = btn.parentNode.offsetTop - num_height;
+            if(btn.textContent == inp.value) scroll_wrap.scrollTop = btn.parentNode.offsetTop - num_height; 
         });
     }
     scrollSet();
+
+    /** 다시 그리기 (display 제어 방식 변경으로 사용X) */
+    function list_reCreate(){
+        while (scroll.firstChild) scroll.removeChild(scroll.firstChild);
+        createList();
+        numbers = scroll_wrap.querySelectorAll('.num-tx');
+        btn_func_on();
+        scrollSet();
+    }
+
+    /** 리스트 감추기 */
+    function list_hide(){
+        lis.forEach((li, idx)=>{
+            if(idx < num_min || idx > num_max) li.style.display = 'none';
+            else li.style.display = 'block';
+        });
+        scroll_wrap.scrollTop = 0;
+        setVal(num_min);
+    }
 
     inp.addEventListener('focusin', function(){
         temp_val = inp.value;
@@ -577,6 +706,19 @@ function nNumberSelector(option){
             inp.value = temp_val;
         } 
         scrollSet();
-        wrap.classList.remove('inp');
+        item.area.classList.remove('inp');
     }
+
+    this.min_update = function(min){
+        num_min = min;
+        list_reCreate();
+    }
+    this.max_update = function(max){
+        num_max = max + 1;
+        list_reCreate();
+    }
+    this.update = function(){
+        scrollSet();
+    }
+    this.input = inp;
 }

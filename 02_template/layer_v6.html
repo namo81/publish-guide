@@ -323,7 +323,7 @@ btn_toast2.addEventListener('click', function(){
 	</div>
 
 	<script src="/js/common.js"></script>
-	<script src="/js/nlayer_v6.0.0.js"></script>
+	<script src="/js/nlayer_v6.0.1.js"></script>
 	<script>
 		hljs.initHighlightingOnLoad(); 
 
@@ -346,14 +346,17 @@ btn_toast2.addEventListener('click', function(){
 			layer_test2.show();
 		})
 
-		// 전체 닫기
+		// 전체 닫기 ( 별도 기능X - 선언한 레이어 각각 지정하여 닫기 )
 		let btn_close_all = document.querySelector('.close-layer-all');
-		btn_close_all.addEventListener('click', layerHideAll);
+		btn_close_all.addEventListener('click', ()=>{
+			layer_test.hide();
+			layer_test2.hide();
+		});
 
 
 		let btn_alert = document.querySelector('.open-alert');
 		btn_alert.addEventListener('click', function(){
-			nlayerAlert({
+			nAlert({
 				ment : '테스트 알럿 입니다.', 
 				title : '타이틀', 
 				focus_item : btn_alert,
@@ -371,7 +374,7 @@ btn_toast2.addEventListener('click', function(){
 			console.log('confirm 취소했습니다.!!');
 		}
 		btn_confirm.addEventListener('click', function(){
-			nlayerConfirm({
+			nConfirm({
 				ment : '테스트 컨펌 입니다.', 
 				title : '타이틀', 
 				focus_item : btn_confirm,

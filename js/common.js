@@ -294,15 +294,17 @@ function convertToYMD_kr(date, sType){
  * @param {string} area 부모요소 검색용 css selector
  * @param {dom} target 제어될 html dom 요소
  * @param {string} cls 삭제할 class
+ * @param {function} callback 영역 외 클릭 시 실행될 콜백
  * ex : let wrapArea = document.querySelector('.chk-area');
  * ex : outSideClick('.chk-area', wrapArea, 'show');
  */
-function outSideClick(area, target, cls){
+function outSideClick(area, target, cls, callback){
 	let body = document.querySelector('body');
 	body.addEventListener('mousedown', function(e){
 		let tg = e.target;
 		if(!tg.closest(area)) {
 			target.classList.remove(cls);
+			if(typeof callback === 'function') callback();
 			body.removeEventListener('mousedown', arguments.callee);
 		}
 	});
@@ -365,6 +367,10 @@ function nTabMenu(option){
 		btns = typeof tabBtns === 'string' ? tab.menu.querySelectorAll(tabBtns) : tabBtns;
 
 	tab.menu.setAttribute('role', 'tablist');
+
+	// li 에 role 추가 (접근성 이슈 - role 구조 상 tablist 바로 아래가 tab 가 아닐 경우)
+	let lis = tab.menu.querySelectorAll('li');
+	if(lis) { lis.forEach((li)=>{ li.setAttribute('role', 'presentation') }) }
 
 	// 컨텐츠 모두 hide
 	function tabCntHide(){
@@ -568,6 +574,9 @@ function nBalloonTgls(selector) {
 // ex 단독 : nBalloonTgl('css 선택자' or element);
 // ex 다수 : nBalloonTgls('css 선택자');
 
+
+// scrollIntoView 함수도 사용가능 - 단 ease 설정 불가 
+// 좀 더 자연스러운 이동을 원할 경우 아래 기능 사용
 
 // 좌우 스크롤 메뉴 기능 (뷰가드ai 적용)
 function scrollMenuSet(area, gap){
