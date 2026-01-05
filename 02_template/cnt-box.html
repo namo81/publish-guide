@@ -30,20 +30,91 @@
 		<div class="guide">
 
 			<section id="guide-basic">
-				<h2 class="guide-sec-tit">컨텐츠 box</h2>
+				<h2 class="guide-sec-tit">영역 구분 클래스</h2>
 				<div class="guide-sec">
-					<h3 class="guide-stit">기본</h3> 
-					<p>페이지 내 컨텐츠간 구분용 클래스</p>
-					<p>클래스 끝이 '__cnt' 로 끝나는 컨텐츠가 연속될 경우, 2번째 이후 컨텐츠 margin-top 설정</p>
-					<p>tit__cnt / text__cnt 처럼 '__cnt' 앞에 컨텐츠 성격을 포함한 단어를 설정하여 구분</p>
+					<h3 class="guide-stit">레이아웃 구조</h3>
+					<p>레이아웃 구조 : header (id : header) / main (id : content) / footer (id : footer)</p>
+					<p>body > div (id : wrap) 아래 기본 구조</p>
+					<p>** 'wrap' 의 경우 생략가능</p>
 					<div class="guide-show">
 					<!-- 코드 작성 -->
-						<div class="tit__cnt">컨텐츠 1</div>
-						<div class="text__cnt">컨텐츠 2</div>
+						<header id="header">
+							상단 헤더 및 gnb
+						</header>
+						<main id="content">
+							중앙 컨텐츠 영역
+						</main>
+						<footer id="footer">
+							하단 footer 영역
+						</footer>
 					<!-- // 코드 작성 -->
 					</div>
-<pre><code class="html">&lt;div class="tit__cnt"&gt;컨텐츠 1&lt;/div&gt;
-&lt;div class="text__cnt"&gt;컨텐츠 2&lt;/div&gt;
+<pre><code class="html">&lt;header id="header"&gt;
+	상단 헤더 및 gnb
+&lt;/header&gt;
+&lt;main id="content"&gt;
+	중앙 컨텐츠 영역
+&lt;/main&gt;
+&lt;footer id="footer"&gt;
+	하단 footer 영역
+&lt;/footer&gt;</code></pre>
+				</div>
+
+				<div class="guide-sec">
+					<h3 class="guide-stit">컨텐츠 구조 단위</h3>
+					<p>레이아웃 내 컨텐츠 구분 단위 순서 : section > area > wrap > box</p>
+					<p>각 영역의 경우 위 구분단위 클래스를 접두사로 두며, 이후 언더바( _ ) 로 클래스 추가</p>
+					<p>해당 영역 내에 다수의 요소가 들어갈 때 '구조 단위' 클래스를 사용하며, 내부 컨텐츠가 단순 텍스트, 이미지 등 최종단계일 경우 사용X</p>
+					<div class="guide-show">
+					<!-- 코드 작성 -->
+						<section class="section_main">
+							<div class="area_user-info">
+								<div class="wrap_info-address">
+									<p class="tx-city">서울특별시</p>
+									<div class="box_address-local">
+										<p class="tx-add-1">중랑구 상봉동</p>
+										<p class="tx-add-2">OOO로 OO길</p>
+									</div>
+								</div>
+								<p class="tx-name">홍길동</p>
+							</div>
+						</section>
+					<!-- // 코드 작성 -->
+					</div>
+<pre><code class="html">&lt;section class="section_main"&gt;
+	&lt;div class="area_user-info"&gt;
+		&lt;div class="wrap_info-address"&gt;
+			&lt;p class="tx-city"&gt;서울특별시&lt;/p&gt;
+			&lt;div class="box_address-local"&gt;
+				&lt;p class="tx-add-1"&gt;중랑구 상봉동&lt;/p&gt;
+				&lt;p class="tx-add-2"&gt;OOO로 OO길&lt;/p&gt;
+			&lt;/div&gt;
+		&lt;/div&gt;
+		&lt;p class="tx-name"&gt;홍길동&lt;/p&gt;
+	&lt;/div&gt;
+&lt;/section&gt;</code></pre>
+				</div>
+
+				<div class="guide-sec">
+					<h3 class="guide-stit">반복형 컨텐츠 구분</h3>
+					<p> 접두사 <b>'cnt'</b> : '구조 단위' 와 별도로 복잡한 컨텐츠가 반복되어 반복클래스가 필요할 경우</p>
+					<p>ex) 별도 컴퍼넌트 내 반복 구조 ( depth 구조와 별도로 관리 )</p>
+					<p>'cnt_' 클래스에 공통 style 을 지정하며, 각 컨텐츠별 별도 style 은 cnt_term 같은 완성된 class 에 지정</p>
+					<p></p>
+<pre><code class="html">&lt;div class="cnt_term"&gt;
+	&lt;p class="title"&gt;1. 타이틀1&lt;/p&gt;
+	&lt;p class="tx-term"&gt;내용1&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="cnt_term"&gt;
+	&lt;p class="title"&gt;2. 타이틀2&lt;/p&gt;
+	&lt;p class="tx-term"&gt;내용2&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="cnt_term"&gt;
+	&lt;p class="title"&gt;3. 타이틀3&lt;/p&gt;
+	&lt;p class="tx-term"&gt;내용3&lt;/p&gt;
+&lt;/div&gt;</code></pre><br>
+<pre><code class="css">*[class*="cnt_"] { display:block; border:1px solid #eee; background:#fff; } // 공통스타일
+.cnt_term { font-size:15px; line-height:24px; } // 개별 스타일
 </code></pre>
 				</div>
 

@@ -83,6 +83,20 @@
 	&lt;/div&gt;
 &lt;/div&gt;
 </code></pre>
+<pre><code class="javascript">let test_tab = new nTabMenu({
+	wrap	: '.tab-wrap.ex1', 		// 탭 메뉴 + 컨텐츠를 감싸는 영역 선택자 (기본값 : .tab-wrap)
+	menu	: '.tab-menu', 		// 탭 메뉴 목록(ul) 클래스 (기본값 : .tab-menu)
+	btn  	: '.btn-tab',  		// 탭 메뉴 버튼 클래스 (기본값 : .btn-tab)
+	cnt		: '.tab-cnt',  		// 탭 컨텐츠 클래스 (기본값 : .tab-cnt)
+	click	: true,			// 탭 버튼 클릭 시 탭 이동여부 (기본 true) : false 일 경우 버튼 클릭 시 탭이동 기능 제거
+	focus	: true,			// 탭 버튼 클릭 시 해당 컨텐츠로 focus 이동할지 여부 (기본 false)
+	active  : function(cnt, btn){ 	// 탭 버튼 클릭 시 콜백 ( 활성화된 컨텐츠 / 버튼 dom 반환 )
+		console.log(cnt, btn)
+	}
+});
+
+test_tab.click(index) : index 번째 탭으로 이동 함수
+</code></pre>
 				</div>
 			</section>
 		</div>
@@ -93,10 +107,16 @@
 	<script>
 		hljs.initHighlightingOnLoad();
 
-		let tab1 = new nTabMenu({
+		let test_tab = new nTabMenu({
 			wrap 	: '.tab-wrap.ex1',
 			menu 	: '.tab-menu',
-			cnt 	: '.tab-cnt'
+			cnt 	: '.tab-cnt',
+			btn  	: '.btn-tab',
+			click	: true,
+			focus	: true,
+			active  : function(cnt, btn){
+				console.log(cnt, btn)
+			}
 		});
 	</script>
 </body>

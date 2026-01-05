@@ -20,7 +20,7 @@
 	<!-- 가이드 관련 -->
 	<link rel="stylesheet" href="../guide/list-guide.css" media="screen, print" />
 	<link rel="stylesheet" href="../guide/vendor/railscasts.css">
-	<script src="../guide/vendor/highlight.pack.js"></script>
+	<script src="../guide/vendor/highlight.js"></script>
 	
 </head>
 <body>
@@ -244,32 +244,28 @@
 			<div class="guide-sec">
 				<h3 class="guide-stit">import</h3>
 				<ul>
+					<li>기본은 layout.css / contents.css 로 구성하며, 필요에 따라 특정 화면 및 기능을 별도 css 로 관리 가능함.</li>
+					<li>웹폰트 사용 시 font.css 는 별도 분리</li>
 					<li>한개의 css(e.g. import.css)에서 전체 모든 css를 import를 하지 않고, 공통 css를 제외한 페이지별 별도 분기하여 처리합니다.</li>
-					<li>50page 이하 : layout.css / contents.css 로 구성</li>
-					<li>50page 이상 : layout.css / 각 섹션별 css 로 구성</li>
-					<li>** page 수가 많으나 단순한 형태 반복일 경우 layout.css / contents.css 로 구성 ( ex : admin )</li>
 				</ul>
 				<pre><code class="html">&lt;!-- (x) --&gt;
 &lt;!-- 한개의 import로 모든 css 파일 처리 --&gt;
-&lt;link rel="stylesheet" href="style.css"&gt;
-				</code></pre>
-				<pre><code class="css">/* style.css */
+&lt;link rel="stylesheet" href="style.css"&gt;</code></pre><pre><code class="css">/* style.css */
 @import 'font.css';
 @import 'layout.css';
 @import 'contents.css';
-					...</code></pre>
+					...</code></pre><br>
 				<pre><code class="html">&lt;!-- (o) --&gt;
-&lt;!-- 각 페이지별에 맞는 css만 사용 --&gt;
+&lt;!-- html 에서 link 태그를 통해 직접 호출 --&gt;
+&lt;link rel="stylesheet" href="font.css"&gt;
 &lt;link rel="stylesheet" href="layout.css"&gt;
-&lt;link rel="stylesheet" href="contents.css"&gt;
-&lt;link rel="stylesheet" href="mypage.css"&gt;
-				</code></pre>
+&lt;link rel="stylesheet" href="contents.css"&gt;</code></pre>
 			</div>
 			<div class="guide-sec">
 				<h3 class="guide-stit">CSS 클래스 작성법</h3>
 				<ul>
-					<li>각 단어 사이는 '-' 로 구분합니다.</li>
-					<li>단어 순서는 '형태-의미-순서-상태' 순서로 작성합니다.</li>
+					<li>단어 순서는 '형태(용도)-구분-순서-상태' 순서로 작성합니다.</li>
+					<li>단어의 성격이 변경될 경우 '_' 로 구분하며, 동일 성격 내 단어 사이는 '-' 로 구분합니다.</li>
 					<li>약어를 사용할 경우 보편적으로 의미 파악이 가능한 약어를 사용하여야 합니다. (ex : service - svc)</li>
 				</ul>
 				<div class="tbl">
@@ -290,18 +286,18 @@
 						<tbody>
 							<tr>
 								<td>.box</td>
-								<td>.box-user</td>
+								<td>.box_user</td>
 								<td>보편적인 이름은 단독 클래스명으로 사용하지 않음.</td>
 							</tr>
 							<tr>
 								<td>.boxUserInfo</td>
-								<td>.box-user-info</td>
-								<td>각 단어 사이는 '-' 로 구분 (카멜 케이스 방식 지양)</td>
+								<td>.box_user-info</td>
+								<td>성격 구분은 '_', 단어 사이는 '-' 로 구분 (카멜 케이스 방식 지양)</td>
 							</tr>
 							<tr>
 								<td>.sch-btn-01-on</td>
-								<td>.btn-sch-01-on</td>
-								<td>네이밍 조합은 '형태-의미-순서-상태' 순서로 작성</td>
+								<td>.btn_sch_01_on<br>.btn_sch-name_01_off</td>
+								<td>네이밍 조합은 '형태(용도)-구분-순서-상태' 순서로 작성</td>
 							</tr>
 						</tbody>
 					</table>
@@ -333,8 +329,7 @@ select { border:1px solid red; background:blue; }
 .select-my { border:1px solid red; background:blue; }</code></pre>
 				<p>단, 태그 전체에 스타일을 작성할 경우, 추후 다른 설정에 영향을 주지 않는 범위 내에서 최소한만 작성합니다.</p>
 				<pre><code class="css">table { table-layout:fixed; width:100%; border-collapse:collapse; }
-button { cursor:pointer; overflow:hidden; }
-</code></pre>
+button { cursor:pointer; overflow:hidden; }</code></pre>
 			</div>
 			<div class="guide-sec">
 				<h3 class="guide-stit">기타</h3>
@@ -355,152 +350,42 @@ button { cursor:pointer; overflow:hidden; }
 			<div class="guide-sec">
 				<h3 class="guide-stit">변수</h3>
 				<p>상수는 대문자로만 기입합니다.</p>
-				<pre><code class="javascript">var pi = 3.14; // (x)
-var PI = 3.14; // (o)</code></pre>
+				<pre><code class="javascript">let pi = 3.14; // (x)
+let PI = 3.14; // (o)</code></pre>
 				<p>변수에 단위가 포함되어 있으면, 단위도 포함합니다.</p>
-				<pre><code class="javascript">var time    = 300; // (x)
-var time_ms = 300; // (o)</code></pre>
-				<p>javascript DOM은 변수명앞에 '$_' 붙이고, jquery로 선택된 DOM은 변수명앞에 '$' 붙입니다. (jquery 사용 시)</p>
-				<pre><code class="javascript">// javascript 선택
-var $_div = document.querySelector( 'div' );
-
-// jquery 선택
-var $div = $( 'div' ); </code></pre>
+				<pre><code class="javascript">let time    = 300; // (x)
+let time_ms = 300; // (o)</code></pre>
 			</div>
 			<div class="guide-sec">
 				<h3 class="guide-stit">함수</h3>
 				<p>함수에는 주석을 가능한 표기합니다. <br>단, 함수 안 함수의 경우 약술 형식으로 기입합니다.</p>
 				<pre><code class="javascript">/**
-* @mehotd: 함수 설명, 구체적인 함수명 작성시 기입 안해도 무관
-* @parameter: {인자 타입} 인자 설명
-* @return: {인자 타입} 리턴값 설명
-* @logs: 개발이력을 간단히 "날짜 : [작업자] 내용"의 형식으로 기술
+* 함수 설명, 구체적인 함수명 작성시 기입 안해도 무관
+* @param {인자 타입} 인자 설명
+* @return {인자 타입} 리턴값 설명
+* @logs개발이력을 간단히 "날짜 : [작업자] 내용"의 형식으로 기술
 */
 function prevSlide( idx ){
-	var str = 're';
+	let str = 're';
 	...
 	return str;
 }</code></pre>
 				<pre><code class="javascript">// example
 /**
-* @mehotd: 슬라이드 이동
-* @parameter:
-* 		{number} 이동하고자 하는 슬라이드 번호
-* 		{number} 몇 초 후 이동
-* @return: {boolean} 이동 성공시 true
-* @logs:
-* 		"0000-00-00: [koo] 최초 작성"
-* 		"0000-00-00: [won] xx 기능 업데이트"
-* 		"0000-00-00: [suga] xx 관련 버그 수정"
-* 		"0000-00-00: [nam] xx 기능 업데이트"
+* 슬라이드 이동
+* @param {number} 이동하고자 하는 슬라이드 번호
+* @param {number} 몇 초 후 이동
+* @return {boolean} 이동 성공시 true
+* @logs: "0000-00-00: [koo] 최초 작성"
+* 	"0000-00-00: [won] xx 기능 업데이트"
+* 	"0000-00-00: [suga] xx 관련 버그 수정"
+* 	"0000-00-00: [nam] xx 기능 업데이트"
 */
 function mainSliderMovePage( idx, time_ms ){
-	var str = true;
+	let str = true;
 	...
 	return str;
 }</code></pre>
-			</div>
-			<div class="guide-sec">
-				<h3 class="guide-stit">jquery plugin 작성</h3>
-				<p>option 인자 혹은 별개 parameter를 통해 인스톨 후 콜백 함수와 이벤트 후 콜백함수를 추가합니다.</p>
-				<pre><code class="javascript">// example
-/**
-* ...
-*/
-$.fn.moveSlider = function( option ){
-	...
-
-	// 어떤 이벤트
-	$a.click( function(){
-		...
-
-		// 이벤트 동작 후 콜백
-		if ( typeof option.activeCallback == 'function' ){
-			option.activeCallback();
-		}
-	});
-
-	...
-
-	// 모든 코드 작성 후(인스톨 후), 콜백
-	if ( typeof option.installCallback == 'function' ){
-		option.installCallback();
-	}
-}</code></pre>
-<pre><code class="javascript">// example
-/**
- * ...
- */
-$.fn.moveSlider = function( installCallback, activeCallback ){
-	...
-
-	// 어떤 이벤트
-	$a.click( function(){
-		...
-
-		// 이벤트 동작 후 콜백
-		if ( typeof activeCallback == 'function' ){
-			activeCallback();
-		}
-	});
-
-	...
-
-	// 모든 코드 작성 후(인스톨 후), 콜백
-	if ( typeof installCallback == 'function' ){
-		installCallback();
-	}
-}</code></pre>
-				<p>jquery chain을 처리를 위하여 return this.each를 통하여 처리합니다.</p>
-				<pre><code class="javascript">// example
-/**
- * ...
- */
-$.fn.moveSlider = function( option ){
-	return this.each( function(){
-		...
-	});
-}</code></pre>
-			</div>
-			<div class="guide-sec">
-				<h3 class="guide-stit">기타</h3>
-				<p>html에서 제공하는 기본 태그를 사용하지 않고 별도의 스크립트로만 제어할 시, 반드시 기본 속성은 지원해야 합니다. <br>예를 들어 기본 input태그를 사용하지 않고 스크립트의 기본 태그로만 제어시, disabled / maxlength 등 기본 속성 지원되어야 합니다.</p>
-				<p>Jquery 사용 시 페이지 로드 후 실행문은 $(document).ready() 를 사용하지 않고 $(function(){}); 문을 사용합니다.</p>
-				<pre><code class="javascript">// (x)
-$(document).ready(function(){
-	...
-});
-
-//(o)
-$(function(){
-	...
-});</code></pre>
-				<p>공통 스크립트 적용되는 UI의 경우, 전체 태그에 걸지 않고 클래스로 적용하여 처리합니다.</p>
-				<pre><code class="javascript">// (x)
-// select 전체 적용됨.
-$( 'select' ).customSelect()
-
-// (o)
-// .user-select 클래스가 적용된 select 태그에만 적용됨.
-$( '.user-select' ).customSelect()</code></pre>
-				<p>UI 기능은 '$(function(){});' 혹은 'window.onload' 안에서 모두 처리하지 않고, 외부 함수로 분기하여 처리합니다. <br>(개발과정에서 ajax 연동으로 추가 적용할 경우가 있습니다.)</p>
-				<pre><code class="javascript">// (x)
-// 모든 UI 기능을 $(function(){}); 혹은 window.onload 안에서 처리.
-$( function(){
-	...
-	...
-	...
-});
-
-// (o)
-// UI 기능을 함수로 분기 후, $(function(){}); 혹은 window.onload 안에서 처리.
-function customSelect(){
-	...
-}
-
-$( function(){
-	customSelect();
-});</code></pre>
 			</div>
 		</section>
 

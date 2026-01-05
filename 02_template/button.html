@@ -88,6 +88,89 @@
 </code></pre>
 				</div>
 			</section>
+			
+			<section id="guide-basic">
+				<h2 class="guide-sec-tit">버튼 그룹</h2>
+				<div class="guide-sec">
+					<h3 class="guide-stit">기본형</h3>
+					<p>margin:20px 0 - 적용</p>
+					<p>정렬은 center 기본 / f-end , f-start 클래스를 추가하여 좌우 정렬</p>
+					<p>btns 내 btn 이 연속될 경우 2번째 이후 btn 부터 margin-left:5px 적용</p>
+					<div class="guide-show">
+					<!-- 코드 작성 -->
+						<div class="btns">
+							<a href="#" class="btn medium">버튼 M 사이즈</a>
+							<button type="button" class="btn medium" onclick="">버튼 M 사이즈</button>
+						</div>
+						<div class="btns f-end">
+							<a href="#" class="btn medium">버튼 M 사이즈</a>
+							<button type="button" class="btn medium" onclick="">버튼 M 사이즈</button>
+						</div>
+						<div class="btns f-start">
+							<a href="#" class="btn medium">버튼 M 사이즈</a>
+							<button type="button" class="btn medium" onclick="">버튼 M 사이즈</button>
+						</div>
+					<!-- // 코드 작성 -->
+					</div>
+<pre><code class="html">&lt;div class="btns"&gt;
+	&lt;a href="#" class="btn medium"&gt;버튼 M 사이즈&lt;/a&gt;
+	&lt;button type="button" class="btn medium" onclick=""&gt;버튼 M 사이즈&lt;/button&gt;
+&lt;/div&gt;
+&lt;div class="btns f-end"&gt;
+	&lt;a href="#" class="btn medium"&gt;버튼 M 사이즈&lt;/a&gt;
+	&lt;button type="button" class="btn medium" onclick=""&gt;버튼 M 사이즈&lt;/button&gt;
+&lt;/div&gt;
+&lt;div class="btns f-start"&gt;
+	&lt;a href="#" class="btn medium"&gt;버튼 M 사이즈&lt;/a&gt;
+	&lt;button type="button" class="btn medium" onclick=""&gt;버튼 M 사이즈&lt;/button&gt;
+&lt;/div&gt;
+</code></pre>
+				</div>
+
+				<div class="guide-sec">
+					<h3 class="guide-stit">width 100% 정렬</h3>
+					<p>flex-wrap 클래스 추가</p>
+					<p>주로 모바일에서 사용되는 layout</p>
+					<div class="guide-show">
+					<!-- 코드 작성 -->
+						<div class="btns">
+							<a href="#" class="btn medium">버튼 M 사이즈</a>
+							<button type="button" class="btn medium" onclick="">버튼 M 사이즈</button>
+						</div>
+						<div class="btns">
+							<a href="#" class="btn medium">버튼 M 사이즈</a>
+							<a href="#" class="btn medium">버튼 M 사이즈</a>
+							<button type="button" class="btn medium" onclick="">버튼 M 사이즈</button>
+						</div>
+						<div class="btns">
+							<a href="#" class="btn medium">버튼 M 사이즈</a>
+							<a href="#" class="btn medium">버튼 M 사이즈</a>
+							<a href="#" class="btn medium">버튼 M 사이즈</a>
+							<button type="button" class="btn medium" onclick="">버튼 M 사이즈</button>
+						</div>
+					<!-- // 코드 작성 -->
+					</div>
+<pre><code class="html">&lt;div class="btns"&gt;
+	&lt;a href="#" class="btn medium"&gt;버튼 M 사이즈&lt;/a&gt;
+	&lt;button type="button" class="btn medium" onclick=""&gt;버튼 M 사이즈&lt;/button&gt;
+&lt;/div&gt;
+
+&lt;div class="btns"&gt;
+	&lt;a href="#" class="btn medium"&gt;버튼 M 사이즈&lt;/a&gt;
+	&lt;a href="#" class="btn medium"&gt;버튼 M 사이즈&lt;/a&gt;
+	&lt;button type="button" class="btn medium" onclick=""&gt;버튼 M 사이즈&lt;/button&gt;
+&lt;/div&gt;
+
+&lt;div class="btns"&gt;
+	&lt;a href="#" class="btn medium"&gt;버튼 M 사이즈&lt;/a&gt;
+	&lt;a href="#" class="btn medium"&gt;버튼 M 사이즈&lt;/a&gt;
+	&lt;button type="button" class="btn medium" onclick=""&gt;버튼 M 사이즈&lt;/button&gt;
+	&lt;button type="button" class="btn medium" onclick=""&gt;버튼 M 사이즈&lt;/button&gt;
+&lt;/div&gt;
+</code></pre>
+				</div>
+
+			</section>
 		</div>
 		<a href="#work-list" class="guide-top">Top</a>	
 	</div>

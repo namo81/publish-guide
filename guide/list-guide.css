@@ -114,6 +114,12 @@ body { width:100%; height:100%; background-color:#efefef; background-repeat:no-r
 #work-list .list tr.notuse td a { opacity:.5; }
 #work-list .list tr.notuse td.state.end::after { content:'참고용'; opacity:.5; }
 
+#work-list .list td[data-type] { position:relative; padding-left:30px; line-height:18px; }
+#work-list .list td[data-type="popup"] { padding-left:28px; }
+#work-list .list td[data-type]::before { position:absolute; display:inline-block; width:28px; top:0; left:0; padding:1px 3px 1px; border:1px solid #ddd; border-top:none; border-left:none; box-sizing:border-box; background-color:#eee; font-size:10px; line-height:12px; color:#666; }
+#work-list .list td[data-type="popup"]::before { content:'팝업'; background-color:#b3b3b3; color:#fff; border:none; }
+#work-list .list td[data-type="layer"]::before { content:'layer'; }
+
 #work-list .iframe { position:fixed; display:none; width:1200px; height:1600px; top:50%; right:2%; z-index:200; background:#fff; transform:scale(.5) translateY(-50%); -webkit-transform:scale(.5) translateY(-50%); transform-origin:100% 0;-webkit-transform-origin:100% 0; box-sizing:border-box; box-shadow:2px 2px 20px rgba(0,0,0,.8); transition:width .5s, height .5s, transform .5s; }
 #work-list .iframe iframe { width:100%; height:calc(100% - 84px); }
 #work-list .iframe .btn-frame-close { display:block; width:100%; padding:16px 0; font-size:36px; background:var(--head-color); color:#fff; text-align:center; }
@@ -153,16 +159,6 @@ body { width:100%; height:100%; background-color:#efefef; background-repeat:no-r
 #work-list .guide .guide-red { color:var(--guide-color-red); }
 #work-list .guide-sec .guide-link { display:inline-block; margin:10px 0; padding:3px 5px; color:#666; font-size:13px; border-bottom:1px solid #666; }
 #work-list .guide-sec .guide-link:hover { text-decoration:none; }
-
-/* #work-list .guide .tbl { background:url(images/icon_arrow-type2.svg) no-repeat 100% 50%; background-size:70%; background-color:#fcfcfc;}
-#work-list .guide * + .tbl { margin-top:10px; }
-#work-list .guide .tbl td:first-child { border-top:1px solid #ccc; font-weight:normal; }
-#work-list .guide .tbl thead th { text-align:center; font-size:12px; background:#eee; }
-#work-list .guide .tbl td { padding:7px 15px; font-size:12px; line-height:18px; text-align:left; vertical-align:top; border:1px solid #dfdfdf; }
-#work-list .guide .tbl th { padding:7px 15px; border-bottom:none; vertical-align:top; text-align:left; font-size:14px; border:1px solid #dfdfdf; }
-#work-list .guide .tbl .div th,
-#work-list .guide .tbl .div td { border-top:2px solid #000; }
-#work-list .guide .tbl.tc td { text-align:center; } */
 
 #work-list .guide .sort-list .sorting { text-align:right; }
 #work-list .guide .sort-list * + .sorting { margin-top:-20px; }

@@ -415,15 +415,15 @@ function nTabMenu(option){
 	btns.forEach(function(btn){
 		btn.setAttribute('role', 'tab');
 		btn.setAttribute('aria-selected', false);
+		if(btn.classList.contains('on')) tabClick(btn);
+		if(option.click == false) return;
 		btn.addEventListener('click', function(e){
 			e.preventDefault(); // 클릭 시 scroll 이동 방지
 			tabClick(btn, true);
 		});
-
-		if(btn.classList.contains('on')) {
-			tabClick(btn);
-		}
 	});
+
+	tab.click = function(idx){ tabClick(btns[idx], true) }
 }
 
 /**
@@ -573,6 +573,38 @@ function nBalloonTgls(selector) {
 }
 // ex 단독 : nBalloonTgl('css 선택자' or element);
 // ex 다수 : nBalloonTgls('css 선택자');
+
+
+/**
+ * 화면 스크롤 최하단 도착 시 함수실행용 함수
+ * @param {함수} func - 최하단 스크롤 도착 시 실행될 함수
+ */
+function sc_bottom_chk(func){
+	const body = document.querySelector('body');
+	let win_h = document.documentElement.offsetHeight,
+		scroll_h = document.documentElement.scrollHeight;
+
+	if(win_h >= scroll_h) return;
+
+	if(!body.style.position) body.style.position = 'relative';
+	let obs_item = createDom('p', 'obs-item');
+	body.appendChild(obs_item);
+
+	let observeOpt = {
+		threshold : 0.9
+	}
+
+	function obs_func(ent){
+		ent.forEach((entry)=>{
+			if(entry.isIntersecting) {
+				func();
+			}
+		});
+	}
+
+	let win_obs = new IntersectionObserver(obs_func, observeOpt);
+	win_obs.observe(obs_item);
+}
 
 
 // scrollIntoView 함수도 사용가능 - 단 ease 설정 불가 

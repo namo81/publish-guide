@@ -339,7 +339,7 @@ class n_calendar{
 	 * 연/월 select 내 option hidden 설정
 	 * @param {dom} sel 대상 select
 	 * @param {number} val 기준값
-	 * @param {boolean} over 방향 (true 이면 기준값보다 큰것만 남기고, null 이면 기준값보다 작은 것만 남김)
+	 * @param {boolean} over 방향 (true 이면 기준값보다 큰것만 남기고, 아니면 기준값보다 작은 것만 남김)
 	 */
 	_sel_opt_hidden(sel, val, over){
 		let opts = sel.querySelectorAll('option');
@@ -519,10 +519,8 @@ class n_calendar{
 			if(target.parentNode == this.doms.cal_cnt_right) this.option.range ? this.#_btn_dates_set_range() : this.#_btn_dates_set();
 		} else this.option.range ? this.#_btn_dates_set_range() : this.#_btn_dates_set();
 
-		//if(this.option.limit) { // limit 가 설정되지 않더라도 필요 - 연도 제한 관련
-			if(this.in_data.range_ing) this.#_ctrl_limit_set(this.date_start, this.in_data.limit_range);
-			else this.#_ctrl_limit_set(this.in_data.limit_start, this.in_data.limit_end);
-		//}
+		this.#_ctrl_limit_set(this.in_data.limit_start, this.in_data.limit_end);
+		if(this.in_data.range_ing && this.option.gap_range) this.#_ctrl_limit_set(this.date_start, this.in_data.limit_range);
 
 		if(!this.date_start) return;
 		if(this.option.range || this.option.type == 'week' || this.in_data.range_ing) this.#_btn_active_set_range();
@@ -550,10 +548,8 @@ class n_calendar{
 			if(target.parentNode == this.doms.cal_cnt_right) this.option.range ? this.#_btn_dates_set_range() : this.#_btn_dates_set();
 		} else this.option.range ? this.#_btn_dates_set_range() : this.#_btn_dates_set();
 		
-		//if(this.option.limit) { // limit 가 설정되지 않더라도 필요 - 연도 제한 관련
-			if(this.in_data.range_ing) this.#_ctrl_limit_set(this.date_start, this.in_data.limit_range);
-			else this.#_ctrl_limit_set(this.in_data.limit_start, this.in_data.limit_end);
-		//}
+		this.#_ctrl_limit_set(this.in_data.limit_start, this.in_data.limit_end);
+		if(this.in_data.range_ing && this.option.gap_range) this.#_ctrl_limit_set(this.date_start, this.in_data.limit_range);
 
 		if(!this.date_start) return;
 		if(this.option.range || this.option.type == 'week' || this.in_data.range_ing) this.#_btn_active_set_range();
@@ -582,6 +578,7 @@ class n_calendar{
 	#_btn_active_set(cls){
 		let start = this.date_start.getTime();
 		this.btn_dates.forEach((btn_date)=>{ 
+			btn_date.parentNode.className = '';
 			let time = convertToDate(btn_date.dataset.date, this.option.split_tx).getTime();
 			time == start ? btn_date.parentNode.classList.add(cls) : btn_date.parentNode.className = '';
 		});
@@ -594,10 +591,13 @@ class n_calendar{
 			end = this.date_end ? this.date_end.getTime() : null;
 		this.btn_dates.forEach((btn)=>{ 
 			let time = convertToDate(btn.dataset.date, this.option.split_tx).getTime();
-			if(time == start) btn.parentNode.classList.add('start');
-			else if(time == end) btn.parentNode.classList.add('end');
+			if(time == start && time != end) btn.parentNode.classList.add('start');
+			else if(time != start && time == end) {
+				btn.parentNode.classList.remove('start');
+				btn.parentNode.classList.add('end');
+			} else if(time == start && time == end) btn.parentNode.classList.add('start', 'end');
 			else if(time > start && time < end) btn.parentNode.classList.add('in-range');
-			else btn.parentNode.className = '';
+			else btn.parentNode.classList = '';
 		});	
 	}
 

@@ -2,13 +2,15 @@
 .n_cal.show { display:block; z-index:100; }
 .n_cal.in-page { position:relative; display:block; }
 
-.n_cal.dual { width:540px; flex-wrap:wrap; gap:0 5px;}
+.n_cal.dual { width:540px; flex-wrap:wrap; gap:0 20px;}
 .n_cal.dual.range_month { gap:0 15px; }
 .n_cal.dual.show { display:flex; }
 .n_cal.dual.in-page { position:relative; display:flex; flex-shrink:0; }
+.n_cal.dual .cal-cnt + .cal-cnt { position:relative; }
+.n_cal.dual .cal-cnt + .cal-cnt::before { content:''; position:absolute; width:1px; height:calc(100% - 50px); top:45px; left:-10px; border-left:1px dashed #ddd; }
 
 .n_cal .cal-top { display:flex; justify-content:center; align-items:center; gap:6px; height:30px; margin-bottom:10px; padding:0 30px; font-size:14px; line-height:30px; }
-.n_cal .cal-btn { position:absolute; top:10px; left:10px; display:block; width:30px; height:30px; text-indent:-9999px; background:url(../images/ico_arrow.svg) no-repeat center center / 45% 45%; border-radius:3px; }
+.n_cal .cal-btn { position:absolute; top:10px; left:10px; display:block; width:30px; height:30px; text-indent:-9999px; background:url(../images/ico_arrow.svg) no-repeat center center / 45% 45%; border-radius:3px; z-index:10; }
 .n_cal .cal-btn:disabled { opacity:.5; background-color:#eee; }
 .n_cal .cal-top .now-tx,
 .n_cal .cal-top .btn-shift { margin:5px 0; font-size:16px; line-height:20px; font-weight:600; }
@@ -29,18 +31,20 @@
 .n_cal .in-range::before { content:''; position:absolute; display:block; width:100%; height:calc(100% - 2px); background-color:#d8e2f9; z-index:-1; }
 .n_cal .start::before { width:50%; right:0; }
 .n_cal .end::before { width:50%; left:0; }
+.n_cal .start.end::before { display:none; }
 
 .n_cal li.start::before,
 .n_cal li.end::before,
 .n_cal li.in-range::before { height:100%; }
+.n_cal li.start.end::before { display:none; }
 
 .n_cal .cal-cnt { flex:1; }
 .n_cal table th, 
 .n_cal table td { border:none; }
 .n_cal table th { padding:5px 5px 10px; background-color:#fff; color:#888; }
 .n_cal table td { padding:1px 0; }
-.n_cal table td button { display:block; width:36px; height:36px; margin:0 auto; font-size:13px; line-height:20px; border-radius:50%; transition:background-color .2s;}
-.n_cal table td:hover > button { background-color:#eee; }
+.n_cal table td button { display:block; width:36px; height:36px; margin:0 auto; font-size:13px; line-height:20px; border-radius:50%; transition:background-color .1s; }
+.n_cal:not(.range) table td:hover > button,
 .n_cal.range table td > button:hover,
 .n_cal.range li > button:hover { background-color:#d8e2f9; }
 
@@ -48,7 +52,7 @@
 .n_cal .cal-btns > button { display:inline-block; padding:3px 14px; font-size:13px; line-height:20px; border:1px solid #ccc; border-radius:3px; }
 .n_cal .cal-btns > button:disabled { opacity:.5; background-color:#eee; }
 
-.cal-month-list { display:flex; justify-content:space-between; flex-wrap:wrap; gap:5px 0; width:260px; margin:0 auto; }
+.cal-month-list { display:flex; justify-content:space-between; flex-wrap:wrap; gap:5px 0; width:260px; margin:0 auto; padding:5px 0; }
 .dual .cal-month-list { width:100%; }
 .cal-month-list > li { width:25%; text-align:center; }
 .cal-month-list button { display:inline-block; width:36px; height:36px; font-size:13px; line-height:20px; transition:background-color .2s; border-radius:50%; }
