@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+	<meta charset="UTF-8" >
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="user-scalable=yes, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, width=device-width">
+	<meta name="author" content="seonamho - SK MNS" >
+	<meta name="description" content="">
+	<meta name="keywords" content="Site Template">
+	<meta property="og:type" content="website">
+	<meta property="og:title" content="Site Template">
+	<meta property="og:description" content="">
+	<meta property="og:image" content="">
+	<meta property="og:url" content="">
+	<link rel="shortcut icon" href="data:;base64,iVBORwOKGO=" />
+
+	<title>레이어 팝업(v5) | 가이드</title>
+
+	<!-- 가이드 관련 -->
+	<link rel="stylesheet" href="../guide/list-guide.css" media="screen, print" />
+	<link rel="stylesheet" href="../guide/vendor/railscasts.css">
+	<script src="../guide/vendor/highlight.js"></script>
+
+	<!-- 프로젝트 관련 CSS 및 JS 파일 로드 -->
+	<link rel="stylesheet" href="/css/layout.css" media="screen, print" />
+    <style>
+        /* 좌우 2중 range - 범위값 설정 */
+        .double-range { position:relative; height:30px; margin:0 30px; box-sizing:border-box; }
+        .double-range input { position:absolute; width:100%; height:10px; top:10px; left:0; pointer-events:none; appearance:none; opacity:0; z-index:11; }
+        .double-range input::-webkit-slider-thumb { pointer-events:all; width:22px; height:22px; border:none; background-color:transparent; appearance:none; z-index:11; }
+        .double-range .range-slider { position:absolute; width:100%; height:100%; }
+        .range-slider .track { position:absolute; top:10px; left:0; width:100%; height:10px; background-color:#eee; border-radius:5px; }
+        .range-slider .range { position:absolute; top:10px; left:0; right:0; bottom:10px; background-color:#000; border-radius:5px; z-index:2; }
+        .range-slider .thumb { position:absolute; width:24px; height:24px; top:3px; border-radius:15px; border:2px solid #000; background-color:#fff; box-sizing:border-box; z-index:10; }
+        .range-slider .thumb .tx { position:absolute; top:100%; left:50%; transform:translateX(-50%); white-space:nowrap; }
+        .range-slider .thumb.left { left:0; transform:translateX(-12px); }
+        .range-slider .thumb.right { right:0; transform:translateX(12px); }
+    </style>
+</head>
+<body>
+    <div id="work-list" class="mobile">
+		<div class="guide">
+
+			<section id="guide-input">
+				<div class="guide-sec">
+					<h3 class="guide-stit">2중 Range + 영역3개 설정</h3>
+					<p>inpdesign_v2.1.0.js 파일 내 <b>doubleRange</b> 함수를 통해 선언</p>
+					<p>최소 갭 값이 없거나 너무 적을 경우 좌우 요소가 겹칠 수 있음.</p>
+					<p>태그 구조는 아래와 동일하게 설정</p>
+                    <div class="guide-show">
+                        <div class="double-range">
+                            <input type="range" class="r_left" title="최소값" min="0" max="100" value="0" step="1">
+                            <input type="range" class="r_right" title="최대값" min="0" max="100" value="26" step="1">
+                            <div class="range-slider">
+                                <p class="track"></p>
+                                <p class="range"></p>
+                                <p class="thumb left"><i class="tx"></i></p>
+                                <p class="thumb right"><i class="tx"></i></p>
+                            </div>
+                        </div>
+                    </div>
+<pre><code class="html">&lt;div class="double-range"&gt;
+    &lt;input type="range" class="r_left" title="최소값" min="0" max="100" value="0" step="1"&gt;
+    &lt;input type="range" class="r_right" title="최대값" min="0" max="100" value="26" step="1"&gt;
+    &lt;div class="range-slider"&gt;
+        &lt;p class="track"&gt;&lt;/p&gt;
+        &lt;p class="range"&gt;&lt;/p&gt;
+        &lt;p class="thumb left"&gt;&lt;i class="tx"&gt;&lt;/i&gt;&lt;/p&gt;
+        &lt;p class="thumb right"&gt;&lt;i class="tx"&gt;&lt;/i&gt;&lt;/p&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+</code></pre><br>
+<pre><code class="css"> /* 좌우 2중 range - 범위값 설정 */
+.double-range { position:relative; height:30px; margin:0 30px; box-sizing:border-box; }
+.double-range input { position:absolute; width:100%; height:10px; top:10px; left:0; pointer-events:none; appearance:none; opacity:0; z-index:11; }
+.double-range input::-webkit-slider-thumb { pointer-events:all; width:22px; height:22px; border:none; background-color:transparent; appearance:none; z-index:11; }
+.double-range .range-slider { position:absolute; width:100%; height:100%; }
+.range-slider .track { position:absolute; top:10px; left:0; width:100%; height:10px; background-color:#eee; border-radius:5px; }
+.range-slider .range { position:absolute; top:10px; left:0; right:0; bottom:10px; background-color:#000; border-radius:5px; z-index:2; }
+.range-slider .thumb { position:absolute; width:24px; height:24px; top:3px; border-radius:15px; border:2px solid #000; background-color:#fff; box-sizing:border-box; z-index:10; }
+.range-slider .thumb .tx { position:absolute; top:100%; left:50%; transform:translateX(-50%); white-space:nowrap; }
+.range-slider .thumb.left { left:0; transform:translateX(-12px); }
+.range-slider .thumb.right { right:0; transform:translateX(12px); }
+</code></pre><br>
+<pre><code class="javascript">let range = new doubleRange('.double-range', '초', 1);</code></pre><br>
+				</div>
+			</section>
+    
+		</div>
+		<a href="#work-list" class="guide-top">Top</a>
+	</div>
+</body>
+<script src="/js/common.js"></script>
+<script src="/js/inpdesign_v2.1.0.js"></script>
+<script>
+	hljs.initHighlightingOnLoad(); 
+
+    let range = new doubleRange('.double-range', '초', 10);
+</script>
+</body>
+</html>

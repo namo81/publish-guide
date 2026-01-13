@@ -34,10 +34,17 @@
 		.editor-wrap ol li { list-style:auto; }
 		.editor-wrap .srch-input { display:inline-block; padding:0 3px; }
 
-		.modal-srch { position:absolute; padding:5px 10px; border:1px solid #999; background-color:#eee;}
+		.modal-srch { position:absolute; padding:5px 10px; border:1px solid #999; background-color:#eee; box-sizing:border-box;}
 		.modal-srch .srch-list button.active { background-color:#ddd; }
 
 		.editor-wrap .sel-member { vertical-align:top; color:#096dd7; }
+		
+		.auto-wrap { position:relative; }
+		.auto-wrap input { width:100%; padding:5px; font-size:14px; line-height:20px; border:1px solid #ddd; box-sizing:border-box; }
+		.auto-wrap .hidden_tag { position:absolute; left:-9999px; opacity:0; }
+
+		.modal-srch ul, .modal-srch ol { padding-inline-start:0; }
+		.modal-srch ul li, .modal-srch ol li { list-style:none; }
 	</style>
 </head>
 <body>
@@ -45,9 +52,12 @@
 		<div class="guide">
 
 			<section id="guide-basic">
-				<h2 class="guide-sec-tit">Editor</h2>
+				<h2 class="guide-sec-tit">자동완성</h2>
 				<div class="guide-sec">
-					<h3 class="guide-stit">Editor 기본</h3>
+					<h3 class="guide-stit">자동완성 기본 - 구성원</h3>
+					<p>nAutoComplete_v1.0.0.js 플러그인 활용</p>
+					<p>입력 중 '@' 입력 시 활성화</p>
+					<p>(단, 각 라인의 첫글자가 @ 이거나, 공백 뒤에 @ 입력 시 실행)</p>
 					<div class="guide-show">
 					<!-- 코드 작성 -->
 						<div class="editor-wrap">
@@ -61,6 +71,19 @@
 </code></pre>
 
 				</div>
+				<div class="guide-sec">
+					<h3 class="guide-stit">이메일 자동완성</h3>
+					<p>nAutoComplete_email_v1.0.0.js 플러그인 활용</p>
+					<div class="guide-show">
+					<!-- 코드 작성 -->
+						<div class="auto-wrap">
+							<input type="email" class="input-box">
+						</div>
+					<!-- // 코드 작성 -->
+					</div>
+<pre><code class="html">
+</code></pre>
+				</div>
 			</section>
 		</div>
 		<a href="#work-list" class="guide-top">Top</a>	
@@ -68,10 +91,11 @@
 
 	<script src="../js/common.js"></script>
 	<script src="../js/nAutoComplete_v1.0.0.js"></script>
+	<script src="../js/nAutoComplete_email_v1.0.0.js"></script>
 	<script>
 		hljs.initHighlightingOnLoad();
 
-		var mamberData = {
+		const mamberData = {
 			company : 'SKMNS',
 			member : [
 				{
@@ -114,9 +138,23 @@
 			data     : 구성원 데이터 (json 및 배열형식)
 		*/
 
-		var srchM = new nAutoComplete({
+		let autoCom = new nAutoComplete({
 			wrap : '.edit-cnt',
 			data : mamberData.member
+		});
+
+		// 메일완성
+		let mailUrls = ['naver.com','nate.com','daum.net','gmail.com','kakao.com','hanmail.com','hotmail.com','yahoo.com'];
+
+		/*  옵션 안내
+			wrap     : input 포함 영역
+			keyFunc  : 자동 완성 시 실행할 콜백함수
+			data     : 데이터 (json 및 배열형식)
+		*/
+
+		let autoMail = new nAutoCompMail({
+			wrap : '.auto-wrap',
+			data : mailUrls
 		});
 	</script>
 </body>

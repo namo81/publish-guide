@@ -9,13 +9,14 @@
 */
 
 function nAutoComplete(option) {
-    var wrap	= typeof option.wrap === 'string' ? document.querySelector(option.wrap) : option.wrap,
+    let wrap	= typeof option.wrap === 'string' ? document.querySelector(option.wrap) : option.wrap,
         //keyFunc = option.keyFunc,
         data    = option.data;
 
-    var body    = document.querySelector('body');
+    let body    = document.querySelector('body'),
+        clickEvt = new Event('click', { bubbles: true, cancelable: true });
 
-    var selection, 
+    let selection, 
         nowRange,   // 초기 @ 입력 시 range 
         srchRange,  // 입력 중 srchInp 의 range
         prtNode,    // range 가 포함된 부모요소
@@ -23,7 +24,7 @@ function nAutoComplete(option) {
         caretIdx;   // @ 실행 전 마지막 커서위치 idx (커서포함 노드 기준)
 
     // 입력 영역 관련 dom 설정
-    var srchItem 	= document.createElement('span'),
+    let srchItem 	= document.createElement('span'),
         srchIcon 	= document.createElement('span'),
         srchInp 	= document.createElement('span');
             
@@ -35,7 +36,7 @@ function nAutoComplete(option) {
     srchItem.appendChild(srchIcon);
     
     // 검색 팝업 관련 dom 설정
-    var srchModal 	= document.createElement('div'),
+    let srchModal 	= document.createElement('div'),
         modalTit 	= document.createElement('p'),
         srchList 	= document.createElement('ul'),
         listBtns,  // 검색으로 선별된 구성원 버튼 전체
@@ -80,7 +81,7 @@ function nAutoComplete(option) {
 
     // @ 제거 후 node 에 item 추가하는 함수
     function insertSrchInpNode(node, idx, item){
-        var newRange = document.createRange();
+        let newRange = document.createRange();
         newRange.setStart(node, idx - 1);
         newRange.setEnd(node, idx);
         selection.addRange(newRange);
@@ -98,7 +99,7 @@ function nAutoComplete(option) {
         prtNode 	= nowRange.endContainer.parentNode;
 
         if(prtNode.tagName == 'A') return;
-        var nodes   = prtNode.childNodes;
+        let nodes   = prtNode.childNodes;
         
         if(nodes.length == 1) setInputNode(nodes[0]);
         else nodes.forEach(function(node){ if(node == nowRange.endContainer) setInputNode(node); return; });
@@ -106,7 +107,7 @@ function nAutoComplete(option) {
     
     // shift + @ 입력 시 검색 영역 생성 및 modal 호출
     function setInputNode(node){
-        var nodeTxt = node.textContent,
+        let nodeTxt = node.textContent,
             txIdx   = nowRange.endOffset,
             gap     = 2,
             txItem  = ' @';
@@ -129,7 +130,7 @@ function nAutoComplete(option) {
 
     // 검색 modal 열기
     function modalOn(){
-        var inpRect = srchItem.getBoundingClientRect();
+        let inpRect = srchItem.getBoundingClientRect();
         body.appendChild(srchModal);
         srchModal.style.top = (inpRect.top + 20) + 'px';
         srchModal.style.left = inpRect.left + 'px';
@@ -140,9 +141,9 @@ function nAutoComplete(option) {
         body.removeChild(srchModal);
     }
 
-    var nameArr = new Array(),      // 구성원 이름(사번) 배열
+    let nameArr = new Array(),      // 구성원 이름(사번) 배열
         resultArr = new Array();    // 입력값과 일치하는 구성원 배열
-    for(var d=0; d<Object.keys(data).length; d++){
+    for(let d=0; d<Object.keys(data).length; d++){
         nameArr.push(data[d].name);
     }
 
@@ -150,7 +151,7 @@ function nAutoComplete(option) {
     function srchInputValueCheck(val){
         removeMemberList();
         resultArr = [];
-        for(var o=0; o<nameArr.length; o++){
+        for(let o=0; o<nameArr.length; o++){
             if(val.length > 0 && nameArr[o].match(val)) {
                 resultArr.push(data[o].name + '('+ data[o].cNumber +')');
             }
@@ -165,12 +166,12 @@ function nAutoComplete(option) {
     // resultArr 기준으로 리스트 생성 / 없을 경우 '없음' 문구 출력
     function makeMemberList(){
         if(resultArr.length < 1) {
-            var liTag   = document.createElement('li');
+            let liTag   = document.createElement('li');
             liTag.textContent = '일치하는 구성원이 없습니다.';
             srchList.appendChild(liTag);
         } else {
             resultArr.forEach(function(name){
-                var liTag   = document.createElement('li'),
+                let liTag   = document.createElement('li'),
                     btnTag    = document.createElement('button');
                 btnTag.setAttribute('type', 'button');
                 btnTag.textContent = name;
@@ -205,7 +206,7 @@ function nAutoComplete(option) {
 
     // 검색 상태에서 esc / left 방향키 / back space 키로 취소할 경우 - @ 문자만 남기기
     function cancelSrchMember(){
-        var txAt    = document.createTextNode('@'),
+        let txAt    = document.createTextNode('@'),
             ccRange = document.createRange();
 
         ccRange.setStart(nowNode, caretIdx - 1);
@@ -220,13 +221,13 @@ function nAutoComplete(option) {
 
     // 검색 후 대상 선택 시
     function memberSelectConfirm(name){
-        var aTag        = document.createElement('a'),
+        let aTag        = document.createElement('a'),
             nextSpace   = document.createTextNode('\ufeff');
         aTag.textContent = name.split('(')[0];
         aTag.classList.add('sel-member');
         aTag.setAttribute('href', '#'); // href 속성이 없을 경우 일반 tag 로 인식되어, 삭제 시 a 태그의 style 이 잔존함.
 
-        var instRange = document.createRange();
+        let instRange = document.createRange();
 
         instRange.setStart(nowNode, caretIdx - 1);
         selection.addRange(instRange);

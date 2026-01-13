@@ -41,38 +41,35 @@
 
 			<!-- input ================================================================ -->
 			<section id="guide-input">
-				<h2 class="guide-sec-tit">Time Picker</h2>
+				<h2 class="guide-sec-tit">Drag &amp; Drop (html5)</h2>
 
 				<div class="guide-sec">
-					<h3 class="guide-stit">시간 선택</h3>
-					<p>자체 제작 플러그인 사용</p>
-					<p>width 값은 별도 지정</p>
-					<p>input focus 시 dropdown 으로 시간 리스트 표출 및 선택</p>
+					<h3 class="guide-stit">순서 변경</h3>
 					<div class="guide-show">
 						<ul class="drag-list">
-							<li draggable="true">
+							<li draggable="true" data-num="1">
 								<span class="list-title">드래그 아이템 1번 입니다.</span>
 								<a href="#">바로가기</a>
 							</li>
-							<li draggable="true">
+							<li draggable="true" data-num="2">
 								<span class="list-title">드래그 아이템 2번 입니다.</span>
 								<a href="#">바로가기</a>
 							</li>
-							<li draggable="true">
+							<li draggable="true" data-num="3">
 								<span class="list-title">드래그 아이템 3번 입니다.</span>
 								<a href="#">바로가기</a>
 							</li>
-							<li draggable="true">
+							<li draggable="true" data-num="4">
 								<span class="list-title">드래그 아이템 4번 입니다.</span>
 								<a href="#">바로가기</a>
 							</li>
-							<li draggable="true">
+							<li draggable="true" data-num="5">
 								<span class="list-title">드래그 아이템 5번 입니다.</span>
 								<a href="#">바로가기</a>
 							</li>
 						</ul>
 					</div>
-<pre><code class="html"></div>
+				</div>
 			</section>
 
 
@@ -81,14 +78,38 @@
 	</div>
 
 	<script src="../js/common.js"></script>
-	<script src="../js/bak/nDragnDrop_v1.0.0_draggable.js"></script>
 	<script>
 		hljs.initHighlightingOnLoad(); 
 		
-		let dragTest = new nDragnDrop({
-			wrap : '.drag-list',
-			obj : '.drag-list li'
+		let item_area = document.querySelector('.drag-list'),
+			items = item_area.querySelectorAll('li'),
+			drag_item;
+		items.forEach((item)=>{
+			item.addEventListener('dragstart', (e)=>{
+				drag_item = item;
+			});
+			item.addEventListener('dragenter', (e)=>{
+				e.target.style.opacity = .5;
+			});
+			item.addEventListener('dragleave', (e)=>{
+				e.target.style.opacity = 1;
+			});
+			item.addEventListener('dragover', (e)=>{ // drop 이벤트 발생을 위해 dragover 이벤트 방지
+				e.preventDefault();
+			});
+			item.addEventListener('drop', (e)=>{
+				if(e.target == drag_item) return;
+				seq_set(e.target, drag_item);
+				drag_item = null;
+				items.forEach((item)=>{ item.style.opacity = 1; })
+			});
 		});
+
+		function seq_set(target, item){
+			let tg_box = target.getBoundingClientRect(),
+				item_box = item.getBoundingClientRect();
+			tg_box.top > item_box.top ? target.after(item) : target.before(item);
+		}
 	</script>
 </body>
 </html>

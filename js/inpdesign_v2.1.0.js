@@ -289,30 +289,31 @@ function nFileSet(Ele){
 // 텍스트 입력형 input ------------------------------------------------------------------------
 /**
  * 텍스트 입력형 input - 화면내 동일 선택자 전체 적용 시
- * @param {string} selector 영역 선택자
+ * @param {string} selector 
  */
 function nText(selector){
-	var nTextEle = document.querySelectorAll(selector);
+	const nTextEle = document.querySelectorAll(selector);
 	if(nTextEle.length > 1) {
-		Array.prototype.forEach.call(nTextEle, function(el, index, array){
+		Array.prototype.forEach.call(nTextEle, function(el){
 			nTextSet(el);
 		});
 	} 
 	else if (nTextEle.length == 1) nTextSet(nTextEle[0]);
 	else null;
 }
+
 /**
- * input 관련 기능 함수 - 개별 적용 시
- * @param {dom/string} Ele dom 요소 및 영역 선택자
- * @returns 
+ * 실제 input 관련 기능 함수 - 개별 적용 시
+ * input 입력 시 내용 삭제 버튼 show 및 삭제 기능 적용
+ * @param {dom/string} Ele 대상 요소 dom / 선택자
  */
 function nTextSet(Ele){
-	let textWrap	= typeof Ele === 'string' ? document.querySelector(Ele) : Ele,
-		inp 		= textWrap.querySelector('input.input-box');
+	const textWrap	= typeof Ele === 'string' ? document.querySelector(Ele) : Ele,
+		inp 		= textWrap.querySelector('input');
 	
 	if(inp.disabled == true || inp.readOnly == true) return;
 
-	let btn_clear 	= document.createElement('button');
+	const btn_clear 	= document.createElement('button');
 	btn_clear.setAttribute('type', 'button');
 	btn_clear.classList.add('btn-clear');
 	btn_clear.textContent = '내용 삭제';
@@ -324,12 +325,12 @@ function nTextSet(Ele){
 	inp.addEventListener('propertychange', btnControl);
 
 	btn_clear.addEventListener('click', function(e){
-		console.log('tt')
 		inp.value = '';
 		inp.focus();
 		btn_clear.classList.remove('on');
 		let inputEvt = new Event('input', { bubbles: true, cancelable: true });
-		inp.dispatchEvent(inputEvt);
+		inp.dispatchEvent(inputEvt); // 내용 삭제 시 input 에 입력이벤트 발생 (vue v-model 동작관련)
+		inp.dispatchEvent(keyupEvt); // 내용 삭제 시 input 에 입력이벤트 발생 (vue v-model 동작관련)
 	});
 
 	function btnControl(e){
@@ -351,6 +352,30 @@ function nTextSet(Ele){
 	nTextSet('.inp-label');
 */
 
+/**
+ * input 입력 시 입력글자수 count
+ * @param {dom/string} area 영역 선택자 or dom
+ */
+function nTextCount(area){
+	let wrap = typeof area === 'string' ? document.querySelector(area) : area,
+		inp = wrap.querySelector('input, textarea'),
+		tx = wrap.querySelector('.inp-count .now'),
+		maxTx = wrap.querySelector('.inp-count .max'),
+		maxLength = inp.getAttribute('maxlength') ? parseInt(inp.getAttribute('maxlength'), 10) : null;
+	
+	function updateCount(e){
+		if(maxLength && inp.value.length > maxLength) inp.value = inp.value.slice(0, maxLength); // 길이 초과 시 추가입력부분 제거
+		tx.textContent = inp.value.length;
+
+		if (maxTx && maxLength) maxTx.textContent = maxLength;
+	}
+	
+	inp.addEventListener('input', updateCount);
+	updateCount();
+}
+
+
+// 기타 기능 ------------------------------------------------------------------------
 /** 2중 Range input */
 function doubleRange(area, unit, gap){
 	const wrap = typeof area === 'string' ? document.querySelector(area) : area,
@@ -522,10 +547,12 @@ function inpChkBtn(area, tgbtn, inpCls){
  * @param {string} inpName 제어될 input 들의 name 값
  */
 function checkAll(allInp, inpName){
-	let allBtn = typeof allInp === 'string' ? document.querySelector(allInp) : allInp,
-		name   = inpName != undefined ? inpName : allBtn.getAttribute('data-name'),
-		inps   = document.querySelectorAll('input[name='+name+']'),
+	let inpAll = typeof allInp === 'string' ? document.querySelector(allInp) : allInp,
+		name   = inpName != undefined ? inpName : inpAll.getAttribute('data-name'),
+		inps   = document.querySelectorAll('input[name='+name+']:not(:disabled)'),
 		inpLen = inps.length;
+		
+	let changeEvt = new Event('change');
 	
 	/** 체크된 갯수 리턴 */
 	function inpCount(){
@@ -535,19 +562,17 @@ function checkAll(allInp, inpName){
 		}
 		return chkLen;
 	}
-	function inpsOn(){
-		inps.forEach((inp)=> { inp.checked = true; });
+	function inpsSet(bln){
+		inps.forEach((inp)=> { inp.checked = bln; });
 	}
-	function inpsOff(){
-		inps.forEach((inp)=> { inp.checked = false; });
+	function inpAllSet(){
+		inpCount() == inpLen && inpCount() != 0 ? inpAll.checked = true : inpAll.checked = false;
+		inpAll.dispatchEvent(changeEvt);
 	}
+	inps.forEach((inp)=>{ inp.addEventListener('click', inpAllSet); });
+	inpAll.addEventListener('click', function(){ this.checked == true ? inpsSet(true) : inpsSet(false); });
 
-	inps.forEach((inp)=>{
-		inp.addEventListener('click', function(){
-			inpCount() == inpLen ? allBtn.checked = true : allBtn.checked = false;
-		});
-	})
-	allBtn.addEventListener('click', function(){ this.checked == true ? inpsOn() : inpsOff(); });
+	inpAllSet();
 }
 
 /**
@@ -722,6 +747,7 @@ function cal_range_set(area, s_input, e_input, layer, time){
  * 시작일-종료일 input 2개 세트 - 입력값 비교
  * @param {dom} s_input 시작일 input
  * @param {dom} e_input 종료일 input
+ * @param {boolean} time 알럿문구 - 시간포함 여부
  */
 function cal_range_chk(s_input, e_input, time){
 	let tx_alert_se = '시작일은 종료일 이후로 설정할 수 없습니다.',
@@ -788,42 +814,60 @@ function input_num_chk(inp, type){
 
 /** 휴대폰 */
 function autoHypen_phone(target) {
-	target.value = target.value
-		.replace(/[^0-9]/g, '')
-		.replace(/^(\d{0,3})(\d{0,4})(\d{0,4})$/g, "$1-$2-$3").replace(/(\-{1,2})$/g, "");
+	target.value = target.value.replace(/[^0-9]/g, '')
+	.replace(/^(\d{0,3})(\d{0,4})(\d{0,4})$/g, "$1-$2-$3").replace(/(\-{1,2})$/g, "");
 }
 /** 로컬 전화 */
 function autoHypen_Local(target) {
 	let val = target.value;
 	if(val.startsWith("02")) {
 		target.setAttribute('maxlength', 12);
-		target.value = target.value
-		.replace(/[^0-9]/g, '')
+		target.value = target.value.replace(/[^0-9]/g, '')
 		.replace(/^(\d{2})(\d{3,4})(\d{4})$/, `$1-$2-$3`);
 	} else {
 		target.setAttribute('maxlength', 13);
-		target.value = target.value
-		.replace(/[^0-9]/g, '')
+		target.value = target.value.replace(/[^0-9]/g, '')
 		.replace(/^(\d{3})(\d{3,4})(\d{4})$/, `$1-$2-$3`);
 	}
 }
 /** 사업자번호 */
 function autoHypen_company(target) {
-	target.value = target.value
-	.replace(/[^0-9]/g, '')
+	target.value = target.value.replace(/[^0-9]/g, '')
 	.replace(/^(\d{0,3})(\d{0,2})(\d{0,5})$/g, "$1-$2-$3").replace(/(\-{1,2})$/g, "");
 }
 /** 생년월일 */
 function autoHypen_birth(target) {
-	target.value = target.value
-	.replace(/[^0-9]/g, '')
+	target.value = target.value.replace(/[^0-9]/g, '')
 	.replace(/^(\d{0,4})(\d{0,2})(\d{0,2})$/g, "$1-$2-$3").replace(/(\-{1,2})$/g, "");
 }
 
-/** 숫자만 입력 */
-function inp_only_num(inp) {
-	let target = typeof inp === 'string' ? document.querySelector(inp) : inp;
-	target.addEventListener('input', function(){
-		target.value = target.value.replace(/[^0-9]/g, '');
-	})
+/**
+ * 입력값 제한 함수 (숫자/한글/영문)
+ * @param {string / dom} area 대상 input 선택자 및 dom
+ * @param {regEx} reg 정규식 (특정 정규식을 직접 적용할 경우)
+ */
+function inpValueCheck(area, reg){
+	let inp 	= typeof area === 'string' ? document.querySelector(area) : area,
+		type	= inp.getAttribute('data-type').split(' '),
+		regEx;
+
+	if(reg == null) {
+		if(type.length == 1) {
+			if(type.indexOf('num') != -1) regEx = new RegExp("[^0-9]", "gi");
+			else if(type.indexOf('eng') != -1) regEx = new RegExp("[0-9]|[^\!-z\\s]", "gi");
+			else if(type.indexOf('kor') != -1) regEx = new RegExp("[^ㄱ-ㅎ|ㅏ-ㅣ|가-힣\\s]", "g");
+		} else {
+			if(type.indexOf('num') != -1 && type.indexOf('eng') != -1) regEx = new RegExp("[^0-9\!-z\s]", "gi");
+			else if(type.indexOf('num') != -1 && type.indexOf('kor') != -1) regEx = new RegExp("[^0-9|ㄱ-ㅎ|ㅏ-ㅣ|가-힣\\s]", "gi");
+			else if(type.indexOf('eng') != -1 && type.indexOf('kor') != -1) regEx = new RegExp("[^a-z|ㄱ-ㅎ|ㅏ-ㅣ|가-힣\\s]", "gi");
+		}
+	} else regEx = new RegExp(reg);
+
+	inp.addEventListener('input', function(){
+		inp.value = inp.value.replace(regEx, '');
+	});
 }
+/* ex
+  - 숫자 input 에 'num' 클래스 
+         inpValueCheck('선택자');
+*/

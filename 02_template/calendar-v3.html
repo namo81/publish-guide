@@ -93,9 +93,9 @@
 						</div>
 					</div>
 <pre><code class="html">&lt;div class="inp-cal range" style="width:320px"&gt;
-	&lt;span&gt;&lt;input type="text" name="" placeholder="" class="input-box cal"/&gt;&lt;/span&gt;
+	&lt;input type="text" name="" placeholder="" class="input-box cal"/&gt;
 	&lt;i&gt;~&lt;/i&gt;
-	&lt;span&gt;&lt;input type="text" name="" placeholder="" class="input-box cal end"/&gt;&lt;/span&gt;
+	&lt;input type="text" name="" placeholder="" class="input-box cal end"/&gt;
 &lt;/div&gt;
 
 &lt;div class="inp-cal single-range" style="width:320px"&gt;
@@ -124,68 +124,68 @@
 });
 
 
- * wrap (string or dom)	 	- 달력 input 의 parentNode 선택자 or dom 요소 (필수값)
+ * wrap (string or dom)	 - 달력 input 의 parentNode 선택자 or dom 요소 (필수값)
 
  * type (string)			- 달력 종류
- 				 	['day'] (기본값) : 일간달력
-				  	['week'] : 주간달력
-				 	['month'] : 월간달력
+ 				 			['day'] (기본값) : 일간달력
+				  			['week'] : 주간달력
+				 			['month'] : 월간달력
 
  * range (boolean)		- 기간 선택 여부 (기본 false)
 
  * dual (boolean)			- 달력 2개 표시 여부
- 				  	[false] : 달력 1개 (기본)
-				  	[true] : 달력 2개로 표시 - 기간 달력만 가능
+ 				  			[false] : 달력 1개 (기본)
+				  			[true] : 달력 2개로 표시 - 기간 달력만 가능
 
- * show_type (string) 		- 달력 호출 방식
- 				  	[null] : 버튼 클릭 시 달력 표시(기본)
-				  	['input'] : input 에 focus 시 달력 표시
+ * show_type (string) 	- 달력 호출 방식
+ 				  			[null] : 버튼 클릭 시 달력 표시(기본)
+				  			['input'] : input 에 focus 시 달력 표시
 
  * year_range (string)		- 달력 표시 연도 범위 설정 - '2000:2050'
 
  * lang (string)			- 요일/월 표시 언어
- 				  	['kr'] : 한글(기본)
-				  	['en'] : 영어
+ 				  			['kr'] : 한글(기본)
+				  			['en'] : 영어
 				  
- * cal_title (string)			- 달력 타이틀 텍스트
+ * cal_title (string)		- 달력 타이틀 텍스트
 
- * split_tx (string) 			- 연/월/일 사이 구분용 문자 (기본 '-')
+ * split_tx (string) 		- 연/월/일 사이 구분용 문자 (기본 '-')
 
  * controls (string)		- 연/월 표시 영역 컨트롤 방식 설정
- 				  	['all'] (기본값) : 이전-다음 버튼, 연,월 select 
- 				  	['btn'] : 이전-다음 버튼만. 연,월은 단순 표기
-				  	['shift'] : 이전-다음 버튼 + 연,월은 클릭 시 월간달력으로 변경(일간,주간 달력만 가능)
-				  	['none'] : 모두 제거. 연,월만 표시
+ 				  			['all'] (기본값) : 이전-다음 버튼, 연,월 select 
+ 				  			['btn'] : 이전-다음 버튼만. 연,월은 단순 표기
+				  			['shift'] : 이전-다음 버튼 + 연,월은 클릭 시 월간달력으로 변경(일간,주간 달력만 가능)
+				  			['none'] : 모두 제거. 연,월만 표시
  
  * tx_close (string) 		- 닫기 버튼 텍스트
- * tx_confirm (string)  		- 확인 버튼 텍스트 및 입력방식 설정
- 				  	[null] : 확인 버튼 제거 (날짜 선택 시 즉시 달력 닫고 입력)
-				  	['기타 문구'] : 날짜 선택 후 확인 버튼 클릭 시 달력 닫고 입력 / 기본값 : '확인'
+ * tx_confirm (string)  	- 확인 버튼 텍스트 및 입력방식 설정
+ 				  			[null] : 확인 버튼 제거 (날짜 선택 시 즉시 달력 닫고 입력)
+				  			['기타 문구'] : 날짜 선택 후 확인 버튼 클릭 시 달력 닫고 입력 / 기본값 : '확인'
 
  * limit (string)			- 달력 선택 제한
- 				  	[null] (기본값) : 제한 없음
-				  	['after'] : 오늘(이번달) 이후 선택 불가
-				  	['before'] : 오늘(이번달) 이전 선택 불가
- * gap_today (string) 		- 오늘(지금)의 gap 설정 (limit after 인데, 내일부터 선택 가능하게 / limit before 인데 3일전까지만 선택가능하게 등)
- 				  	['0D' / '0M' / '0Y' 형식의 string]
+ 				  			[null] (기본값) : 제한 없음
+				  			['after'] : 오늘(이번달) 이후 선택 불가
+				  			['before'] : 오늘(이번달) 이전 선택 불가
+ * gap_today (string) 	- 오늘(지금)의 gap 설정 (limit after 인데, 내일부터 선택 가능하게 / limit before 인데 3일전까지만 선택가능하게 등)
+ 				  			['0D' / '0M' / '0Y' 형식의 string]
  * gap_limit (string) 		- 달력 선택 가능일 설정 (limit after 인데, 오늘부터 1년후까지 선택 / limit before 인데 1년전부터 오늘까지 선택 등)
- 				  	['0D' / '0M' / '0Y' 형식의 string]
+ 				  			['0D' / '0M' / '0Y' 형식의 string]
  * gap_range (string) 		- 기간 선택 시 시작일-종료일 최대값 설정
- 				  	['0D' / '0M' / '0Y' 형식의 string]
+ 				  			['0D' / '0M' / '0Y' 형식의 string]
 
  * position (string) 		- 달력 위치 설정여부
- 				  	[null] (기본값) : input 아래
-				  	['modal'] : 위치 설정 없음(별도 css 로 제어)
+ 				  			[null] (기본값) : input 아래
+				  			['modal'] : 위치 설정 없음(별도 css 로 제어)
  * pos_top (number) 		- 달력 위치 - input 아래일 경우 top 조정값 (기본 0) ** position 이 null 일 경우만 적용
  * pos_left (number) 		- 달력 위치 - input 아래일 경우 left 조정값 (기본 0) ** position 이 null 일 경우만 적용
 
  * in_target (string or dom) 	- 달력 dom 요소가 삽입될 위치
- 				  	[null]  (기본값) : body 마지막
-				  	['string or dom'] : CSS 선택자 or Dom 요소 자체 해당 요소
+ 				  			[null]  (기본값) : body 마지막
+				  			['string or dom'] : CSS 선택자 or Dom 요소 자체 해당 요소
 
  * in_page (boolean) 		 - 화면 고정형 달력 여부
- 				  	[false] (기본값): 달력을 레이어로 띄우기
-				  	[true] : 화면 내 고정하기
+ 				  			[false] (기본값): 달력을 레이어로 띄우기
+				  			[true] : 화면 내 고정하기
 
  콜백함수
  * activeShow			- 달력 show 일 경우 실행

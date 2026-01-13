@@ -190,37 +190,6 @@ select option { color:#000 }
 .inp-time { position:relative; }
 .inp-time .btn-open { position:absolute; width:100%; height:100%; top:0; left:0; opacity:0; z-index:1; }
 
-/* 좌우 2중 range - 범위값 설정 */
-.double-range { position:relative; height:30px; margin:0 30px; box-sizing:border-box; }
-.double-range input { position:absolute; width:100%; height:10px; top:10px; left:0; pointer-events:none; appearance:none; opacity:0; z-index:11; }
-.double-range input::-webkit-slider-thumb { pointer-events:all; width:22px; height:22px; border:none; background-color:transparent; appearance:none; z-index:11; }
-.double-range .range-slider { position:absolute; width:100%; height:100%; }
-.range-slider .track { position:absolute; top:10px; left:0; width:100%; height:10px; background-color:#eee; border-radius:5px; }
-.range-slider .range { position:absolute; top:10px; left:0; right:0; bottom:10px; background-color:#000; border-radius:5px; z-index:2; }
-.range-slider .thumb { position:absolute; width:24px; height:24px; top:3px; border-radius:15px; border:2px solid #000; background-color:#fff; box-sizing:border-box; z-index:10; }
-.range-slider .thumb .tx { position:absolute; top:100%; left:50%; transform:translateX(-50%); }
-.range-slider .thumb.left { left:0; transform:translateX(-12px); }
-.range-slider .thumb.right { right:0; transform:translateX(12px); }
-
-
-/* 좌우 2중 range - 영역 3개 구분 */
-.double-range_area { position:relative; height:60px; margin:0 30px; padding-bottom:30px; box-sizing:border-box; }
-.double-range_area input { position:absolute; width:100%; height:10px; top:10px; left:0; pointer-events:none; appearance:none; opacity:0; z-index:11; }
-.double-range_area input::-webkit-slider-thumb { pointer-events:all; width:22px; height:22px; border:none; background-color:transparent; appearance:none; z-index:11; }
-.double-range_area input::-webkit-slider-thumb:hover { cursor:e-resize; }
-.double-range_area .range-slider { position:absolute; width:100%; height:100%; }
-.double-range_area .label { position:absolute; bottom:0; left:-20px; width:calc(100% + 40px) !important; display:flex; justify-content:space-between; z-index:0; }
-.double-range_area .label > li { width:40px; text-align:center; }
-.double-range_area.single .r_right,
-.double-range_area.single .thumb.right { display:none; }
-.double-range_area .range-slider .track { position:absolute; top:5px; left:0; width:100%; height:20px; background:linear-gradient(90deg,rgba(42, 144, 155, 1) 0%, rgba(14, 75, 140, 1) 100%);; border-radius:5px; }
-.double-range_area .range-slider .range { position:absolute; top:5px; left:0; right:0; bottom:25px; border-radius:5px; text-align:center; color:#fff; transition:left .15s, right .15s; background-color:transparent; z-index:2; }
-.double-range_area .range-slider .thumb { position:absolute; width:24px; height:24px; top:3px; border-radius:15px; border:2px solid #1C6E94; background-color:#fff; box-sizing:border-box; z-index:10; }
-.double-range_area .range-slider .thumb .tx { position:absolute; bottom:110%; left:50%; transform:translateX(-50%); white-space:nowrap; }
-.double-range_area .range-slider .thumb.left { left:0; transform:translateX(-12px); transition:left .15s; }
-.double-range_area .range-slider .thumb.right { right:0; transform:translateX(12px); transition:right .15s; }
-.double-range_area .range-slider.zdf .label > li:nth-child(2) { display:none; }
-
 /* button =============================================================== */
 .btn { display:inline-flex; align-items:center; gap:4px; font-size:12px; line-height:24px; background:#555; color:#fff; box-sizing:border-box; border-radius:4px; vertical-align:middle; }
 .btn.xlarge { height:50px; padding:5px 30px; font-size:20px; line-height:40px; }
@@ -237,7 +206,7 @@ select option { color:#000 }
 .btn.red { background:var(--color-red); }
 .btn.white { background:#fff; color:#333; border:1px solid #555; }
 
-.btn-tx {  }
+.btn.tx { background-color:transparent; color:#222; border-radius:0; }
 
 .btns { display:flex; justify-content:center; font-size:0; }
 .btns > * + * { margin-left:5px; }
