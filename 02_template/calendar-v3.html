@@ -103,6 +103,25 @@
 &lt;/div&gt;
 </code></pre>
 				</div>
+				
+				<div class="guide-sec">
+					<h3 class="guide-stit">고정형 달력</h3>
+					<div class="guide-show">
+						<div class="inp-cal page" style="width:320px">
+							<input type="text" name="" placeholder="" class="input-box cal" value=""/>
+						</div>
+					</div>
+<pre><code class="html">&lt;div class="inp-cal range" style="width:320px"&gt;
+	&lt;input type="text" name="" placeholder="" class="input-box cal"/&gt;
+	&lt;i&gt;~&lt;/i&gt;
+	&lt;input type="text" name="" placeholder="" class="input-box cal end"/&gt;
+&lt;/div&gt;
+
+&lt;div class="inp-cal single-range" style="width:320px"&gt;
+	&lt;input type="text" name="" placeholder="" class="input-box cal start"/&gt;
+&lt;/div&gt;
+</code></pre>
+				</div>
 			</section>
 
 			
@@ -159,7 +178,7 @@
  
  * tx_close (string) 		- 닫기 버튼 텍스트
  * tx_confirm (string)  	- 확인 버튼 텍스트 및 입력방식 설정
- 				  			[null] : 확인 버튼 제거 (날짜 선택 시 즉시 달력 닫고 입력)
+ 				  			[null] : 확인 버튼 제거 (날짜 선택 시 즉시 달력 닫고 입력) // in_page 가 true 일 경우 무조건 null 로 설정
 				  			['기타 문구'] : 날짜 선택 후 확인 버튼 클릭 시 달력 닫고 입력 / 기본값 : '확인'
 
  * limit (string)			- 달력 선택 제한
@@ -250,6 +269,13 @@
 			dual : true,
 			limit : 'after',
 			controls : 'btn'
+		});
+		
+		let cal_page = new n_calendar({
+			wrap : '.inp-cal.page',
+			type : 'day',
+			in_page : true,
+			in_target : '.inp-cal.page'
 		});
 
 		function test(date){

@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="user-scalable=yes, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, width=device-width">
+    <meta name="author" content="snamo - SK MNS">
+    <meta name="description" content="">
+    <meta name="keywords" content="">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="">
+    <meta property="og:description" content="">
+    <meta property="og:image" content="">
+    <meta property="og:url" content="">
+
+    <title>Scroll + GASP</title>
+    <style>
+        @charset "utf-8";
+        /* -- date :  -- */
+        /* -- snamo(Seo nam ho) -- */
+        /* z-index 설정
+        기본 화면 : none / 0
+        GNB / 기타 메뉴 및 header 영역이 화면 위에 위치할 경우: 100
+        기타 event 적 요소 (select / calendar 등) : 500
+        레이어팝업 : 1000
+        */
+        html,body,p,h1,h2,h3,h4,h5,h6,menu,ul,ol,li,dl,dt,dd,table,th,td,form,fieldset,legend,input,textarea,button,select,hr { margin:0;padding:0; }
+        article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, section { display: block; }
+        html { font-size:12px; min-width:320px; }
+        body { background-color:#fff; font-size:12px; font-family:'Noto Sans KR', '맑은 고딕', '돋움',Dotum,AppleGothic,sans-serif; } /* PC */
+        input,textarea,select,button,table{ font-size:1em; }
+        img,fieldset,button{ border:0; }
+        img, input, select { vertical-align:middle; }
+        ul,ol { display:inline-block; list-style:none; vertical-align:top; }
+        li, dd { list-style:none; }
+        em,address,i { font-style:normal; }
+        a { text-decoration:none; vertical-align:middle; color:inherit; }
+        a:hover,a:active,a:focus { text-decoration:none; }
+        button { display:inline-block; overflow:hidden; border:0; background:none; cursor:pointer; }
+        button > span { position:relative; }
+
+        html, body { width:100%; height:100%; }
+
+        #wrap { overflow-x:hidden; }
+
+        .section_cnt { position:relative; margin-top:100px; }
+        
+        .section_cnt.sec-1 { display:flex; flex-direction:column; gap:100px; }
+        .sec1-item { width:400px; height:250px; text-align:center; overflow:hidden; }
+
+        .section_cnt.sec-2 { display:flex; width:max-content; padding:50px; gap:100px; background-color:#eee; }
+
+        .section_cnt.sec-3 { position:relative; padding:50px; background-color:#eee; }
+        .sec3-item {/*  position:absolute; */ width:100%; height:250px; text-align:center; margin-bottom:50px; }
+        .sec-3 .sec3-item:last-child { margin-bottom:0; }
+        /* .sec3-item.item1 { top:50px; }
+        .sec3-item.item2 { top:350px; }
+        .sec3-item.item3 { top:650px; }
+        .sec3-item.item4 { top:950px; }
+        .sec3-item.item5 { top:1200px; } */
+        
+        .cursor-item { position:fixed; width:50px; height:50px; top:0; left:0; background-color:#fff; transition:width .2s, height .2s; border-radius:50%; user-select:none; pointer-events:none; mix-blend-mode:difference; z-index:1000; }
+        .cursor-item.sec1 { width:80px; height:80px; }
+    </style>
+</head>
+<body>
+    <div id="wrap">
+        <section class="section_cnt sec-1">
+            <p class="sec1-item item1"><img src="../../../../../images/exImg01.jpg" alt=""></p>
+            <p class="sec1-item item2"><img src="../../../../../images/exImg02.jpg" alt=""></p>
+            <p class="sec1-item item3"><img src="../../../../../images/exImg03.jpg" alt=""></p>
+            <p class="sec1-item item4"><img src="../../../../../images/exImg04.jpg" alt=""></p>
+            <p class="sec1-item item5"><img src="../../../../../images/exImg05.jpg" alt=""></p>
+        </section>
+        
+        <section class="section_cnt sec-2">
+            <p class="sec2-item item1"><img src="../../../../../images/exImg01.jpg" alt=""></p>
+            <p class="sec2-item item2"><img src="../../../../../images/exImg02.jpg" alt=""></p>
+            <p class="sec2-item item3"><img src="../../../../../images/exImg03.jpg" alt=""></p>
+            <p class="sec2-item item4"><img src="../../../../../images/exImg04.jpg" alt=""></p>
+            <p class="sec2-item item5"><img src="../../../../../images/exImg05.jpg" alt=""></p>
+        </section>
+        
+        <section class="section_cnt sec-3">
+            <p class="sec3-item item1"><img src="../../../../../images/exImg01.jpg" alt=""></p>
+            <p class="sec3-item item2"><img src="../../../../../images/exImg02.jpg" alt=""></p>
+            <p class="sec3-item item3"><img src="../../../../../images/exImg03.jpg" alt=""></p>
+            <p class="sec3-item item4"><img src="../../../../../images/exImg04.jpg" alt=""></p>
+            <p class="sec3-item item5"><img src="../../../../../images/exImg05.jpg" alt=""></p>
+        </section>
+        
+        <section class="section_cnt sec-4">
+            <p class="sec4-item item1"><img src="../../../../../images/exImg01.jpg" alt=""></p>
+            <p class="sec4-item item2"><img src="../../../../../images/exImg02.jpg" alt=""></p>
+            <p class="sec4-item item3"><img src="../../../../../images/exImg03.jpg" alt=""></p>
+            <p class="sec4-item item4"><img src="../../../../../images/exImg04.jpg" alt=""></p>
+            <p class="sec4-item item5"><img src="../../../../../images/exImg05.jpg" alt=""></p>
+        </section>
+        <p class="cursor-item"></p>
+    </div>
+    
+    
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.1/dist/gsap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.1/dist/ScrollTrigger.min.js"></script>
+    <script src="../../../../../js/common.js"></script>
+    <script>
+        gsap.registerPlugin(ScrollTrigger);
+
+        // sec1 - 특정 아이템 스크롤 모션
+        let item3 = document.querySelector('.sec-1 .item3');
+        gsap.to(item3, {
+            x : 700,
+            borderRadius : 20,
+            rotate : 360,
+            scrollTrigger:{
+                trigger : item3,
+                start : 'top center',
+                end : 'bottom center',
+                scrub : 2,
+                markers : false
+            }
+        });
+
+        // sec2 가로스크롤 영역
+        let sec_2 = document.querySelector('.sec-2'),
+            sec_2_wid = sec_2.scrollWidth - window.innerWidth;
+        gsap.to(sec_2, {
+            x: -sec_2_wid, // 콘텐츠가 가로로 이동(스크롤)되게끔 음수로 설정
+            ease: "none", // 애니메이션에 가속도 효과를 사용하지 않음
+            scrollTrigger: {
+                trigger: sec_2, // 트리거 요소 지정
+                start: "top 30%", // xScroll의 상단과 브라우저 상단이 맞닿을 때 애니메이션 시작
+                end: '+=' + sec_2_wid, // xScroll의 콘텐츠 너비만큼 스크롤 후 애니메이션 종료
+                scrub: true, // 스크롤 진행에 따라 애니메이션이 동기화되어 진행
+                pin: true, // 스크롤 중에 요소를 고정하여 애니메이션을 실행
+                anticipatePin: 1, // 스크롤 트리거 요소의 위치를 예측하여 스크롤 시 튀는 효과 방지
+                markers: false, // 디버그용 마커 표시
+            }
+        });
+
+        // sec3 - 스크롤 pin 기능
+        let sec3_items = gsap.utils.toArray('.sec3-item');
+        sec3_items.forEach((item, index)=>{
+            ScrollTrigger.create({
+                trigger: item,
+                start: `top 150+=${index * 50}px`,
+                endTrigger: ".section_cnt.sec-3",
+                end: `bottom center+=250px`,
+                pin: true,
+                pinSpacing: false,
+                // markers: true,
+                invalidateOnRefresh: true
+            });
+
+            let end_tx = index == sec3_items.length - 1 ? 'top center+=100px' : 'center 50px';
+            gsap.to(item, {
+                scale : 0.9,
+                scrollTrigger : {
+                    trigger : item,
+                    start : 'top 150+=' + (index * 50) + 'px',
+                    end : end_tx,
+                    scrub : 1
+                }
+            });
+        });
+
+        // 마우스 포인터
+        let mouse = document.querySelector('.cursor-item');
+        gsap.set(mouse, {xPercent: -50, yPercent: -50});
+        
+        let qX = gsap.quickTo(mouse, 'x', {duration : .5, ease:'expo'}),
+            qY = gsap.quickTo(mouse, 'y', {duration : .5, ease:'expo'});
+
+        window.addEventListener('mousemove', function(e){
+            qX(e.clientX);
+            qY(e.clientY);
+        });
+
+        // 마우스 오버 관련
+        let sec1_items = document.querySelectorAll('.sec1-item');
+        sec1_items.forEach((item)=>{
+            item.addEventListener('mouseover', ()=>{
+                mouse.classList.add('sec1');
+            })
+            item.addEventListener('mouseleave', ()=>{
+                mouse.classList.remove('sec1');
+            })
+        })
+    </script>
+</body>
+</html>

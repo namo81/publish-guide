@@ -311,6 +311,28 @@ function outSideClick(area, target, cls, callback){
 }
 
 /**
+ * 공통 함수 : 특정 영역 외 클릭 감지 - 내 부모요소만 확인
+ * @param {string} area 부모요소 검색용 css selector
+ * @param {dom} parent 부모요소 일치 확인용 dom (동일 클래스를 가진 요소 여러개가 배치될 경우, 내 부모요소 일치 확인용)
+ * @param {dom} target 제어될 html dom 요소
+ * @param {string} cls 삭제할 class
+ * @param {function} callback 영역 외 클릭 시 실행될 콜백
+ * ex : let wrapArea = document.querySelector('.chk-area');
+ * ex : outSideClick('.chk-area', wrapArea, 'show');
+ */
+function outSideClick_this(area, parent, target, cls, callback){
+	let body = document.querySelector('body');
+	body.addEventListener('mousedown', function(e){
+		let tg = e.target;
+		if( !tg.closest(area) || tg.closest(area) != parent) {
+			target.classList.remove(cls);
+			if(typeof callback === 'function') callback();
+			body.removeEventListener('mousedown', arguments.callee);
+		}
+	});
+}
+
+/**
  * dom 요소 생성 함수
  * @param {string} type html tag명
  * @param {string} cls 태그에 추가할 클래스

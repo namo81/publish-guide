@@ -22,10 +22,12 @@
 <body>
 	<div id="work-list">
 		<div class="title">
-			<h1 class="project-title">프로젝트 이름</h1>
-			<p class="project-info">
-				<span>&bull; 담당자 : </span>
-			</p>
+			<div class="inbox">
+				<h1 class="project-title">프로젝트 이름</h1>
+				<p class="project-info">
+					<span>&bull; 담당자 : </span>
+				</p>
+			</div>
 		</div>
 		
 		<div class="menu">
@@ -46,12 +48,9 @@
 						<input type="hidden" class="temp">
 					</div>
 					<div class="func-wrap">
-						<span>
-							<span class="tit">미리보기</span>
-							<span class="check">
-								<input type="checkbox" name="" id="view-chk">
-								<label for="view-chk">미리보기</label>
-							</span>
+						<span class="check">
+							<label for="view-chk">미리보기</label>
+							<input type="checkbox" name="" id="view-chk">
 						</span>
 						<span class="check-2">
 							<label for="view-mobile">모바일</label>
@@ -67,8 +66,8 @@
 					<caption>프로젝트 리스트</caption>
 					<colgroup>
 						<col style="width:50px"/>
-						<col style="width:9%" span="5"/>
-						<col style="width:8%"/>
+						<col style="width:10%" span="5"/>
+						<col style="width:80px"/>
 						<col style="width:auto"/>
 						<col style="width:100px"/>
 						<col style="width:auto"/>
@@ -92,38 +91,115 @@
 						<tr>
 							<td class="no"></td>
 							<td class="depth1">section01</td>
+							<td class="depth2">완료</td>
+							<td class="depth3"></td>
+							<td class="depth4"></td>
+							<td class="depth5"></td>
+							<td class="state"></td>
+							<td class="link"><a href="html/" target="_blank">-</a></td>
+							<td class="end-date">YYYY-MM-DD</td>
+							<td class="modify">조건 : 링크 및 완료일자</td>
+						</tr>
+						<tr>
+							<td class="no"></td>
+							<td class="depth1"></td>
 							<td class="depth2"></td>
+							<td class="depth3">수정내역</td>
+							<td class="depth4"></td>
+							<td class="depth5"></td>
+							<td class="state"></td>
+							<td class="link"><a href="html/" target="_blank">-</a></td>
+							<td class="end-date">YYYY-MM-DD</td>
+							<td class="modify">
+								<dl>
+									<dt>YYYY-MM-DD</dt>
+									<dd>수정내역</dd>
+								</dl>
+							</td>
+						</tr>
+						<tr>
+							<td class="no"></td>
+							<td class="depth1"></td>
+							<td class="depth2">진행중</td>
 							<td class="depth3"></td>
 							<td class="depth4"></td>
 							<td class="depth5"></td>
 							<td class="state"></td>
 							<td class="link"><a href="html/" target="_blank">-</a></td>
 							<td class="end-date"></td>
-							<td class="modify"></td>
+							<td class="modify">조건 : 링크만</td>
 						</tr>
 						<tr>
 							<td class="no"></td>
 							<td class="depth1"></td>
-							<td class="depth2"></td>
-							<td class="depth3" data-type="layer">페이지명</td>
+							<td class="depth2">대기중</td>
+							<td class="depth3"></td>
+							<td class="depth4"></td>
+							<td class="depth5"></td>
+							<td class="state"></td>
+							<td class="link"><!-- <a href="html/" target="_blank">-</a> --></td>
+							<td class="end-date"></td>
+							<td class="modify">조건 : 링크/완료일 모두 없음</td>
+						</tr>
+						<tr class="del">
+							<td class="no"></td>
+							<td class="depth1"></td>
+							<td class="depth2">삭제된 화면</td>
+							<td class="depth3"></td>
 							<td class="depth4"></td>
 							<td class="depth5"></td>
 							<td class="state"></td>
 							<td class="link"><a href="html/" target="_blank">-</a></td>
 							<td class="end-date"></td>
-							<td class="modify"></td>
+							<td class="modify">tr 태그에 'del' 클래스 추가</td>
 						</tr>
-						<tr>
+						<tr class="notuse">
 							<td class="no"></td>
 							<td class="depth1"></td>
-							<td class="depth2"></td>
-							<td class="depth3" data-type="popup">페이지명</td>
+							<td class="depth2">미사용 화면</td>
+							<td class="depth3"></td>
 							<td class="depth4"></td>
 							<td class="depth5"></td>
 							<td class="state"></td>
 							<td class="link"><a href="html/" target="_blank">-</a></td>
 							<td class="end-date"></td>
-							<td class="modify"></td>
+							<td class="modify">tr 태그에 'notuse' 클래스 추가 / 참고용으로 유지 시</td>
+						</tr>
+						<tr>
+							<td class="no"></td>
+							<td class="depth1"></td>
+							<td class="depth2">포함된 화면</td>
+							<td class="depth3"></td>
+							<td class="depth4"></td>
+							<td class="depth5"></td>
+							<td class="state include"></td>
+							<td class="link"><a href="html/" target="_blank">-</a></td>
+							<td class="end-date"></td>
+							<td class="modify">상단 링크 화면에 포함된 레이어 및 기타 화면 표기 시 <br>진행상태 td 에 'include' 클래스 추가</td>
+						</tr>
+						<tr>
+							<td class="no"></td>
+							<td class="depth1"></td>
+							<td class="depth2">팝업</td>
+							<td class="depth3" data-type="layer">레이어(모달) 팝업</td>
+							<td class="depth4"></td>
+							<td class="depth5"></td>
+							<td class="state"></td>
+							<td class="link"><a href="html/" target="_blank">-</a></td>
+							<td class="end-date"></td>
+							<td class="modify">페이지명 표기한 td 에 data-type="layer" 속성 추가</td>
+						</tr>
+						<tr>
+							<td class="no"></td>
+							<td class="depth1"></td>
+							<td class="depth2"></td>
+							<td class="depth3" data-type="popup">시스템 팝업</td>
+							<td class="depth4"></td>
+							<td class="depth5"></td>
+							<td class="state"></td>
+							<td class="link"><a href="html/" target="_blank">-</a></td>
+							<td class="end-date"></td>
+							<td class="modify">페이지명 표기한 td 에 data-type="popup" 속성 추가</td>
 						</tr>
 					</tbody>
 				</table>
@@ -135,8 +211,8 @@
 					<caption>프로젝트 리스트</caption>
 					<colgroup>
 						<col style="width:50px"/>
-						<col style="width:9%" span="5"/>
-						<col style="width:8%"/>
+						<col style="width:10%" span="5"/>
+						<col style="width:80px"/>
 						<col style="width:auto"/>
 						<col style="width:100px"/>
 						<col style="width:auto"/>

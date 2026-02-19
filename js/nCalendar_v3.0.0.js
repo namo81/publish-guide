@@ -48,7 +48,7 @@
  *   - limit_end : 달력 선택제한 - 제한의 종료일
  *   - limit_range : 달력 선택제한 - 기간 선택 시 시작일-종료일 gap 최대값
  * 
- * 	 - this_date : 현재 달력의 1일 (date 값 - 연/월 추출용)
+ * 	 - this_date : 현재 달력의 1일 (date 값 - 연/월 추출용) - 항상 날짜는 1일로 설정 (이번달 - 다음달 간의 마기막 날 차이로 인한 오류 방지 : 1월 30일에 month + 1 할 경우 2월은 30일이 없으므로 바로 3월 30일로 넘어감.)
  *   - min_year : 달력 그리기 최소 연도
  *   - max_year : 달력 그리기 최대 연도
  * 
@@ -92,7 +92,7 @@ class n_calendar{
 		this.date_end;   // 주간, 기간일 경우 종료일 - 사용빈도 많음으로 별도 변수 선언
 		this.btn_dates; // 생성된 달력 내 날짜/월 버튼 전체 - 사용빈도 많음으로 별도 변수 선언
 
-		this.#_init_cal();
+		this._init_cal();
 	}
 
 	#activeShow = null; // 달력 보이기 시 콜백함수
@@ -134,6 +134,8 @@ class n_calendar{
 
 		if(merged_opt.gap_range) this.in_data.limit_range = merged_opt.gap_range;
 
+		if(merged_opt.in_page) merged_opt.tx_confirm = null;
+
 		if(typeof merged_opt.activeShow === 'function') this.#activeShow = merged_opt.activeShow;
 		if(typeof merged_opt.activeDraw === 'function') this.#activeDraw = merged_opt.activeDraw;
 		if(typeof merged_opt.activeClose === 'function') this.#activeClose = merged_opt.activeClose;
@@ -142,16 +144,16 @@ class n_calendar{
 	}
 
 	/** 달력 선언 시 초기화 함수 */
-	#_init_cal(){
-		this.#_inp_value_check();
-		this.#_limit_date_set()
-		this.#_create_cal_dom();
+	_init_cal(){
+		this._inp_value_check();
+		this._limit_date_set()
+		this._create_cal_dom();
 
-		this.option.in_page ? this._draw_cal() : this.#_wrap_set();
+		this.option.in_page ? this._draw_cal() : this._wrap_set();
 	}
 
 	/** input 영역 설정 (달력보기 및 key 관련) */
-	#_wrap_set(){
+	_wrap_set(){
 		let on_item;
 		if(this.option.show_type == null) {
 			on_item = createDom('button', 'btn-cal');
@@ -170,10 +172,11 @@ class n_calendar{
 	 * input 현재 값 상태 확인
 	 * @returns 값이 있을 경우 해당 input 의 값을 date_start / date_end 에 할당
 	 */
-	#_inp_value_check(){
+	_inp_value_check(){
 		this.doms.input_end = this.wrap.querySelector('.end');
 		if(this.input.value.length <= 0) {
 			this.in_data.this_date = new Date();
+			this.in_data.this_date.setDate(1); // 오늘 날짜가 다음달 날짜 최고값보다 높을 경우 월이 +2가 되는 현상 방지 (ex. 1월 30일 경우, 2월은 최대가 29일이라 getMonth()+1 할 경우 3월로 설정됨. )
 			return;
 		}
 		if(!this.option.range && this.option.type != 'week') {
@@ -198,17 +201,17 @@ class n_calendar{
 	}
 
 	/** year_range 에 따른 기본 최소/최대일 + limit 설정에 따른 gap 날짜 계산 실행 */
-	#_limit_date_set(){
+	_limit_date_set(){
 		this.in_data.limit_start = new Date(this.in_data.min_year, 0, 1);
 		this.in_data.limit_end = new Date(this.in_data.max_year, 11, 31);
 
 		if(!this.option.limit) return;
 		if(this.option.limit == 'after') {
-			this.in_data.limit_start = this.option.gap_limit ? this.#_calc_gap_date(this.in_data.today, this.option.gap_limit) : null;
-			this.in_data.limit_end = this.option.gap_today ? this.#_calc_gap_date(this.in_data.today, this.option.gap_today) : this.in_data.today;
+			this.in_data.limit_start = this.option.gap_limit ? this._calc_gap_date(this.in_data.today, this.option.gap_limit) : null;
+			this.in_data.limit_end = this.option.gap_today ? this._calc_gap_date(this.in_data.today, this.option.gap_today) : this.in_data.today;
 		} else {
-			this.in_data.limit_start = this.option.gap_today ? this.#_calc_gap_date(this.in_data.today, this.option.gap_today) : this.in_data.today;
-			this.in_data.limit_end = this.option.gap_limit ? this.#_calc_gap_date(this.in_data.today, this.option.gap_limit) : null;
+			this.in_data.limit_start = this.option.gap_today ? this._calc_gap_date(this.in_data.today, this.option.gap_today) : this.in_data.today;
+			this.in_data.limit_end = this.option.gap_limit ? this._calc_gap_date(this.in_data.today, this.option.gap_limit) : null;
 		}
 		this.in_data.min_year = this.in_data.limit_start ? this.in_data.limit_start.getFullYear() : Number(this.option.year_range.split(':')[0]);
 		this.in_data.max_year = this.in_data.limit_end ? this.in_data.limit_end.getFullYear() : Number(this.option.year_range.split(':')[1]);
@@ -220,7 +223,7 @@ class n_calendar{
 	 * @param {string} gap gap string 값 (0D / 0W / 0M / 0Y)
 	 * @returns date 기준으로 gap 만큼 계산된 날짜
 	 */
-	#_calc_gap_date(date, gap){
+	_calc_gap_date(date, gap){
 		let base_date = new Date(date),
 			unit = gap.slice(-1, gap.length),
 			num = Number(gap.substring(0, gap.length -1));
@@ -233,7 +236,7 @@ class n_calendar{
 	}
 
 	/** 달력 (this.doms.cal) 영역 생성 */
-	#_create_cal_dom(){
+	_create_cal_dom(){
 		this.doms.cal = createDom('div', 'n_cal');
 		this.doms.cal.setAttribute('tabindex', -1);
 		this.doms.cal.setAttribute('role', 'dialog');
@@ -251,13 +254,13 @@ class n_calendar{
 		tg.appendChild(this.doms.cal);
 
 		this.doms.cal_cnt = this.doms.cal.querySelector('.cal-cnt');
-		this.#_create_top(this.doms.cal_cnt);
+		this._create_top(this.doms.cal_cnt);
 
 		if(this.option.dual == true) {
 			let right_tx = '<div class="cal-cnt right"><div class="cal-top"></div><div class="cal-area"></div></div>';
 			this.doms.cal.insertAdjacentHTML('beforeend', right_tx);
 			this.doms.cal_cnt_right = this.doms.cal.querySelector('.cal-cnt.right');
-			this.#_create_top(this.doms.cal_cnt_right);
+			this._create_top(this.doms.cal_cnt_right);
 		}
 
 		this.doms.cal_btns = createDom('div', 'cal-btns');
@@ -274,7 +277,7 @@ class n_calendar{
 			this.doms.btn_confirm.textContent = this.option.tx_confirm;
 			this.doms.cal_btns.appendChild(this.doms.btn_confirm);
 			this.doms.btn_confirm.disabled = true;
-			this.doms.btn_confirm.addEventListener('click', this.#_inp_insert_select_date.bind(this));
+			this.doms.btn_confirm.addEventListener('click', this._inp_insert_select_date.bind(this));
 		}
 
 		// '닫기' 버튼 추가
@@ -286,11 +289,11 @@ class n_calendar{
 		}
 
 		if(this.option.controls == null) return;
-		this.#_create_pn_btn();
+		this._create_pn_btn();
 	}
 
 	/** cal-top 영역 생성 */
-	#_create_top(target){
+	_create_top(target){
 		let area = target.querySelector('.cal-top');
 		while (area.firstChild) area.removeChild(area.firstChild);
 
@@ -304,7 +307,7 @@ class n_calendar{
 		if(!this.in_data.check_month && this.option.controls == 'shift') {
 			this.doms.btn_shift = createDom('button', 'btn-shift');
 			area.appendChild(this.doms.btn_shift);
-			this.doms.btn_shift.addEventListener('click',  this.#_btn_shift_func.bind(this));
+			this.doms.btn_shift.addEventListener('click',  this._btn_shift_func.bind(this));
 			return;
 		} 
 		if(this.option.controls == 'all') {
@@ -352,7 +355,7 @@ class n_calendar{
 	}
 	
 	/** cal-top 영역 값 설정 */
-	#_cal_top_set(year, month, target){
+	_cal_top_set(year, month, target){
 		let area = target.parentNode.querySelector('.cal-top');
 		if(this.option.dual == true || this.option.controls == null || this.option.controls == 'btn') {
 			let tx_year = area.querySelector('.now-tx.year'),
@@ -383,7 +386,7 @@ class n_calendar{
 	}
 
 	/** 이전/다음 버튼 생성 및 삽입 */
-	#_create_pn_btn(){
+	_create_pn_btn(){
 		let btn_prev = createDom('button', 'cal-btn'),
 			btn_next = createDom('button', 'cal-btn');
 		btn_prev.classList.add('prev');
@@ -417,7 +420,7 @@ class n_calendar{
 
 	/** 달력 보이기 함수 */
 	cal_show(){
-		this.#_inp_value_check();
+		this._inp_value_check();
 		this.doms.cal.classList.add('show');
 		this._draw_cal();
 		if(this.option.position != 'modal') this._cal_set_position();
@@ -437,7 +440,7 @@ class n_calendar{
 
 	/** 달력 닫기 함수 */
 	cal_close(){
-		if(this.in_data.in_page) return;
+		if(this.option.in_page) return;
 		if(this.in_data.month_shift) {
 			this.in_data.month_shift = false;
 		}
@@ -448,14 +451,14 @@ class n_calendar{
 		if(this.#activeClose) this.#activeClose();
 	}
 
-	/** 달력 생성 함수 (조건에 따라 #_create_cal 실행) */
+	/** 달력 생성 함수 (조건에 따라 _create_cal 실행) */
 	_draw_cal(){
 		let year = this.in_data.this_date.getFullYear(),
 			month = this.in_data.this_date.getMonth(),
 			cnt_area = this.option.dual == true ? this.doms.cal_cnt_right.querySelector('.cal-area') : this.doms.cal_cnt.querySelector('.cal-area');
 		if(this.option.dual != true) {
-			if(this.in_data.check_month || this.in_data.month_shift) this.#_create_cal_mon(year, cnt_area);
-			else this.#_create_cal(year, month, cnt_area);
+			if(this.in_data.check_month || this.in_data.month_shift) this._create_cal_mon(year, cnt_area);
+			else this._create_cal(year, month, cnt_area);
 			if(this.#activeDraw) this.#activeDraw();
 			return;
 		}
@@ -464,11 +467,11 @@ class n_calendar{
 		left_date.setDate(1); // 31일 대응 : 31일에 getMonth() - 1 을 하면, 이전달이 아닌 해당월의 1일로 세팅되므로 기준일을 1일로 설정 후 월 변경.
 		left_date.setMonth(left_date.getMonth() - 1);
 		if(this.in_data.check_month) {
-			this.#_create_cal_mon(year - 1, this.doms.cal_cnt.querySelector('.cal-area'));
-			this.#_create_cal_mon(year, cnt_area);
+			this._create_cal_mon(year - 1, this.doms.cal_cnt.querySelector('.cal-area'));
+			this._create_cal_mon(year, cnt_area);
 		} else {
-			this.#_create_cal(left_date.getFullYear(), left_date.getMonth(), this.doms.cal_cnt.querySelector('.cal-area'));
-			this.#_create_cal(year, month, cnt_area);
+			this._create_cal(left_date.getFullYear(), left_date.getMonth(), this.doms.cal_cnt.querySelector('.cal-area'));
+			this._create_cal(year, month, cnt_area);
 		}
 		if(this.#activeDraw) this.#activeDraw();
 	}
@@ -479,12 +482,12 @@ class n_calendar{
 	 * @param {string} month 월
 	 * @param {dom} target 달력 그릴 영역
 	 */
-	#_create_cal(year, month, target){
+	_create_cal(year, month, target){
 		let firstYoil = new Date(year, month, 1).getDay(), // 해당 월 1일의 요일값
 			nalsu = new Date(year, month + 1, 0).getDate(), // 해당월의 일수 (지정된 달의 이전달의 마지막 날)
 			mon_tx = month + 1;
 
-		this.#_cal_top_set(year, month, target);
+		this._cal_top_set(year, month, target);
 
 		let str = "<table>";
 		str += "<caption>" + year + "년" + mon_tx + "월 달력</caption><thead><tr>";
@@ -516,15 +519,15 @@ class n_calendar{
 
 		this.btn_dates = this.doms.cal.querySelectorAll('td button');
 		if(this.option.dual) { // dual 일 경우 좌측 버튼에 대한 기능선언이 2번 되는 것 방지.
-			if(target.parentNode == this.doms.cal_cnt_right) this.option.range ? this.#_btn_dates_set_range() : this.#_btn_dates_set();
-		} else this.option.range ? this.#_btn_dates_set_range() : this.#_btn_dates_set();
+			if(target.parentNode == this.doms.cal_cnt_right) this.option.range ? this._btn_dates_set_range() : this._btn_dates_set();
+		} else this.option.range ? this._btn_dates_set_range() : this._btn_dates_set();
 
-		this.#_ctrl_limit_set(this.in_data.limit_start, this.in_data.limit_end);
-		if(this.in_data.range_ing && this.option.gap_range) this.#_ctrl_limit_set(this.date_start, this.in_data.limit_range);
+		this._ctrl_limit_set(this.in_data.limit_start, this.in_data.limit_end);
+		if(this.in_data.range_ing && this.option.gap_range) this._ctrl_limit_set(this.date_start, this.in_data.limit_range);
 
 		if(!this.date_start) return;
-		if(this.option.range || this.option.type == 'week' || this.in_data.range_ing) this.#_btn_active_set_range();
-		else this.#_btn_active_set('select');
+		if(this.option.range || this.option.type == 'week' || this.in_data.range_ing) this._btn_active_set_range();
+		else this._btn_active_set('select');
 	}
 
 	/**
@@ -532,8 +535,8 @@ class n_calendar{
 	 * @param {number} year 연도
 	 * @param {dom} target 달력 그릴 영역
 	 */
-	#_create_cal_mon(year, target) {
-		this.#_cal_top_set(year, null, target);
+	_create_cal_mon(year, target) {
+		this._cal_top_set(year, null, target);
 
 		let str = "<ul class='cal-month-list' title='"+year+"연도 월 선택'>";
 		for(let r=1; r < 13; r++){
@@ -545,19 +548,19 @@ class n_calendar{
 		
 		this.btn_dates = this.doms.cal.querySelectorAll('li button');
 		if(this.option.dual) { // dual 일 경우 좌측 버튼에 대한 기능선언이 2번 되는 것 방지.
-			if(target.parentNode == this.doms.cal_cnt_right) this.option.range ? this.#_btn_dates_set_range() : this.#_btn_dates_set();
-		} else this.option.range ? this.#_btn_dates_set_range() : this.#_btn_dates_set();
+			if(target.parentNode == this.doms.cal_cnt_right) this.option.range ? this._btn_dates_set_range() : this._btn_dates_set();
+		} else this.option.range ? this._btn_dates_set_range() : this._btn_dates_set();
 		
-		this.#_ctrl_limit_set(this.in_data.limit_start, this.in_data.limit_end);
-		if(this.in_data.range_ing && this.option.gap_range) this.#_ctrl_limit_set(this.date_start, this.in_data.limit_range);
+		this._ctrl_limit_set(this.in_data.limit_start, this.in_data.limit_end);
+		if(this.in_data.range_ing && this.option.gap_range) this._ctrl_limit_set(this.date_start, this.in_data.limit_range);
 
 		if(!this.date_start) return;
-		if(this.option.range || this.option.type == 'week' || this.in_data.range_ing) this.#_btn_active_set_range();
-		else this.#_btn_active_set('select');
+		if(this.option.range || this.option.type == 'week' || this.in_data.range_ing) this._btn_active_set_range();
+		else this._btn_active_set('select');
 	}
 
 	/** 설정된 일자를 input 에 입력 / 달력 닫기 */
-	#_inp_insert_select_date(){
+	_inp_insert_select_date(){
 		const convert_func = this.in_data.check_month ? convertToYM : convertToYMD;
 		let tx_start = convert_func(this.date_start, this.option.split_tx);
 
@@ -575,7 +578,7 @@ class n_calendar{
 	}
 
 	/** 버튼 선택 표시 - 단일형 */
-	#_btn_active_set(cls){
+	_btn_active_set(cls){
 		let start = this.date_start.getTime();
 		this.btn_dates.forEach((btn_date)=>{ 
 			btn_date.parentNode.className = '';
@@ -585,7 +588,7 @@ class n_calendar{
 	}
 
 	/** 버튼 선택 표시 - 기간형 */
-	#_btn_active_set_range(){
+	_btn_active_set_range(){
 		if(!this.date_start) return;
 		let start = this.date_start.getTime(),
 			end = this.date_end ? this.date_end.getTime() : null;
@@ -602,7 +605,7 @@ class n_calendar{
 	}
 
 	/** 일간 -> 월간 변환 버튼 기능 */
-	#_btn_shift_func(){
+	_btn_shift_func(){
 		this.in_data.month_shift = true;
 		this.doms.btn_confirm.disabled = true;
 		this._draw_cal();
@@ -621,11 +624,11 @@ class n_calendar{
 		}
 		this.date_start = start;
 		this.date_end = end;
-		this.#_btn_active_set_range();
+		this._btn_active_set_range();
 	}
 
 	/** 달력 날짜 버튼 클릭 시 적용 (단일) */
-	#_btn_dates_set(){
+	_btn_dates_set(){
 		this.btn_dates.forEach((btn)=>{
 			btn.addEventListener('click', ()=>{
 				let date_val = convertToDate(btn.dataset.date, this.option.split_tx);
@@ -633,19 +636,19 @@ class n_calendar{
 				if(this.option.type == 'week') this._calc_week_date(date_val);
 				else {
 					this.date_start = date_val;
-					this.#_btn_active_set('select');
+					this._btn_active_set('select');
 				}
 				if(this.in_data.month_shift) {
-					this.#_btn_dates_set_shift(date_val);
+					this._btn_dates_set_shift(date_val);
 					return;
 				}
-				this.option.tx_confirm == null ? this.#_inp_insert_select_date() : this.doms.btn_confirm.disabled = false;
+				this.option.tx_confirm == null ? this._inp_insert_select_date() : this.doms.btn_confirm.disabled = false;
 			});
 		});
 	}
 
 	/** shift 월달력 상태일 때 월 클릭 시 실행함수 */
-	#_btn_dates_set_shift(date){
+	_btn_dates_set_shift(date){
 		this.in_data.month_shift = false;
 		this.in_data.this_date = new Date(date);
 		this.in_data.this_date.setDate(1);
@@ -655,15 +658,15 @@ class n_calendar{
 	}
 
 	/** 달력 날짜 버튼 클릭 시 적용 (기간) */
-	#_btn_dates_set_range(){
+	_btn_dates_set_range(){
 		this.btn_dates.forEach((btn)=>{
-			btn.addEventListener('click', this.#_btn_range_set_click.bind(this));
-			btn.addEventListener('mouseover', this.#_btn_range_set_hover.bind(this));
+			btn.addEventListener('click', this._btn_range_set_click.bind(this));
+			btn.addEventListener('mouseover', this._btn_range_set_hover.bind(this));
 		});
 	}
 
 	/** 기간 달력일 경우 - 날짜 버튼 클릭 기능 (2회 클릭) */
-	#_btn_range_set_click(e){
+	_btn_range_set_click(e){
 		let btn = e.target,
 			date_btn = convertToDate(btn.dataset.date, this.option.split_tx);
 		if(this.date_start && this.date_end || !this.date_start && !this.date_end) {
@@ -671,8 +674,8 @@ class n_calendar{
 			this.in_data.range_ing = true;
 
 			this.date_start = date_btn;
-			this.#_btn_active_set('start');
-			if(this.option.gap_range) this.#_sel_range_gap_set();
+			this._btn_active_set('start');
+			if(this.option.gap_range) this._sel_range_gap_set();
 			return;
 		}
 		if(this.date_start && !this.date_end){
@@ -680,15 +683,15 @@ class n_calendar{
 				this.date_end = this.date_start;
 				this.date_start = date_btn;
 			} else this.date_end = date_btn;
-			this.#_btn_active_set_range();
-			if(this.option.gap_range) this.#_sel_range_gap_unset();
+			this._btn_active_set_range();
+			if(this.option.gap_range) this._sel_range_gap_unset();
 			this.in_data.range_ing = false;
-			this.option.tx_confirm == null ? this.#_inp_insert_select_date() : this.doms.btn_confirm.disabled = false;
+			this.option.tx_confirm == null ? this._inp_insert_select_date() : this.doms.btn_confirm.disabled = false;
 		}
 	}
 
 	/** 기간 달력일 경우 - 시작일 클릭 후 마우스 오버에 따른 중간 날짜 범위 표시 */
-	#_btn_range_set_hover(e){
+	_btn_range_set_hover(e){
 		if(!this.date_start) return; // 시작일이 있을 경우만 실행
 		let btn_hover = e.target,
 			this_date = convertToDate(btn_hover.dataset.date, this.option.split_tx).getTime(),
@@ -706,7 +709,7 @@ class n_calendar{
 	 * @param {date} start 제한시작일
 	 * @param {date} end 제한종료일
 	 */
-	#_ctrl_limit_set(start, end){
+	_ctrl_limit_set(start, end){
 		let start_num = start ? start.getTime() : null,
 			end_num = end ? end.getTime() : null;
 		this.btn_dates.forEach((btn)=>{
@@ -716,11 +719,11 @@ class n_calendar{
 			if(end_num != null && date_btn > end_num) btn.disabled = true;
 		});
 
-		this.in_data.check_month ? this.#_ctrl_limit_mon() : this.#_ctrl_limit_day();
+		this.in_data.check_month ? this._ctrl_limit_mon() : this._ctrl_limit_day();
 	}
 
 	/** 일간 달력 연/월 select 설정 + 이전/다음 버튼 제한 */
-	#_ctrl_limit_day(){
+	_ctrl_limit_day(){
 		let this_year = this.in_data.this_date.getFullYear(),
 			{ min_year, max_year } = this.in_data;
 		if(!this.option.dual && this.option.controls == 'all') this._sel_opt_hidden(this.doms.sel_month);
@@ -742,7 +745,7 @@ class n_calendar{
 	}
 
 	/** 월간 달력 이전/다음 버튼 제한 설정 */
-	#_ctrl_limit_mon(){
+	_ctrl_limit_mon(){
 		let this_year = this.in_data.this_date.getFullYear();
 		this.doms.btn_prev.disabled = false;
 		this.doms.btn_next.disabled = false;
@@ -751,17 +754,17 @@ class n_calendar{
 	}
 
 	/** 기간선택 - 시작일-종료일 선택가능 범위 설정 */
-	#_sel_range_gap_set(){
-		if(this.option.limit == 'after') this.in_data.limit_range = this.#_calc_gap_date(this.date_start, '-' + this.option.gap_range);
-		else this.in_data.limit_range = this.#_calc_gap_date(this.date_start, this.option.gap_range);
+	_sel_range_gap_set(){
+		if(this.option.limit == 'after') this.in_data.limit_range = this._calc_gap_date(this.date_start, '-' + this.option.gap_range);
+		else this.in_data.limit_range = this._calc_gap_date(this.date_start, this.option.gap_range);
 		
 		if(this.in_data.limit_range.getTime() > this.in_data.limit_end.getTime()) this.in_data.limit_range = new Date(this.in_data.limit_end);
-		this.#_ctrl_limit_set(this.date_start, this.in_data.limit_range);
+		this._ctrl_limit_set(this.date_start, this.in_data.limit_range);
 	}
 	/** 기간선택 - 시작일-종료일 선택가능 범위 해제 */
-	#_sel_range_gap_unset(){
-		if(this.option.limit) this.#_ctrl_limit_set(this.in_data.limit_start, this.in_data.limit_end);
-		else this.#_ctrl_limit_set();
+	_sel_range_gap_unset(){
+		if(this.option.limit) this._ctrl_limit_set(this.in_data.limit_start, this.in_data.limit_end);
+		else this._ctrl_limit_set();
 		this.in_data.limit_range = null;
 	}
 

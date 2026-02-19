@@ -119,16 +119,15 @@ class nlayer{
 
 	/** 레이어 보이기 */
 	show(){
-		setTimeout(()=>{ // alert / confirm 일 경우 show 클래스 관련 transition 적용을 위한 delay
-			this.data.layer.classList.add(this.option.clsShow);
-			this.data.layer.setAttribute('aria-modal', true);
+		void this.data.layer.offsetWidth; // alert / confirm 관련 (dom 요소 생성과 클래스 추가 사이에 강제 명령어를 줌으로써 transition 무시 제거)
+		this.data.layer.classList.add(this.option.clsShow);
+		this.data.layer.setAttribute('aria-modal', true);
 
-			let focus_tg = this.data.layer.querySelector('a, button, input, select, textarea');
-			
-			this.body_page_set();
-			focus_tg.focus(); // focus 로 인해 화면 밖 > 안으로 이동하는 모션 무시될 가능성 있음. 확인 필요 - 필요 시 transitionend 이벤트 추가 후 적용
-			if(typeof this.#activeShow === 'function') this.#activeShow();
-		}, 10)
+		let focus_tg = this.data.layer.querySelector('a, button, input, select, textarea');
+		
+		this.body_page_set();
+		focus_tg.focus(); // focus 로 인해 화면 밖 > 안으로 이동하는 모션 무시될 가능성 있음. 확인 필요 - 필요 시 transitionend 이벤트 추가 후 적용
+		if(typeof this.#activeShow === 'function') this.#activeShow();
 	}
 
 	/** 닫기 버튼 설정 */

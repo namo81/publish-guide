@@ -88,17 +88,16 @@ function nlayer(option){
 
 	/** 레이어 보기 */
 	function layerShow(){
-		setTimeout(function(){ // alert / confirm 일 경우 show 클래스 관련 transition 적용을 위한 delay
-			layer_arr.push(layer);
-			layer.dom.classList.add(clsShow);
-			layer.dom.setAttribute('aria-modal', true);
+		void tg_layer.offsetWidth;
+		layer_arr.push(layer);
+		layer.dom.classList.add(clsShow);
+		layer.dom.setAttribute('aria-modal', true);
 
-			let focus_tg = layer.dom.querySelector('a, button, input, select, textarea');
-			
-			pageSet();
-			focus_tg.focus(); // focus 로 인해 화면 밖 > 안으로 이동하는 모션 무시될 가능성 있음. 확인 필요 - 필요 시 transitionend 이벤트 추가 후 적용
-			if(typeof option.activeShow === 'function') option.activeShow();
-		}, 10)
+		let focus_tg = layer.dom.querySelector('a, button, input, select, textarea');
+		
+		pageSet();
+		focus_tg.focus(); // focus 로 인해 화면 밖 > 안으로 이동하는 모션 무시될 가능성 있음. 확인 필요 - 필요 시 transitionend 이벤트 추가 후 적용
+		if(typeof option.activeShow === 'function') option.activeShow();
 	}
 
 	/** 레이어 닫기 버튼 설정 */
