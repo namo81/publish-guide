@@ -19,33 +19,33 @@
  */
 
 function nCircleMenu(option){
-    var wrap        = typeof option.wrap === 'string' ? document.querySelector(option.wrap) : option.wrap,
+    let wrap        = typeof option.wrap === 'string' ? document.querySelector(option.wrap) : option.wrap,
         half        = wrap.offsetWidth / 2, // wrap  전체 너비의 절반 - pos 보정값
         menus       = option.menus ? wrap.querySelector(option.menus) : wrap.querySelector('.menus'),
         radius      = option.radius ? option.radius : 150,
         firstDeg    = option.firstDeg ? option.firstDeg : 90,
         activeEnd   = option.activeEnd;
 
-    var cnts        = menus.querySelectorAll('li'),
+    let cnts        = menus.querySelectorAll('li'),
         degGap;   // 요소별 간격 각도 (1번 - 2번 요소사이각)
 
-    var startDeg, // 클릭 시 각도
+    let startDeg, // 클릭 시 각도
         prevPos,  // 회전 중 직전의 사분면 번호
         nowPos;   // 회전 중 현재의 사분면 번호
 
-    var nowNum = 0,         // 현재 배너 번호
+    let nowNum = 0,         // 현재 배너 번호
         nowVal = firstDeg,  // 현재 및 마우스 up 이후 최종 각도
         prevVal = firstDeg; // 클릭 후 저장되는 클릭 전 최종 각도
 
-    var countR = 0; // 클릭 후 이동값이 360 이상일 경우 회전 횟수용 변수
+    let countR = 0; // 클릭 후 이동값이 360 이상일 경우 회전 횟수용 변수
 
     function setCntPos(gap){
         degGap  = 360 / cnts.length,
         btnW    = Number(cnts[0].offsetWidth / 2),
         btnH    = Number(cnts[0].offsetHeight / 2);
         
-        for(var i=0; i<cnts.length; i++){
-            var degArr = calcArcPos(degGap * i, gap);
+        for(let i=0; i<cnts.length; i++){
+            let degArr = calcArcPos(degGap * i, gap);
             cnts[i].style.left = degArr[0] - btnW + 'px';
             cnts[i].style.top = degArr[1] - btnH + 'px';
             cnts[i].setAttribute('data-num', i);
@@ -55,7 +55,7 @@ function nCircleMenu(option){
     setCntPos(radius);
 
     function calcArcPos(val, gap){
-        var radian      = ((val / 180) * Math.PI) - 3.14159265359,
+        let radian      = ((val / 180) * Math.PI) - 3.14159265359,
             resultArr   = new Array();
             resultArr[0] = Math.round(half + (gap * Math.cos(radian)));
             resultArr[1] = Math.round(half + (gap * Math.sin(radian)));
@@ -84,7 +84,7 @@ function nCircleMenu(option){
     }
 
     wrap.addEventListener('mousedown', function(e){
-        var xpos = e.target != wrap ? e.target.getBoundingClientRect().left + e.offsetX - wrap.offsetLeft : e.layerX,
+        let xpos = e.target != wrap ? e.target.getBoundingClientRect().left + e.offsetX - wrap.offsetLeft : e.layerX,
             ypos = e.target != wrap ? e.target.getBoundingClientRect().top + e.offsetY - wrap.offsetTop : e.layerY;
 
         startDeg = getAngle(half, half, xpos, ypos);
@@ -95,9 +95,9 @@ function nCircleMenu(option){
         setDurationOff();
         
         wrap.onEvent('mousemove', function(e){
-            var posx    = e.target != wrap ? e.target.getBoundingClientRect().left + e.offsetX - wrap.offsetLeft : e.layerX;
+            let posx    = e.target != wrap ? e.target.getBoundingClientRect().left + e.offsetX - wrap.offsetLeft : e.layerX;
                 posy    = e.target != wrap ? e.target.getBoundingClientRect().top + e.offsetY - wrap.offsetTop : e.layerY;
-            var nowDeg  = getAngle(half, half, posx, posy);
+            let nowDeg  = getAngle(half, half, posx, posy);
 
             if(nowPos != checkPos(nowDeg) || nowPos == null) {
                 prevPos = nowPos;
@@ -106,7 +106,7 @@ function nCircleMenu(option){
                 if(prevPos == 3 && nowPos == 2) countR++; // 회전 시 3사분면 > 2사분면 이동 시 회전횟수 1 증가
                 if(prevPos == 2 && nowPos == 3) countR--; // 회전 시 2사분면 > 3사분면 이동 시 회전횟수 1 감소
             }
-            var gap     = (nowDeg + (countR * 360)) - startDeg; // 클릭 후 총 이동각도 계산 = (현재 각도 + (360 회전수 * 360)) - 시작각도)
+            let gap     = (nowDeg + (countR * 360)) - startDeg; // 클릭 후 총 이동각도 계산 = (현재 각도 + (360 회전수 * 360)) - 시작각도)
 
             nowVal = prevVal + gap; // 현재 각도 계산식 = 이전 최종각도 + 클릭 후 이동각도
             setCntDeg();
@@ -115,12 +115,12 @@ function nCircleMenu(option){
 
     wrap.addEventListener('mouseup', function(e){
         wrap.removeListeners('mousemove');
-        var posDeg = (nowVal - firstDeg) % 360, // 최종각도를 360으로 나눈 나머지 - 0 ~ 360 사이의 현재 각도
+        let posDeg = (nowVal - firstDeg) % 360, // 최종각도를 360으로 나눈 나머지 - 0 ~ 360 사이의 현재 각도
             remain = posDeg % degGap; // posDeg 를 요소사이각으로 나눈 나머지 - 어느 요소에 가까운지 확인용
         
         nowNum = Math.floor((posDeg + (degGap/2)) / degGap); // posDeg 기준으로 현재 배너 number - 아래쪽에 후처리 필요.
 
-        var targetVal;
+        let targetVal;
         
         if(nowVal < firstDeg) { // 최종각도가 초기 각도보다 작을 경우 - posDeg 나 remain 이 음수
            if(remain < 0 && remain >= (degGap/2) * -1) targetVal = nowVal - remain;
@@ -140,14 +140,14 @@ function nCircleMenu(option){
     });
 
     function calcNowNum(num){
-        var chkNum = num;
+        let chkNum = num;
         chkNum < 0 ? chkNum = chkNum * -1 : chkNum;
         if(chkNum >= cnts.length) chkNum = 0;
         return chkNum;
     }
 
     function checkPos(deg){
-        var pos;
+        let pos;
         if(deg < 180 && deg >= 90) pos = 1;
         else if(deg < 90 && deg >= 0) pos = 2;
         else if(deg < 361 && deg >= 270) pos = 3;
@@ -156,7 +156,7 @@ function nCircleMenu(option){
     }
 
     function getAngle(x1, y1, x2, y2) {
-        var rad = Math.atan2(y2 - y1, x2 - x1);
+        let rad = Math.atan2(y2 - y1, x2 - x1);
         return ((rad*180)/Math.PI) + 180;
     }
 }

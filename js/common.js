@@ -11,10 +11,34 @@ function checkMobile() {
 	let mobileType = navigator.userAgent.toLowerCase();
 	if (mobileType.indexOf('android') > -1) {
 		return 'android';
-	} else if (mobileType.indexOf('iphone') > -1 || mobileType.indexOf('ipad') > -1 || mobileType.indexOf('ipod') > -1) {
+	} else if (mobileType.indexOf('iphone') > -1 || mobileType.indexOf('ipad') > -1 || mobileType.indexOf('ipod') > -1 || mobileType.indexOf('mac') > -1) {
 		return 'ios';
 	}
 };
+// ** 참고 : ipad 13 부터는 userAgent 에 'ipad' 문구 대신에 Macintosh 등으로 PC 와 비슷하게 표시됨. 때문에 'mac' 문구 추가
+
+/** ios 버전 추출 함수 */
+function getIOSVersion() {
+	const userAgent = navigator.userAgent;
+	const match = userAgent.match(/OS (\d+)_(\d+)_?(\d+)?/);
+	if (match) {
+		return [
+			match[1], // 메인 버전 (예: 15)
+			match[2], // 서브 버전 (예: 4)
+			match[3] || 0 // 패치 버전 (예: 1)
+		].join('.');
+	}
+	return null; // iOS가 아님
+}
+
+/**
+ * 브라우저가 화면을 그릴 준비가 될 때까지 기다리는 함수
+ */
+const waitRender = () => new Promise(resolve => {
+  requestAnimationFrame(() => {
+    requestAnimationFrame(resolve); // 2프레임을 기다려 확실히 렌더링을 보장
+  });
+})
 
 /** 화면이 현재 모니터에 보이고 있는지 체크하는 이벤트
 document.addEventListener("visibilitychange", ()=>{

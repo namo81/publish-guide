@@ -33,6 +33,13 @@ function layerHideAll() {
 	}
 }
 
+function visualViewport_chk(e){
+	let view = e.target.height;
+	let tg_sc = document.documentElement.scrollHeight - view;
+	document.documentElement.scrollTo({ left:0, top:tg_sc });
+}
+
+
 /** 레이어 팝업 */
 function nlayer(option){
 	const layer = this;
@@ -68,6 +75,7 @@ function nlayer(option){
 			
 		});		
 		bodyStyle.overflow = 'hidden';
+		body.style.height = '100%';
 		body.classList.add('hold');
 	}
 
@@ -75,7 +83,8 @@ function nlayer(option){
 	function pageUnset() {
 		if(layer_arr.length > 0) {
 			tabEle.forEach(function(ele){
-				if(ele.closest('.' + clsLayer + '.' + clsShow)) ele.removeAttribute('inert');
+				if(!ele.closest('.' + clsLayer)) return;
+				ele.removeAttribute('inert');
 			});
 			return;
 		}
@@ -86,12 +95,16 @@ function nlayer(option){
 
 	/** 레이어 닫기 (단순 닫기) */
 	function layerHide() {
+		let on_layers 	= document.querySelectorAll('.' + clsLayer + '.' + clsShow);
+
 		arr_del(layer_arr, layer);
 		layer.dom.classList.remove(clsShow);
-		layer.dom.removeAttribute('role');
+		layer.dom.removeAttribute('aria-modal');
+		if(window.visualViewport) window.visualViewport.removeEventListener('resize', visualViewport_chk);
 		pageUnset();
 
 		if(layer.btn_active == null) return;
+		layer.btn_active.setAttribute('aria-expanded', false);
 		setTimeout(function(){ // 모바일 talkback 상태일 경우 - pageUnset 와 focus 동시실행 관련 에러 해결
 			layer.btn_active.focus();
 			layer.btn_active = null;
@@ -101,7 +114,7 @@ function nlayer(option){
 	/** 레이어 닫기 (close) */
 	function layerHideClose(){
 		layerHide();
-		if(typeof option.activeClose === 'function') option.activeClose();
+		if(typeof option.activeClose === 'function') option.activeClose(layer.dom);
 	}
 	/** 레이어 닫기 (confirm) */
 	function layerHideConfirm(){
@@ -112,17 +125,16 @@ function nlayer(option){
 
 	/** 레이어 보기 */
 	function layerShow(){
-		if(typeof option.activeShowBefore === 'function') option.activeShowBefore();
-		void tg_layer.offsetWidth;
+		if(typeof option.activeShowBefore === 'function') option.activeShowBefore(layer.dom);
+		void layer.dom.offsetWidth;
 		layer_arr.push(layer);
 		layer.dom.classList.add(clsShow);
-
-		let focus_item = layer.dom.querySelector('a, button, input, select, textarea');
+		layer.dom.setAttribute('aria-modal', true);
 		
 		pageSet();
-		focus_item.focus(); // focus 로 인해 화면 밖 > 안으로 이동하는 모션 무시될 가능성 있음. 확인 필요 - 필요 시 transitionend 이벤트 추가 후 적용
-		if(typeof option.activeShow === 'function') option.activeShow();
-
+		if(window.visualViewport) window.visualViewport.addEventListener('resize', visualViewport_chk); // viewport 체크 기능 적용
+		if(layer.btn_active != null) layer.btn_active.setAttribute('aria-expanded', true);
+		if(typeof option.activeShow === 'function') option.activeShow(layer.dom);
 	}
 
 	/** 레이어 닫기 버튼 설정 */
@@ -160,7 +172,7 @@ function nlayer(option){
 		});
 	}
 
-	if(typeof option.activeOn === 'function') option.activeOn();
+	if(typeof option.activeOn === 'function') option.activeOn(layer.dom);
 
 	/** 외부호출함수 - 레이어 보이기 */
 	layer.show = function(){

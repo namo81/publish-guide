@@ -10,7 +10,7 @@ GNB / 기타 메뉴 및 header 영역이 화면 위에 위치할 경우: 1000
 레이어팝업 : 5000
 */
 
-* { margin:0; padding:0; }
+* { margin:0; padding:0; -webkit-text-size-adjust:100%;; text-size-adjust:100%;; }
 html { font-size:12px; line-height:1.5em; min-width:320px; }
 body * { font-family:'Noto Sans KR', '맑은 고딕', '돋움',Dotum,AppleGothic,sans-serif; box-sizing:border-box; } /* PC */
 /* body * { font-family:Roboto,'Droid Sans',AppleSDGothicNeo,Helvetica,sans-serif; box-sizing:border-box; } Mobile */
@@ -43,7 +43,7 @@ caption { height: 1px; overflow: hidden; line-height: 0; margin-top: -1px; color
 
 html, body { height:100%; }
 body.hold { touch-action:none; -webkit-overflow-scrolling:none; overflow:hidden; } /* ios 스크롤방지설정 */
-/* body.hold-fixed { position:fixed !important; width:100%; top:0; left:0; } 모바일용 : ios 용 설정 - scroll 있는 화면의 layer 에 input 을 focus 시 keypad 로 인한 강제 스크롤 방지 */
+body.hold-fixed { position:fixed !important; width:100%; top:0; left:0; } /* 모바일용 : ios 용 설정 - scroll 있는 화면의 layer 에 input 을 focus 시 keypad 로 인한 강제 스크롤 방지 */
 #top,
 #btm { position:relative; flex-shrink:0; z-index:100; }
 #top { height:100px; background:#e5e5e5; }
@@ -191,7 +191,7 @@ select option { color:#000 }
 .inp-time .btn-open { position:absolute; width:100%; height:100%; top:0; left:0; opacity:0; z-index:1; }
 
 /* button =============================================================== */
-.btn { display:inline-flex; align-items:center; gap:4px; font-size:12px; line-height:24px; background:#555; color:#fff; box-sizing:border-box; border-radius:4px; vertical-align:middle; }
+.btn { display:inline-flex; justify-content:center; align-items:center; gap:4px; font-size:12px; line-height:24px; background:#555; color:#fff; box-sizing:border-box; border-radius:4px; vertical-align:middle; }
 .btn.xlarge { height:50px; padding:5px 30px; font-size:20px; line-height:40px; }
 .btn.large { height:40px; padding:5px 22px; font-size:16px; line-height:30px; }
 .btn.medium { height:34px; padding:5px 16px; font-size:12px; line-height:24px; }
@@ -284,12 +284,20 @@ select option { color:#000 }
 
 /* layer-pop - v4.0 이상 =============================================================== */
 .layer-pop,
-.layer { position:fixed; display:none; width:100%; height:100%; top:0; left:0; background:rgba(0,0,0,.8); overflow-x:hidden; overflow-y:auto; backdrop-filter:blur(8px); z-index:1000;}
+.layer { position:fixed; display:block; visibility:hidden; width:100%; height:100%; top:0; left:0; background:rgba(0,0,0,.8); overflow:hidden; backdrop-filter:blur(4px); opacity:0; transition:.2s opacity; transform:translate3d(0, 100%, 0); z-index:1000; }
 .layer > .inbox { display:flex; align-items:center; height:calc(100% - 60px); margin:30px; }
 .layer-cnt { position:relative; display:flex; flex-direction:column; width:700px; max-height:100%; margin:auto; padding:25px; background:#fff; box-sizing:border-box;}
 .layer-top { position:relative; height:50px; flex-basis:50px; flex-shrink:0; }
 .layer-mid { flex:1 1 auto; overflow-y:auto; }
-.layer.show { display:block; }
+.layer.show { visibility:visible; transform:translate3d(0,0,0); opacity:1; }
+
+.layer.btm { top:auto; bottom:0; }
+.layer.btm > .inbox { align-items:flex-end; height:100%; margin:0; }
+.layer.btm .layer-cnt { width:100%; margin:0; }
+
+.layer.direct { transition:none; } /* 레이어 팝업 오픈 후 특정 input 에 focus 가 바로 되어야 할 경우 필수 클래스 (transition 제거로 인해 keypad 모션과의 충돌 제거) */
+
+.layer .btn-close { position:absolute; top:18px; right:15px; width:30px; height:30px; text-indent:-9999px; background:#fff url(../images/ico_x.svg) no-repeat center center / 16px auto; }
 
 /* 알럿 및 confirm 스타일용
 .layer.alert {  }

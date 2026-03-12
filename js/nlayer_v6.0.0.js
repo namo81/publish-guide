@@ -24,6 +24,12 @@ function layerHideAll() {
 	}
 }
 
+function visualViewport_chk(e){
+	let view = e.target.height;
+	let tg_sc = document.documentElement.scrollHeight - view;
+	document.documentElement.scrollTo({ left:0, top:tg_sc });
+}
+
 /** 레이어 팝업 */
 function nlayer(option){
 	const layer = this;
@@ -81,6 +87,7 @@ function nlayer(option){
 		arr_del(layer_arr, layer);
 		layer.dom.classList.remove(clsShow);
 		layer.dom.removeAttribute('aria-modal');
+		if(window.visualViewport) window.visualViewport.removeEventListener('resize', visualViewport_chk);
 		pageUnset();
 		if(focus_item) focus_item.focus();
 		if(typeof option.activeClose === 'function') option.activeClose();
@@ -96,6 +103,7 @@ function nlayer(option){
 		let focus_tg = layer.dom.querySelector('a, button, input, select, textarea');
 		
 		pageSet();
+		if(window.visualViewport) window.visualViewport.addEventListener('resize', visualViewport_chk); // viewport 체크 기능 적용
 		focus_tg.focus(); // focus 로 인해 화면 밖 > 안으로 이동하는 모션 무시될 가능성 있음. 확인 필요 - 필요 시 transitionend 이벤트 추가 후 적용
 		if(typeof option.activeShow === 'function') option.activeShow();
 	}

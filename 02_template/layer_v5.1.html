@@ -4,7 +4,8 @@
 <head>
 	<meta charset="UTF-8" >
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<meta name="viewport" content="user-scalable=yes, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, width=device-width">
+	<meta name="viewport" content="user-scalable=yes, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, width=device-width, interactive-widget=resizes-content, viewport-fit=cover">
+    <meta name="format-detection" content="telephone=no, address=no, email=no">
 	<meta name="author" content="seonamho - SK MNS" >
 	<meta name="description" content="">
 	<meta name="keywords" content="Site Template">
@@ -24,12 +25,37 @@
 
 	<!-- 프로젝트 관련 CSS 및 JS 파일 로드 -->
 	<link rel="stylesheet" href="/css/layout.css" media="screen, print" />
+	<style>
+		.layer .mark { position:absolute; right:0; display:inline-block; padding:5px; background-color:#000; color:#fff; }
+		.layer .mark.top { top:0; }
+		.layer .mark.middle { top:50%; }
+		.layer .mark.btm { bottom:0; }
+
+		.test-tx { position:fixed; display:none; width:170px; top:60%; left:0; padding:10px; background-color:rgba(0,0,0,.8);z-index:10000; }
+		.test-tx .tx { color:#fff; }
+	</style>
 </head>
-<body>
+<body class="pub-guide">
 	<div id="work-list">
 		<div class="guide">
 			<section id="guide-basic">
-				<h2 class="guide-sec-tit">레이어(v5.0)</h2>
+				<h2 class="guide-sec-tit">레이어(v5.1) _ 모바일 테스트용</h2>
+				<div class="guide-sec">
+					<h3 class="guide-stit">레이어 웹접근성 속성 정리</h3>
+					<h4 class="guide-sstit">버튼</h4>
+					<p><b>aria-haspopup="dialog"</b> 속성 필수</p>
+					<p><b>aria-controls="레이어ID"</b> 속성 필요</p>
+					<p><b>aria-expanded="true(레이어 열림) / false(레이어 닫힘)"</b> 속성 필요</p>
+					<p>만약, 닫기용 버튼 내부에 텍스트 없이 아이콘만 있다면, <b>aria-label="닫기"</b> 속성 추가</p>
+
+					<h4 class="guide-sstit">레이어</h4>
+					<p><b>role="dialog"</b> 속성 필수</p>
+					<p><b>aria-labelledby="레이어 타이틀"</b> 속성 필요</p>
+					<p><b>aria-modal="true(레이어 열림) / false(레이어 닫힘)"</b> 속성 필요</p>
+					
+					<h4 class="guide-sstit">바탕화면</h4>
+					<p><b>aria-hidden="true"</b> 속성 필요(레이어 오픈 시) / 레이어 닫기 시 제거</p>
+				</div>
 				<div class="guide-sec">
 					<h3 class="guide-stit">레이어</h3>
 					<p>레이어 팝업별로 new nlayer 을 통해 ojbect 생성</p>
@@ -246,46 +272,66 @@ btn_toast2.addEventListener('click', function(){
 		</div>
 	</div>
 
-	<!-- 레이어팝업 영역 ----------------------------------------------------------- -->
-	<!-- layerPop - 1 -->
-	<div class="layer" id="layer1">
-		<div class="inbox">
-			<div class="layer-cnt">
-				<div class="layer-top"><p class="layer-title">test</p></div>
-				<div class="layer-mid">
-					<p>tx</p>
-					<p style="border-bottom:1px solid #eee;">tx</p><br>
-					<button type="button" data-target="layer2" class="btn01 open-layer2">레이어팝업</button><br>
-					<p>tx</p>
-					<p>tx</p>
-					<p>tx</p>
-					<p>tx</p>
-					<p>tx</p>
-					<input type="text">
-				</div>
-				<button type="button" class="confirm">확인</button>
-				<button type="button" class="close-layer">닫기</button>
-			</div>
-		</div>
+	<div class="test-tx">
+		<p class="tx window-height">window height : <span></span></p>
+		<p class="tx window-scrollY">window scrollY : <span></span></p>
+		<p class="tx vs-height">vs height : <span></span></p>
+		<p class="tx vs-pageTop">vs pageTop : <span></span></p>
+		<p class="tx vs-offsetTop">vs offsetTop : <span></span></p>
 	</div>
 
-	<!-- layerPop - 2 -->
-	<div class="layer" id="layer2">
+	<!-- 레이어팝업 영역 ----------------------------------------------------------- -->
+	<!-- layerPop - 1 -->
+	<div class="layer direct" id="layer1">
 		<div class="inbox">
 			<div class="layer-cnt">
 				<div class="layer-top"><p class="layer-title">test</p></div>
 				<div class="layer-mid">
-					<button type="button" class="close-layer all">전체닫기</button>
+					<p>tx</p>
+					<p class="size"></p>
+					<p style="border-bottom:1px solid #eee;">tx</p><br>
+					<button type="button" data-target="layer2" class="btn01 open-layer2">레이어팝업</button><br>
+					<input type="number" class="input-box" inputmode="numeric">
+					<p>tx</p>
+					<p>tx</p>
+					<p>tx</p>
+					<input type="number" class="input-box" inputmode="numeric">
+					<p>tx</p>
+					<p>tx</p>
+					<p>tx</p>
 				</div>
-				<button type="button" class="close-layer">닫기</button>
+				<button type="button" class="btn medium confirm">확인</button>
+				<button type="button" class="btn-close close-layer">닫기</button>
 			</div>
 		</div>
+		<p class="mark top">Top</p>
+		<p class="mark middle">middle</p>
+		<p class="mark btm">btm</p>
 	</div>
 
 	<script src="/js/common.js"></script>
-	<script src="/js/nlayer_v5.1.0.js"></script>
+	<script src="/js/nlayer_v5.1.1.js"></script>
 	<script>
-		hljs.initHighlightingOnLoad(); 
+		hljs.initHighlightingOnLoad();
+
+		let tx_w_height = document.querySelector('.window-height'),
+			tx_w_scroll = document.querySelector('.window-scrollY'),
+			tx_vs_height = document.querySelector('.vs-height'),
+			tx_vs_pageTop = document.querySelector('.vs-pageTop'),
+			tx_vs_offsetTop = document.querySelector('.vs-offsetTop');
+
+		function tx_set(){
+			tx_w_height.querySelector('span').textContent = parseInt(window.innerHeight);
+			tx_w_scroll.querySelector('span').textContent = parseInt(window.scrollY);
+			tx_vs_height.querySelector('span').textContent = parseInt(visualViewport.height);
+			tx_vs_pageTop.querySelector('span').textContent = parseInt(visualViewport.pageTop);
+			tx_vs_offsetTop.querySelector('span').textContent = parseInt(visualViewport.offsetTop);
+		}
+
+		window.addEventListener('resize', tx_set);
+		window.addEventListener('scroll', tx_set);
+		//visualViewport.addEventListener('scroll', tx_set);
+
 
 		let layer_test = new nlayer({
 			layer : '#layer1',
@@ -296,7 +342,8 @@ btn_toast2.addEventListener('click', function(){
 			activeShowBefore : function(){
 				console.log('show before');
 			},
-			activeShow : function(){
+			activeShow : function(layer){
+				//layer.querySelector('.input-box').focus();
 				console.log('show');
 			},
 			activeClose : function(){
@@ -312,14 +359,6 @@ btn_toast2.addEventListener('click', function(){
 					}
 				});
 			}
-		});
-
-		let layer_test2 = new nlayer({
-			layer : '#layer2',
-			btn : '.open-layer2',
-			activeShowBefore : function(){
-				console.log(layer_test2);
-			},
 		});
 
 		let btn_alert = document.querySelector('.open-alert');

@@ -5,6 +5,7 @@
 	<meta charset="UTF-8" >
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="user-scalable=yes, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, width=device-width">
+    <meta name="format-detection" content="telephone=no, address=no, email=no">
 	<meta name="author" content="seonamho - SK MNS" >
 	<meta name="description" content="">
 	<meta name="keywords" content="Site Template">
@@ -15,7 +16,7 @@
 	<meta property="og:url" content="">
 	<link rel="shortcut icon" href="data:;base64,iVBORwOKGO=" />
 
-	<title>레이어 팝업(v6) | 가이드</title>
+	<title>레이어 팝업(v5) | 가이드</title>
 
 	<!-- 가이드 관련 -->
 	<link rel="stylesheet" href="../guide/list-guide.css" media="screen, print" />
@@ -29,7 +30,7 @@
 	<div id="work-list">
 		<div class="guide">
 			<section id="guide-basic">
-				<h2 class="guide-sec-tit">레이어(v6.0)</h2>
+				<h2 class="guide-sec-tit">레이어(v5.0)</h2>
 				<div class="guide-sec">
 					<h3 class="guide-stit">레이어 웹접근성 속성 정리</h3>
 					<h4 class="guide-sstit">버튼</h4>
@@ -51,14 +52,16 @@
 					<p>레이어 팝업별로 new nlayer 을 통해 ojbect 생성</p>
 					<p>option 항목은 아래 script 부분 확인</p>
 					<p>닫기 버튼에 'all' 클래스 있을 경우 - 현재 열린 모든 레이어 닫기 (별도 콜백함수 실행X)</p>
-					<p>v6 : 기존 v5 에서 버튼 관련 자동설정 및 연결 기능 제거 / active 콜백함수 정리 - 레이어를 show/hide 기능 위주로 기능 단순화</p>
 					<div class="guide-show">
 						<!-- 코드 작성 -->
-						<button type="button" class="btn medium open-layer1" aria-haspopup="dialog" aria-controls="#layer1">팝업 호출</button> <br /><br />
+						<button type="button" class="btn medium open-layer">팝업 호출</button> <br /><br />
+						<button type="button" class="btn medium open-layer">팝업 호출2</button> <br /><br />
+						<button type="button" class="btn medium open-layer">팝업 호출3</button>
 						<!-- // 코드 작성 -->
 					</div>
-					<h4 class="guide-sstit">css</h4>
-<pre><code class="css ">.layer { position:fixed; display:none; width:100%; height:100%; top:0; left:0; background:rgba(0,0,0,.8); overflow-x:hidden; overflow-y:auto; z-index:1000; }
+<h4 class="guide-sstit">css</h4>
+<pre><code class="css ">.layer-pop,
+.layer { position:fixed; display:none; width:100%; height:100%; top:0; left:0; background:rgba(0,0,0,.8); overflow-x:hidden; overflow-y:auto; z-index:1000; }
 .layer > .inbox { display:flex; align-items:center; height:calc(100% - 60px); margin:30px; }
 .layer-cnt { position:relative; display:flex; flex-direction:column; width:700px; max-height:100%; margin:auto; padding:25px; background:#fff; box-sizing:border-box;}
 .layer-top { position:relative; height:50px; flex-basis:50px; flex-shrink:0; }
@@ -66,44 +69,20 @@
 .layer.show { display:block; }
 </code></pre>
 
-					<h4 class="guide-sstit">호출버튼</h4>
-					<p>aria-haspopup="dialog" / aria-controls="#대상 레이어 id" 속성 필수</p>
-<pre><code class="html">&lt;button type="button" class="btn medium open-layer1" aria-haspopup="dialog" aria-controls="#layer1"&gt;팝업 호출&lt;/button&gt;
+<h4 class="guide-sstit">호출버튼</h4>
+<pre><code class="html">&lt;button type="button" class="btn medium open-layer"&gt;팝업 호출&lt;/button&gt;
+&lt;button type="button" class="btn medium open-layer"&gt;팝업 호출2&lt;/button&gt;
+&lt;button type="button" class="btn medium open-layer"&gt;팝업 호출3&lt;/button&gt;
 </code></pre>
 
 <h4 class="guide-sstit">팝업 html 구조</h4>
-<pre><code class="html">&lt;!-- 레이어 1 --&gt;
-&lt;div class="layer" id="layer1"&gt;
+<pre><code class="html">&lt;div class="layer" id="layer id"&gt;
 	&lt;div class="inbox"&gt;
 		&lt;div class="layer-cnt"&gt;
-			&lt;div class="layer-top"&gt;
-				&lt;p class="layer-title"&gt;test&lt;/p&gt;
-			&lt;/div&gt;
+			&lt;div class="layer-top"&gt;&lt;p class="layer-title"&gt;test&lt;/p&gt;&lt;/div&gt;
 			&lt;div class="layer-mid"&gt;
-				&lt;p&gt;tx&lt;/p&gt;
-				&lt;p style="border-bottom:1px solid #eee;"&gt;tx&lt;/p&gt;&lt;br&gt;
-				&lt;button type="button" data-target="layer2" class="btn01 open-layer2" aria-haspopup="dialog" aria-controls="#layer2"&gt;레이어팝업&lt;/button&gt;&lt;br&gt;
-				&lt;p&gt;tx&lt;/p&gt;
-				&lt;p&gt;tx&lt;/p&gt;
-				&lt;p&gt;tx&lt;/p&gt;
-				&lt;p&gt;tx&lt;/p&gt;
-				&lt;p&gt;tx&lt;/p&gt;
-				&lt;input type="text"&gt;
-			&lt;/div&gt;
-			&lt;button type="button" class="confirm"&gt;확인&lt;/button&gt;
-			&lt;button type="button" class="close-layer"&gt;닫기&lt;/button&gt;
-		&lt;/div&gt;
-	&lt;/div&gt;
-&lt;/div&gt;
+				&lt;!-- 컨텐츠 영역 --&gt;
 
-&lt;!-- 레이어 2 --&gt;
-&lt;div class="layer" id="layer2"&gt;
-	&lt;div class="inbox"&gt;
-		&lt;div class="layer-cnt"&gt;
-			&lt;div class="layer-top"&gt;
-				&lt;p class="layer-title"&gt;test2&lt;/p&gt;
-			&lt;/div&gt;
-			&lt;div class="layer-mid"&gt;
 				&lt;button type="button" class="close-layer all"&gt;전체닫기&lt;/button&gt;
 				&lt;button type="button" class="confirm"&gt;확인&lt;/button&gt;
 			&lt;/div&gt;
@@ -112,48 +91,35 @@
 	&lt;/div&gt;
 &lt;/div&gt;</code></pre>
 
-					<h4 class="guide-sstit">script</h4>
-					<p>option 항목 확인</p>
-					<ul>
-						<li>- layer : 대상 레이어 선택자 ( type : string ) ( 예시 : '#layer1' ) <strong class="tx-red">필수</strong></li>
-						<li>- title : 레이어 타이틀 ( type : string ) - aria-labelledby 설정용 <br>레이어 내에 '.layer-title' 요소가 있을 경우 불필요 / 없을 경우 필수</li>
-					</ul><br><br>
-<pre><code class="js">/** 레이어 옵션
-* layer : 대상 레이어 선택자 ( type : string ) -- 필수
-* title : 레이어 타이틀
-* activeShow : 레이어 show 완료 후 실행되는 콜백함수
-* activeClose : 레이어 close 완료 후 실행되는 콜백함수
-*
-* 선언변수.dom : 레이어 html dom 요소
-* 선언변수.show() : 레이어 show
-* 선언변수.hide() : 레이어 hide
-* 선언변수.state() : 레이어 show/hide 상태 반환 (true / false)
-*/
-
-let btn_open1 = document.querySelector('.open-layer1'); // 레이어1 호출버튼
-// 레이어1 선언
-let layer_test = new nlayer({
+<h4 class="guide-sstit">script</h4>
+<p>option 항목 확인</p>
+<ul>
+	<li>- <strong class="tx-red">필수</strong> : layer : 대상 레이어 선택자 ( type : string ) ( 예시 : '#layer1' )</li>
+	<li>- btn : 레이어 호출 버튼 ( type : string ) ( 예시 : '.layer-open' ) <br>
+		&nbsp; 동일 클래스가 여러개 있을 경우 모두 적용
+	</li>
+	<li>- activeOn : 레이어 기능 설정 후 콜백함수 ( layer ) 이 파라미터로 제공됨</li>
+	<li>- activeShowBefore : 레이어 호출 전 실행 콜백함수 ( layer, 호출버튼 ) 이 파라미터로 제공됨</li>
+	<li>- activeShow : 레이어 호출 후 실행 콜백함수 ( layer, 호출버튼 ) 이 파라미터로 제공됨</li>
+	<li>- activeClose : 레이어 닫기 후 실행 콜백함수 ( layer, 호출버튼 ) 이 파라미터로 제공됨</li>
+	<li>- activeConfirm : 레이어 확인 후 실행 콜백함수 ( layer, 호출버튼 ) 이 파라미터로 제공됨</li>
+</ul><br><br>
+<pre><code class="js">let layer_test = new nlayer({
 	layer : '#layer1',
-	focus_item : btn_open1,
-	activeShow : function(){ console.log('show!!') }
+	btn : '.open-layer',
+	activeShowBefore : function(layer, btn){
+		console.log('show before');
+	},
+	activeShow : function(layer, btn){
+		console.log('show');
+	},
+	activeClose : function(layer, btn){
+		console.log('close');
+	},
+	activeConfirm : function(layer, btn) {
+		console.log('confirm')
+	}
 });
-btn_open1.addEventListener('click', ()=>{
-	layer_test.show();
-})
-
-let btn_open2 = document.querySelector('.open-layer2'); // 레이어2 호출버튼
-// 레이어2 선언
-let layer_test2 = new nlayer({
-	layer : '#layer2',
-	focus_item : btn_open2
-});
-btn_open2.addEventListener('click', ()=>{
-	layer_test2.show();
-})
-
-// 전체 닫기
-let btn_close_all = document.querySelector('.close-layer-all');
-btn_close_all.addEventListener('click', layerHideAll);
 </code></pre>
 				</div>
 
@@ -168,30 +134,30 @@ btn_close_all.addEventListener('click', layerHideAll);
 					<ul>
 						<li>- ment : 내용 ( type : string ) <strong class="tx-red">필수</strong></li>
 						<li>- title : 타이틀 ( type : string )</li>
+						<li>- focus_item : 창 닫은 후 focus 될 요소 ( type : string or dom )</li>
 						<li>- btnTx : 버튼 텍스트 ( type : string )</li>
 						<li>- active : 확인 후 실행할 함수 ( type : function )</li>
-						<li>- focus_item : 창 닫은 후 focus 될 요소 ( type : string &amp; dom )</li>
 					</ul>
-					<p>호출 버튼에 aria-haspopup="alertdialog" 속성 필수</p>
 					<div class="guide-show">
 						<!-- 코드 작성 -->
-						<button type="button" class="btn medium open-alert" aria-haspopup="alertdialog">알럿 호출</button>
+						<button type="button" class="btn medium open-alert">알럿 호출</button>
 						<!-- // 코드 작성 -->
 					</div>
-<pre><code class="html">&lt;button type="button" class="btn medium open-alert" aria-haspopup="alertdialog"&gt;알럿 호출&lt;/button&gt;</code></pre>
+<pre><code class="html">&lt;button type="button" class="btn medium open-alert"&gt;알럿 호출&lt;/button&gt;</code></pre>
 
 <pre><code class="js">/** 알럿 기능 
 * nlayerAlert(option);
 * ment : 문구 (필수)
 * title : 타이틀
+* focus_item : 팝업 닫기 후 focus 될 요소 지정
 * btnTx : 버튼 텍스트 - 없을 경우 '확인'
 * active : 확인 클릭 시 실행함수
-* focus_item : 확인 후 focus 될 요소
 */
 
 let btn_alert = document.querySelector('.open-alert');
 btn_alert.addEventListener('click', function(){
 	nlayerAlert({
+		btn : this,
 		ment : '테스트 알럿 입니다.', 
 		title : '타이틀', 
 		focus_item : btn_alert,
@@ -213,30 +179,29 @@ btn_alert.addEventListener('click', function(){
 					<ul>
 						<li>- ment : 내용 ( type : string ) <strong class="tx-red">필수</strong></li>
 						<li>- title : 타이틀 ( type : string )</li>
+						<li>- focus_item : 창 닫은 후 focus 될 요소 ( type : string or dom )</li>
 						<li>- activeConfirm : 확인 시 실행할 함수 ( type : function )</li>
 						<li>- activeCancel : 취소 시 실행할 함수 ( type : function )</li>
 						<li>- btnTxConfirm : 확인 버튼 텍스트 ( type : string )</li>
 						<li>- btnTxCancel : 취소 버튼 텍스트 ( type : string )</li>
-						<li>- focus_item : 창 닫은 후 focus 될 요소 ( type : string &amp; dom )</li>
 					</ul>
-					<p>호출 버튼에 aria-haspopup="alertdialog" 속성 필수</p>
 					<div class="guide-show">
 						<!-- 코드 작성 -->
-						<button type="button" class="btn medium open-confirm" aria-haspopup="alertdialog">컨펌 호출</button>
+						<button type="button" class="btn medium open-confirm">컨펌 호출</button>
 						<!-- // 코드 작성 -->
 					</div>
-<pre><code class="html ">&lt;button type="button" class="btn medium open-confirm" aria-haspopup="alertdialog"&gt;컨펌 호출&lt;/button&gt;
+<pre><code class="html ">&lt;button type="button" class="btn medium open-confirm"&gt;컨펌 호출&lt;/button&gt;
 </code></pre>
 
 <pre><code class="js">/** 컨펌 기능 
 * nlayerConfirm(option);
 * ment : 문구 (필수)
 * title : 타이틀
+* focus_item : 팝업 닫기 후 focus 될 요소 지정
 * btnTxConfirm : 컨펌 버튼 텍스트 - 없을 경우 '확인'
 * btnTxCancel : 취소 버튼 텍스트 - 없을 경우 '취소'
 * activeConfirm : 컨펌버튼 클릭 시 실행함수
 * activeCancel : 취소버튼 클릭 시 실행함수
-* focus_item : 확인 후 focus 될 요소
 */
 
 let btn_confirm = document.querySelector('.open-confirm');
@@ -249,6 +214,7 @@ function confirm_cancel(){
 }
 btn_confirm.addEventListener('click', function(){
 	nlayerConfirm({
+		btn : this, 
 		ment : '테스트 컨펌 입니다.', 
 		title : '타이틀', 
 		focus_item : btn_confirm,
@@ -274,8 +240,8 @@ btn_confirm.addEventListener('click', function(){
 					<p>그 외 기타 class 추가 후 CSS 로 스타일 제어 가능</p>
 					<div class="guide-show">
 						<!-- 코드 작성 -->
-						<button type="button" class="btn medium open-toast" aria-haspopup="alert">Toast 호출</button>
-						<button type="button" class="btn medium open-toast2" aria-haspopup="alert">Toast 호출_하단</button>
+						<button type="button" class="btn medium open-toast">Toast 호출</button>
+						<button type="button" class="btn medium open-toast2">Toast 호출_하단</button>
 						<!-- // 코드 작성 -->
 					</div>
 					
@@ -299,22 +265,20 @@ btn_toast2.addEventListener('click', function(){
 
 	<!-- 레이어팝업 영역 ----------------------------------------------------------- -->
 	<!-- layerPop - 1 -->
-	<div class="layer" id="layer1">
+	<div class="layer btm" id="layer1">
 		<div class="inbox">
 			<div class="layer-cnt">
-				<div class="layer-top">
-					<p class="layer-title">test</p>
-				</div>
+				<div class="layer-top"><p class="layer-title">test</p></div>
 				<div class="layer-mid">
 					<p>tx</p>
 					<p style="border-bottom:1px solid #eee;">tx</p><br>
-					<button type="button" data-target="layer2" class="btn01 open-layer2" aria-haspopup="dialog" aria-controls="#layer2">레이어팝업</button><br>
+					<button type="button" data-target="layer2" class="btn01 open-layer2">레이어팝업</button><br>
 					<p>tx</p>
 					<p>tx</p>
 					<p>tx</p>
 					<p>tx</p>
 					<p>tx</p>
-					<input type="text">
+					<input type="text" class="input-box">
 				</div>
 				<button type="button" class="confirm">확인</button>
 				<button type="button" class="close-layer">닫기</button>
@@ -326,11 +290,9 @@ btn_toast2.addEventListener('click', function(){
 	<div class="layer" id="layer2">
 		<div class="inbox">
 			<div class="layer-cnt">
-				<div class="layer-top">
-					<p class="layer-title">test2</p>
-				</div>
+				<div class="layer-top"><p class="layer-title">test</p></div>
 				<div class="layer-mid">
-					<button type="button" class="close-layer-all">전체닫기</button>
+					<button type="button" class="close-layer all">전체닫기</button>
 				</div>
 				<button type="button" class="close-layer">닫기</button>
 			</div>
@@ -338,40 +300,49 @@ btn_toast2.addEventListener('click', function(){
 	</div>
 
 	<script src="/js/common.js"></script>
-	<script src="/js/nlayer_v6.0.1.js"></script>
+	<script src="/js/nlayer_v5.1.0.js"></script>
 	<script>
 		hljs.initHighlightingOnLoad(); 
 
-		let btn_open1 = document.querySelector('.open-layer1'),
-			layer_test = new nlayer({
-				layer : '#layer1',
-				focus_item : btn_open1,
-				activeShow : function(){ console.log('show!!') }
-			});
-		btn_open1.addEventListener('click', ()=>{
-			layer_test.show(btn_open1);
-		})
-
-		let btn_open2 = document.querySelector('.open-layer2'),
-			layer_test2 = new nlayer({
-				layer : '#layer2',
-				focus_item : btn_open2
-			});
-		btn_open2.addEventListener('click', ()=>{
-			layer_test2.show();
-		})
-
-		// 전체 닫기 ( 별도 기능X - 선언한 레이어 각각 지정하여 닫기 )
-		let btn_close_all = document.querySelector('.close-layer-all');
-		btn_close_all.addEventListener('click', ()=>{
-			layer_test.hide();
-			layer_test2.hide();
+		let layer_test = new nlayer({
+			layer : '#layer1',
+			btn : '.open-layer',
+			activeOn : function(){
+				console.log('layer ON!!');
+			},
+			activeShowBefore : function(){
+				console.log('show before');
+			},
+			activeShow : function(){
+				console.log('show');
+			},
+			activeClose : function(){
+				console.log('close');
+			},
+			activeConfirm : function() {
+				//console.log('confirm')
+				nlayerAlert({
+					ment : '테스트 알럿 입니다.', 
+					title : '타이틀', 
+					active : function(){ 
+						console.log('alert 닫았습니다.!!')
+					}
+				});
+			}
 		});
 
+		let layer_test2 = new nlayer({
+			layer : '#layer2',
+			btn : '.open-layer2',
+			activeShowBefore : function(){
+				console.log(layer_test2);
+			},
+		});
 
 		let btn_alert = document.querySelector('.open-alert');
 		btn_alert.addEventListener('click', function(){
-			nAlert({
+			nlayerAlert({
+				btn : this,
 				ment : '테스트 알럿 입니다.', 
 				title : '타이틀', 
 				focus_item : btn_alert,
@@ -389,7 +360,8 @@ btn_toast2.addEventListener('click', function(){
 			console.log('confirm 취소했습니다.!!');
 		}
 		btn_confirm.addEventListener('click', function(){
-			nConfirm({
+			nlayerConfirm({
+				btn : this, 
 				ment : '테스트 컨펌 입니다.', 
 				title : '타이틀', 
 				focus_item : btn_confirm,
