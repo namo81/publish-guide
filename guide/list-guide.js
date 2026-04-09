@@ -1,6 +1,6 @@
 
 function getIndex( elm ){ 
-    var c = elm.parentNode.children, i = 0;
+    let c = elm.parentNode.children, i = 0;
     for(; i < c.length; i++ )
         if( c[i] == elm ) return i;
 }
@@ -16,32 +16,33 @@ function elemsRemoveClass(elem, cls){
 	});
 }
 
-var tblTotal = 0;
+let tblTotal = 0;
 
 function guide_tblSet(tbl){
-	var trs 		= tbl.querySelectorAll('tbody tr'),
+	let trs 		= tbl.querySelectorAll('tbody tr'),
 		previewChk 	= document.querySelector('#view-chk'),
 		mobileChk   = document.querySelector('#view-mobile');
 
-	var	frameWrap	= document.querySelector('.iframe');
+	let frameWrap	= document.querySelector('.iframe'),
+		frame, frameClose;
 	if(frameWrap){
-		var frame		= frameWrap.querySelector('iframe'),
-			frameClose  = frameWrap.querySelector('.btn-frame-close');
+		frame		= frameWrap.querySelector('iframe'),
+		frameClose  = frameWrap.querySelector('.btn-frame-close');
 	}
 
-	var td_no 		= tbl.querySelectorAll('.no'),
+	let td_no 		= tbl.querySelectorAll('.no'),
 		td_dep1 	= tbl.querySelectorAll('.depth1');
 
 	// 페이지 수 넘버링 추가
 	Array.prototype.forEach.call(td_no, function(td){
-		var num = getIndex(td.parentNode);
+		let num = getIndex(td.parentNode);
 		td.innerText = num + 1;
 		tblTotal++;
 		td.parentNode.idx = num;
 	});
 
 	//depth1 에 텍스트 있을 경우 구분선 생성 및 토글버튼 추가
-	var tglBtnTx = '<button type="button" class="btn-tr-tgl" title="ctrl 누른 채 클릭 시 전체 제어">Toggle</button>',
+	let tglBtnTx = '<button type="button" class="btn-tr-tgl" title="ctrl 누른 채 클릭 시 전체 제어">Toggle</button>',
 		ctrl = false;
 	Array.prototype.forEach.call(td_dep1, function(td){
 		if(td.innerText.length > 0){
@@ -51,7 +52,7 @@ function guide_tblSet(tbl){
 	});
 
 	// 섹션별 토글기능
-	var divArr = new Array(),
+	let divArr = new Array(),
 		trDivs = document.querySelectorAll('tr.div'),
 		tglBtns = document.querySelectorAll('.btn-tr-tgl');
 
@@ -69,7 +70,7 @@ function guide_tblSet(tbl){
 	if(trs.length > 30){
 		Array.prototype.forEach.call(tglBtns, function(btn){
 			btn.addEventListener('click', function(){
-				var parTr 		= btn.parentNode.parentNode,
+				let parTr 		= btn.parentNode.parentNode,
 					parTrIdx 	= parTr.idx,
 					parArrIdx 	= divArr.indexOf(parTr);
 				if(ctrl){
@@ -110,7 +111,7 @@ function guide_tblSet(tbl){
 
 	// 링크값 유무 + 종료일 유무에 따른 표기 / 미리보기 기능 설정
 	Array.prototype.forEach.call(trs, function(tr){
-		var btn 		= tr.querySelector('.link > a'),
+		let btn 		= tr.querySelector('.link > a'),
 			td_state 	= tr.querySelector('.state'),
 			td_end 		= tr.querySelector('.end-date');
 
@@ -134,9 +135,9 @@ function guide_tblSet(tbl){
 		if(frameWrap) {
 			btn.addEventListener('mouseover', function(){
 				if(previewChk.checked == false) return;
-				var url = btn.getAttribute('href');
+				let url = btn.getAttribute('href');
 				frame.setAttribute('src', url);
-				if(frameWrap) frameWrap.style.display = 'block';
+				if(frameWrap) frameWrap.classList.add('show');
 			});
 		}		
 	});
@@ -144,8 +145,8 @@ function guide_tblSet(tbl){
 	if(frameWrap) {
 		frameClose.addEventListener('click', function(){
 			frame.setAttribute('src', '');
-			frameWrap.style.display = 'none';
-			previewChk.checked = false;
+			frameWrap.classList.remove('show');
+			if(window.outerWidth > 701) previewChk.checked = false;
 		});
 		if(mobileChk) {
 			mobileChk.addEventListener('click', function(){
@@ -157,7 +158,7 @@ function guide_tblSet(tbl){
 
 
 	// 전체 페이지 수 및 완료 페이지 표기
-	var pageTotal   = document.querySelector('.total-page'),
+	let pageTotal   = document.querySelector('.total-page'),
 		pageEnd 	= document.querySelector('.end-page'),
 		pagePer 	= document.querySelector('.per'),
 		endCount  	= document.querySelectorAll('td.end').length + document.querySelectorAll('td.include').length,
@@ -171,25 +172,25 @@ function guide_tblSet(tbl){
 
 	
 	// text 검색
-	var findBtn 	= document.querySelector('.btn-find-tx');
+	let findBtn 	= document.querySelector('.btn-find-tx');
 	if(findBtn){
-		var findInp 	= document.querySelector('#find-tx'),
+		let findInp 	= document.querySelector('#find-tx'),
 			hiddenInp 	= document.querySelector('.temp');
 		
 		findBtn.addEventListener('click', function(){
-			var srchTx = findInp.value;
+			let srchTx = findInp.value;
 			
 			Array.prototype.forEach.call(trs, function(tr){
-				var btn  = tr.querySelector('.link a');
+				let btn  = tr.querySelector('.link a');
 				if(!btn) return;
-				var link = btn.getAttribute('href');
+				let link = btn.getAttribute('href');
 				btn.classList.remove('classUse');
 
-				var xhr = new XMLHttpRequest();
+				let xhr = new XMLHttpRequest();
 				xhr.onload = function(){
 					if (xhr.status === 200) {
 						hiddenInp.value = xhr.responseText;
-						var valTx = hiddenInp.value;
+						let valTx = hiddenInp.value;
 						valTx.match(srchTx) ? btn.classList.add('classUse') : null;
 						hiddenInp.value = '';
 					}
@@ -203,7 +204,7 @@ function guide_tblSet(tbl){
 
 // 현재 페이지 활성화
 function guide_menuSet(num){
-	var menus = document.querySelector('.menu').querySelectorAll('a');
+	let menus = document.querySelector('.menu').querySelectorAll('a');
 
 	Array.prototype.forEach.call(menus, function(menu, idx){
 		idx == num ? menu.classList.add('view') :  menu.classList.remove('view');
@@ -211,7 +212,7 @@ function guide_menuSet(num){
 }
 
 window.onload = function(){
-	var body 		= document.querySelector('body'),
+	let body 		= document.querySelector('body'),
 		tbls 		= document.querySelectorAll('.list table');
 
 	if(tbls) {
@@ -224,9 +225,9 @@ window.onload = function(){
 	
 	
 	// 조직도 관련
-	var fldTree = document.querySelector('.folder-tree');
+	let fldTree = document.querySelector('.folder-tree');
 	if(fldTree) {
-		var btnTrees = fldTree.querySelectorAll('button');
+		let btnTrees = fldTree.querySelectorAll('button');
 		Array.prototype.forEach.call(btnTrees, function(btn){
 			if(btn.classList.contains('btn-tree')){
 				btn.addEventListener('click', function(){
@@ -239,7 +240,7 @@ window.onload = function(){
 	}
 
 	// top 버튼 추가
-	var topBtn = document.createElement('a');
+	let topBtn = document.createElement('a');
 	body.appendChild(topBtn);
 	topBtn.classList.add('btn-guide-top');
 	topBtn.setAttribute('href', '#work-list');

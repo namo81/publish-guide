@@ -126,7 +126,7 @@ class nlayer{
 		let focus_tg = this.data.layer.querySelector('a, button, input, select, textarea');
 		
 		this.body_page_set();
-		focus_tg.focus(); // focus 로 인해 화면 밖 > 안으로 이동하는 모션 무시될 가능성 있음. 확인 필요 - 필요 시 transitionend 이벤트 추가 후 적용
+		if(focus_tg) focus_tg.focus(); // focus 로 인해 화면 밖 > 안으로 이동하는 모션 무시될 가능성 있음. 확인 필요 - 필요 시 transitionend 이벤트 추가 후 적용
 		if(typeof this.#activeShow === 'function') this.#activeShow();
 	}
 
@@ -149,7 +149,7 @@ class nlayer{
 
 	/** 레이어 show/hide 상태 리턴 */
 	layer_state(){
-		return this.data.layer.classList.contains('show') ? true : false;
+		return this.data.layer.classList.contains(this.option.clsShow) ? true : false;
 	}
 }
 
@@ -162,7 +162,7 @@ class nlayer{
 * focus_item : 팝업 닫기 후 focus 될 요소 지정
 */
 function nAlert(option) {
-	const alert = this;
+	const nAlertThis = this;
 	let body = document.querySelector('body'),
 		ment = option.ment,
 		title = option.title,
@@ -184,9 +184,9 @@ function nAlert(option) {
 		layerCnt += '</div></div></div></div></div>';
 
 	body.insertAdjacentHTML('beforeend', layerCnt);
-	alert.dom = document.querySelector('#nAlert');
+	nAlertThis.dom = document.querySelector('#nAlert');
 
-	let btn_close = alert.dom.querySelector('.close-alert');
+	let btn_close = nAlertThis.dom.querySelector('.close-alert');
 	let temp_alert = new nlayer({
 		layer : '#nAlert',
 		title : '알럿'
@@ -196,7 +196,7 @@ function nAlert(option) {
 	btn_close.addEventListener('click', ()=>{
 		if(typeof active == 'function') active();
 		temp_alert.hide();
-		alert.dom.parentNode.removeChild(alert.dom);
+		nAlertThis.dom.parentNode.removeChild(nAlertThis.dom);
 		temp_alert = null;
 		if(focus_item) focus_item.focus();
 	});
@@ -213,7 +213,7 @@ function nAlert(option) {
 * focus_item : 팝업 닫기 후 focus 될 요소 지정
 */
 function nConfirm(option) {
-	const confirm  = this;
+	const nConfirmThis  = this;
 	let body = document.querySelector('body'),
 		ment = option.ment,
 		title = option.title,
@@ -238,10 +238,10 @@ function nConfirm(option) {
 		layerCnt += '</div></div></div></div></div>';
 
 	body.insertAdjacentHTML('beforeend', layerCnt);
-	confirm.dom	= document.querySelector('#nConfirm');
+	nConfirmThis.dom	= document.querySelector('#nConfirm');
 	
-	let btn_close = confirm.dom.querySelector('.confirm-cancel'),
-		btn_confirm = confirm.dom.querySelector('.confirm-ok');
+	let btn_close = nConfirmThis.dom.querySelector('.confirm-cancel'),
+		btn_confirm = nConfirmThis.dom.querySelector('.confirm-ok');
 
 	let temp_confirm = new nlayer({
 		layer : '#nConfirm',
@@ -251,7 +251,7 @@ function nConfirm(option) {
 
 	function close_confirm(){
 		temp_confirm.hide();
-		confirm.dom.parentNode.removeChild(confirm.dom);
+		nConfirmThis.dom.parentNode.removeChild(nConfirmThis.dom);
 		temp_confirm = null;
 		if(focus_item) focus_item.focus();
 	}

@@ -2,7 +2,7 @@
 // 2024-05-31 copyright - namo (seo nam ho) for m.s.p
 
 function addSvg(type){
-    var svgObj = document.createElementNS("http://www.w3.org/2000/svg", type);
+    let svgObj = document.createElementNS("http://www.w3.org/2000/svg", type);
     return svgObj;
 }
 

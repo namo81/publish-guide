@@ -39,7 +39,7 @@ function nlayer(option){
 		clsShow		= option.show_cls || 'show',			// 레이어 show 용 상태 클래스
 		focus_item  = undefined; 							// 레이어 닫기 후 focus 될 요소
 
-	layer.dom  = typeof option.layer === 'string' ? document.querySelector(option.layer) : option.layer; // 대상 레이어 (필수값)
+	layer.dom = typeof option.layer === 'string' ? document.querySelector(option.layer) : option.layer; // 대상 레이어 (필수값)
 	layer.title = option.title ? option.title : layer.dom.querySelector('.layer-title').textContent;
 	if(option.focus_item) {
 		focus_item  = typeof option.focus_item === 'string' ? document.querySelector(option.focus_item) : option.focus_item;
@@ -95,7 +95,7 @@ function nlayer(option){
 
 	/** 레이어 보기 */
 	function layerShow(){
-		void tg_layer.offsetWidth;
+		void layer.dom.offsetWidth;
 		layer_arr.push(layer);
 		layer.dom.classList.add(clsShow);
 		layer.dom.setAttribute('aria-modal', true);
@@ -142,7 +142,7 @@ function nlayer(option){
 * focus_item : 팝업 닫기 후 focus 될 요소 지정
 */
 function nlayerAlert(option) {
-	const alert = this;
+	const nAlert = this;
 	let body = document.querySelector('body'),
 		ment = option.ment,
 		title = option.title,
@@ -164,7 +164,7 @@ function nlayerAlert(option) {
 		layerCnt += '</div></div></div></div></div>';
 
 	body.insertAdjacentHTML('beforeend', layerCnt);
-	alert.dom = document.querySelector('#nAlert');
+	nAlert.dom = document.querySelector('#nAlert');
 
 	let btn_close = alert.dom.querySelector('.close-alert');
 	let temp_alert = new nlayer({
@@ -176,7 +176,7 @@ function nlayerAlert(option) {
 	btn_close.addEventListener('click', ()=>{
 		if(typeof active == 'function') active();
 		temp_alert.hide();
-		alert.dom.parentNode.removeChild(alert.dom);
+		nAlert.dom.parentNode.removeChild(nAlert.dom);
 		temp_alert = null;
 		if(focus_item) focus_item.focus();
 	});
@@ -193,7 +193,7 @@ function nlayerAlert(option) {
 * focus_item : 팝업 닫기 후 focus 될 요소 지정
 */
 function nlayerConfirm(option) {
-	const confirm  = this;
+	const nConfirm  = this;
 	let body = document.querySelector('body'),
 		ment = option.ment,
 		title = option.title,
@@ -218,10 +218,10 @@ function nlayerConfirm(option) {
 		layerCnt += '</div></div></div></div></div>';
 
 	body.insertAdjacentHTML('beforeend', layerCnt);
-	confirm.dom	= document.querySelector('#nConfirm');
+	nConfirm.dom	= document.querySelector('#nConfirm');
 	
-	let btn_close = confirm.dom.querySelector('.confirm-cancel'),
-		btn_confirm = confirm.dom.querySelector('.confirm-ok');
+	let btn_close = nConfirm.dom.querySelector('.confirm-cancel'),
+		btn_confirm = nConfirm.dom.querySelector('.confirm-ok');
 
 	let temp_confirm = new nlayer({
 		layer : '#nConfirm',
@@ -231,7 +231,7 @@ function nlayerConfirm(option) {
 
 	function close_confirm(){
 		temp_confirm.hide();
-		confirm.dom.parentNode.removeChild(confirm.dom);
+		nConfirm.dom.parentNode.removeChild(nConfirm.dom);
 		temp_confirm = null;
 		if(focus_item) focus_item.focus();
 	}

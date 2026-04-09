@@ -52,6 +52,12 @@
 .bln-wrap.on .bln,
 .bln-wrap:not(.click) .btn-bln:hover + .bln { visibility:visible; opacity:1; }
 .bln-wrap .bln:after { content:''; position:absolute; width:0; height:0; top:-10px; left:5px; border:5px solid transparent; border-bottom-color:#aaa; }
+
+.bln-wrap:has([style]) .bln { left:var(--left); }
+.bln-wrap:has([style]) .bln::after { margin-left:calc(var(--left) * (-1)); }
+
+.bln-wrap:has([style]) .bln.align-r { left:auto; right:var(--right); }
+.bln-wrap:has([style]) .bln.align-r::after { margin-right:calc(var(--right) * (-1)); }
 </code></pre>
 			</div>
 
@@ -132,7 +138,100 @@
 		&lt;/div&gt;
 	&lt;/div&gt;
 &lt;/div&gt;
+</code></pre>	
+
+				<h4 class="guide-sstit">좌우 위치보정</h4>
+				<p>bln 에 style 속성으로 --left 또는 --right 값을 지정하여 위치를 조정할 수 있습니다.</p>
+				<p>bln 기본형 / center / top 의 경우 bln 태그에 style 로 --left 를 지정하면 지정된 값 만큼 좌우 위치 조정 가능 (- 값도 가능)</p>
+				<p>align-r 의 경우 bln 태그에 style 로 --right 를 지정하면 지정된 값 만큼 우측 위치 조정 가능 (- 값도 가능)</p>
+				<p>right / left 의 경우 지정 불가</p>
+				<p>단, bln 의 메세지 영역만 이동하며, ::after 는 초기 bln 의 위치를 기준으로 고정됨.</p>
+				<div class="guide-show">
+				<!-- 코드 작성 -->
+					<div class="bln-wrap">
+						<button type="button" class="btn-bln btn small">버튼_기본</button>
+						<div class="bln" style="--left:-80px">
+							<div class="cnt">
+								말풍선 내용이 들어가는 영역입니다.
+							</div>
+						</div>
+					</div>
+					<div class="bln-wrap">
+						<button type="button" class="btn-bln btn small">버튼_center</button>
+						<div class="bln center" style="--left:50px">
+							<div class="cnt">
+								말풍선 내용이 들어가는 영역입니다.
+							</div>
+						</div>
+					</div>
+					<div class="bln-wrap">
+						<button type="button" class="btn-bln btn small">버튼_top</button>
+						<div class="bln top" style="--left:-50px">
+							<div class="cnt">
+								말풍선 내용이 들어가는 영역입니다.
+							</div>
+						</div>
+					</div>					
+					<div class="bln-wrap">
+						<button type="button" class="btn-bln btn small">버튼_top + center</button>
+						<div class="bln center top" style="--left:50px">
+							<div class="cnt">
+								말풍선 내용이 들어가는 영역입니다.
+							</div>
+						</div>
+					</div>
+					<div class="bln-wrap">
+						<button type="button" class="btn-bln btn small">버튼_align-r</button>
+						<div class="bln align-r" style="--right:-50px">
+							<div class="cnt">
+								말풍선 내용이 들어가는 영역입니다.
+							</div>
+						</div>
+					</div>
+				<!-- // 코드 작성 -->
+				</div>
+<pre><code class="html">&lt;div class="bln-wrap"&gt;
+	&lt;button type="button" class="btn-bln btn small"&gt;버튼_기본&lt;/button&gt;
+	&lt;div class="bln" style="--left:-80px"&gt;
+		&lt;div class="cnt"&gt;
+			말풍선 내용이 들어가는 영역입니다.
+		&lt;/div&gt;
+	&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="bln-wrap"&gt;
+	&lt;button type="button" class="btn-bln btn small"&gt;버튼_center&lt;/button&gt;
+	&lt;div class="bln center" style="--left:50px"&gt;
+		&lt;div class="cnt"&gt;
+			말풍선 내용이 들어가는 영역입니다.
+		&lt;/div&gt;
+	&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="bln-wrap"&gt;
+	&lt;button type="button" class="btn-bln btn small"&gt;버튼_top&lt;/button&gt;
+	&lt;div class="bln top" style="--left:-50px"&gt;
+		&lt;div class="cnt"&gt;
+			말풍선 내용이 들어가는 영역입니다.
+		&lt;/div&gt;
+	&lt;/div&gt;
+&lt;/div&gt;					
+&lt;div class="bln-wrap"&gt;
+	&lt;button type="button" class="btn-bln btn small"&gt;버튼_top + center&lt;/button&gt;
+	&lt;div class="bln center top" style="--left:50px"&gt;
+		&lt;div class="cnt"&gt;
+			말풍선 내용이 들어가는 영역입니다.
+		&lt;/div&gt;
+	&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="bln-wrap"&gt;
+	&lt;button type="button" class="btn-bln btn small"&gt;버튼_align-r&lt;/button&gt;
+	&lt;div class="bln align-r" style="--right:-50px"&gt;
+		&lt;div class="cnt"&gt;
+			말풍선 내용이 들어가는 영역입니다.
+		&lt;/div&gt;
+	&lt;/div&gt;
+&lt;/div&gt;
 </code></pre>
+
 				<h4 class="guide-sstit">클릭형</h4>
 				<p>기본형에 'click' 클래스 추가 ( hover 기능 작동 X )</p>
 				<p>bln 에 추가클래스 (top / center / left / right) 추가로 위치 변경 가능<br> (* center 와 top 은 중복사용 가능)</p>

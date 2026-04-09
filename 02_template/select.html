@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+	<meta charset="UTF-8" >
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="user-scalable=yes, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, width=device-width">
+	<meta name="author" content="seonamho - SK MNS" >
+	<meta name="description" content="">
+	<meta name="keywords" content="Site Template">
+	<meta property="og:type" content="website">
+	<meta property="og:title" content="Site Template">
+	<meta property="og:description" content="">
+	<meta property="og:image" content="">
+	<meta property="og:url" content="">
+	<link rel="shortcut icon" href="data:;base64,iVBORwOKGO=" />
+
+	<title>Select | 가이드</title>
+
+	<!-- 가이드 관련 -->
+	<link rel="stylesheet" href="../guide/list-guide.css" media="screen, print" />
+	<link rel="stylesheet" href="../guide/vendor/railscasts.css">
+	<script src="../guide/vendor/highlight.js"></script>
+
+	<!-- 프로젝트 관련 CSS 및 JS 파일 로드 -->
+	<link rel="stylesheet" href="/css/layout.css" media="screen, print" />
+	<style>
+		.n-select { position:relative; }
+		.n-select > select { display:none; }
+		.n-select .btn-select { -webkit-appearance:none; appearance:none; display:inline-block; padding:5px 25px 5px 10px; width:100%; font-size:13px; line-height:20px; border:1px solid #aaa; border-radius:4px; text-align:left; background:#fff url(/images/ico_select.svg) no-repeat right 5px top 50%; }
+		.n-select .select-list { display:none; position:absolute; top:100%; left:0; width:100%; padding:5px 0; border:1px solid #aaa; border-radius:4px; background:#fff; z-index:10; }
+		.n-select .select-list li { padding:0 5px; font-size:13px; line-height:20px; cursor:pointer; }
+		.n-select .select-list li button { display:block; width:100%; padding:3px 10px; text-align:left; box-sizing:border-box; }
+		.n-select .select-list button.hover { background-color:#eee; }
+		.n-select.on .select-list { display:block; }
+
+		.n-select.dropdown .select-list { padding-bottom:0; }
+		.n-select.dropdown .select-list li { padding:2px 5px; }
+		.n-select.dropdown .btns { padding:5px; justify-content:flex-start; }
+	</style>
+</head>
+<body class="pub-guide">
+	<div id="work-list">
+		<div class="guide">
+			<!-- input ================================================================ -->
+			<section id="guide-input">
+				<h2 class="guide-sec-tit">Select</h2>
+				<div class="guide-sec">
+					<h3 class="guide-stit">Select 디자인 적용</h3>
+					<p>option 까지 모두 디자인을 적용하는 경우 사용.</p>
+					<p>단, 추가적인 항목은 불가하며, select 의 value / text 값만 사용 가능.</p>
+					<div class="guide-show">
+						<div class="n-select">
+							<select name="" title="" readonly>
+								<option value="direct">직접 선택</option>
+								<option value="nate" disabled>nate.com</option>
+								<option value="daum" hidden>daum.net</option>
+								<option value="google">google.com</option>
+								<option value="naver">naver.com</option>
+							</select>
+						</div>
+					</div>
+<pre><code class="html">&lt;div class="n-select"&gt;
+	&lt;select name="" title=""&gt;
+		&lt;option value=""&gt;직접 선택&lt;/option&gt;
+		&lt;option value=""&gt;nate.com&lt;/option&gt;
+		&lt;option value=""&gt;daum.net&lt;/option&gt;
+	&lt;/select&gt;
+&lt;/div&gt;
+</code></pre>
+<pre><code class="css">.n-select { position:relative; }
+.n-select > select { display:none; }
+.n-select .btn-select { -webkit-appearance:none; appearance:none; display:inline-block; padding:5px 25px 5px 10px; width:100%; font-size:13px; line-height:20px; border:1px solid #aaa; border-radius:4px; text-align:left; background:#fff url(/images/ico_select.svg) no-repeat right 5px top 50%; }
+.n-select .select-list { display:none; position:absolute; top:100%; left:0; width:100%; padding:5px 0; border:1px solid #aaa; border-radius:4px; background:#fff; z-index:10; }
+.n-select .select-list li { padding:0 5px; font-size:13px; line-height:20px; cursor:pointer; }
+.n-select .select-list li button { display:block; width:100%; padding:3px 10px; text-align:left; box-sizing:border-box; }
+.n-select .select-list button.hover { background-color:#eee; }
+.n-select.on .select-list { display:block; }
+</code></pre>
+<pre><code class="js">// 단독요소 설정
+let selectName = new n_select('.n-select');
+
+// 동일 클래스 다수 설정
+n_selects('.n-select');
+</code></pre>
+					<h4 class="guide-sstit">dropdown 방식</h4>
+					<p>UI 는 select 형태이나 기능이 다른 경우 사용</p>
+					<p>ex. input 리스트를 토글하여 다중 선택 및 선택값 표출 등</p>
+					<p>** 현재 캡스ON 에서 사용한 다중 체크박스 선택기능 적용</p>
+					<p>html / css 구조는 유지하며, 타 기능 적용 시 script 수정 필요</p>
+					<div class="guide-show">
+						<div class="n-select dropdown">
+							<button type="button" class="btn-select">선택</button>
+							<div class="select-list">
+								<ul>
+									<li>
+										<input type="checkbox" class="checkbox" id="chk_sel-1">
+										<label for="chk_sel-1">체크박스 1</label>
+									</li>
+									<li>
+										<input type="checkbox" class="checkbox" id="chk_sel-2">
+										<label for="chk_sel-2">체크박스 2</label>
+									</li>
+									<li>
+										<input type="checkbox" class="checkbox" id="chk_sel-3">
+										<label for="chk_sel-3">체크박스 3</label>
+									</li>
+									<li>
+										<input type="checkbox" class="checkbox" id="chk_sel-4">
+										<label for="chk_sel-4">체크박스 4</label>
+									</li>
+								</ul>
+								<div class="btns">
+									<button type="button" class="btn small">확인</button>
+								</div>
+							</div>
+						</div>
+					</div>
+<pre><code class="html">&lt;div class="n-select dropdown"&gt;
+	&lt;button type="button" class="btn-select"&gt;선택&lt;/button&gt;
+	&lt;div class="select-list"&gt;
+		&lt;ul&gt;
+			&lt;li&gt;
+				&lt;input type="checkbox" class="checkbox" id="chk_sel-1"&gt;
+				&lt;label for="chk_sel-1"&gt;체크박스 1&lt;/label&gt;
+			&lt;/li&gt;
+			&lt;li&gt;
+				&lt;input type="checkbox" class="checkbox" id="chk_sel-2"&gt;
+				&lt;label for="chk_sel-2"&gt;체크박스 2&lt;/label&gt;
+			&lt;/li&gt;
+			&lt;li&gt;
+				&lt;input type="checkbox" class="checkbox" id="chk_sel-3"&gt;
+				&lt;label for="chk_sel-3"&gt;체크박스 3&lt;/label&gt;
+			&lt;/li&gt;
+			&lt;li&gt;
+				&lt;input type="checkbox" class="checkbox" id="chk_sel-4"&gt;
+				&lt;label for="chk_sel-4"&gt;체크박스 4&lt;/label&gt;
+			&lt;/li&gt;
+		&lt;/ul&gt;
+		&lt;div class="btns"&gt;
+			&lt;button type="button" class="btn small"&gt;확인&lt;/button&gt;
+		&lt;/div&gt;
+	&lt;/div&gt;
+&lt;/div&gt;
+</code></pre>
+<pre><code class="css">.n-select.dropdown .select-list { padding-bottom:0; }
+.n-select.dropdown .select-list li { padding:2px 5px; }
+.n-select.dropdown .btns { padding:5px; justify-content:flex-start; }
+</code></pre>
+<pre><code class="js">// 설정
+let n_dropdown_1 = new n_dropdown('.n-select.dropdown');
+</code></pre>
+				</div>
+			</section>
+		</div>
+		<a href="#work-list" class="guide-top">Top</a>	
+		
+	</div>
+
+	<script src="/js/common.js"></script>
+	<!-- input design js -->
+	<script src="/js/inpdesign_v2.1.0.js"></script>
+
+	<script>
+		hljs.initHighlightingOnLoad();
+
+		let n_select_1 = new n_select('.n-select');
+
+		let n_dropdown_1 = new n_dropdown('.n-select.dropdown');
+	</script>
+</body>
+</html>

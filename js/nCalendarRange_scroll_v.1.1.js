@@ -150,7 +150,7 @@ function nCalendarRangeScroll(option){
     if(inPage == true) inTarget.appendChild(range_wrap);
     else {
         newCal.appendChild(inbox);
-        newCal.setAttribute('id', 'modal-cal_' + cal_num);
+        newCal.setAttribute('id', 'scroll-cal_' + cal_num);
         newCal.setAttribute('role', 'dialog');
         newCal.setAttribute('tabindex', 0);
         if(calTitle != undefined) {

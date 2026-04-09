@@ -20,7 +20,7 @@
 	<!-- 가이드 관련 -->
 	<link rel="stylesheet" href="../guide/list-guide.css" media="screen, print" />
 	<link rel="stylesheet" href="../guide/vendor/railscasts.css">
-	<script src="../guide/vendor/highlight.pack.js"></script>
+	<script src="../guide/vendor/highlight.js"></script>
 	
 </head>
 <body>
@@ -44,7 +44,7 @@
 				<h3 class="guide-stit">font face 설정</h3>
 				<p>예시 : 나눔고딕</p>
 				<h4 class="guide-sstit">모든 브라우저(Full)</h4>
-				<pre><code class="css">/* nanum-gothic-regular - latin */
+<pre><code class="css">/* nanum-gothic-regular - latin */
 @font-face {
 	font-family: 'Nanum Gothic';
 	font-style: normal;
@@ -59,7 +59,7 @@
 }</code></pre>
 				
 				<h4 class="guide-sstit">최신 브라우저(Modern)</h4>
-				<pre><code class="css">@font-face {
+<pre><code class="css">@font-face {
 	font-family: 'Nanum Gothic';
 	font-style: normal;
 	font-weight: 400;
@@ -71,7 +71,7 @@
 				<p>동일폰트 - 두께만 다른 폰트 설정할 경우 font-family 는 동일하게 / font-weight 로 조정합니다.</p>
 				<p>폰트 파일에 두께가 숫자로 표기되어 있을 경우 CSS 에서 동일하게 적용하며, 숫자가 아닌 두께표기만 있을 경우는 아래 표를 참고합니다.</p>
 				<p>단, 업무별 별도 설정이 있을 경우 해당 값을 사용합니다.</p>
-				<div class="tbl tc">
+				<div class="tbl-guide tc">
 					<table>
 						<caption>브라우저 기준</caption>
 						<colgroup>
@@ -82,10 +82,6 @@
 							<col style="width:15%"/>
 							<col style="width:15%"/>
 						</colgroup>
-						<thead>
-							<tr>
-							</tr>
-						</thead>
 						<tbody>
 							<tr>
 								<th scope="row">폰트파일 두께 명칭</th>
@@ -132,7 +128,7 @@
 				<p>설정한 글꼴에서 특정 범위에만 다른 설정을 적용하고자 할 경우 사용</p>
 				<p>특정 점위(ex:숫자, 영문 등) 및 특정 글자에 별도 폰트 적용이 가능</p><br>
 				<p><strong>자주 쓰이는 유니코드</strong></p>
-				<pre><code class="txt">전체 : U+0020-007E
+<pre><code class="txt">전체 : U+0020-007E
 
 특수문자 : U+0020-002F, U+003A-0040, U+005B-0060, U+007B-007E
 
@@ -140,7 +136,7 @@
 
 숫자 : U+0030-0039</code></pre>
 				<p><strong>적용예시</strong></p>
-				<pre><code class="css">@font-face {
+<pre><code class="css">@font-face {
 	font-family: "NotoSansKR";
 	src: url("/openconcert/fonts/NotoSansKR-Regular-Hestia.woff") format("woff");
 	font-style: normal;
@@ -161,7 +157,7 @@
 			<h2 class="guide-sec-tit">기타정보</h2>
 			<div class="guide-sec">
 				<h3 class="guide-stit">웹폰트 파일 별 브라우저 지원 정보</h3>
-				<div class="tbl tc">
+				<div class="tbl-guide tc">
 					<table>
 						<caption>브라우저별 폰트파일 형식 지원</caption>
 						<colgroup>
@@ -177,14 +173,14 @@
 						<thead>
 							<tr>
 								<th scope="col" rowspan="2">확장자</th>
-								<th scope="col" colspan="3">IE</th>
+								<th scope="colgroup" colspan="3">IE</th>
 								<th scope="col" rowspan="2">chrome</th>
 								<th scope="col" rowspan="2">firefox</th>
 								<th scope="col" rowspan="2">safari</th>
 								<th scope="col" rowspan="2">opera</th>
 							</tr>
 							<tr>
-								<th scope="col">IE8 이하</th>
+								<th scope="col" class="col-sub">IE8 이하</th>
 								<th scope="col">IE9 ~1 1</th>
 								<th scope="col">Edge</th>
 							</tr>
@@ -239,7 +235,7 @@
 				<h3 class="guide-stit">폰트 두께 설정 시 적용순서</h3>
 				<p>폰트 두께(100~900) 설정 시 설정한 두께의 폰트가 없을 경우 브라우저가 자동 적용하는 두께 우선순위</p><br>
 				<p><strong>설정 font-weight가 600 이상이면, 가능한 큰 font-weight 중 가장 가까운 font-weight가 적용됩니다.(만약 없다면 작은 font-weight 중 가까운 font-weight)</strong></p>
-				<div class="tbl tc">
+				<div class="tbl-guide tc">
 					<table>
 						<caption>폰트두께 설정 순서 - 폰트두께 600 이상</caption>
 						<colgroup>
@@ -284,7 +280,7 @@
 				</div><br>
 				
 				<p><strong>설정 font-weight가 300 이하이면, 가능한 작은 font-weight 중 가장 가까운 font-weight가 적용됩니다(만약 없다면 큰 font-weight 중 가까운 font-weight)</strong></p>
-				<div class="tbl tc">
+				<div class="tbl-guide tc">
 					<table>
 						<caption>폰트두께 설정 순서 - 폰트두께 300 이하</caption>
 						<colgroup>
@@ -329,7 +325,7 @@
 				</div><br>
 				
 				<p><strong>설정 font-weight가 400이면, 500이 적용되고 500이 없으면 300 이하일 때 규칙이 적용됩니다.</strong></p>
-				<div class="tbl tc">
+				<div class="tbl-guide tc">
 					<table>
 						<caption>폰트두께 설정 순서 - 폰트두께 400</caption>
 						<colgroup>
@@ -374,7 +370,7 @@
 				</div><br>
 				
 				<p><strong>설정 font-weight가 500이면, 400이 적용되고 400이 없으면 300 이하일 때 규칙이 적용됩니다.</strong></p>
-				<div class="tbl tc">
+				<div class="tbl-guide tc">
 					<table>
 						<caption>폰트두께 설정 순서 - 폰트두께 500</caption>
 						<colgroup>

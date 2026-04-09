@@ -1,56 +1,130 @@
 <!DOCTYPE html>
 <html lang="ko">
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="user-scalable=yes, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, width=device-width">
-    <meta name="author" content="seonamho - SK m&amp;service">
-    <meta name="description" content="SK쉴더스 통합앱">
-    <meta name="keywords" content="SK쉴더스 경비 AI서비스 CCTV 영상확인">
-    <meta property="og:type" content="website">
-    <meta property="og:title" content="SK쉴더스 통합앱">
-    <meta property="og:description" content="SK쉴더스 서비스 통합앱">
-    <meta property="og:image" content="">
-    <meta property="og:url" content="">
-    <link rel="shortcut icon" href="../favicon_sk.ico"/>
 
-    <title>숫자 선택</title>
-    <link rel="stylesheet" href="../css/layout.css" media="screen, print" >
+<head>
+	<meta charset="UTF-8" >
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="user-scalable=yes, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, width=device-width">
+	<meta name="author" content="seonamho - SK MNS" >
+	<meta name="description" content="">
+	<meta name="keywords" content="Site Template">
+	<meta property="og:type" content="website">
+	<meta property="og:title" content="Site Template">
+	<meta property="og:description" content="">
+	<meta property="og:image" content="">
+	<meta property="og:url" content="">
+	<link rel="shortcut icon" href="data:;base64,iVBORwOKGO=" />
+
+	<title>기본 가이드</title>
+	<!-- 가이드 관련 -->
+	<link rel="stylesheet" href="../guide/list-guide.css" media="screen, print" />
+	<link rel="stylesheet" href="../guide/vendor/railscasts.css">
+	<script src="../guide/vendor/highlight.js"></script>
+
+	<!-- 프로젝트 관련 CSS 및 JS 파일 로드 -->
+	<link rel="stylesheet" href="/css/layout_m.css" media="screen, print" />
 </head>
 <body class="pub-guide">
-    <div id="wrap">
-        <main id="content">
-            <div class="txt-c" style="padding:20px;">
-                <div class="timer-set">
-                    <div class="num-selector hour">
-                        <input type="number" name="" class="inp" value="0"/>
-                    </div>
-                    <div class="num-selector min">
-                        <input type="number" name="" class="inp" value="0"/>
-                    </div>
-                    <div class="num-selector second">
-                        <input type="number" name="" class="inp" value="0"/>
-                    </div>
-                </div>
-            </div>
-        </main>
-    </div>
+    <div id="work-list" class="mobile">
+		<div class="guide">
+			<!-- input ================================================================ -->
+			<section id="guide-input">
+				<h2 class="guide-sec-tit">숫자 선택 (및 입력)</h2>
+
+				<div class="guide-sec">
+					<h3 class="guide-stit">숫자 선택</h3>
+					<p>설정된 범위 내의 숫자를 스크롤로 선택</p>
+                    <p>+ 해당 숫자 클릭 시 직접 입력 가능</p>
+                    <p>input 의 chage 값을 통해 설정값 추출 가능 (스크롤 멈출 경우 input 값 업데이트 및 change 이벤트 발생)</p>
+                    <p>input 에 readonly 속성 있을 경우 직접 수정기능 제한 및 active 콜백으로 현재값 확인 가능</p>
+					<p>여러개를 조합하여 시분초 등의 구성으로 설정 가능</p>
+					<div class="guide-show">
+                        <div class="num-selector test">
+                            <input type="number" name="" class="inp" value="0"/>
+                        </div>
+					</div>
+<pre><code class="html">&lt;div class="num-selector hour"&gt;
+    &lt;input type="number" name="" class="inp-num" value="0"/&gt;
+&lt;/div&gt;
+</code></pre>
+<pre><code class="javascript"> * area : 적용 영역 선택자
+ * min : 최소값
+ * max : 최대값
+ * step : 숫자 단위 (10 일 경우 10,20,30~)
+ * num_height : 1칸의 높이 값
+ * active : 숫자 선택 시 콜백 함수 (인자로 선택된 숫자값 전달)
+            단, input 에 readonly 속성 있을 경우에만 사용 가능
+
+ let num_test = new nNumberSelector({
+    area : '.num-selector.test',
+    min : 0,
+    max : 24,
+    num_height : 40
+});
+</code></pre>
+                    <h4 class="guide-sstit">조합 예시</h4>
+                    <p>timer-set 클래스 내부 시/분/초 구성으로 style 되어있는 예시.</p>
+					<div class="guide-show">
+						<div class="timer-set">
+                            <div class="num-selector hour">
+                                <input type="number" name="" class="inp" value="0"/>
+                            </div>
+                            <div class="num-selector min">
+                                <input type="number" name="" class="inp" value="0"/>
+                            </div>
+                            <div class="num-selector second">
+                                <input type="number" name="" class="inp" value="0"/>
+                            </div>
+                        </div>
+					</div>
+<pre><code class="html">&lt;div class="timer-set"&gt;
+    &lt;div class="num-selector hour"&gt;
+        &lt;input type="number" name="" class="inp" value="0"/&gt;
+    &lt;/div&gt;
+    &lt;div class="num-selector min"&gt;
+        &lt;input type="number" name="" class="inp" value="0"/&gt;
+    &lt;/div&gt;
+    &lt;div class="num-selector second"&gt;
+        &lt;input type="number" name="" class="inp" value="0"/&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+</code></pre>
+				</div>
+			</section>
+
+
+		</div>
+		<a href="#work-list" class="guide-top">Top</a>	
+	</div>
 
     <script src="../js/common.js"></script>
     <script src="../js/nTimePickerMobile_v1.0.0.js"></script>
     <script>
-        var num_selector1 = new nNumberSelector({
+		hljs.initHighlightingOnLoad(); 
+
+        let num_test = new nNumberSelector({
+			area : '.num-selector.test',
+            min : 0,
+            max : 24,
+            num_height : 40,
+            active : function(tx){
+                console.log(tx);
+            }
+		});
+
+        let num_selector1 = new nNumberSelector({
 			area : '.num-selector.hour',
             min : 0,
             max : 24,
             num_height : 40
 		});
-        var num_selector2 = new nNumberSelector({
+        let num_selector2 = new nNumberSelector({
 			area : '.num-selector.min',
             min : 0,
             max : 59,
             num_height : 40
 		});
-        var num_selector3 = new nNumberSelector({
+        let num_selector3 = new nNumberSelector({
 			area : '.num-selector.second',
             min : 0,
             max : 59,

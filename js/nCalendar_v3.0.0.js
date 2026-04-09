@@ -53,6 +53,7 @@
  *   - max_year : 달력 그리기 최대 연도
  * 
  * doms - dom 관련 변수 Object
+ *   - on_item : 달력 호출 dom (input 혹은 button) - 접근성 속성 설정용
  * 	 - cal : 달력 영역 전체
  *   - cal_cnt : cal_top + cal_area 부모요소
  *   - cal_cnt_right : cal_top + cal_area 부모요소 - 달력 dual 일 경우 우측 달력 영역
@@ -154,18 +155,21 @@ class n_calendar{
 
 	/** input 영역 설정 (달력보기 및 key 관련) */
 	_wrap_set(){
-		let on_item;
 		if(this.option.show_type == null) {
-			on_item = createDom('button', 'btn-cal');
-			on_item.textContent = '달력 보기';
-			this.wrap.appendChild(on_item);
+			this.doms.on_item = createDom('button', 'btn-cal');
+			this.doms.on_item.textContent = '달력 보기';
+			this.wrap.appendChild(this.doms.on_item);
 		} else {
-			on_item = this.input;
-			on_item.addEventListener('keyup', (e) => {
+			this.doms.on_item = this.input;
+			this.doms.on_item.addEventListener('keyup', (e) => {
 				if(e.key == 'Tab' && !e.shiftKey) this.cal_show();
 			});
 		}
-		on_item.addEventListener('click', this.cal_show.bind(this));
+		this.doms.on_item.addEventListener('click', this.cal_show.bind(this));
+		if(this.option.in_page) return;
+		this.doms.on_item.setAttribute('aria-haspopup', 'dialog');
+		this.doms.on_item.setAttribute('aria-expanded', false);
+		this.doms.on_item.setAttribute('aria-controls', 'n_cal_' + this.num);
 	}
 
 	/**
@@ -239,18 +243,23 @@ class n_calendar{
 	_create_cal_dom(){
 		this.doms.cal = createDom('div', 'n_cal');
 		this.doms.cal.setAttribute('tabindex', -1);
-		this.doms.cal.setAttribute('role', 'dialog');
 		this.doms.cal.classList.add(this.option.type);
+		this.doms.cal_inbox = createDom('div', 'cal-inbox');
 		if(this.option.range) this.doms.cal.classList.add('range');
 		if(this.option.dual) this.doms.cal.classList.add('dual');
+		if(this.option.in_page == false){
+			this.doms.cal.setAttribute('role', 'dialog');
+			this.doms.cal.setAttribute('aria-modal', false);
+		}
 
 		let wrap_tx = '<div class="cal-cnt"><div class="cal-top"></div><div class="cal-area"></div></div>',
 			tg;
 		if(this.option.in_target == undefined) tg = document.querySelector('body');
 		else tg = typeof this.option.in_target === 'string' ? document.querySelector(this.option.in_target) : this.option.in_target;
 		
-		this.doms.cal.insertAdjacentHTML('beforeend', wrap_tx);
+		this.doms.cal_inbox.insertAdjacentHTML('beforeend', wrap_tx);
 		if(this.option.in_page) this.doms.cal.classList.add('in-page');
+		this.doms.cal.appendChild(this.doms.cal_inbox);
 		tg.appendChild(this.doms.cal);
 
 		this.doms.cal_cnt = this.doms.cal.querySelector('.cal-cnt');
@@ -258,13 +267,13 @@ class n_calendar{
 
 		if(this.option.dual == true) {
 			let right_tx = '<div class="cal-cnt right"><div class="cal-top"></div><div class="cal-area"></div></div>';
-			this.doms.cal.insertAdjacentHTML('beforeend', right_tx);
+			this.doms.cal_inbox.insertAdjacentHTML('beforeend', right_tx);
 			this.doms.cal_cnt_right = this.doms.cal.querySelector('.cal-cnt.right');
 			this._create_top(this.doms.cal_cnt_right);
 		}
 
 		this.doms.cal_btns = createDom('div', 'cal-btns');
-		this.doms.cal.appendChild(this.doms.cal_btns);
+		this.doms.cal_inbox.appendChild(this.doms.cal_btns);
 
 		// 달력 id 설정
 		let cals = document.querySelectorAll('.n_cal');
@@ -427,6 +436,9 @@ class n_calendar{
 		this.doms.cal.focus();
 		outSideClick('.n_cal', this.doms.cal, 'show', ()=>{ this.cal_close() });
 		if(this.#activeShow) this.#activeShow();
+		if(this.option.in_page) return;
+		this.doms.cal.setAttribute('aria-modal', true);
+		this.doms.on_item.setAttribute('aria-expanded', true);
 	}
 
 	/** 달력 위치 설정 함수 */
@@ -449,6 +461,9 @@ class n_calendar{
 		this.date_start = undefined;
 		this.date_end = undefined;
 		if(this.#activeClose) this.#activeClose();
+		if(this.option.in_page) return;
+		this.doms.cal.setAttribute('aria-modal', false);
+		this.doms.on_item.setAttribute('aria-expanded', false);
 	}
 
 	/** 달력 생성 함수 (조건에 따라 _create_cal 실행) */

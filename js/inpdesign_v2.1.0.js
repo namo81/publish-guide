@@ -12,10 +12,10 @@
 
 
 /* 적용 예시 - file 및 input 동일
-특정 1개 적용 				 : var 변수명 = new nSelectSet('선택자');
+특정 1개 적용 				 : var 변수명 = new n_select('선택자');
 select disabled 상태 설정	: 변수명.selectDisable(boolean);
 
-화면내 전체 적용			 : nSelect('클래스명');	
+화면내 전체 적용			 : n_selects('클래스명');	
 ** 화면 내 select 가 1개일 경우 nSelArr.selectDisable(boolean);
    화면 내 select 가 다수일 경우 nSelArr[0].selectDisable(boolean); (disable 설정 필요한 select index 선택)
    만약 전체 업데이트 일 경우 반목문 적용
@@ -25,24 +25,27 @@ select disabled 상태 설정	: 변수명.selectDisable(boolean);
 */
 
 /** select 설정 ------------------------------------------------------------------------ */
-var nSelArr;
+/** 
+ * 2026-03-20 - 웹접근성 관련 속성 추가 (aria-haspopup, aria-controls, aria-expanded, aria-selected, aria-activedescendant) 및 키보드 기능 추가 (Tab, Enter, ArrowUp, ArrowDown)
+ */
+let nSelArr;
 
 /** 화면내 동일 선택자 전체 적용 시 */
-function nSelect(selector) {
-	var nSelectEle = document.querySelectorAll(selector);
+function n_selects(selector) {
+	let nSelectEle = document.querySelectorAll(selector);
 	
 	if(nSelectEle.length > 1) {
 		nSelArr = new Array();
 		Array.prototype.forEach.call(nSelectEle, function(el, index, array){
-			nSelArr[index] = new nSelectSet(el);
+			nSelArr[index] = new n_select(el);
 		});
 	} 
-	else if (nSelectEle.length == 1) nSelArr = new nSelectSet(nSelectEle[0]);
+	else if (nSelectEle.length == 1) nSelArr = new n_select(nSelectEle[0]);
 	else null;
 }
 
 /** 실제 select 관련 기능 함수 */
-function nSelectSet(Ele){
+function n_select(Ele){
 	const nSelect = this;
 	nSelect.wrap		= typeof Ele === 'string' ? document.querySelector(Ele) : Ele;
 
@@ -53,9 +56,14 @@ function nSelectSet(Ele){
 		selBtn		= createDom('button', 'btn-select');
 	
 	let opts		= sel.querySelectorAll('option'),
-		now_sel_btn,
+		now_sel_btn, // 현재 선택된 버튼
 		now_sel_num = 0,
-		btn_opts    = [];
+		btn_opts    = [],
+		now_active_btn; // 현재 active 된 버튼 (키보드 이동 시)
+
+	const selUid = 'nsel_' + Math.random().toString(36).slice(2, 11), // select 요소 고유 id (화면 내 여러개 선언 시 구분용)
+		listId = selUid + '_list',
+		activeOptId = selUid + '_active';
 
 	let clickEvt = new Event('click');
 
@@ -63,8 +71,11 @@ function nSelectSet(Ele){
 	function optionCreate(){
 		while ( selUl.hasChildNodes() ) { selUl.removeChild( selUl.firstChild ); }
 		btn_opts    = [];
+		now_active_btn = null;
+		let visibleIdx = -1;
 		opts.forEach((opt, idx)=>{
 			if(opt.hidden == true) return;
+			visibleIdx++;
 			let li = createDom('li'),
 				btn = createDom('button', 'btn-sel');
 			btn.textContent = opt.textContent;
@@ -76,7 +87,7 @@ function nSelectSet(Ele){
 				btn.classList.add('select');
 				btn.setAttribute('aria-selected', true);
 				now_sel_btn = btn;
-				now_sel_num = idx;
+				now_sel_num = visibleIdx;
 			} else {
 				btn.classList.remove('select');
 				btn.setAttribute('aria-selected', false);
@@ -99,16 +110,32 @@ function nSelectSet(Ele){
 			selBtn.classList.add('readonly');
 		}
 
-		selBtn.setAttribute('role', 'button');
+		selBtn.setAttribute('role', 'combobox');
 		selBtn.setAttribute('aria-expanded', false);
 		selBtn.setAttribute('aria-haspopup', 'listbox');
+		selBtn.setAttribute('aria-controls', listId);
 		selList.setAttribute('role', 'listbox');
+		selList.id = listId;
 
 		nSelect.wrap.appendChild(selBtn);
 		nSelect.wrap.appendChild(selList);
 		selList.appendChild(selUl);
 	}
 	selectCreate();
+
+	function setActiveDescendant(idx){
+		if(idx < 0 || idx >= btn_opts.length) {
+			if(now_active_btn) now_active_btn.removeAttribute('id');
+			now_active_btn = null;
+			selBtn.removeAttribute('aria-activedescendant');
+			return;
+		}
+		const activeBtn = btn_opts[idx];
+		if(now_active_btn && now_active_btn !== activeBtn) now_active_btn.removeAttribute('id');
+		activeBtn.id = activeOptId;
+		now_active_btn = activeBtn;
+		selBtn.setAttribute('aria-activedescendant', activeOptId);
+	}
 
 	/** 버튼 텍스트 설정 */
 	function set_selBtn_tx(){
@@ -127,19 +154,31 @@ function nSelectSet(Ele){
 		else if(e.key == 'ArrowUp') {
 			e.preventDefault();
 			if(now_sel_num > 0) now_sel_num--;
-			optHover(now_sel_num);
+			optHover(now_sel_num, 'up');
 		} else if(e.key == 'ArrowDown') {
 			e.preventDefault();
 			if(now_sel_num < btn_opts.length - 1) now_sel_num++;
-			optHover(now_sel_num);
-		} else if(e.key == 'Enter') btn_opts[now_sel_num].dispatchEvent(clickEvt);
+			optHover(now_sel_num, 'down');
+		} else if(e.key == 'Enter' && btn_opts[now_sel_num]) btn_opts[now_sel_num].dispatchEvent(clickEvt);
 	}
 
 	/** 키보드 관련 버튼 hover 설정 */
-	function optHover(idx){
-		btn_opts.forEach((btn, index)=>{ 
+	function optHover(idx, direction){
+		if(btn_opts.length < 1) return;
+		if(btn_opts[idx].disabled == true) {
+			if(direction == 'up' && idx > 0) {
+				optHover(idx - 1, direction);
+				now_sel_num = idx - 1;
+			} else if(direction == 'down' && idx < btn_opts.length - 1) {
+				optHover(idx + 1, direction);
+				now_sel_num = idx + 1;
+			}
+			return;
+		}
+		btn_opts.forEach((btn, index)=>{
 			index == idx ? btn.classList.add('hover') : btn.classList.remove('hover');
 		});
+		setActiveDescendant(idx);
 	}
 
 	/** option 목록 그리기 */
@@ -147,16 +186,21 @@ function nSelectSet(Ele){
 		opts		= sel.querySelectorAll('option');
 		optionCreate();
 		set_selBtn_tx();
+		setActiveDescendant(now_sel_num);
 	}
 
 	/** 리스트 열기 */
 	function selBtnClick(){
 		optionAdd();
-		if(now_sel_btn) now_sel_btn.classList.add('hover');
+		if(now_sel_btn) {
+			now_sel_btn.classList.add('hover');
+			setActiveDescendant(now_sel_num);
+		}
 		nSelect.wrap.classList.add('on');
 		nSelect.wrap.style.zIndex = 200;
 		selBtn.setAttribute('aria-expanded', true);
 		document.addEventListener('keydown', selKeySet);
+		outSideClick_this('.n-select', nSelect.wrap, nSelect.wrap, 'on', ()=>{ selLeave() });
 	}
 
 	/** 리스트 닫기 */
@@ -164,11 +208,14 @@ function nSelectSet(Ele){
 		nSelect.wrap.classList.remove('on');
 		nSelect.wrap.style.zIndex = '';
 		selBtn.setAttribute('aria-expanded', false);
+		if(now_active_btn) now_active_btn.removeAttribute('id');
+		now_active_btn = null;
+		selBtn.removeAttribute('aria-activedescendant');
 		document.removeEventListener('keydown', selKeySet);
 	}
 
 	/** 리스트 내 option 버튼 클릭 시 */
-	function optBtnClick(event){
+	async function optBtnClick(event){
 		let tg		= event.target;
 			tgTx	= tg.textContent,
 			tgVal   = tg.dataset.val;
@@ -180,28 +227,89 @@ function nSelectSet(Ele){
 		});
 		nSelect.wrap.classList.remove('not-sel');
 		
-		// select - change 이벤트 트리거
-		/* 크롭은 한줄로 가능 */	
 		let changeEvt = new Event('change');
-		sel.dispatchEvent(changeEvt); // 공통문구
+		sel.dispatchEvent(changeEvt);
 
-		setTimeout(()=>{ selLeave() }, 10);
+		await waitRender();
+		selLeave();
 	}
 
 	selBtn.addEventListener('click', selBtnClick);
-	nSelect.wrap.addEventListener('mouseleave',selLeave);
 	sel.addEventListener('change', function(){
-		optionAdd();
 		selBtn.textContent = this.options[this.selectedIndex].textContent;
 	});
 
-	this.select = sel;
-	this.btn = selBtn;
-	this.selectDisable = function(bln){
+	nSelect.select = sel;
+	nSelect.btn = selBtn;
+	nSelect.selectDisable = function(bln){
 		selBtn.disabled = bln;
 	}
 }
 
+/** select형태 dropdown------------------------------------------------------------------------ */
+function n_dropdown(area){
+	const dropdown = this;
+	dropdown.wrap = typeof area === 'string' ? document.querySelector(area) : area;
+
+	let btn_open = dropdown.wrap.querySelector('.btn-select'),
+		list = dropdown.wrap.querySelector('.select-list'),
+		items = list.querySelectorAll('li'),
+		btn_confirm = list.querySelector('.btn'),
+		btn_tx = btn_open.textContent, // 버튼 텍스트 (취소 시 원래 텍스트로 돌아가기용 변수 / 초기는 '선택')
+		arr_tx = new Array(); // check 상태 저장 배열 - 체크된 항목 텍스트 반환 함수(chk_items)에서 사용
+	
+	btn_open.addEventListener('click', ()=>{ 
+		items = list.querySelectorAll('li');
+		dropdown.wrap.classList.toggle('on');
+		if(dropdown.wrap.classList.contains('on')) chk_state_save();
+		else chk_state_set();
+		
+		outSideClick('.n-select', dropdown.wrap, 'on', chk_state_set);
+	});
+	
+	/** 체크된 상태 저장 */
+	function chk_state_save(){
+		items.forEach((item, idx)=>{
+			let chk = item.querySelector('input');
+			chk.checked == true ? arr_tx[idx] = true : arr_tx[idx] = false;
+		});
+	}
+
+	/** 배열 기준 체크 상태 설정 */
+	function chk_state_set(){
+		items.forEach((item, idx)=>{
+			let chk = item.querySelector('input');
+			chk.checked = arr_tx[idx];
+		});
+	}
+
+	/** 체크 배열 기준 텍스트 반환 */
+	function chk_items(){
+		let arr_chk = new Array();
+		items.forEach((item, idx)=>{
+			let chk = item.querySelector('input'),
+				tx = item.querySelector('label').textContent;
+			if(chk.checked == true) {
+				arr_chk.push(tx);
+			}
+		});
+		arr_chk.length == 0 ? btn_open.classList.remove('sel') : btn_open.classList.add('sel');
+		if(arr_chk.length == 0) return btn_tx;
+		else if(arr_chk.length == items.length) return '전체';
+		else if(arr_chk.length == 1) return arr_chk[0];
+		else return arr_chk[0] + ' 외 ' + (arr_chk.length -1) + '개';
+	}
+
+	btn_confirm.addEventListener('click', ()=>{
+		chk_state_save();
+		btn_open.textContent = chk_items();
+		dropdown.wrap.classList.remove('on');
+	});
+
+	btn_open.textContent = chk_items();
+
+	dropdown.btn = btn_open;
+}
 
 // file 설정 ------------------------------------------------------------------------
 /**

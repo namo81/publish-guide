@@ -4,7 +4,9 @@
     common.js 필요
 */
 
-function nSelectMobile(option){
+/** ios 스타일 : option 항목 클릭 및 드래그 ------------------------ */
+function nSelectDrag(option){
+    const select = this;
     let wrap            = typeof option.area === 'string' ? document.querySelector(option.area) : option.area,
         nSel            = wrap.querySelector('select'),
         opts            = nSel.options,
@@ -14,7 +16,8 @@ function nSelectMobile(option){
         btnConfirmTx    = option.btnConfirmTx ? option.btnConfirmTx : '확인';
 
     let body            = document.querySelector('body'),
-        selTitArea;
+        selTitArea,
+        changeEvt = new Event('change')
 
     let selVal,  // 기 선택 text
         selIdx,  // 기 선택 idx
@@ -47,9 +50,9 @@ function nSelectMobile(option){
         btnClose    = document.createElement('button'),
         btnConfirm  = document.createElement('button');
 
-    selModal.classList.add('modal-sel');
-    modalCnt.classList.add('scroll-select-cnt');
-    modalCnt.classList.add('modal-cnt');
+    selModal.classList.add('n_select');
+    modalCnt.classList.add('drag-scroll-area');
+    modalCnt.classList.add('select-cnt');
     scrollArea.classList.add('scroll-wrap');
     scrollCnt.classList.add('scroll-cnt'); // 실제 스크롤 되는 영역
     btnWrap.classList.add('btns');
@@ -72,7 +75,7 @@ function nSelectMobile(option){
 
     if(selTitle) {
         selTitArea = document.createElement('div');
-        selTitArea.classList.add('modal-title');
+        selTitArea.classList.add('select-title');
         selTitArea.setAttribute('tabindex', '0');
         selTitArea.setAttribute('role', 'heading');
         modalCnt.insertBefore(selTitArea, modalCnt.firstChild);
@@ -244,10 +247,225 @@ function nSelectMobile(option){
         });
     }
 
-    this.set_disabled = function(){
+    select.set_disabled = function(){
         btnSel.disabled = true;
     }
-    this.set_enabled = function(){
+    select.set_enabled = function(){
         btnSel.disabled = false;
     }
+}
+
+/** ios 스타일 : option 항목 클릭만 ------------------------ */
+function nSelect(option){
+    const select = this;
+    let wrap            = typeof option.area === 'string' ? document.querySelector(option.area) : option.area,
+        nSel            = wrap.querySelector('select'),
+        selTitle        = option.title,
+        btnCls          = option.btnCls ? option.btnCls : 'btn-sel';
+
+    let body            = document.querySelector('body'),
+        selTitArea,
+        changeEvt = new Event('change');
+
+    let opts = nSel.options,
+        selVal,  // 기 선택 text
+        selIdx,  // 기 선택 idx
+        optBtns, // 생성된 option 관련 버튼
+        btnSel = document.createElement('button'),
+        bodyStyle = document.querySelector('body').style;
+
+    nSel.style.display = 'none';
+    if(nSel.value) {
+        selIdx = nSel.selectedIndex;
+        selVal = nSel.options[selIdx].value;
+    }
+
+    btnSel.classList.add(btnCls);
+    btnSel.textContent = nSel.options[nSel.selectedIndex].textContent;
+    btnSel.setAttribute('type', 'button');
+    btnSel.setAttribute('aria-haspopup', 'dialog');
+    btnSel.setAttribute('aria-expanded', 'false');
+    wrap.appendChild(btnSel);
+    if(nSel.disabled == true) btnSel.disabled = true;
+
+    let selModal    = document.createElement('div'),
+        modalCnt    = document.createElement('div'),
+        scrollArea  = document.createElement('div'),
+        listUl      = document.createElement('ul'),
+        btnClose    = document.createElement('button');
+
+    selModal.classList.add('n_select');
+    if(option.modalCls) selModal.classList.add(option.modalCls);
+    modalCnt.classList.add('select-cnt');
+    scrollArea.classList.add('scroll-wrap');
+    listUl.classList.add('sel-list');
+
+    btnClose.classList.add('btn-sel-close');
+    btnClose.textContent = '닫기';
+
+    scrollArea.appendChild(listUl);
+    modalCnt.appendChild(scrollArea);
+    selModal.appendChild(modalCnt);
+    modalCnt.appendChild(btnClose);
+
+    if(selTitle) {
+        selTitArea = document.createElement('div');
+        selTitArea.classList.add('select-title');
+        selTitArea.setAttribute('tabindex', '0');
+        selTitArea.setAttribute('role', 'heading');
+        modalCnt.insertBefore(selTitArea, modalCnt.firstChild);
+        selTitArea.innerText = selTitle;
+    }
+
+    /** 리스트 생성 함수 */
+    function setList(){
+        opts = nSel.options;
+        let sel_btn;
+
+        for(let i=0; i<opts.length; i++){
+            if(opts[i].getAttribute('hidden') == null) {
+                let dum_li = document.createElement('li'),
+                    dum_btn = document.createElement('button');
+                dum_btn.setAttribute('type', 'button');
+                dum_btn.setAttribute('role', 'option');
+                dum_btn.dataset.val = opts[i].value;
+                dum_btn.textContent = opts[i].textContent;
+                if(selVal == opts[i].value) {
+                    dum_btn.setAttribute('aria-selected', true);
+                    sel_btn = dum_btn;
+                } else dum_btn.setAttribute('aria-selected', false);
+                if(opts[i].disabled == true) dum_btn.disabled = true;
+                dum_li.appendChild(dum_btn);
+                listUl.appendChild(dum_li);
+            } else null;
+        }
+        
+        // 리스트 버튼 클릭 시 해당 위치로 스크롤 이동
+        optBtns = listUl.querySelectorAll('button');
+        optBtns.forEach(function(btn, idx){
+            btn.addEventListener('click', function(e){
+                selConfirm(btn, idx);
+            });
+        });
+
+        if(sel_btn == null) return;
+        let area_top = scrollArea.getBoundingClientRect().top;
+        sel_sc = sel_btn.getBoundingClientRect().top - area_top;
+        scrollArea.scrollTo(0, sel_sc);
+    }
+
+    /** 리스트 삭제 */
+    function removeList(){
+        pageUnset();
+        selModal.classList.remove('on');
+        btnSel.setAttribute('aria-expanded', 'false');
+        while ( listUl.hasChildNodes() ) { listUl.removeChild( listUl.firstChild ); }
+        body.removeChild(selModal);
+        btnSel.focus();
+    }
+    
+    /**
+     * options 중 동일한 text 를 가진 option index 추출
+     * @param {string} tx 버튼 텍스트
+    
+    function get_opts_idx(tx){
+        let opt_idx;
+        for(let i=0; i<opts.length; i++){
+            if(opts[i].textContent == tx) {
+                opt_idx = i;
+                break;
+            }
+        }
+        return opt_idx;
+    } */
+
+    /**
+     * options 중 select 와 동일한 value 를 가진 option index 추출
+     * @param {string} val 버튼 텍스트
+     */
+    function get_opts_idx(val){
+        let opt_idx;
+        for(let i=0; i<opts.length; i++){
+            if(opts[i].value == val) {
+                opt_idx = i;
+                break;
+            }
+        }
+        return opt_idx;
+    }
+
+    /**
+     * 리스트 컨펌
+     * @param {dom} btn 선택된 버튼
+     * @param {number} idx 선택된 버튼의 index
+     */
+    function selConfirm(btn, idx){
+        removeList();
+
+        selVal = btn.dataset.val;
+        selIdx = get_opts_idx(btn.dataset.val);
+        //selIdx = get_opts_idx(btn.textContent);
+
+        nSel.options[selIdx].selected = true;
+        btnSel.textContent = btn.textContent;
+        nSel.dispatchEvent(changeEvt);
+    }
+    btnSel.addEventListener('click', openList);
+
+    /** 리스트 생성 및 열기 */
+    function openList(){
+        if(nSel.hasAttribute('readonly')) return; // readonly 속성 시 작동 안함 (값이 1개일 경우 등)
+        pageSet();
+        body.appendChild(selModal);
+        selModal.setAttribute('role', 'dialog');
+        setList();
+        setTimeout(function(){ selModal.classList.add('on') }, 100);
+        selTitle ? selTitArea.focus() : optBtns[selIdx].focus();
+        btnSel.setAttribute('aria-expanded', 'true');
+        btnClose.addEventListener('click', removeList);
+    }
+
+    /** 모 페이지 설정 함수 - tab 키 요소 제어 및 화면 overflow 설정 */
+	function pageSet(){
+		let tabEle		= document.querySelectorAll('a, button, input, select, textarea');
+		tabEle.forEach(function(ele){
+			if(ele.closest('.modal')) return;
+			ele.setAttribute('tabindex','-1');
+			ele.setAttribute('aria-hidden', true);
+		});
+		bodyStyle.overflow = 'hidden';
+        body.classList.add('hold');
+	}
+
+	/** 모 페이지 설정 해제 - tab 키 요소 제어 및 화면 overflow 설정 해제 */
+	function pageUnset() {
+		let tabEle		= document.querySelectorAll('a, button, input, select, textarea');
+		tabEle.forEach(function(ele){
+			if(ele.closest('.modal')) return;
+			ele.removeAttribute('tabindex');
+			ele.removeAttribute('aria-hidden');
+		});
+		bodyStyle.overflow = '';
+        body.classList.remove('hold');
+	}
+
+    // select 변경내역 업데이트 (선택값 변경)
+    select.update = function(){
+        selIdx = nSel.selectedIndex;
+        selVal = nSel.options[selIdx].value;
+        btnSel.textContent = nSel.options[selIdx].textContent;
+        nSel.disabled == true ? btnSel.disabled = true : btnSel.disabled = false;
+    }
+
+    // 버튼 disabled
+    select.set_disabled = function(){
+        btnSel.disabled = true;
+    }
+    // 버튼 Enabled
+    select.set_enabled = function(){
+        btnSel.disabled = false;
+    }
+
+    // select 직접 선택
+    select.select = nSel;
 }

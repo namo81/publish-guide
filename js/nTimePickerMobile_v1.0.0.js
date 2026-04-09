@@ -110,9 +110,9 @@ function nTimeSetMobile(option){
     setTxVal();
 
     // 기본 구조 생성
-    time_wrap.classList.add('modal', 'sel-time');
-    roll_wrap.classList.add('scroll-select-cnt');
-    roll_wrap.classList.add('modal-cnt');
+    time_wrap.classList.add('sel-time');
+    roll_wrap.classList.add('drag-scroll-area');
+    roll_wrap.classList.add('sel-time-cnt');
     hour_wrap.classList.add('scroll-wrap');
     hour.classList.add('scroll-cnt', 'area-hour');
     min_wrap.classList.add('scroll-wrap');
@@ -252,7 +252,7 @@ function nTimeSetMobile(option){
     let selTitArea;
     if(selTitle) {
         selTitArea = document.createElement('div');
-        selTitArea.classList.add('modal-title');
+        selTitArea.classList.add('time-title');
         selTitArea.setAttribute('role', 'heading');
         selTitArea.setAttribute('tabindex', '0');
         roll_wrap.insertBefore(selTitArea, roll_wrap.firstChild);
@@ -313,21 +313,19 @@ function nTimeSetMobile(option){
      * @param {dom} area 오전오후/시간/분 영역
      */
     function scrollFuncSet(area){
-        let tgArea = area,
-            tgInterval, tgScTopVal, tgScChk;
+        let debounceTimer = null,
+            isTouching = false,
+            pendingSnap = false;
 
-        /**
-         * scroll 움직임 상태감지 : interval 로 scrolltop 값 비교 (touchout 후에도 scroll 이 마저 움직일 때 이벤트 발생 제한)
-         * @param {dom} area 오전오후/시간/분 영역
-         */
-        function scrollChk(area){
-            if(tgScTopVal != area.scrollTop) tgScTopVal = area.scrollTop;
-            else {
-                if(!tgScChk) {
-                    clearInterval(tgInterval);
-                    scSet(area, area.scrollTop);
-                }
-            }
+        function clamp(v, min, max){
+            return v < min ? min : (v > max ? max : v);
+        }
+
+        function getBtnsByArea(area){
+            if(area == hour) return hourBtns;
+            if(area == min) return minBtns;
+            if(area == ampm) return ampmBtns;
+            return [];
         }
 
         /**
@@ -336,29 +334,60 @@ function nTimeSetMobile(option){
          * @param {number} sc Scroll top 값
          */
         function scSet(area, sc){
-            let scN     = sc % optHeight,
-                scVal   = Math.floor(sc / optHeight),
+            let tgBtns = getBtnsByArea(area),
+                safeSc = sc < 0 ? 0 : sc,
+                scN = safeSc % optHeight,
+                scVal = Math.floor(safeSc / optHeight),
                 scIdx, tgSc;
 
             scN < optHeight / 2 ? scIdx = scVal : scIdx = scVal + 1;
+
+            if(!tgBtns || tgBtns.length < 1) return;
+            scIdx = clamp(scIdx, 0, tgBtns.length - 1);
             tgSc = scIdx * optHeight;
+
+            if(!tgBtns[scIdx]) return;
             animateScroll(area, tgSc, 200);
             setVal(area, scIdx);
         }
 
-        tgArea.addEventListener('scroll', function(){
-            clearInterval(tgInterval);
-            tgInterval = setInterval(function(){
-                scrollChk(tgArea);
-            }, 50);
+        function requestSnap(){
+            if(isTouching){
+                pendingSnap = true;
+                return;
+            }
+            pendingSnap = false;
+            scSet(area, area.scrollTop);
+        }
+
+        function scheduleSnap(){
+            clearTimeout(debounceTimer);
+            debounceTimer = setTimeout(requestSnap, 150);
+        }
+
+        area.addEventListener('scroll', function(){
+            scheduleSnap();
         });
-        tgArea.addEventListener('touchstart', function(){
-            tgScChk = true; // touch 상태 on
-        }, {passive : false});
+
+        area.addEventListener('touchstart', function(){
+            isTouching = true;
+            pendingSnap = false;
+            clearTimeout(debounceTimer);
+        }, {passive : true});
     
-        tgArea.addEventListener('touchend', function(){
-            tgScChk = false; // touch 상태 off
-        });
+        area.addEventListener('touchend', function(){
+            isTouching = false;
+            if(pendingSnap) {
+                requestSnap();
+                return;
+            }
+            scheduleSnap();
+        }, {passive : true});
+
+        area.addEventListener('touchcancel', function(){
+            isTouching = false;
+            scheduleSnap();
+        }, {passive : true});
     }
     scrollFuncSet(min);
     scrollFuncSet(hour);
@@ -591,53 +620,69 @@ function nNumberSelector(option){
      * @param {dom} area 스크롤되는 영역 dom
      */
     function scrollFuncSet(area){
-        let tgArea = area,
-            tgInterval, tgScTopVal, tgScChk;
+        let debounceTimer = null;
+        let isTouching = false;
+        let pendingSnap = false;
 
-        /**
-         * scroll 움직임 상태감지 : interval 로 scrolltop 값 비교 (touchout 후에도 scroll 이 마저 움직일 때 이벤트 발생 제한)
-         * @param {dom} area 오전오후/시간/분 영역
-         */
-        function scrollChk(area){
-            if(tgScTopVal != area.scrollTop) tgScTopVal = area.scrollTop;
-            else {
-                if(!tgScChk) {
-                    clearInterval(tgInterval);
-                    scSet(area, area.scrollTop);
-                }
-            }
+        function clamp(v, min, max){
+            return v < min ? min : (v > max ? max : v);
         }
 
-        /**
-         * 스크롤 종료 후 가장 가까운 값으로 scroll 조정
-         * @param {dom} area 오전오후/시간/분 영역
-         * @param {number} sc Scroll top 값
-         */
         function scSet(area, sc){
-            let scN     = sc < 0 ? 0 : sc % num_height,
-                scVal   = sc < 0 ? 0 : Math.floor(sc / num_height),
-                scIdx, tgSc;
+            let safeSc = sc < 0 ? 0 : sc,
+                scN    = safeSc % num_height,
+                scVal  = Math.floor(safeSc / num_height),
+                scIdx  = scN < num_height / 2 ? scVal : scVal + 1;
 
-            scN < num_height / 2 ? scIdx = scVal : scIdx = scVal + 1;
-            tgSc = scIdx * num_height;
+            scIdx = clamp(scIdx, 0, numbers.length - 1);
+
+            let tgSc = scIdx * num_height;
+            if(!numbers[scIdx]) return;
             if(temp_val == numbers[scIdx].textContent) return;
+
             animateScroll(area, tgSc, 200);
             setVal(scIdx);
         }
 
-        tgArea.addEventListener('scroll', function(){
-            clearInterval(tgInterval);
-            tgInterval = setInterval(function(){
-                scrollChk(tgArea);
-            }, 50);
+        function requestSnap(){
+            if(isTouching){
+                pendingSnap = true;
+                return;
+            }
+            pendingSnap = false;
+            scSet(area, area.scrollTop);
+        }
+
+        function scheduleSnap(){
+            clearTimeout(debounceTimer);
+            debounceTimer = setTimeout(requestSnap, 150);
+        }
+
+        area.addEventListener('scroll', function(){
+            scheduleSnap();
         });
-        tgArea.addEventListener('touchstart', function(){
-            tgScChk = true; // touch 상태 on
-        }, {passive : false});
-    
-        tgArea.addEventListener('touchend', function(){
-            tgScChk = false; // touch 상태 off
-        });
+
+        area.addEventListener('touchstart', function(){
+            isTouching = true;
+            pendingSnap = false;
+            clearTimeout(debounceTimer);
+        }, { passive: true });
+
+        area.addEventListener('touchend', function(){
+            isTouching = false;
+
+            if(pendingSnap){
+                requestSnap();
+                return;
+            }
+
+            scheduleSnap();
+        }, { passive: true });
+
+        area.addEventListener('touchcancel', function(){
+            isTouching = false;
+            scheduleSnap();
+        }, { passive: true });
     }
     scrollFuncSet(scroll_wrap);
 

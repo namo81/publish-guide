@@ -22,13 +22,11 @@
 	<script src="../guide/vendor/highlight.js"></script>
 
 	<!-- 프로젝트 관련 CSS 및 JS 파일 로드 -->
-	<link rel="stylesheet" href="/css/layout.css" media="screen, print" />
+	<link rel="stylesheet" href="/css/layout_m.css" media="screen, print" />
 </head>
 <body class="pub-guide">
 	<div id="work-list" class="mobile">
 		<div class="guide">
-			
-
 			<!-- input ================================================================ -->
 			<section id="guide-input">
 				<h2 class="guide-sec-tit">Time Picker</h2>
@@ -40,17 +38,40 @@
 					<p>input focus 시 dropdown 으로 시간 리스트 표출 및 선택</p>
 					<div class="guide-show">
 						<div class="inp-time">
-							<input type="text" name="" class="inp-1" value="오후 11:00" readonly/>
+							<input type="text" name="" class="input-box inp-1" value="오후 11:00" readonly/>
 						</div>
 					</div>
 <pre><code class="html">&lt;div class="inp-time"&gt;
 	&lt;input type="text" name="" class="inp-1" value="00:00"/&gt;
 &lt;/div&gt;
 </code></pre>
+<pre><code class="javascript"> * area (dom/string) : 연계할 input 을 포함하는 영역 dom / 선택자
+ * input (dom/string) : 연계할 input dom / 선택자
+ * inPage (boolean) : 페이지 포함 여부 - 기본은 false
+ * inTarget (dom) : inPage ture 일 경우 달력 넣을 영역
+ * title (string) : 타이틀
+ * optHeight (number) : 숫자 1개 영역의 높이
+ * gap_count (number) : 선택 숫자 위아래에 추가로 표기될 숫자 갯수 (상하에 동시에 gap_count 만큼 적용)
+ * halfTime (boolean) : 오전/오후 기능 사용여부
+ * halfShow (boolean) : input 에 표기 시 오전/오후 포함하여 표기할지 여부
+ * 
+ * hourMin (number) : 시간최소값
+ * hourMax (number) : 시간최대값
+ * minMin (number) : 분최소값
+ * minMax (number) : 분최소값
+ * minStep (number) : 분 단위값 (기본 1분단위 - 10 입력 시 10분단위)
+
+ let calDay = new nTimeSetMobile({
+	area : '.inp-time',
+	input : '.inp-1',
+	title : '타이틀영역',
+	optHeight : 40,
+	halfTime : true,
+	halfShow : true
+});
+</code></pre>
 				</div>
 			</section>
-
-
 		</div>
 		<a href="#work-list" class="guide-top">Top</a>	
 	</div>
@@ -60,7 +81,7 @@
 	<script>
 		hljs.initHighlightingOnLoad(); 
 
-		var calDay = new nTimeSetMobile({
+		let calDay = new nTimeSetMobile({
 			area : '.inp-time',
 			input : '.inp-1',
 			title : '타이틀영역',

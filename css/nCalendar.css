@@ -1,3 +1,5 @@
+/* nCalendar_v2.4 버전 대응 CSS  */
+
 .cal-wrap { position:absolute; display:none; width:280px; padding:10px; background:#fff; border:1px solid #2b2b2b; font-size:12px; line-height:16px; border-radius:6px; z-index:1000;}
 .cal-wrap.in-page { position:relative; display:block; }
 .cal-wrap.on { display:block; }

@@ -23,7 +23,7 @@
 	<script src="../guide/vendor/highlight.js"></script>
 
 	<!-- 프로젝트 관련 CSS 및 JS 파일 로드 -->
-	<link rel="stylesheet" href="/css/layout.css" media="screen, print" />
+	<link rel="stylesheet" href="/css/layout_m.css" media="screen, print" />
 </head>
 <body class="pub-guide">
 	<div id="work-list">
@@ -52,23 +52,21 @@
 					<p>option 항목은 아래 script 부분 확인</p>
 					<p>닫기 버튼에 'all' 클래스 있을 경우 - 현재 열린 모든 레이어 닫기 (별도 콜백함수 실행X)</p>
 					<p>v6 : 기존 v5 에서 버튼 관련 자동설정 및 연결 기능 제거 / active 콜백함수 정리 - 레이어를 show/hide 기능 위주로 기능 단순화</p>
-					<p>레이어 선언 후 show() / hide() 메서드로 제어</p>
 					<div class="guide-show">
 						<!-- 코드 작성 -->
 						<button type="button" class="btn medium open-layer1" aria-haspopup="dialog" aria-controls="#layer1">팝업 호출</button> <br /><br />
 						<!-- // 코드 작성 -->
 					</div>
 					<h4 class="guide-sstit">css</h4>
-<pre><code class="css ">.layer { position:fixed; display:block; visibility:hidden; width:100%; height:100%; top:0; left:0; background:rgba(0,0,0,.8); overflow:hidden; backdrop-filter:blur(4px); opacity:0; transition:.2s opacity; transform:translate3d(0, 100%, 0); z-index:1000; }
+<pre><code class="css ">.layer { position:fixed; display:none; width:100%; height:100%; top:0; left:0; background:rgba(0,0,0,.8); overflow-x:hidden; overflow-y:auto; z-index:1000; }
 .layer > .inbox { display:flex; align-items:center; height:calc(100% - 60px); margin:30px; }
 .layer-cnt { position:relative; display:flex; flex-direction:column; width:700px; max-height:100%; margin:auto; padding:25px; background:#fff; box-sizing:border-box;}
 .layer-top { position:relative; height:50px; flex-basis:50px; flex-shrink:0; }
 .layer-mid { flex:1 1 auto; overflow-y:auto; }
-.layer.show { visibility:visible; transform:translate3d(0,0,0); opacity:1; }
+.layer.show { display:block; }
 </code></pre>
 
 					<h4 class="guide-sstit">호출버튼</h4>
-					<p>호출버튼 자동설정이 없으므로 접근성 관련 속성을 직접 설정</p>
 					<p>aria-haspopup="dialog" / aria-controls="#대상 레이어 id" 속성 필수</p>
 <pre><code class="html">&lt;button type="button" class="btn medium open-layer1" aria-haspopup="dialog" aria-controls="#layer1"&gt;팝업 호출&lt;/button&gt;
 </code></pre>
@@ -91,10 +89,8 @@
 				&lt;p&gt;tx&lt;/p&gt;
 				&lt;p&gt;tx&lt;/p&gt;
 				&lt;input type="text"&gt;
-				&lt;div class="btns"&gt;
-					&lt;button type="button" class="btn medium confirm"&gt;확인&lt;/button&gt;
-				&lt;/div&gt;
 			&lt;/div&gt;
+			&lt;button type="button" class="confirm"&gt;확인&lt;/button&gt;
 			&lt;button type="button" class="close-layer"&gt;닫기&lt;/button&gt;
 		&lt;/div&gt;
 	&lt;/div&gt;
@@ -319,11 +315,9 @@ btn_toast2.addEventListener('click', function(){
 					<p>tx</p>
 					<p>tx</p>
 					<input type="text">
-					<div class="btns">
-						<button type="button" class="btn medium confirm">확인</button>
-					</div>
 				</div>
-				<button type="button" class="btn-close close-layer">닫기</button>
+				<button type="button" class="confirm">확인</button>
+				<button type="button" class="close-layer">닫기</button>
 			</div>
 		</div>
 	</div>
@@ -338,13 +332,13 @@ btn_toast2.addEventListener('click', function(){
 				<div class="layer-mid">
 					<button type="button" class="close-layer-all">전체닫기</button>
 				</div>
-				<button type="button" class="btn-close close-layer">닫기</button>
+				<button type="button" class="close-layer">닫기</button>
 			</div>
 		</div>
 	</div>
 
 	<script src="/js/common.js"></script>
-	<script src="/js/nlayer_v6.0.js"></script>
+	<script src="/js/nlayer_v6.1.js"></script>
 	<script>
 		hljs.initHighlightingOnLoad(); 
 

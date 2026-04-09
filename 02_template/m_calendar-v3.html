@@ -23,7 +23,7 @@
 	<script src="../guide/vendor/highlight.js"></script>
 
 	<!-- 프로젝트 관련 CSS 및 JS 파일 로드 -->
-	<link rel="stylesheet" href="/css/layout.css" media="screen, print" />
+	<link rel="stylesheet" href="/css/layout_m.css" media="screen, print" />
 	<script src="../js/jquery-3.2.1.min.js"></script>
 </head>
 <body class="pub-guide">
@@ -132,6 +132,7 @@
 <pre><code class="js">let 변수 = new n_calendar({
 	wrap : '.inp-cal',
 	type : 'day',
+	position : 'modal', // 모바일일 경우 필수
 	activeShow : function(){
 		
 	}, activeDraw : function(){
@@ -217,7 +218,7 @@
 	</div>
 
 	<!-- calendar 관련 설정 -->
-	<link rel="stylesheet" href="/css/n_Calendar.css" media="screen, print"/>
+	<link rel="stylesheet" href="/css/n_calendar_m.css" media="screen, print"/>
 	<script src="/js/common.js"></script>
 	<script src="/js/nCalendar_v3.0.0.js"></script>
 	<script>
@@ -229,6 +230,7 @@
 			controls : 'shift',
 			limit : 'after',
 			gap_limit : '2Y',
+			position : 'modal',
 			activeDraw : function(){
 				//console.log('Draw!')
 				//this.btn_disabled_set(test);
@@ -239,6 +241,7 @@
 			wrap : '.inp-cal.week',
 			type : 'week',
 			controls : 'all',
+			position : 'modal',
 			dual : false
 		});
 
@@ -246,6 +249,7 @@
 			wrap : '.inp-cal.month',
 			type : 'month',
 			controls : 'all',
+			position : 'modal',
 			activeDraw : function(){
 				//console.log('Draw!')
 				//this.btn_disabled_set(test);
@@ -257,6 +261,7 @@
 			range : true,
 			dual : true,
 			limit : 'after',
+			position : 'modal',
 			//gap_range : '1M',
 			controls : 'btn'
 		});
@@ -267,6 +272,7 @@
 			range : true,
 			dual : true,
 			limit : 'after',
+			position : 'modal',
 			controls : 'btn'
 		});
 		
