@@ -235,7 +235,7 @@
 				<h4 class="guide-sstit">클릭형</h4>
 				<p>기본형에 'click' 클래스 추가 ( hover 기능 작동 X )</p>
 				<p>bln 에 추가클래스 (top / center / left / right) 추가로 위치 변경 가능<br> (* center 와 top 은 중복사용 가능)</p>
-				<p>btn-bln 클릭 시 'bln-wrap 에 'on' 클래스 토글 기능이 common.js 에 포함되어 있음. (nBalloonTgl 함수)</p>
+				<p>btn-bln 클릭 시 'bln-wrap 에 'on' 클래스 토글 기능이 common.js 에 포함되어 있음. (nBlnTgl 함수)</p>
 				<p>btn-bln-close 버튼은 닫기 기능용 - 추가옵션으로 없어도 무관함</p>
 				<div class="guide-show">
 				<!-- 코드 작성 -->
@@ -261,10 +261,10 @@
 &lt;/div&gt;
 </code></pre> <br>
 <pre><code class="js">// 특정 말풍선 1개 실행
-nBalloonTgl('.bln-wrap.click');
+nBlnTgl('.bln-wrap.click');
 
 // 페이지 내 다수 말풍선 공통적용
-nBalloonTgls('class 선택자');
+nBlnTgls('class 선택자');
 </code></pre>
 
 				<h4 class="guide-sstit">파일 다운로드</h4>
@@ -283,7 +283,7 @@ nBalloonTgls('class 선택자');
 <script>
 	hljs.initHighlightingOnLoad(); 
 	
-	nBalloonTgl('.bln-wrap.click');
+	nBlnTgl('.bln-wrap.click');
 
 	function urlToPromise(url) {
 		return new Promise(function (resolve, reject) {

@@ -38,13 +38,10 @@
 					<div class="guide-show">
 						<!-- 코드 작성 -->
 						<button type="button" class="btn medium open-dialog">팝업 호출</button> <br /><br />
-						<button type="button" class="btn medium open-layer">팝업 호출2</button> <br /><br />
-						<button type="button" class="btn medium open-layer">팝업 호출3</button>
 						<!-- // 코드 작성 -->
 					</div>
 <h4 class="guide-sstit">css</h4>
 <pre><code class="css ">/* layer-pop - v4.0 이상 */
-.layer-pop,
 .layer { position:fixed; display:none; width:100%; height:100%; top:0; left:0; background:rgba(0,0,0,.8); overflow-x:hidden; overflow-y:auto; backdrop-filter:blur(8px); z-index:1000;}
 .layer > .inbox { display:flex; align-items:center; height:calc(100% - 60px); margin:30px; }
 .layer-cnt { position:relative; display:flex; flex-direction:column; width:700px; max-height:100%; margin:auto; padding:25px; background:#fff; box-sizing:border-box;}
@@ -59,8 +56,6 @@ dialog::backdrop { background-color:rgba(0,0,0, .8); backdrop-filter:blur(3px); 
 
 <h4 class="guide-sstit">호출버튼</h4>
 <pre><code class="html">&lt;button type="button" class="btn medium open-layer"&gt;팝업 호출&lt;/button&gt;
-&lt;button type="button" class="btn medium open-layer"&gt;팝업 호출2&lt;/button&gt;
-&lt;button type="button" class="btn medium open-layer"&gt;팝업 호출3&lt;/button&gt;
 </code></pre>
 			</section>
 		</div>
@@ -106,7 +101,6 @@ dialog::backdrop { background-color:rgba(0,0,0, .8); backdrop-filter:blur(3px); 
 	</dialog>
 
 	<script src="/js/common.js"></script>
-	<script src="/js/nlayer_v5.0.0.js"></script>
 	<script>
 		hljs.initHighlightingOnLoad(); 
 

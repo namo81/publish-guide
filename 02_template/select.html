@@ -28,14 +28,14 @@
 		.n-select { position:relative; }
 		.n-select > select { display:none; }
 		.n-select .btn-select { -webkit-appearance:none; appearance:none; display:inline-block; padding:5px 25px 5px 10px; width:100%; font-size:13px; line-height:20px; border:1px solid #aaa; border-radius:4px; text-align:left; background:#fff url(/images/ico_select.svg) no-repeat right 5px top 50%; }
-		.n-select .select-list { display:none; position:absolute; top:100%; left:0; width:100%; padding:5px 0; border:1px solid #aaa; border-radius:4px; background:#fff; z-index:10; }
-		.n-select .select-list li { padding:0 5px; font-size:13px; line-height:20px; cursor:pointer; }
-		.n-select .select-list li button { display:block; width:100%; padding:3px 10px; text-align:left; box-sizing:border-box; }
-		.n-select .select-list button.hover { background-color:#eee; }
-		.n-select.on .select-list { display:block; }
+		.n-select .option-list { display:none; position:absolute; top:100%; left:0; width:100%; padding:5px 0; border:1px solid #aaa; border-radius:4px; background:#fff; z-index:10; }
+		.n-select .option-list li { padding:0 5px; font-size:13px; line-height:20px; cursor:pointer; }
+		.n-select .option-list li button { display:block; width:100%; padding:3px 10px; text-align:left; box-sizing:border-box; }
+		.n-select .option-list button.hover { background-color:#eee; }
+		.n-select.on .option-list { display:block; }
 
-		.n-select.dropdown .select-list { padding-bottom:0; }
-		.n-select.dropdown .select-list li { padding:2px 5px; }
+		.n-select.dropdown .option-list { padding-bottom:0; }
+		.n-select.dropdown .option-list li { padding:2px 5px; }
 		.n-select.dropdown .btns { padding:5px; justify-content:flex-start; }
 	</style>
 </head>
@@ -71,11 +71,11 @@
 <pre><code class="css">.n-select { position:relative; }
 .n-select > select { display:none; }
 .n-select .btn-select { -webkit-appearance:none; appearance:none; display:inline-block; padding:5px 25px 5px 10px; width:100%; font-size:13px; line-height:20px; border:1px solid #aaa; border-radius:4px; text-align:left; background:#fff url(/images/ico_select.svg) no-repeat right 5px top 50%; }
-.n-select .select-list { display:none; position:absolute; top:100%; left:0; width:100%; padding:5px 0; border:1px solid #aaa; border-radius:4px; background:#fff; z-index:10; }
-.n-select .select-list li { padding:0 5px; font-size:13px; line-height:20px; cursor:pointer; }
-.n-select .select-list li button { display:block; width:100%; padding:3px 10px; text-align:left; box-sizing:border-box; }
-.n-select .select-list button.hover { background-color:#eee; }
-.n-select.on .select-list { display:block; }
+.n-select .option-list { display:none; position:absolute; top:100%; left:0; width:100%; padding:5px 0; border:1px solid #aaa; border-radius:4px; background:#fff; z-index:10; }
+.n-select .option-list li { padding:0 5px; font-size:13px; line-height:20px; cursor:pointer; }
+.n-select .option-list li button { display:block; width:100%; padding:3px 10px; text-align:left; box-sizing:border-box; }
+.n-select .option-list button.hover { background-color:#eee; }
+.n-select.on .option-list { display:block; }
 </code></pre>
 <pre><code class="js">// 단독요소 설정
 let selectName = new n_select('.n-select');
@@ -91,7 +91,7 @@ n_selects('.n-select');
 					<div class="guide-show">
 						<div class="n-select dropdown">
 							<button type="button" class="btn-select">선택</button>
-							<div class="select-list">
+							<div class="option-list">
 								<ul>
 									<li>
 										<input type="checkbox" class="checkbox" id="chk_sel-1">
@@ -118,7 +118,7 @@ n_selects('.n-select');
 					</div>
 <pre><code class="html">&lt;div class="n-select dropdown"&gt;
 	&lt;button type="button" class="btn-select"&gt;선택&lt;/button&gt;
-	&lt;div class="select-list"&gt;
+	&lt;div class="option-list"&gt;
 		&lt;ul&gt;
 			&lt;li&gt;
 				&lt;input type="checkbox" class="checkbox" id="chk_sel-1"&gt;
@@ -143,8 +143,8 @@ n_selects('.n-select');
 	&lt;/div&gt;
 &lt;/div&gt;
 </code></pre>
-<pre><code class="css">.n-select.dropdown .select-list { padding-bottom:0; }
-.n-select.dropdown .select-list li { padding:2px 5px; }
+<pre><code class="css">.n-select.dropdown .option-list { padding-bottom:0; }
+.n-select.dropdown .option-list li { padding:2px 5px; }
 .n-select.dropdown .btns { padding:5px; justify-content:flex-start; }
 </code></pre>
 <pre><code class="js">// 설정

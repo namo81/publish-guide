@@ -388,6 +388,27 @@ function del_child(tg){
 	while (tg.firstChild) tg.removeChild(tg.firstChild);
 }
 
+/** textarea - 입력에 따른 사이즈 조절 기능
+ * @param {string or dom} obj textarea 요소
+ */
+function txResize(obj){
+	var tx = typeof obj === 'string' ? document.querySelector(obj) : obj;
+
+	function txresizeLoad() {
+		tx.style.height = "1px";
+		tx.style.height = (tx.scrollHeight)+"px";
+	}
+	
+	function txresizefunc(e) {
+		var obj = e.target;
+		obj.style.height = "1px";
+		obj.style.height = (obj.scrollHeight)+"px";
+	}
+
+	tx.addEventListener('input', txresizefunc);
+	txresizeLoad();
+}
+
 /** tab 메뉴
  *	let 변수명 = new nTabMenu({
  *      wrap     : '.tab-wrap', - 탭 메뉴 및 컨텐츠를 포함하는 영역 선택자
@@ -518,7 +539,7 @@ function checkAll(allcls, inpName){
 }
 
 // 말풍선 요소 - 단일 사용
-function nBalloonTgl(area) {
+function nBlnTgl(area) {
 	let wrap 	= typeof area === 'string' ? document.querySelector(area) : area,
 		btn 	= wrap.querySelector('.btn-bln'),
 		clsBtn 	= wrap.querySelector('.btn-bln-close');
@@ -529,19 +550,19 @@ function nBalloonTgl(area) {
 }
 
 // 말풍선 요소 - 다수 적용
-function nBalloonTgls(selector) {
+function nBlnTgls(selector) {
 	let nBallEle = document.querySelectorAll(selector);
 
 	if(nBallEle.length > 1) {
 		nBallEle.forEach(function(el, index, array){
-			nBalloonTgl(el);
+			nBlnTgl(el);
 		});
 	} 
-	else if (nBallEle.length == 1) nBalloonTgl(nBallEle[0]);
+	else if (nBallEle.length == 1) nBlnTgl(nBallEle[0]);
 	else null;
 }
-// ex 단독 : nBalloonTgl('css 선택자' or element);
-// ex 다수 : nBalloonTgls('css 선택자');
+// ex 단독 : nBlnTgl('css 선택자' or element);
+// ex 다수 : nBlnTgls('css 선택자');
 
 
 /**

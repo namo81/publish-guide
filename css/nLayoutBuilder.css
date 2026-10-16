@@ -1,0 +1,24 @@
+@charset "utf-8";
+/* ==========================================================================
+	nLayoutBuilder - 레이아웃 빌더 기본 스타일 (js/nLayoutBuilder_vX.Y.Z.js 와 함께 사용)
+	-- version : v1.0.0 (2026-10-13) : 최초 작성 --
+   ========================================================================== */
+
+/* wrap : 사용자 지정 영역 (캔버스보다 작으면 스크롤) */
+.nlb_wrap { overflow:auto; padding:20px; background:#e9ebee; box-sizing:border-box; }
+
+/* frame : 캔버스 + 편집 컨트롤(Moveable / Selecto) 영역 */
+.nlb_frame { position:relative; margin:0 auto; outline:0; }
+.nlb_frame:focus-visible { box-shadow:0 0 0 2px #4af; }
+
+/* stage : 실제 캔버스 (이미지 내보내기 대상) */
+.nlb_stage { position:relative; overflow:hidden; box-shadow:0 1px 4px rgba(0,0,0,.15); }
+
+/* item : 위치 / 크기 / 회전은 inline style(transform) 로 적용 */
+.nlb_item { position:absolute; top:0; left:0; box-sizing:border-box; -webkit-user-select:none; user-select:none; }
+.nlb_item_text { overflow-wrap:break-word; white-space:pre-wrap; cursor:default; }
+.nlb_item_image { overflow:hidden; }
+.nlb_item_image img { display:block; width:100%; height:100%; pointer-events:none; }
+
+/* item 상태 : 텍스트 입력 중 */
+.nlb_item_edit { -webkit-user-select:text; user-select:text; cursor:text; outline:1px dashed #4af; }

@@ -51,10 +51,11 @@ function n_select(Ele){
 
 	const sel 		= nSelect.wrap.querySelector('select'),
 		selTitle	= sel.getAttribute('title'),
-		selList		= createDom('div', 'select-list'),
+		selList		= createDom('div', 'option-list'),
 		selUl		= createDom('ul'),
 		selBtn		= createDom('button', 'btn-select');
 	
+	selList.classList.add('simple-scroll');
 	let opts		= sel.querySelectorAll('option'),
 		now_sel_btn, // 현재 선택된 버튼
 		now_sel_num = 0,
@@ -65,7 +66,7 @@ function n_select(Ele){
 		listId = selUid + '_list',
 		activeOptId = selUid + '_active';
 
-	let clickEvt = new Event('click');
+	let clickEvt = new Event('click', { bubbles: true }); // selUl 에 위임된 클릭 이벤트까지 전달되도록 bubbles 필요
 
 	/** 옵션 리스트 생성 - 리스트 호출 시 매번 실행 */
 	function optionCreate(){
@@ -94,7 +95,6 @@ function n_select(Ele){
 			}
 			btn.setAttribute('role', 'option');
 			btn.setAttribute('tabindex', -1);
-			btn.addEventListener('click', optBtnClick);
 			li.appendChild(btn);
 			selUl.appendChild(li);
 			btn_opts.push(btn);
@@ -120,6 +120,7 @@ function n_select(Ele){
 		nSelect.wrap.appendChild(selBtn);
 		nSelect.wrap.appendChild(selList);
 		selList.appendChild(selUl);
+		selUl.addEventListener('click', optBtnClick); // option 버튼 클릭 이벤트 위임 (option 재생성 시마다 매번 바인딩 할 필요 없음)
 	}
 	selectCreate();
 
@@ -139,7 +140,7 @@ function n_select(Ele){
 
 	/** 버튼 텍스트 설정 */
 	function set_selBtn_tx(){
-		let tx = opts[0].textContent;
+		let tx = opts.length ? opts[0].textContent : '';
 		opts.forEach(function(opt){
 			if(opt.selected == true) tx = opt.textContent;
 			if(opt.selected && opt.hidden) nSelect.wrap.classList.add('not-sel');
@@ -176,7 +177,10 @@ function n_select(Ele){
 			return;
 		}
 		btn_opts.forEach((btn, index)=>{
-			index == idx ? btn.classList.add('hover') : btn.classList.remove('hover');
+			if(index == idx) {
+				btn.classList.add('hover');
+				btn.scrollIntoView({ block: 'nearest' });
+			} else btn.classList.remove('hover');
 		});
 		setActiveDescendant(idx);
 	}
@@ -189,8 +193,19 @@ function n_select(Ele){
 		setActiveDescendant(now_sel_num);
 	}
 
-	/** 리스트 열기 */
+	/** 리스트가 열릴 때 화면 하단 공간이 부족하면 위로 열리도록 방향 설정 */
+	function directionSet(){
+		const btnRect    = selBtn.getBoundingClientRect(),
+			spaceBelow = window.innerHeight - btnRect.bottom,
+			spaceAbove = btnRect.top;
+
+		nSelect.wrap.classList.toggle('upward', selList.offsetHeight > spaceBelow && spaceAbove > spaceBelow);
+	}
+
+	/** 리스트 열기 (이미 열려있을 경우 닫기) */
 	function selBtnClick(){
+		if(nSelect.wrap.classList.contains('on')) { selLeave(); return; }
+
 		optionAdd();
 		if(now_sel_btn) {
 			now_sel_btn.classList.add('hover');
@@ -199,13 +214,14 @@ function n_select(Ele){
 		nSelect.wrap.classList.add('on');
 		nSelect.wrap.style.zIndex = 200;
 		selBtn.setAttribute('aria-expanded', true);
+		directionSet();
 		document.addEventListener('keydown', selKeySet);
 		outSideClick_this('.n-select', nSelect.wrap, nSelect.wrap, 'on', ()=>{ selLeave() });
 	}
 
 	/** 리스트 닫기 */
 	function selLeave(){
-		nSelect.wrap.classList.remove('on');
+		nSelect.wrap.classList.remove('on', 'upward');
 		nSelect.wrap.style.zIndex = '';
 		selBtn.setAttribute('aria-expanded', false);
 		if(now_active_btn) now_active_btn.removeAttribute('id');
@@ -214,12 +230,14 @@ function n_select(Ele){
 		document.removeEventListener('keydown', selKeySet);
 	}
 
-	/** 리스트 내 option 버튼 클릭 시 */
+	/** 리스트 내 option 버튼 클릭 시 (selUl 에 위임된 이벤트) */
 	async function optBtnClick(event){
-		let tg		= event.target;
-			tgTx	= tg.textContent,
-			tgVal   = tg.dataset.val;
-		
+		const tg = event.target.closest('.btn-sel');
+		if(!tg || tg.disabled) return;
+
+		const tgTx  = tg.textContent,
+			tgVal = tg.dataset.val;
+
 		selBtn.textContent = tgTx;
 		selBtn.focus();
 		opts.forEach(function(opt){
@@ -230,7 +248,7 @@ function n_select(Ele){
 		let changeEvt = new Event('change');
 		sel.dispatchEvent(changeEvt);
 
-		await waitRender();
+		await waitRender(); // common.js 에 정의된 waitRender() 함수 호출 - 렌더링 완료 후 selLeave() 실행
 		selLeave();
 	}
 
@@ -252,7 +270,7 @@ function n_dropdown(area){
 	dropdown.wrap = typeof area === 'string' ? document.querySelector(area) : area;
 
 	let btn_open = dropdown.wrap.querySelector('.btn-select'),
-		list = dropdown.wrap.querySelector('.select-list'),
+		list = dropdown.wrap.querySelector('.option-list'),
 		items = list.querySelectorAll('li'),
 		btn_confirm = list.querySelector('.btn'),
 		btn_tx = btn_open.textContent, // 버튼 텍스트 (취소 시 원래 텍스트로 돌아가기용 변수 / 초기는 '선택')

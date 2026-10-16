@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+	<meta charset="UTF-8" >
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="user-scalable=yes, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, width=device-width">
+	<meta name="author" content="" >
+	<meta name="description" content="">
+	<meta name="keywords" content="Site Template">
+	<meta property="og:type" content="website">
+	<meta property="og:title" content="Site Template">
+	<meta property="og:description" content="">
+	<meta property="og:image" content="">
+	<meta property="og:url" content="">
+	<link rel="shortcut icon" href="data:;base64,iVBORwOKGO=" />
+
+
+	<title>기본 가이드</title>
+	<!-- 가이드 관련 -->
+	<link rel="stylesheet" href="../guide/list-guide.css" media="screen, print" />
+	<link rel="stylesheet" href="../guide/vendor/railscasts.css">
+	<script src="../guide/vendor/highlight.js"></script>
+
+	<!-- 프로젝트 관련 CSS 및 JS 파일 로드 -->
+	<link rel="stylesheet" href="../css/layout.css" media="screen, print" />
+	<link rel="stylesheet" href="../css/notosanskr.css" />
+	<link rel="stylesheet" href="../css/nLayoutBuilder.css" />
+
+	<!-- 예시 화면(툴바 / 속성 패널) 관련 설정 -->
+	<style type="text/css">
+		.nlb-demo { display:flex; flex-direction:column; gap:10px; }
+		.nlb-demo_toolbar { display:flex; flex-wrap:wrap; gap:6px 16px; }
+		.nlb-demo_group { display:flex; flex-wrap:wrap; align-items:center; gap:4px; margin:0; padding:0; border:0; }
+		.nlb-demo_group legend { float:left; margin-right:4px; font-size:12px; color:#777; }
+		.nlb-demo_btn { display:inline-block; padding:5px 10px; font-size:13px; line-height:18px; border:1px solid #aaa; border-radius:4px; background:#fff; color:#333; cursor:pointer; }
+		.nlb-demo_btn:hover { background:#f2f4f7; }
+		.nlb-demo_btn:disabled { opacity:.4; cursor:default; }
+		.nlb-demo_btn:focus-visible,
+		.nlb-demo_file input:focus-visible + .nlb-demo_btn { outline:2px solid #4af; outline-offset:1px; }
+		.nlb-demo_file { position:relative; }
+		.nlb-demo_file input { position:absolute; width:1px; height:1px; opacity:0; }
+		.nlb-demo_body { display:flex; gap:10px; align-items:flex-start; }
+		.nlb-demo_canvas { flex:1; min-width:0; height:560px; }
+		.nlb-demo_panel { flex:0 0 260px; max-height:560px; overflow-y:auto; padding:12px; border:1px solid #ddd; border-radius:4px; box-sizing:border-box; font-size:13px; }
+		.nlb-demo_panel h4 { margin:0 0 8px; font-size:14px; }
+		.nlb-demo_panel fieldset { margin:0 0 14px; padding:0; border:0; }
+		.nlb-demo_panel fieldset:disabled { opacity:.4; }
+		.nlb-demo_panel legend { margin-bottom:6px; font-weight:bold; }
+		.nlb-demo_field { display:grid; grid-template-columns:72px 1fr; align-items:center; gap:4px 6px; }
+		.nlb-demo_field[hidden] { display:none; }
+		.nlb-demo_field label { color:#555; }
+		.nlb-demo_field input,
+		.nlb-demo_field select { width:100%; min-width:0; height:28px; padding:0 4px; font-size:13px; border:1px solid #bbb; border-radius:3px; box-sizing:border-box; }
+		.nlb-demo_field input[type="color"] { padding:2px; }
+		.nlb-demo_field input[type="checkbox"] { width:auto; height:auto; }
+		.nlb-demo_check { display:flex; flex-wrap:wrap; gap:4px 10px; grid-column:1 / -1; }
+		.nlb-demo_check label { display:inline-flex; align-items:center; gap:3px; color:#333; }
+		.nlb-demo_empty { margin:0 0 14px; color:#999; }
+		.nlb-demo_blind { position:absolute; width:1px; height:1px; margin:-1px; overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap; }
+		.nlb-demo_output { width:100%; height:160px; margin-top:10px; padding:8px; font-family:monospace; font-size:12px; border:1px solid #ddd; box-sizing:border-box; }
+	</style>
+</head>
+<body class="pub-guide">
+	<div id="work-list">
+		<div class="guide">
+
+			<section id="guide-layout-builder">
+				<h2 class="guide-sec-tit">nLayoutBuilder <small>v1.0.0</small></h2>
+				<div class="guide-sec">
+					<h3 class="guide-stit">옵션 안내</h3>
+					<p>HTML 요소 기반 레이아웃 빌더 (canvas 미사용) / 상태(JSON) 를 원본으로 두고 DOM 은 상태에서 렌더링 / IE 미지원</p>
+					<p>의존 파일 : moveable.js (이동·크기·회전·스냅), selecto.js (선택), html-to-image.js (이미지 내보내기 시), nLayoutBuilder.css / common.js 불필요</p>
+<pre class="pre"><code class="html">
+&lt;link rel="stylesheet" href="../css/nLayoutBuilder.css" /&gt;
+
+&lt;script src="../js/vendor/moveable.js"&gt;&lt;/script&gt;
+&lt;script src="../js/vendor/selecto.js"&gt;&lt;/script&gt;
+&lt;script src="../js/vendor/html-to-image.js"&gt;&lt;/script&gt;
+&lt;script src="../js/nLayoutBuilder_v1.0.0.js"&gt;&lt;/script&gt;
+</code></pre>
+<pre><code class="javascript">
+var 이름 = new nLayoutBuilder({
+	wrap		: '#layoutBuilder',	// 빌더가 생성될 영역 (css 선택자 or element) - 필수
+	width		: 800,			// 캔버스 너비(px) - 기본 800
+	height		: 500,			// 캔버스 높이(px) - 기본 500
+	background	: '#ffffff',		// 캔버스 배경색 - 기본 '#ffffff'
+	data		: null,			// 초기 데이터 (toJSON() 결과 / items 배열 / JSON 문자열)
+	snap		: true,			// 스냅(가이드라인) 사용 여부 - 기본 true
+	bounds		: true,			// 캔버스 밖으로 이동 제한 - 기본 true
+	keyboard	: true,			// 키보드 조작 사용 여부 - 기본 true
+	history		: 50,			// 실행취소 최대 단계 - 기본 50
+	label		: '레이아웃 편집 영역',	// 편집 영역 aria-label
+	select		: function(selectedItems, builder){},	// 선택 변경 / 선택 요소 변경 시 (드래그 중 포함)
+	change		: function(items, builder){}		// 상태 변경 확정 시 (드래그 종료, 입력 완료 등)
+});
+</code></pre>
+				</div>
+
+				<div class="guide-sec">
+					<h3 class="guide-stit">메서드 안내</h3>
+<pre><code class="javascript">
+// 요소 추가 / 수정 / 삭제 (ids 생략 시 선택된 요소 대상)
+이름.add('text', { text:'제목', x:20, y:20, style:{ fontSize:32 } });	// type : text / rect / circle / image → 추가된 item 반환
+이름.addImage(file);					// File / Blob / 이미지 경로 → Promise(item) (원본 비율, 캔버스 60% 이내로 추가)
+이름.update({ x:10, rotate:45, style:{ fontWeight:'bold' } }, ids);	// 위치·크기·회전·text·src·alt·style 수정
+이름.remove(ids);
+이름.duplicate(ids);
+이름.order('front');					// 'front'(맨 앞) / 'forward'(앞으로) / 'backward'(뒤로) / 'back'(맨 뒤)
+
+// 선택 / 텍스트 입력
+이름.select(['nlb1', 'nlb2']);	이름.clearSelect();
+이름.startEdit(id);		이름.endEdit();
+
+// 상태 조회
+이름.getItems();	이름.getSelected();	이름.getItem(id);	이름.getStage();
+이름.setStage({ width:1080, height:1080, background:'#f5f5f5' });
+
+// 실행취소
+이름.undo();	이름.redo();	이름.canUndo();	이름.canRedo();
+
+// 입출력
+이름.toJSON();				// { version, stage, items } 반환
+이름.load(data);			// toJSON() 결과 / items 배열 / JSON 문자열
+이름.exportJSON('fileName');		// .json 파일 다운로드
+이름.importJSON(file);			// File / JSON 문자열 / 객체 → Promise
+이름.exportImage({			// → Promise(dataURL)
+	type		: 'png',	// 'png' / 'jpeg' / 'svg' - 기본 'png'
+	pixelRatio	: 2,		// 배율 - 기본 2
+	fileName	: 'layout',	// 다운로드 파일명 - 기본 'layout'
+	download	: true,		// false 일 경우 dataURL 만 반환
+	imageOption	: {}		// html-to-image 옵션 추가 전달 (skipFonts, filter 등)
+});
+
+이름.destroy();				// 기능 제거
+</code></pre>
+				</div>
+
+				<div class="guide-sec">
+					<h3 class="guide-stit">데이터 구조 (JSON)</h3>
+					<p>items 배열 순서 = 쌓임 순서 (뒤에 있을수록 위) / 위치·크기 단위 px, 회전 단위 deg</p>
+<pre><code class="javascript">
+{
+	"version" : "1.0.0",
+	"stage" : { "width":800, "height":500, "background":"#ffffff" },
+	"items" : [
+		{
+			"id":"nlb1", "type":"text", "x":40, "y":40, "width":300, "height":50, "rotate":0,
+			"text":"텍스트 내용",
+			"style":{ "fontFamily":"", "fontSize":24, "fontWeight":"normal", "fontStyle":"normal", "textDecoration":"none",
+				"color":"#222222", "textAlign":"left", "lineHeight":1.4, "letterSpacing":0, "backgroundColor":"transparent", "opacity":1 }
+		},
+		{ "id":"nlb2", "type":"rect", ..., "style":{ "backgroundColor":"#4a90e2", "borderColor":"#222222", "borderWidth":0, "borderRadius":0, "opacity":1 } },
+		{ "id":"nlb3", "type":"circle", ..., "style":{ "backgroundColor":"#f5a623", "borderColor":"#222222", "borderWidth":0, "opacity":1 } },
+		{ "id":"nlb4", "type":"image", ..., "src":"data:image/png;base64,...", "alt":"",
+			"style":{ "objectFit":"cover", "borderColor":"#222222", "borderWidth":0, "borderRadius":0, "opacity":1 } }
+	]
+}
+</code></pre>
+				</div>
+
+				<div class="guide-sec">
+					<h3 class="guide-stit">예시</h3>
+					<ul>
+						<li>- 클릭 선택 / 빈 영역 드래그로 영역 선택 / <strong>Shift + 클릭</strong> 다중 선택</li>
+						<li>- 텍스트 : <strong>더블클릭</strong> 또는 선택 후 <strong>Enter</strong> 로 입력, <strong>Esc</strong> 또는 바깥 클릭으로 입력 종료</li>
+						<li>- 리사이즈 중 <strong>Shift</strong> : 비율 유지 (이미지는 기본 비율 유지)</li>
+						<li>- 편집 영역 포커스 시 : 방향키 이동(Shift 10px) / Delete 삭제 / Ctrl + Z, Ctrl + Y 실행취소·다시실행 / Ctrl + D 복제 / Ctrl + A 전체 선택 / Esc 선택 해제</li>
+					</ul>
+					<div class="guide-show">
+						<div class="nlb-demo">
+							<div class="nlb-demo_toolbar">
+								<fieldset class="nlb-demo_group">
+									<legend>추가</legend>
+									<button type="button" class="nlb-demo_btn" data-add="text">텍스트</button>
+									<button type="button" class="nlb-demo_btn" data-add="rect">사각형</button>
+									<button type="button" class="nlb-demo_btn" data-add="circle">원</button>
+									<span class="nlb-demo_file">
+										<input type="file" id="nlbImageFile" accept="image/*">
+										<label for="nlbImageFile" class="nlb-demo_btn">이미지 업로드</label>
+									</span>
+								</fieldset>
+								<fieldset class="nlb-demo_group">
+									<legend>편집</legend>
+									<button type="button" class="nlb-demo_btn" data-act="duplicate" data-need-select>복제</button>
+									<button type="button" class="nlb-demo_btn" data-act="remove" data-need-select>삭제</button>
+									<button type="button" class="nlb-demo_btn" data-order="front" data-need-select>맨 앞</button>
+									<button type="button" class="nlb-demo_btn" data-order="forward" data-need-select>앞으로</button>
+									<button type="button" class="nlb-demo_btn" data-order="backward" data-need-select>뒤로</button>
+									<button type="button" class="nlb-demo_btn" data-order="back" data-need-select>맨 뒤</button>
+									<button type="button" class="nlb-demo_btn" data-act="undo">실행취소</button>
+									<button type="button" class="nlb-demo_btn" data-act="redo">다시실행</button>
+								</fieldset>
+								<fieldset class="nlb-demo_group">
+									<legend>출력</legend>
+									<button type="button" class="nlb-demo_btn" data-act="exportJSON">JSON 내보내기</button>
+									<span class="nlb-demo_file">
+										<input type="file" id="nlbJsonFile" accept=".json,application/json">
+										<label for="nlbJsonFile" class="nlb-demo_btn">JSON 불러오기</label>
+									</span>
+									<button type="button" class="nlb-demo_btn" data-image="png">PNG 내보내기</button>
+									<button type="button" class="nlb-demo_btn" data-image="jpeg">JPG 내보내기</button>
+								</fieldset>
+							</div>
+
+							<div class="nlb-demo_body">
+								<div class="nlb-demo_canvas" id="layoutBuilder1"></div>
+
+								<aside class="nlb-demo_panel" id="nlbPanel" aria-label="속성 패널">
+									<h4>캔버스</h4>
+									<fieldset class="nlb-demo_field">
+										<legend class="nlb-demo_blind">캔버스 설정</legend>
+										<label for="nlbStageW">너비</label><input type="number" id="nlbStageW" min="1" data-stage="width">
+										<label for="nlbStageH">높이</label><input type="number" id="nlbStageH" min="1" data-stage="height">
+										<label for="nlbStageBg">배경색</label><input type="color" id="nlbStageBg" data-stage="background">
+									</fieldset>
+
+									<h4>선택 요소</h4>
+									<p class="nlb-demo_empty" id="nlbEmpty">선택된 요소가 없습니다.</p>
+									<fieldset class="nlb-demo_field" id="nlbBox" disabled>
+										<legend>위치 / 크기 / 회전</legend>
+										<label for="nlbX">X</label><input type="number" id="nlbX" data-prop="x">
+										<label for="nlbY">Y</label><input type="number" id="nlbY" data-prop="y">
+										<label for="nlbW">너비</label><input type="number" id="nlbW" min="1" data-prop="width">
+										<label for="nlbH">높이</label><input type="number" id="nlbH" min="1" data-prop="height">
+										<label for="nlbR">회전(deg)</label><input type="number" id="nlbR" data-prop="rotate">
+										<label for="nlbOpacity">투명도</label><input type="number" id="nlbOpacity" min="0" max="1" step="0.1" data-style="opacity">
+									</fieldset>
+
+									<fieldset class="nlb-demo_field" id="nlbText" hidden>
+										<legend>텍스트</legend>
+										<label for="nlbFont">글꼴</label>
+										<select id="nlbFont" data-style="fontFamily">
+											<option value="">기본</option>
+											<option value="'Noto Sans KR', sans-serif">Noto Sans KR</option>
+											<option value="serif">Serif</option>
+											<option value="monospace">Monospace</option>
+										</select>
+										<label for="nlbFontSize">크기(px)</label><input type="number" id="nlbFontSize" min="1" data-style="fontSize">
+										<label for="nlbColor">글자색</label><input type="color" id="nlbColor" data-style="color">
+										<label for="nlbAlign">정렬</label>
+										<select id="nlbAlign" data-style="textAlign">
+											<option value="left">왼쪽</option>
+											<option value="center">가운데</option>
+											<option value="right">오른쪽</option>
+										</select>
+										<label for="nlbLineHeight">줄 간격</label><input type="number" id="nlbLineHeight" min="0" step="0.1" data-style="lineHeight">
+										<label for="nlbLetter">자간(px)</label><input type="number" id="nlbLetter" step="0.5" data-style="letterSpacing">
+										<label for="nlbTextBg">배경색</label><input type="color" id="nlbTextBg" data-style="backgroundColor">
+										<div class="nlb-demo_check">
+											<label><input type="checkbox" data-style="fontWeight" value="bold" data-off="normal"> 굵게</label>
+											<label><input type="checkbox" data-style="fontStyle" value="italic" data-off="normal"> 기울임</label>
+											<label><input type="checkbox" data-style="textDecoration" value="underline" data-off="none"> 밑줄</label>
+											<label><input type="checkbox" data-style="backgroundColor" value="transparent" data-off="#ffffff" id="nlbTextBgNone"> 배경 없음</label>
+										</div>
+									</fieldset>
+
+									<fieldset class="nlb-demo_field" id="nlbShape" hidden>
+										<legend>도형</legend>
+										<label for="nlbFill">채우기</label><input type="color" id="nlbFill" data-style="backgroundColor">
+										<label for="nlbRadius">모서리(px)</label><input type="number" id="nlbRadius" min="0" data-style="borderRadius">
+									</fieldset>
+
+									<fieldset class="nlb-demo_field" id="nlbImage" hidden>
+										<legend>이미지</legend>
+										<label for="nlbFit">맞춤</label>
+										<select id="nlbFit" data-style="objectFit">
+											<option value="cover">채우기(cover)</option>
+											<option value="contain">맞추기(contain)</option>
+											<option value="fill">늘이기(fill)</option>
+										</select>
+										<label for="nlbAlt">대체텍스트</label><input type="text" id="nlbAlt" data-prop="alt">
+									</fieldset>
+
+									<fieldset class="nlb-demo_field" id="nlbBorder" disabled>
+										<legend>테두리</legend>
+										<label for="nlbBorderW">두께(px)</label><input type="number" id="nlbBorderW" min="0" data-style="borderWidth">
+										<label for="nlbBorderC">색상</label><input type="color" id="nlbBorderC" data-style="borderColor">
+									</fieldset>
+								</aside>
+							</div>
+
+							<label for="nlbOutput" class="nlb-demo_blind">현재 상태 JSON</label>
+							<textarea class="nlb-demo_output" id="nlbOutput" readonly></textarea>
+						</div>
+					</div>
+<pre><code class="html">&lt;div id="layoutBuilder1"&gt;&lt;/div&gt;	&lt;!-- 빌더 영역 (크기 지정 시 캔버스보다 작으면 스크롤) --&gt;
+</code></pre>
+<pre><code class="javascript">var builder = new nLayoutBuilder({
+	wrap	: '#layoutBuilder1',
+	width	: 800,
+	height	: 500,
+	data	: sampleData,
+	select	: function(selectedItems){ syncPanel(selectedItems); },	// 속성 패널 값 갱신
+	change	: function(items, builder){ console.log(builder.toJSON()); }
+});
+
+// 툴바
+builder.add('text');
+fileInput.addEventListener('change', function(){ builder.addImage(this.files[0]); });
+builder.exportImage({ type:'png' });
+
+// 속성 패널 → 상태 변경 (Moveable 은 위치·크기·회전만 담당, 폰트 스타일은 style 데이터로 제어)
+builder.update({ style:{ fontSize:30, fontWeight:'bold' } });
+</code></pre>
+					<ul>
+						<li>- <strong>폰트 스타일</strong> : Moveable 은 transform(위치·크기·회전) 전용이므로 글꼴·크기·굵기 등은 item.style 데이터 + update() 로 제어</li>
+						<li>- <strong>업로드 이미지</strong> : dataURL 로 JSON 에 포함됨 (용량이 큰 이미지는 JSON 크기도 커짐 / 서버 저장 시 src 를 업로드 경로로 교체 권장)</li>
+						<li>- <strong>이미지 내보내기</strong> : 로컬 서버(http) 환경에서 실행 권장 - file:// 에서는 웹폰트 / 외부 이미지가 누락될 수 있음, 외부 도메인 이미지는 CORS 허용 필요</li>
+						<li>- 편집용 선택 박스 / 가이드라인은 캔버스(.nlb_stage) 밖에 생성되므로 내보낸 이미지에 포함되지 않음</li>
+					</ul>
+				</div>
+			</section>
+		</div>
+		<a href="#work-list" class="guide-top">Top</a>
+	</div>
+
+	<script src="../js/vendor/moveable.js"></script>
+	<script src="../js/vendor/selecto.js"></script>
+	<script src="../js/vendor/html-to-image.js"></script>
+	<script src="../js/nLayoutBuilder_v1.0.0.js"></script>
+	<script>
+		hljs.initHighlightingOnLoad();
+
+		(function () {
+			var panel = document.getElementById('nlbPanel');
+			var output = document.getElementById('nlbOutput');
+			var groups = {
+				box    : document.getElementById('nlbBox'),
+				text   : document.getElementById('nlbText'),
+				shape  : document.getElementById('nlbShape'),
+				image  : document.getElementById('nlbImage'),
+				border : document.getElementById('nlbBorder')
+			};
+			var builder;
+
+			var sampleData = {
+				stage : { width:800, height:500, background:'#ffffff' },
+				items : [
+					{ type:'rect', x:0, y:0, width:800, height:120, style:{ backgroundColor:'#1f3b57' } },
+					{ type:'text', x:40, y:34, width:520, height:52, text:'nLayoutBuilder 예시', style:{ fontFamily:"'Noto Sans KR', sans-serif", fontSize:36, fontWeight:'bold', color:'#ffffff' } },
+					{ type:'circle', x:560, y:190, width:180, height:180, style:{ backgroundColor:'#f5a623' } },
+					{ type:'rect', x:520, y:300, width:160, height:120, rotate:-12, style:{ backgroundColor:'#4a90e2', borderRadius:12, opacity:0.85 } },
+					{ type:'text', x:40, y:170, width:420, height:120, text:'텍스트를 더블클릭해서 직접 입력하세요.\n요소를 선택하면 오른쪽 패널에서\n폰트 / 색상 / 크기를 바꿀 수 있습니다.', style:{ fontFamily:"'Noto Sans KR', sans-serif", fontSize:18, lineHeight:1.6, color:'#333333' } }
+				]
+			};
+
+			// color input 은 #rrggbb 형식만 허용
+			function toHex(v, def) { return /^#[0-9a-f]{6}$/i.test(v) ? v : def; }
+
+			function syncPanel(sel) {
+				var it = sel[0];
+				var types = sel.map(function (s) { return s.type; });
+				var has = function (t) { return types.indexOf(t) > -1; };
+
+				document.getElementById('nlbEmpty').hidden = !!it;
+				groups.box.disabled = !it;
+				groups.border.disabled = !it;
+				groups.text.hidden = !has('text');
+				groups.shape.hidden = !has('rect') && !has('circle');
+				groups.image.hidden = !has('image');
+
+				// 위치 / 크기는 단일 선택일 때만 수정
+				['nlbX', 'nlbY', 'nlbW', 'nlbH', 'nlbR'].forEach(function (id) {
+					document.getElementById(id).disabled = sel.length !== 1;
+				});
+				document.getElementById('nlbRadius').disabled = !has('rect');
+				if (!it) return;
+
+				panel.querySelectorAll('[data-prop]').forEach(function (el) {
+					if (document.activeElement !== el) el.value = it[el.getAttribute('data-prop')] !== undefined ? it[el.getAttribute('data-prop')] : '';
+				});
+				panel.querySelectorAll('[data-style]').forEach(function (el) {
+					var k = el.getAttribute('data-style');
+					// 같은 type 의 요소 기준으로 값 표시 (다중 선택 시 첫 번째 요소)
+					var src = sel.filter(function (s) { return s.style[k] !== undefined; })[0];
+					var v = src ? src.style[k] : '';
+					if (el.type === 'checkbox') el.checked = v === el.value;
+					else if (el.type === 'color') el.value = toHex(v, '#ffffff');
+					else if (document.activeElement !== el) el.value = v;
+				});
+			}
+
+			function syncState() {
+				var st = builder.getStage();
+				document.getElementById('nlbStageW').value = st.width;
+				document.getElementById('nlbStageH').value = st.height;
+				document.getElementById('nlbStageBg').value = toHex(st.background, '#ffffff');
+				document.querySelector('[data-act="undo"]').disabled = !builder.canUndo();
+				document.querySelector('[data-act="redo"]').disabled = !builder.canRedo();
+				output.value = JSON.stringify(builder.toJSON(), function (k, v) {
+					// 미리보기에서 긴 dataURL 은 생략 표시
+					return k === 'src' && v.length > 80 ? v.slice(0, 60) + '...(생략)' : v;
+				}, 2);
+			}
+
+			builder = new nLayoutBuilder({
+				wrap   : '#layoutBuilder1',
+				width  : 800,
+				height : 500,
+				data   : sampleData,
+				select : function (sel) {
+					syncPanel(sel);
+					document.querySelectorAll('[data-need-select]').forEach(function (btn) { btn.disabled = !sel.length; });
+				},
+				change : syncState
+			});
+			syncState();
+
+			// 툴바
+			document.querySelector('.nlb-demo_toolbar').addEventListener('click', function (e) {
+				var btn = e.target.closest('button');
+				if (!btn) return;
+				if (btn.hasAttribute('data-add')) builder.add(btn.getAttribute('data-add'));
+				else if (btn.hasAttribute('data-order')) builder.order(btn.getAttribute('data-order'));
+				else if (btn.hasAttribute('data-image')) {
+					builder.exportImage({ type : btn.getAttribute('data-image') }).catch(function (err) {
+						alert('이미지 내보내기에 실패했습니다.');
+						console.error(err);
+					});
+				} else {
+					var act = btn.getAttribute('data-act');
+					if (act === 'exportJSON') builder.exportJSON('layout');
+					else builder[act]();
+				}
+			});
+
+			document.getElementById('nlbImageFile').addEventListener('change', function () {
+				var input = this;
+				if (!input.files[0]) return;
+				builder.addImage(input.files[0]).catch(function (err) {
+					alert('이미지를 불러올 수 없습니다.');
+					console.error(err);
+				}).then(function () { input.value = ''; });
+			});
+
+			document.getElementById('nlbJsonFile').addEventListener('change', function () {
+				var input = this;
+				if (!input.files[0]) return;
+				builder.importJSON(input.files[0]).catch(function (err) {
+					alert('올바른 JSON 파일이 아닙니다.');
+					console.error(err);
+				}).then(function () { input.value = ''; });
+			});
+
+			// 속성 패널 → 상태 변경
+			panel.addEventListener('change', function (e) {
+				var el = e.target;
+				var v = el.type === 'number' ? parseFloat(el.value) : el.value;
+				var obj = {};
+
+				if (el.hasAttribute('data-stage')) {
+					obj[el.getAttribute('data-stage')] = v;
+					builder.setStage(obj);
+				} else if (el.hasAttribute('data-prop')) {
+					if (el.type === 'number' && !isFinite(v)) return;
+					obj[el.getAttribute('data-prop')] = v;
+					builder.update(obj);
+				} else if (el.hasAttribute('data-style')) {
+					if (el.type === 'checkbox') v = el.checked ? el.value : el.getAttribute('data-off');
+					if (el.type === 'number' && !isFinite(v)) return;
+					obj[el.getAttribute('data-style')] = v;
+					// 텍스트 배경색 / 도형 채우기는 같은 속성(backgroundColor) 이므로 해당 type 에만 적용
+					var ids = builder.getSelected().filter(function (it) {
+						if (el.closest('#nlbText')) return it.type === 'text';
+						if (el.closest('#nlbShape')) return it.type === 'rect' || it.type === 'circle';
+						if (el.closest('#nlbImage')) return it.type === 'image';
+						return true;
+					}).map(function (it) { return it.id; });
+					builder.update({ style : obj }, ids);
+				}
+			});
+		})();
+	</script>
+</body>
+</html>

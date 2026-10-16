@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+	<meta charset="UTF-8" >
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="user-scalable=yes, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, width=device-width">
+	<meta name="author" content="" >
+	<meta name="description" content="">
+	<meta name="keywords" content="Site Template">
+	<meta property="og:type" content="website">
+	<meta property="og:title" content="Site Template">
+	<meta property="og:description" content="">
+	<meta property="og:image" content="">
+	<meta property="og:url" content="">
+	<link rel="shortcut icon" href="data:;base64,iVBORwOKGO=" />
+
+
+	<title>기본 가이드</title>
+	<!-- 가이드 관련 -->
+	<link rel="stylesheet" href="../guide/list-guide.css" media="screen, print" />
+	<link rel="stylesheet" href="../guide/vendor/railscasts.css">
+	<script src="../guide/vendor/highlight.js"></script>
+
+	<!-- 프로젝트 관련 CSS 및 JS 파일 로드 -->
+	<link rel="stylesheet" href="../css/layout.css" media="screen, print" />
+
+	<!-- drag & drop 관련 설정 -->
+	<style type="text/css">
+		.drag-list { display:block; width:300px; }
+		.drag-list li { position:relative; display:block; width:100%; padding:5px; border:1px solid #aaa; box-sizing:border-box; -webkit-user-select:none; -ms-user-select:none; user-select:none; background:#fff; opacity:1; transition:opacity .3s; }
+		.drag-list li:nth-child(2) { padding:20px 5px; }
+		.drag-list li + li { margin-top:5px; }
+		.drag-list li.ghost { opacity:.2; }
+		.drag-list li .list-title { display:block; }
+		.drag-list li.dummy { cursor:move; box-shadow:0 2px 8px rgba(0,0,0,.2); }
+		.drag-list.type2 li { padding-right:60px; }
+		.drag-list .drag-item { position:absolute; top:0; right:0; width:50px; height:100%; border:0; background:#eee; cursor:move; }
+		.drag-list .drag-item:focus-visible { outline:2px solid #333; outline-offset:-2px; }
+		.drop-area { width:100%; height:200px; margin-top:20px; border:1px solid #444; overflow-y:auto; transition:.1s; }
+		.drop-area.drop-over { background:#efefef; }
+	</style>
+</head>
+<body class="pub-guide">
+	<div id="work-list">
+		<div class="guide">
+
+			<section id="guide-dragndrop">
+				<h2 class="guide-sec-tit">Drag &amp; Drop <small>v1.0.1</small></h2>
+				<div class="guide-sec">
+					<h3 class="guide-stit">옵션 안내</h3>
+					<p>의존 파일 없음 (common.js 불필요) / Pointer Events 지원 브라우저 (IE 미지원) / 마우스 + 터치 지원</p>
+<pre class="pre"><code class="html">
+&lt;script src="../js/nDragnDrop_v1.0.1.js"&gt;&lt;/script&gt;
+</code></pre>
+<pre><code class="javascript">
+var 이름 = new nDragnDrop({
+	wrap 		: '.drag-test1', 		// 기능 설정 wrap 영역 (css 선택자 or element) - 필수
+	objWrap		: '.drag-list',			// wrap 내 드래그 아이템을 직접 포함하는 요소 (css 선택자 or element) - 필수
+	obj  		: 'li',				// 드래그 될 아이템 (css 선택자 / objWrap 의 직계 자식만 대상) - 필수
+	func 		: 'sequence',			// 리스트변경(sequence) or 드래그앤드랍(dnd) - 필수
+	area 		: '.drop-area',			// 드롭 될 영역 (css 선택자) - dnd 일 경우 필수
+	selector 	: '.drag-item', 		// 아이템 내 드래그 핸들 / 없을 경우 아이템 자체 (모바일에서는 핸들 사용 권장)
+	gap 		: 10,				// 드래그 시작으로 판단할 이동 거리(px) - 기본 10
+	keyboard 	: true,				// sequence 키보드(방향키) 순서변경 사용 여부 - 기본 true
+	classDummy 	: 'dummy',			// 마우스를 따라다니는 복제 요소 클래스 - 기본 'dummy'
+	classGhost 	: 'ghost',			// 드래그 중인 원본 아이템 클래스 - 기본 'ghost'
+	classOver 	: 'drop-over',			// (dnd) 드롭 영역 위에 있을 때 영역 클래스 - 기본 'drop-over'
+	active      : function(tgItem, newIdx, oldIdx){	// 완료 후 콜백
+		// sequence : function(tgItem, newIdx, oldIdx) - 이동된 아이템, 변경 후 index, 변경 전 index
+		// dnd      : function(tgItem, area) - 드래그 된 아이템, 드롭된 영역 (영역 밖일 경우 null)
+	}
+});
+
+이름.dragUpdate();	// 아이템 추가/삭제 후 재설정
+이름.removeDrag();	// 기능 제거
+이름.reStart();		// 기능 재실행
+</code></pre>
+					<ul>
+						<li>- 드래그 중 <strong>ESC</strong> 키 : 드래그 취소 (원위치)</li>
+						<li>- 키보드 순서변경 : 핸들(없으면 아이템)에 포커스 후 <strong>↑ / ←</strong> 앞으로, <strong>↓ / →</strong> 뒤로 (포커스 불가 요소는 tabindex="0" 자동 부여)</li>
+						<li>- 아이템 내부 input / textarea / select 에서는 드래그가 시작되지 않음</li>
+					</ul>
+				</div>
+
+				<div class="guide-sec">
+					<h3 class="guide-stit">리스트 순서 변경</h3>
+					<p>아이템 전체 드래그</p>
+					<div class="guide-show">
+						<div class="drag-test1">
+							<ul class="drag-list">
+								<li data-num="1">
+									<span class="list-title">드래그 아이템 1번 입니다.</span>
+									<a href="#" onclick="console.log('click01')">바로가기</a>
+								</li>
+								<li data-num="2">
+									<span class="list-title">드래그 아이템 2번 입니다.</span>
+									<a href="#" onclick="console.log('click02')">바로가기</a>
+								</li>
+								<li data-num="3">
+									<span class="list-title">드래그 아이템 3번 입니다.</span>
+									<a href="#" onclick="console.log('click03')">바로가기</a>
+								</li>
+								<li data-num="4">
+									<span class="list-title">드래그 아이템 4번 입니다.</span>
+									<a href="#" onclick="console.log('click04')">바로가기</a>
+								</li>
+								<li data-num="5">
+									<span class="list-title">드래그 아이템 5번 입니다.</span>
+									<a href="#" onclick="console.log('click05')">바로가기</a>
+								</li>
+							</ul>
+						</div>
+					</div>
+<pre><code class="html">&lt;div class="drag-test1"&gt;
+	&lt;ul class="drag-list"&gt;
+		&lt;li data-num="1"&gt;
+			&lt;span class="list-title"&gt;드래그 아이템 1번 입니다.&lt;/span&gt;
+			&lt;a href="#"&gt;바로가기&lt;/a&gt;
+		&lt;/li&gt;
+		...
+	&lt;/ul&gt;
+&lt;/div&gt;
+</code></pre>
+<pre><code class="javascript">var dragTest = new nDragnDrop({
+	wrap 		: '.drag-test1',
+	objWrap		: '.drag-list',
+	obj  		: 'li',
+	func 		: 'sequence',
+	active      : function(tgItem, newIdx, oldIdx){
+		console.log(tgItem, newIdx, oldIdx);
+	}
+});
+</code></pre>
+				</div>
+
+				<div class="guide-sec">
+					<h3 class="guide-stit">리스트 순서 변경 - 핸들 사용</h3>
+					<p>핸들(selector) 영역으로만 드래그 / 핸들은 button 으로 작성하여 키보드 순서변경 지원 (모바일 권장 방식)</p>
+					<div class="guide-show">
+						<div class="drag-test3">
+							<ul class="drag-list type2">
+								<li data-num="1">
+									<span class="list-title">드래그 아이템 1번 입니다.</span>
+									<a href="#">바로가기</a>
+									<button type="button" class="drag-item" aria-label="1번 아이템 순서 이동"></button>
+								</li>
+								<li data-num="2">
+									<span class="list-title">드래그 아이템 2번 입니다.</span>
+									<a href="#">바로가기</a>
+									<button type="button" class="drag-item" aria-label="2번 아이템 순서 이동"></button>
+								</li>
+								<li data-num="3">
+									<span class="list-title">드래그 아이템 3번 입니다.</span>
+									<a href="#">바로가기</a>
+									<button type="button" class="drag-item" aria-label="3번 아이템 순서 이동"></button>
+								</li>
+								<li data-num="4">
+									<span class="list-title">드래그 아이템 4번 입니다.</span>
+									<a href="#">바로가기</a>
+									<button type="button" class="drag-item" aria-label="4번 아이템 순서 이동"></button>
+								</li>
+								<li data-num="5">
+									<span class="list-title">드래그 아이템 5번 입니다.</span>
+									<a href="#">바로가기</a>
+									<button type="button" class="drag-item" aria-label="5번 아이템 순서 이동"></button>
+								</li>
+							</ul>
+						</div>
+					</div>
+<pre><code class="html">&lt;div class="drag-test3"&gt;
+	&lt;ul class="drag-list type2"&gt;
+		&lt;li data-num="1"&gt;
+			&lt;span class="list-title"&gt;드래그 아이템 1번 입니다.&lt;/span&gt;
+			&lt;a href="#"&gt;바로가기&lt;/a&gt;
+			&lt;button type="button" class="drag-item" aria-label="1번 아이템 순서 이동"&gt;&lt;/button&gt;
+		&lt;/li&gt;
+		...
+	&lt;/ul&gt;
+&lt;/div&gt;
+</code></pre>
+<pre><code class="javascript">var dragTest3 = new nDragnDrop({
+	wrap 		: '.drag-test3',
+	objWrap		: '.drag-list',
+	obj  		: 'li',
+	selector 	: '.drag-item',
+	func 		: 'sequence',
+	active      : function(tgItem, newIdx, oldIdx){
+		console.log(tgItem, newIdx, oldIdx);
+	}
+});
+</code></pre>
+				</div>
+
+				<div class="guide-sec">
+					<h3 class="guide-stit">특정 영역 Drop</h3>
+					<div class="guide-show">
+						<div class="drag-test2">
+							<ul class="drag-list">
+								<li data-num="1">
+									<span class="list-title">드래그 아이템 1번 입니다.</span>
+									<a href="#" onclick="console.log('click01')">바로가기</a>
+								</li>
+								<li data-num="2">
+									<span class="list-title">드래그 아이템 2번 입니다.</span>
+									<a href="#">바로가기</a>
+								</li>
+								<li data-num="3">
+									<span class="list-title">드래그 아이템 3번 입니다.</span>
+									<a href="#">바로가기</a>
+								</li>
+								<li data-num="4">
+									<span class="list-title">드래그 아이템 4번 입니다.</span>
+									<a href="#">바로가기</a>
+								</li>
+								<li data-num="5">
+									<span class="list-title">드래그 아이템 5번 입니다.</span>
+									<a href="#">바로가기</a>
+								</li>
+							</ul>
+							<div class="drop-area" data-num="drop1"></div>
+							<div class="drop-area" data-num="drop2"></div>
+							<div class="drop-area" data-num="drop3"></div>
+							<div class="drop-area" data-num="drop4"></div>
+						</div>
+					</div>
+<pre><code class="html">&lt;div class="drag-test2"&gt;
+	&lt;ul class="drag-list"&gt;
+		&lt;li data-num="1"&gt;
+			&lt;span class="list-title"&gt;드래그 아이템 1번 입니다.&lt;/span&gt;
+			&lt;a href="#"&gt;바로가기&lt;/a&gt;
+		&lt;/li&gt;
+		...
+	&lt;/ul&gt;
+	&lt;div class="drop-area" data-num="drop1"&gt;&lt;/div&gt;
+	&lt;div class="drop-area" data-num="drop2"&gt;&lt;/div&gt;
+	...
+&lt;/div&gt;
+</code></pre>
+<pre><code class="javascript">var dragTest2 = new nDragnDrop({
+	wrap 		: '.drag-test2',
+	objWrap		: '.drag-list',
+	obj  		: 'li',
+	func 		: 'dnd',
+	area 		: '.drop-area',
+	active      : function(tgItem, area){
+		console.log(tgItem, area);
+		// drop 후 실행문
+		// tgItem = 드래그 된 list item
+		// area = 드롭된 영역 (영역 밖일 경우 null)
+	}
+});
+</code></pre>
+				</div>
+			</section>
+
+
+		</div>
+		<a href="#work-list" class="guide-top">Top</a>
+	</div>
+
+	<script src="../js/nDragnDrop_v1.0.1.js"></script>
+	<script>
+		hljs.initHighlightingOnLoad();
+
+		var dragTest = new nDragnDrop({
+			wrap 		: '.drag-test1',
+			objWrap		: '.drag-list',
+			obj  		: 'li',
+			func 		: 'sequence',
+			active      : function(tgItem, newIdx, oldIdx){
+				console.log(tgItem, newIdx, oldIdx);
+			}
+		});
+
+		var dragTest3 = new nDragnDrop({
+			wrap 		: '.drag-test3',
+			objWrap		: '.drag-list',
+			obj  		: 'li',
+			selector 	: '.drag-item',
+			func 		: 'sequence',
+			active      : function(tgItem, newIdx, oldIdx){
+				console.log(tgItem, newIdx, oldIdx);
+			}
+		});
+
+		var dragTest2 = new nDragnDrop({
+			wrap 		: '.drag-test2',
+			objWrap		: '.drag-list',
+			obj  		: 'li',
+			func 		: 'dnd',
+			area 		: '.drop-area',
+			active      : function(tgItem, area){
+				console.log(tgItem, area);
+			}
+		});
+	</script>
+</body>
+</html>

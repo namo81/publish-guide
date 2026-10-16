@@ -1,247 +1,236 @@
+/**
+ * list-guide.js - 퍼블리싱 화면 목록(가이드) 페이지용 스크립트
+ *
+ * 의존 파일 : 없음 (단독 사용 가능)
+ *
+ * 기능
+ *  - 목록 테이블 넘버링 / 섹션 구분선 / 섹션별 토글(행 30개 초과 시)
+ *  - 링크 · 완료일 유무에 따른 진행상태 표기 및 진행율 계산
+ *  - iframe 미리보기 (PC / 모바일)
+ *  - 링크 화면 내 text 검색
+ *  - 폴더 트리 토글 / top 버튼 추가
+ *  - guide_menuSet(num) : 상단 메뉴 현재 페이지 활성화 (외부 호출)
+ *
+ * 버전 이력 (AI 클로드 작성)
+ *  2026-10-16 : ES8(ES2017) 기준으로 문법 정리 및 오류 수정
+ *               - 다중 테이블에서 토글/이벤트가 중복 등록되던 문제 수정
+ *               - 미정의 변수(clickEvt) 참조 오류 수정
+ *               - text 검색 XHR → fetch(async/await) 변경, 정규식 오류 수정
+ */
 
-function getIndex( elm ){ 
-    let c = elm.parentNode.children, i = 0;
-    for(; i < c.length; i++ )
-        if( c[i] == elm ) return i;
-}
+const GUIDE_TGL_MIN_ROWS = 30; // 행 수가 이 값을 초과할 때 섹션 토글 버튼 생성
+const GUIDE_LINK_SELECTOR = '.list table:not(.info) td.link > a'; // 목록 테이블 링크 (info 테이블 제외)
 
-function elemsAddClass(elem, cls){
-	Array.prototype.forEach.call(elem, function(ele){
-		ele.classList.add(cls);
-	});
-}
-function elemsRemoveClass(elem, cls){
-	Array.prototype.forEach.call(elem, function(ele){
-		ele.classList.remove(cls);
-	});
-}
-
-let tblTotal = 0;
-
-function guide_tblSet(tbl){
-	let trs 		= tbl.querySelectorAll('tbody tr'),
-		previewChk 	= document.querySelector('#view-chk'),
-		mobileChk   = document.querySelector('#view-mobile');
-
-	let frameWrap	= document.querySelector('.iframe'),
-		frame, frameClose;
-	if(frameWrap){
-		frame		= frameWrap.querySelector('iframe'),
-		frameClose  = frameWrap.querySelector('.btn-frame-close');
+/** 섹션 구분행(tr.div) 다음부터 다음 구분행 전까지의 행 목록 반환 */
+const getSectionRows = (divTr) => {
+	const rows = [];
+	let tr = divTr.nextElementSibling;
+	while (tr && !tr.classList.contains('div')) {
+		rows.push(tr);
+		tr = tr.nextElementSibling;
 	}
+	return rows;
+};
 
-	let td_no 		= tbl.querySelectorAll('.no'),
-		td_dep1 	= tbl.querySelectorAll('.depth1');
+/** 섹션 열기/닫기 - btn 의 'open' 클래스 = 섹션 닫힘 상태 */
+const setSectionFold = (btn, fold) => {
+	getSectionRows(btn.closest('tr')).forEach((tr) => tr.classList.toggle('hide', fold));
+	btn.classList.toggle('open', fold);
+	btn.setAttribute('aria-expanded', String(!fold));
+};
+
+/** 테이블 단위 설정 - 넘버링된 행 수를 반환 */
+function guide_tblSet(tbl) {
+	const trs = Array.from(tbl.querySelectorAll('tbody > tr'));
+	let numCount = 0;
 
 	// 페이지 수 넘버링 추가
-	Array.prototype.forEach.call(td_no, function(td){
-		let num = getIndex(td.parentNode);
-		td.innerText = num + 1;
-		tblTotal++;
-		td.parentNode.idx = num;
+	trs.forEach((tr) => {
+		const tdNo = tr.querySelector('.no');
+		if (!tdNo) return;
+		tdNo.textContent = Array.prototype.indexOf.call(tr.parentNode.children, tr) + 1;
+		numCount++;
 	});
 
-	//depth1 에 텍스트 있을 경우 구분선 생성 및 토글버튼 추가
-	let tglBtnTx = '<button type="button" class="btn-tr-tgl" title="ctrl 누른 채 클릭 시 전체 제어">Toggle</button>',
-		ctrl = false;
-	Array.prototype.forEach.call(td_dep1, function(td){
-		if(td.innerText.length > 0){
+	// depth1 에 텍스트 있을 경우 구분선 생성 및 토글버튼 추가
+	const useTgl = trs.length > GUIDE_TGL_MIN_ROWS;
+	const tglBtns = [];
+
+	tbl.querySelectorAll('.depth1').forEach((td) => {
+		if (td.textContent.trim().length > 0) {
 			td.parentNode.classList.add('div');
-			if(trs.length > 30) td.insertAdjacentHTML('beforeend', tglBtnTx);
-		} else td.style.borderTop = 'none';
-	});
-
-	// 섹션별 토글기능
-	let divArr = new Array(),
-		trDivs = document.querySelectorAll('tr.div'),
-		tglBtns = document.querySelectorAll('.btn-tr-tgl');
-
-	Array.prototype.forEach.call(trDivs, function(div){
-		divArr.push(div);
-	});
-
-	window.addEventListener('keydown', function(e){
-		e.ctrlKey ? ctrl = true : ctrl = false;
-	});
-	window.addEventListener('keyup', function(e){
-		ctrl = false;
-	});
-
-	if(trs.length > 30){
-		Array.prototype.forEach.call(tglBtns, function(btn){
-			btn.addEventListener('click', function(){
-				let parTr 		= btn.parentNode.parentNode,
-					parTrIdx 	= parTr.idx,
-					parArrIdx 	= divArr.indexOf(parTr);
-				if(ctrl){
-					if(btn.classList.contains('open')) {
-						Array.prototype.forEach.call(trs, function(tr){
-							if(!tr.classList.contains('div')) tr.classList.remove('hide');
-						});
-						elemsRemoveClass(tglBtns, 'open');
-					} else {
-						Array.prototype.forEach.call(trs, function(tr){
-							if(!tr.classList.contains('div')) tr.classList.add('hide');
-						});
-						elemsAddClass(tglBtns, 'open');
-					}
-				} else {
-					Array.prototype.forEach.call(trs, function(tr){
-						if(parArrIdx < divArr.length - 1) {
-							if(tr.idx > parTrIdx && tr.idx < divArr[parArrIdx + 1].idx) {
-								tr.classList.contains('hide') ? tr.classList.remove('hide') : tr.classList.add('hide');
-							}
-						} else {
-							if(tr.idx > parTrIdx && tr.idx) {
-								tr.classList.contains('hide') ? tr.classList.remove('hide') : tr.classList.add('hide');
-							}
-						}
-					});
-					btn.classList.contains('open') ? btn.classList.remove('open') : btn.classList.add('open');
-				}
-			});
-			
-			// 미사용 화면 리스트 닫기
-			if(btn.parentNode.parentNode.classList.contains('notuse')) {
-				btn.dispatchEvent(clickEvt);
+			if (useTgl) {
+				td.insertAdjacentHTML('beforeend', '<button type="button" class="btn-tr-tgl" title="ctrl 누른 채 클릭 시 전체 제어" aria-expanded="true">Toggle</button>');
+				tglBtns.push(td.lastElementChild);
 			}
-		});
-	}
-
-
-	// 링크값 유무 + 종료일 유무에 따른 표기 / 미리보기 기능 설정
-	Array.prototype.forEach.call(trs, function(tr){
-		let btn 		= tr.querySelector('.link > a'),
-			td_state 	= tr.querySelector('.state'),
-			td_end 		= tr.querySelector('.end-date');
-
-		if(!btn) return;
-	
-		if(td_state) {
-			if(btn.getAttribute('href').length > 0) td_state.classList.add('ing');
-			else {
-				btn.classList.add('ready');
-				btn.addEventListener('click', function(e){ e.preventDefault(); });
-			}
-				
-			if(td_end.innerText.length > 0){
-				if(td_state.classList.contains('ing')) {
-					td_state.classList.remove('ing');
-					td_state.classList.add('end');
-				}
-			}
+		} else {
+			td.style.borderTop = 'none';
 		}
-
-		if(frameWrap) {
-			btn.addEventListener('mouseover', function(){
-				if(previewChk.checked == false) return;
-				let url = btn.getAttribute('href');
-				frame.setAttribute('src', url);
-				if(frameWrap) frameWrap.classList.add('show');
-			});
-		}		
 	});
 
-	if(frameWrap) {
-		frameClose.addEventListener('click', function(){
+	// 섹션별 토글기능 (ctrl / mac cmd 누른 채 클릭 시 테이블 전체 제어)
+	tglBtns.forEach((btn) => {
+		btn.addEventListener('click', (e) => {
+			const fold = !btn.classList.contains('open');
+			if (e.ctrlKey || e.metaKey) tglBtns.forEach((item) => setSectionFold(item, fold));
+			else setSectionFold(btn, fold);
+		});
+
+		// 미사용 화면 리스트 닫기
+		if (btn.closest('tr').classList.contains('notuse')) setSectionFold(btn, true);
+	});
+
+	// 링크값 유무 + 종료일 유무에 따른 진행상태 표기
+	trs.forEach((tr) => {
+		const btn = tr.querySelector('.link > a'),
+			tdState = tr.querySelector('.state'),
+			tdEnd = tr.querySelector('.end-date');
+
+		if (!btn || !tdState) return;
+
+		if ((btn.getAttribute('href') || '').length > 0) {
+			const isEnd = !!tdEnd && tdEnd.textContent.trim().length > 0;
+			tdState.classList.add(isEnd ? 'end' : 'ing');
+		} else {
+			btn.classList.add('ready');
+			btn.addEventListener('click', (e) => e.preventDefault());
+		}
+	});
+
+	return numCount;
+}
+
+/** iframe 미리보기 설정 */
+function guide_previewSet() {
+	const frameWrap = document.querySelector('.iframe');
+	if (!frameWrap) return;
+
+	const frame = frameWrap.querySelector('iframe'),
+		frameClose = frameWrap.querySelector('.btn-frame-close'),
+		previewChk = document.querySelector('#view-chk'),
+		mobileChk = document.querySelector('#view-mobile');
+
+	if (!frame || !previewChk) return;
+
+	const openPreview = (e) => {
+		const btn = e.target.closest(GUIDE_LINK_SELECTOR);
+		if (!btn || !previewChk.checked || btn.classList.contains('ready')) return;
+		frame.setAttribute('src', btn.getAttribute('href'));
+		frameWrap.classList.add('show');
+	};
+	// 마우스 오버 + 키보드 포커스 시 미리보기 (이벤트 위임)
+	document.addEventListener('mouseover', openPreview);
+	document.addEventListener('focusin', openPreview);
+
+	if (frameClose) {
+		frameClose.addEventListener('click', () => {
 			frame.setAttribute('src', '');
 			frameWrap.classList.remove('show');
-			if(window.outerWidth > 701) previewChk.checked = false;
+			if (window.outerWidth > 701) previewChk.checked = false;
 		});
-		if(mobileChk) {
-			mobileChk.addEventListener('click', function(){
-				mobileChk.checked == true ? frameWrap.classList.add('mobile') : frameWrap.classList.remove('mobile');
-			});
-			mobileChk.checked == true ? frameWrap.classList.add('mobile') : frameWrap.classList.remove('mobile');
-		}
 	}
 
-
-	// 전체 페이지 수 및 완료 페이지 표기
-	let pageTotal   = document.querySelector('.total-page'),
-		pageEnd 	= document.querySelector('.end-page'),
-		pagePer 	= document.querySelector('.per'),
-		endCount  	= document.querySelectorAll('td.end').length + document.querySelectorAll('td.include').length,
-		endPer 		= (endCount / (tblTotal)) * 100;
-
-		if(pageTotal) {
-			pageTotal.innerText = tblTotal;
-			pageEnd.innerText = endCount;
-			pagePer.innerText = endPer.toFixed(1);
-		}
-
-	
-	// text 검색
-	let findBtn 	= document.querySelector('.btn-find-tx');
-	if(findBtn){
-		let findInp 	= document.querySelector('#find-tx'),
-			hiddenInp 	= document.querySelector('.temp');
-		
-		findBtn.addEventListener('click', function(){
-			let srchTx = findInp.value;
-			
-			Array.prototype.forEach.call(trs, function(tr){
-				let btn  = tr.querySelector('.link a');
-				if(!btn) return;
-				let link = btn.getAttribute('href');
-				btn.classList.remove('classUse');
-
-				let xhr = new XMLHttpRequest();
-				xhr.onload = function(){
-					if (xhr.status === 200) {
-						hiddenInp.value = xhr.responseText;
-						let valTx = hiddenInp.value;
-						valTx.match(srchTx) ? btn.classList.add('classUse') : null;
-						hiddenInp.value = '';
-					}
-				}
-				xhr.open("GET", link, true);
-				xhr.send(null);
-			});
-		});
+	if (mobileChk) {
+		const setMobile = () => frameWrap.classList.toggle('mobile', mobileChk.checked);
+		mobileChk.addEventListener('change', setMobile);
+		setMobile();
 	}
 }
 
-// 현재 페이지 활성화
-function guide_menuSet(num){
-	let menus = document.querySelector('.menu').querySelectorAll('a');
+/** 전체 페이지 수 및 완료 페이지 표기 */
+function guide_progressSet(total) {
+	const pageTotal = document.querySelector('.total-page'),
+		pageEnd = document.querySelector('.end-page'),
+		pagePer = document.querySelector('.per'),
+		endCount = document.querySelectorAll('.list td.end, .list td.include').length,
+		endPer = total > 0 ? (endCount / total) * 100 : 0;
 
-	Array.prototype.forEach.call(menus, function(menu, idx){
-		idx == num ? menu.classList.add('view') :  menu.classList.remove('view');
+	if (pageTotal) pageTotal.textContent = total;
+	if (pageEnd) pageEnd.textContent = endCount;
+	if (pagePer) pagePer.textContent = endPer.toFixed(1);
+}
+
+/** 링크 화면 내 text 검색 - 검색어가 포함된 화면의 링크에 'classUse' 클래스 추가 */
+function guide_findSet() {
+	const findBtn = document.querySelector('.btn-find-tx'),
+		findInp = document.querySelector('#find-tx');
+	if (!findBtn || !findInp) return;
+
+	const htmlCache = new Map();
+
+	const getHtml = async (url) => {
+		if (!htmlCache.has(url)) {
+			const res = await fetch(url);
+			htmlCache.set(url, res.ok ? await res.text() : '');
+		}
+		return htmlCache.get(url);
+	};
+
+	const find = async () => {
+		const srchTx = findInp.value.trim(),
+			links = Array.from(document.querySelectorAll(GUIDE_LINK_SELECTOR));
+
+		links.forEach((btn) => btn.classList.remove('classUse'));
+		if (!srchTx) return;
+
+		await Promise.all(links.map(async (btn) => {
+			const url = btn.getAttribute('href');
+			if (!url || url.charAt(0) === '#') return;
+			try {
+				if ((await getHtml(url)).includes(srchTx)) btn.classList.add('classUse');
+			} catch (err) {
+				console.warn('[list-guide] 검색 실패 : ' + url, err);
+			}
+		}));
+	};
+
+	findBtn.addEventListener('click', find);
+	findInp.addEventListener('keydown', (e) => {
+		if (e.key === 'Enter') find();
 	});
 }
 
-window.onload = function(){
-	let body 		= document.querySelector('body'),
-		tbls 		= document.querySelectorAll('.list table');
+/** 폴더 트리 토글 */
+function guide_treeSet() {
+	const fldTree = document.querySelector('.folder-tree');
+	if (!fldTree) return;
 
-	if(tbls) {
-		tbls.forEach(function(tbl){
-			if(!tbl.classList.contains('info')) {
-				guide_tblSet(tbl);
-			}
-		})
-	}
-	
-	
-	// 조직도 관련
-	let fldTree = document.querySelector('.folder-tree');
-	if(fldTree) {
-		let btnTrees = fldTree.querySelectorAll('button');
-		Array.prototype.forEach.call(btnTrees, function(btn){
-			if(btn.classList.contains('btn-tree')){
-				btn.addEventListener('click', function(){
-					btn.parentNode.classList.contains('on') ? btn.parentNode.classList.remove('on') : btn.parentNode.classList.add('on');
-				});
-			} else {
-				if(!btn.nextSibling) btn.classList.add('tree-last');
-			}
-		});
-	}
+	fldTree.querySelectorAll('button').forEach((btn) => {
+		if (btn.classList.contains('btn-tree')) {
+			btn.addEventListener('click', () => btn.parentNode.classList.toggle('on'));
+		} else if (!btn.nextElementSibling) {
+			btn.classList.add('tree-last');
+		}
+	});
+}
 
-	// top 버튼 추가
-	let topBtn = document.createElement('a');
-	body.appendChild(topBtn);
-	topBtn.classList.add('btn-guide-top');
-	topBtn.setAttribute('href', '#work-list');
-};
+/** top 버튼 추가 */
+function guide_topBtnSet() {
+	const topBtn = document.createElement('a');
+	topBtn.className = 'btn-guide-top';
+	topBtn.href = '#work-list';
+	topBtn.title = '맨 위로';
+	topBtn.setAttribute('aria-label', '맨 위로');
+	document.body.appendChild(topBtn);
+}
+
+/** 현재 페이지 활성화 */
+function guide_menuSet(num) {
+	const menu = document.querySelector('.menu');
+	if (!menu) return;
+
+	menu.querySelectorAll('a').forEach((link, idx) => link.classList.toggle('view', idx === num));
+}
+
+window.addEventListener('load', () => {
+	let tblTotal = 0;
+	document.querySelectorAll('.list table').forEach((tbl) => {
+		if (!tbl.classList.contains('info')) tblTotal += guide_tblSet(tbl);
+	});
+
+	guide_previewSet();
+	guide_progressSet(tblTotal);
+	guide_findSet();
+	guide_treeSet();
+	guide_topBtnSet();
+});
