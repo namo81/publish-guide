@@ -3,9 +3,7 @@
 
 <head>
 	<meta charset="UTF-8" >
-	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="user-scalable=yes, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, width=device-width">
-	<meta name="author" content="seonamho - SK MNS" >
 	<meta name="description" content="">
 	<meta name="keywords" content="Site Template">
 	<meta property="og:type" content="website">
@@ -15,7 +13,7 @@
 	<meta property="og:url" content="">
 	<link rel="shortcut icon" href="data:;base64,iVBORwOKGO=" />
 
-	<title>달력(기간) | 기본 가이드</title>
+	<title>모바일 달력(v3.1.0) | 기본 가이드</title>
 
 	<!-- 가이드 관련 -->
 	<link rel="stylesheet" href="../guide/list-guide.css" media="screen, print" />
@@ -23,27 +21,54 @@
 	<script src="../guide/vendor/highlight.js"></script>
 
 	<!-- 프로젝트 관련 CSS 및 JS 파일 로드 -->
-	<link rel="stylesheet" href="/css/layout.css" media="screen, print" />
-	<script src="../js/jquery-3.2.1.min.js"></script>
+	<link rel="stylesheet" href="/css/layout_m.css" media="screen, print" />
 </head>
 <body class="pub-guide">
 	<div id="work-list">
 		<div class="guide">
 
-			<!-- input ================================================================ -->
-			<section id="guide-input">
-				<h2 class="guide-sec-tit">Calendar</h2>
+			<section id="guide-calendar">
+				<h2 class="guide-sec-tit">Calendar <span class="desc">v3.1.0</span></h2>
+
+				<div class="guide-sec">
+					<h3 class="guide-stit">v3.1.0 변경사항</h3>
+					<ul>
+						<li>- 오류 수정 : limit / controls 'none' / 확인 버튼 없는 shift / 잘못된 input 값 등 실행 오류, 외부클릭 리스너 누적(activeClose 중복 실행), 월간 달력 이번달 선택 불가 등</li>
+						<li>- 날짜 입력 후 input 에 input / change 이벤트 발생</li>
+						<li>- 키보드 : ESC 닫기, 달력 내부 Tab 순환, 방향키 이동 (일간 ←→ 1일 / ↑↓ 1주, 월간 ←→ 1개월 / ↑↓ 4개월)</li>
+						<li>- show_type 'input' : Tab 으로 진입 시 자동으로 열리지 않음 → input 클릭 또는 ↓ 키로 열기</li>
+						<li>- cal_title 옵션 구현 / 선택일 aria-pressed / 오늘 aria-current="date"</li>
+						<li>- 닫기 후 호출 요소(버튼 / input)로 포커스 복귀 (외부 클릭으로 닫으면 포커스 이동 안 함)</li>
+						<li>- 메서드 추가 : state() / destroy()</li>
+					</ul>
+				</div>
 
 				<div class="guide-sec">
 					<h3 class="guide-stit">일간 달력</h3>
 					<p>width 값은 별도 지정 / min-width 는 320px 로 지정</p>
+					<p>예시 : controls 'shift' (연-월 클릭 시 월 선택) / limit 'after' + gap_limit '2Y' (2년 전 ~ 오늘)</p>
 					<div class="guide-show">
 						<div class="inp-cal" style="width:320px">
-							<input type="text" name="" placeholder="" class="input-box cal" value="2025-08-08"/>
+							<input type="text" name="" placeholder="" class="input-box cal" value="2025-08-08" title="날짜"/>
 						</div>
 					</div>
 <pre><code class="html">&lt;div class="inp-cal" style="width:320px"&gt;
-	&lt;input type="text" name="" placeholder="" class="input-box cal"/&gt;
+	&lt;input type="text" name="" placeholder="" class="input-box cal" title="날짜"/&gt;
+&lt;/div&gt;
+</code></pre>
+				</div>
+
+				<div class="guide-sec">
+					<h3 class="guide-stit">input 클릭형 + 타이틀</h3>
+					<p>show_type 'input' : input 클릭 또는 ↓ 키로 열기 / cal_title : 달력 상단 타이틀 (달력 이름으로도 사용)</p>
+					<p>예시 : limit 'before' + gap_limit '3M' (오늘 ~ 3개월 후)</p>
+					<div class="guide-show">
+						<div class="inp-cal input-type" style="width:320px">
+							<input type="text" name="" placeholder="YYYY-MM-DD" class="input-box cal" title="예약일"/>
+						</div>
+					</div>
+<pre><code class="html">&lt;div class="inp-cal input-type" style="width:320px"&gt;
+	&lt;input type="text" name="" placeholder="YYYY-MM-DD" class="input-box cal" title="예약일"/&gt;
 &lt;/div&gt;
 </code></pre>
 				</div>
@@ -53,11 +78,11 @@
 					<p>width 값은 별도 지정 / min-width 는 320px 로 지정</p>
 					<div class="guide-show">
 						<div class="inp-cal week" style="width:320px">
-							<input type="text" name="" placeholder="" class="input-box cal" value="2025-07-27 ~ 2025-08-02"/>
+							<input type="text" name="" placeholder="" class="input-box cal" value="2025-07-27 ~ 2025-08-02" title="주간"/>
 						</div>
 					</div>
 <pre><code class="html">&lt;div class="inp-cal week" style="width:320px"&gt;
-	&lt;input type="text" name="" placeholder="" class="input-box cal" value="2025-07-27 ~ 2025-08-02"/&gt;
+	&lt;input type="text" name="" placeholder="" class="input-box cal" value="2025-07-27 ~ 2025-08-02" title="주간"/&gt;
 &lt;/div&gt;
 </code></pre>
 				</div>
@@ -67,73 +92,69 @@
 					<p>width 값은 별도 지정 / min-width 는 320px 로 지정</p>
 					<div class="guide-show">
 						<div class="inp-cal month" style="width:320px">
-							<input type="text" name="" placeholder="" class="input-box cal"/>
+							<input type="text" name="" placeholder="" class="input-box cal" title="월"/>
 						</div>
 					</div>
 <pre><code class="html">&lt;div class="inp-cal month" style="width:320px"&gt;
-	&lt;input type="text" name="" placeholder="" class="input-box cal"/&gt;
+	&lt;input type="text" name="" placeholder="" class="input-box cal" title="월"/&gt;
 &lt;/div&gt;
 </code></pre>
 				</div>
 
 				<div class="guide-sec">
 					<h3 class="guide-stit">기간선택</h3>
-					<p>range 클래스 추가</p>
-					<p>width 값은 별도 지정 / min-width 는 320px 로 지정</p>
+					<p>range 옵션 true / 종료일 input 에 'end' 클래스 (없으면 input 1개에 'YYYY-MM-DD ~ YYYY-MM-DD' 형식으로 입력)</p>
+					<p>예시 : 일간 기간 - gap_range '1M' (시작일 기준 최대 1개월) / 월간 기간 - input 1개</p>
 					<div class="guide-show">
 						<div class="inp-cal range" style="width:320px">
-							<input type="text" name="" placeholder="" class="input-box cal"/>
+							<input type="text" name="" placeholder="" class="input-box cal" title="시작일"/>
 							<i>~</i>
-							<input type="text" name="" placeholder="" class="input-box cal end"/>
+							<input type="text" name="" placeholder="" class="input-box cal end" title="종료일"/>
 						</div>
-						
+
 						<div class="inp-cal single-range" style="width:320px">
-							<input type="text" name="" placeholder="" class="input-box cal start"/>
+							<input type="text" name="" placeholder="" class="input-box cal start" title="기간(월)"/>
 						</div>
 					</div>
 <pre><code class="html">&lt;div class="inp-cal range" style="width:320px"&gt;
-	&lt;input type="text" name="" placeholder="" class="input-box cal"/&gt;
+	&lt;input type="text" name="" placeholder="" class="input-box cal" title="시작일"/&gt;
 	&lt;i&gt;~&lt;/i&gt;
-	&lt;input type="text" name="" placeholder="" class="input-box cal end"/&gt;
+	&lt;input type="text" name="" placeholder="" class="input-box cal end" title="종료일"/&gt;
 &lt;/div&gt;
 
 &lt;div class="inp-cal single-range" style="width:320px"&gt;
-	&lt;input type="text" name="" placeholder="" class="input-box cal start"/&gt;
+	&lt;input type="text" name="" placeholder="" class="input-box cal start" title="기간(월)"/&gt;
 &lt;/div&gt;
 </code></pre>
 				</div>
 
 				<div class="guide-sec">
 					<h3 class="guide-stit">고정형 달력</h3>
+					<p>in_page true : 화면 내 고정 표시 (확인 / 닫기 버튼 없이 날짜 선택 시 바로 입력)</p>
 					<div class="guide-show">
 						<div class="inp-cal page" style="width:320px">
-							<input type="text" name="" placeholder="" class="input-box cal" value=""/>
+							<input type="text" name="" placeholder="" class="input-box cal" value="" title="날짜"/>
 						</div>
 					</div>
-<pre><code class="html">&lt;div class="inp-cal range" style="width:320px"&gt;
-	&lt;input type="text" name="" placeholder="" class="input-box cal"/&gt;
-	&lt;i&gt;~&lt;/i&gt;
-	&lt;input type="text" name="" placeholder="" class="input-box cal end"/&gt;
-&lt;/div&gt;
-
-&lt;div class="inp-cal single-range" style="width:320px"&gt;
-	&lt;input type="text" name="" placeholder="" class="input-box cal start"/&gt;
+<pre><code class="html">&lt;div class="inp-cal page" style="width:320px"&gt;
+	&lt;input type="text" name="" placeholder="" class="input-box cal" title="날짜"/&gt;
 &lt;/div&gt;
 </code></pre>
 				</div>
 			</section>
 
 
-			<section id="guide-input">
+			<section id="guide-calendar-option">
 				<h2 class="guide-sec-tit">Script 옵션</h2>
 
 				<div class="guide-sec">
 					<h3 class="guide-stit">선언 예시 및 옵션</h3>
 <pre><code class="js">let 변수 = new n_calendar({
 	wrap : '.inp-cal',
+	position : 'modal', // 모바일일 경우 필수
 	type : 'day',
 	activeShow : function(){
-		
+
 	}, activeDraw : function(){
 
 	}, activeClose : function(){
@@ -156,25 +177,27 @@
 				  			[true] : 달력 2개로 표시 - 기간 달력만 가능
 
  * show_type (string) 	- 달력 호출 방식
- 				  			[null] (기본값) : 버튼 클릭 시 달력 표시
-				  			['input'] : input 에 focus 시 달력 표시
+ 				  			[null] (기본값) : 버튼 클릭 시 달력 표시 (열린 상태에서 다시 클릭 시 닫기)
+				  			['input'] : input 클릭 또는 ↓ 키 입력 시 달력 표시
 
  * year_range (string)		- 달력 표시 연도 범위 설정 - '2000:2050'
 
  * lang (string)			- 요일/월 표시 언어
  				  			['kr'] (기본값) : 한글
 				  			['en'] : 영어
-				  
- * cal_title (string)		- 달력 타이틀 텍스트
+
+ * cal_title (string)		- 달력 타이틀 텍스트 (달력 상단 표시 + 달력 이름)
+ 				  			없을 경우 화면 표시 없이 '날짜 선택' 으로 이름(aria-label) 설정
 
  * split_tx (string) 		- 연/월/일 사이 구분용 문자 (기본 '-')
 
  * controls (string)		- 연/월 표시 영역 컨트롤 방식 설정
- 				  			['all'] (기본값) : 이전-다음 버튼, 연,월 select 
+ 				  			['all'] (기본값) : 이전-다음 버튼, 연,월 select
  				  			['btn'] : 이전-다음 버튼만. 연,월은 단순 표기
 				  			['shift'] : 이전-다음 버튼 + 연,월은 클릭 시 월간달력으로 변경(일간,주간 달력만 가능)
-				  			['none'] : 모두 제거. 연,월만 표시 (dual 이 'true' 일 경우 무조건 'none' 로 설정)
- 
+				  			['none'] (또는 null) : 모두 제거. 연,월만 표시
+				  			** dual 이 true 일 경우 연,월은 단순 표기
+
  * tx_close (string) 		- 닫기 버튼 텍스트
  * tx_confirm (string)  	- 확인 버튼 텍스트 및 입력방식 설정
  				  			[null] : 확인 버튼 제거 (날짜 선택 시 즉시 달력 닫고 입력) // in_page 가 true 일 경우 무조건 null 로 설정
@@ -184,22 +207,22 @@
  				  			[null] (기본값) : 제한 없음
 				  			['after'] : 오늘(이번달) 이후 선택 불가
 				  			['before'] : 오늘(이번달) 이전 선택 불가
- * gap_today (string) 		- 오늘(지금)의 gap 설정 (limit after 인데, 내일부터 선택 가능하게 / limit before 인데 3일전부터 선택가능하게 등)
- 				  			['0D' / '0M' / '0Y' 형식의 string]
- * gap_limit (string) 		- 달력 선택 가능일 설정 (limit after 인데, 오늘부터 1년후까지 선택 / limit before 인데 1년전부터 오늘까지 선택 등)
- 				  			['0D' / '0M' / '0Y' 형식의 string]
+ * gap_today (string) 		- '오늘' 기준점 이동 (limit after 인데 어제까지만 선택 : '1D' / limit before 인데 내일부터 선택 : '1D')
+ 				  			['0D' / '0W' / '0M' / '0Y' 형식의 string]
+ * gap_limit (string) 		- 선택 가능 범위 (limit after 인데 1년전부터 오늘까지 선택 / limit before 인데 오늘부터 1년후까지 선택 : '1Y')
+ 				  			['0D' / '0W' / '0M' / '0Y' 형식의 string]
  * gap_range (string) 		- 기간 선택 시 시작일-종료일 최대값 설정 (30D 일 경우 시작일-종료일 기간의 차이가 30일까지만 선택가능)
- 				  			['0D' / '0M' / '0Y' 형식의 string]
+ 				  			['0D' / '0W' / '0M' / '0Y' 형식의 string]
 
  * position (string) 		- 달력이 뜨는 위치 설정여부
- 				  			[null] (기본값) : input 아래
+ 				  			[null] (기본값) : input 아래 (하단 공간 부족 시 input 위)
 				  			['modal'] : 위치 설정 없음(별도 css 로 제어)
  * pos_top (number) 		- 달력 위치 - input 아래일 경우 top 조정값 (기본 0) ** position 이 null 일 경우만 적용
  * pos_left (number) 		- 달력 위치 - input 아래일 경우 left 조정값 (기본 0) ** position 이 null 일 경우만 적용
 
  * in_target (string or dom) 	- 달력 dom 요소가 삽입될 위치
  				  			[null] (기본값) : body 마지막
-				  			['string or dom'] : CSS 선택자로 선택한 Dom or 직접 지정된 Dom 요소의 내부
+				  			['string or dom'] : CSS 선택자로 선택한 Dom or 직접 지정된 Dom 요소의 내부 (position 지정 요소일 경우 해당 요소 기준으로 위치 계산)
 
  * in_page (boolean) 		 - 화면 고정형 달력 여부
  				  			[false] (기본값): 달력을 레이어로 띄우기
@@ -208,35 +231,55 @@
  콜백함수
  * activeShow			- 달력 show 될 때 실행
  * activeDraw			- 달력이 그려질 때 실행 (연/월 변경 등 포함)
- * activeClose			- 달력을 닫을 경우 실행 (그냥 닫기 / 날짜 입력으로 인한 닫기 포함)
+ * activeClose			- 달력을 닫을 경우 실행 (그냥 닫기 / 날짜 입력으로 인한 닫기 포함 - 1회만 실행)
+
+ 메서드
+ * cal_show() / cal_close()	- 달력 열기 / 닫기
+ * draw_prev() / draw_next()	- 이전 / 다음 월(연도) 그리기
+ * state()					- 달력 show 상태 반환 (true / false)
+ * btn_disabled_set(func)	- 날짜별 활성 여부 직접 지정 (func(date) 가 false 를 반환하면 비활성 / 선택 제한된 날짜는 항상 비활성) - activeDraw 에서 호출
+ * destroy()				- 달력 기능 제거
+
+ ** 날짜 입력 시 input 에 input / change 이벤트 발생
 </code></pre>
 				</div>
 			</section>
 		</div>
-		<a href="#work-list" class="guide-top">Top</a>	
+		<a href="#work-list" class="guide-top">Top</a>
 	</div>
 
 	<!-- calendar 관련 설정 -->
-	<link rel="stylesheet" href="/css/n_Calendar.css" media="screen, print"/>
+	<link rel="stylesheet" href="/css/n_calendar_m.css" media="screen, print"/>
 	<script src="/js/common.js"></script>
-	<script src="/js/nCalendar_v3.0.0.js"></script>
+	<script src="/js/nCalendar_v3.1.0.js"></script>
 	<script>
-		hljs.initHighlightingOnLoad(); 
+		hljs.initHighlightingOnLoad();
 
 		let cal_day = new n_calendar({
 			wrap : '.inp-cal',
+			position : 'modal',
 			type : 'day',
 			controls : 'shift',
 			limit : 'after',
 			gap_limit : '2Y',
 			activeDraw : function(){
-				//console.log('Draw!')
 				//this.btn_disabled_set(test);
 			}
 		});
 
+		let cal_input = new n_calendar({
+			wrap : '.inp-cal.input-type',
+			position : 'modal',
+			type : 'day',
+			show_type : 'input',
+			cal_title : '예약일 선택',
+			limit : 'before',
+			gap_limit : '3M'
+		});
+
 		let cal_week = new n_calendar({
 			wrap : '.inp-cal.week',
+			position : 'modal',
 			type : 'week',
 			controls : 'all',
 			dual : false
@@ -244,32 +287,31 @@
 
 		let cal_month = new n_calendar({
 			wrap : '.inp-cal.month',
+			position : 'modal',
 			type : 'month',
-			controls : 'all',
-			activeDraw : function(){
-				//console.log('Draw!')
-				//this.btn_disabled_set(test);
-			}
+			controls : 'all'
 		});
-		
+
 		let cal_range = new n_calendar({
 			wrap : '.inp-cal.range',
+			position : 'modal',
 			range : true,
 			dual : true,
 			limit : 'after',
-			//gap_range : '1M',
+			gap_range : '1M',
 			controls : 'btn'
 		});
-		
+
 		let cal_range_mon = new n_calendar({
 			wrap : '.inp-cal.single-range',
+			position : 'modal',
 			type : 'month',
 			range : true,
 			dual : true,
 			limit : 'after',
 			controls : 'btn'
 		});
-		
+
 		let cal_page = new n_calendar({
 			wrap : '.inp-cal.page',
 			type : 'day',
@@ -277,11 +319,10 @@
 			in_target : '.inp-cal.page'
 		});
 
+		// btn_disabled_set 예시 - 특정일만 선택 가능
 		function test(date){
-			//console.log(date)
-			return convertToYMD(date, '-') == '2025-08-25' ? true : false;
+			return convertToYMD(date, '-') == '2025-08-25';
 		}
-
 	</script>
 
 </body>

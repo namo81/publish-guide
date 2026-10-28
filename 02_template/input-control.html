@@ -3,9 +3,7 @@
 
 <head>
 	<meta charset="UTF-8" >
-	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="user-scalable=yes, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, width=device-width">
-	<meta name="author" content="seonamho - SK MNS" >
 	<meta name="description" content="">
 	<meta name="keywords" content="Site Template">
 	<meta property="og:type" content="website">
@@ -24,177 +22,218 @@
 
 	<!-- 프로젝트 관련 CSS 및 JS 파일 로드 -->
 	<link rel="stylesheet" href="/css/layout.css" media="screen, print" />
+	<style>
+		.chk-list li { margin:4px 0; }
+		.chk-list ul { display:block; padding-left:24px; }
+		.ctrl-box { margin-top:10px; padding:12px; border:1px solid #ddd; border-radius:6px; }
+		.ctrl-box legend { padding:0 4px; font-weight:600; }
+		.ctrl-box[inert], .inert-on > [inert] { opacity:.4; }
+		fieldset.ctrl-box:disabled { opacity:.4; }
+	</style>
 </head>
 <body class="pub-guide">
 	<div id="work-list">
 		<div class="guide">
-			
 
-			<!-- input ================================================================ -->
-			<section id="guide-input">
+			<section id="guide-check-all">
 				<h2 class="guide-sec-tit">Input 제어</h2>
+
+				<!-- checkAll ================================================================ -->
 				<div class="guide-sec">
-					<h3 class="guide-stit">Text</h3>
-					<h4 class="guide-sstit">기본형</h3>
+					<h3 class="guide-stit">전체선택 - checkAll</h3>
+					<p><strong>checkAll(allInp, inpName)</strong> : 같은 name 을 가진 checkbox 를 전체선택 checkbox 로 제어 (1단계 목록)</p>
+					<ul>
+						<li>- allInp : 전체선택 checkbox (선택자 or dom) / inpName : 제어할 checkbox 의 name (없으면 allInp 의 data-name)</li>
+						<li>- 전체선택 checkbox 와 항목이 떨어져 있어도 사용 가능 (ex : 테이블 헤더의 전체선택)</li>
+						<li>- 일부만 선택된 경우 전체선택 checkbox 는 indeterminate(일부 선택) 상태</li>
+						<li>- disabled 항목은 제외 / 상태가 바뀐 항목에 change 이벤트 발생</li>
+					</ul>
 					<div class="guide-show">
-						<input type="text" name="" title="" class="input-box" placeholder="기본형">
+						<div>
+							<input type="checkbox" id="chk-all" class="checkbox" data-name="agree">
+							<label for="chk-all"><strong>전체 동의</strong></label>
+						</div>
+						<ul class="chk-list">
+							<li><input type="checkbox" id="agree-1" name="agree" class="checkbox"> <label for="agree-1">이용약관 동의</label></li>
+							<li><input type="checkbox" id="agree-2" name="agree" class="checkbox"> <label for="agree-2">개인정보 수집 및 이용 동의</label></li>
+							<li><input type="checkbox" id="agree-3" name="agree" class="checkbox"> <label for="agree-3">마케팅 정보 수신 동의</label></li>
+							<li><input type="checkbox" id="agree-4" name="agree" class="checkbox" disabled> <label for="agree-4">제외 항목 (disabled)</label></li>
+						</ul>
 					</div>
-<pre><code class="html">&lt;input type="text" name="" title="" placeholder="기본형"&gt;
+<pre><code class="html">&lt;input type="checkbox" id="chk-all" class="checkbox" data-name="agree"&gt;
+&lt;label for="chk-all"&gt;전체 동의&lt;/label&gt;
+
+&lt;input type="checkbox" id="agree-1" name="agree" class="checkbox"&gt; &lt;label for="agree-1"&gt;이용약관 동의&lt;/label&gt;
+&lt;input type="checkbox" id="agree-2" name="agree" class="checkbox"&gt; &lt;label for="agree-2"&gt;개인정보 수집 및 이용 동의&lt;/label&gt;
 </code></pre>
-					<h4 class="guide-sstit">기본형 + 삭제 + 오류</h3>
-					<p>inp-set 에 'error' 클래스 추가 시 오류 메세지 표출됨</p>
-					<p>inp-del 내부에 text input 넣고 기능 적용</p>
+<pre><code class="js">checkAll('#chk-all');			// name 은 data-name 사용
+checkAll('#chk-all', 'agree');	// name 직접 지정
+</code></pre>
+				</div>
+
+				<!-- checkAllDepth ================================================================ -->
+				<div class="guide-sec">
+					<h3 class="guide-stit">다중 depth 전체선택 - checkAllDepth</h3>
+					<p><strong>checkAllDepth(area, selector)</strong> : 중첩 목록 구조에서 상위 / 하위 checkbox 상태 연동 (depth 제한 없음)</p>
+					<ul>
+						<li>- area : 적용 영역 / selector : 대상 checkbox 선택자 (기본 'input[type=checkbox]')</li>
+						<li>- 구조 : 각 checkbox 는 li 안에 위치하고, 하위 항목은 같은 li 안의 ul 에 배치</li>
+						<li>- 상위 체크 시 하위 전체 체크 / 해제, 하위가 모두 체크되면 상위 체크, 일부만 체크되면 상위는 indeterminate</li>
+						<li>- 기존 dep1 / dep2 / dep3 클래스 구조도 그대로 동작 (클래스는 필수 아님)</li>
+					</ul>
+					<p>※ checkAll 과 분리 유지 : checkAll 은 name 기준(위치 무관), checkAllDepth 는 마크업 구조 기준이라 사용 조건이 다름</p>
 					<div class="guide-show">
-						<div class="inp-set">
-							<label for="inp-test">기본형 텍스트</label>
-							<span class="inp-del"><input type="text" name="" id="inp-test" class="input-box" placeholder="기본형"></span>
-							<div class="error-msg">
-								<span class="tx-red">내용을 입력해주세요.</span>
+						<ul class="chk-list chk-depth">
+							<li>
+								<input type="checkbox" id="dep-1" class="checkbox dep1"> <label for="dep-1"><strong>전체 메뉴</strong></label>
+								<ul>
+									<li>
+										<input type="checkbox" id="dep-1-1" class="checkbox dep2"> <label for="dep-1-1">게시판</label>
+										<ul>
+											<li><input type="checkbox" id="dep-1-1-1" class="checkbox dep3"> <label for="dep-1-1-1">공지사항</label></li>
+											<li><input type="checkbox" id="dep-1-1-2" class="checkbox dep3"> <label for="dep-1-1-2">자유게시판</label></li>
+										</ul>
+									</li>
+									<li>
+										<input type="checkbox" id="dep-1-2" class="checkbox dep2"> <label for="dep-1-2">회원관리</label>
+										<ul>
+											<li>
+												<input type="checkbox" id="dep-1-2-1" class="checkbox dep3"> <label for="dep-1-2-1">회원목록</label>
+												<ul>
+													<li><input type="checkbox" id="dep-1-2-1-1" class="checkbox"> <label for="dep-1-2-1-1">조회</label></li>
+													<li><input type="checkbox" id="dep-1-2-1-2" class="checkbox"> <label for="dep-1-2-1-2">수정</label></li>
+												</ul>
+											</li>
+											<li><input type="checkbox" id="dep-1-2-2" class="checkbox dep3"> <label for="dep-1-2-2">탈퇴회원</label></li>
+										</ul>
+									</li>
+								</ul>
+							</li>
+						</ul>
+					</div>
+<pre><code class="html">&lt;ul class="chk-depth"&gt;
+	&lt;li&gt;
+		&lt;input type="checkbox" id="dep-1"&gt; &lt;label for="dep-1"&gt;전체 메뉴&lt;/label&gt;
+		&lt;ul&gt;
+			&lt;li&gt;
+				&lt;input type="checkbox" id="dep-1-1"&gt; &lt;label for="dep-1-1"&gt;게시판&lt;/label&gt;
+				&lt;ul&gt;
+					&lt;li&gt;&lt;input type="checkbox" id="dep-1-1-1"&gt; &lt;label for="dep-1-1-1"&gt;공지사항&lt;/label&gt;&lt;/li&gt;
+					&lt;li&gt;&lt;input type="checkbox" id="dep-1-1-2"&gt; &lt;label for="dep-1-1-2"&gt;자유게시판&lt;/label&gt;&lt;/li&gt;
+				&lt;/ul&gt;
+			&lt;/li&gt;
+		&lt;/ul&gt;
+	&lt;/li&gt;
+&lt;/ul&gt;
+</code></pre>
+<pre><code class="js">checkAllDepth('.chk-depth');
+</code></pre>
+				</div>
+
+				<!-- radioSelectTg ================================================================ -->
+				<div class="guide-sec">
+					<h3 class="guide-stit">radio 선택에 따른 영역 표시 - radioSelectTg</h3>
+					<p><strong>radioSelectTg(area, name, func)</strong> : 선택된 radio 의 data-target 영역만 표시</p>
+					<ul>
+						<li>- data-target : 표시할 영역의 클래스명 (점 없이) - 여러 radio 가 같은 영역 지정 가능 / 없으면 모든 영역 숨김</li>
+						<li>- 숨김 영역이 fieldset 이면 disabled 처리 (form 전송 제외)</li>
+						<li>- 선택된 radio 가 없으면 초기에 모든 영역 숨김 / 방향키 선택에도 동작</li>
+						<li>- func(input, target) : 선택 변경 시 콜백</li>
+					</ul>
+					<div class="guide-show radio-tg-area">
+						<fieldset>
+							<legend>수령 방법</legend>
+							<input type="radio" name="receive" id="receive-1" class="radio" data-target="tg-delivery" checked> <label for="receive-1">택배</label>
+							<input type="radio" name="receive" id="receive-2" class="radio" data-target="tg-visit"> <label for="receive-2">방문 수령</label>
+							<input type="radio" name="receive" id="receive-3" class="radio"> <label for="receive-3">미정</label>
+						</fieldset>
+						<fieldset class="ctrl-box tg-delivery">
+							<legend>배송지</legend>
+							<label for="addr">주소</label>
+							<input type="text" id="addr" class="input-box" placeholder="주소 입력">
+						</fieldset>
+						<fieldset class="ctrl-box tg-visit">
+							<legend>방문 매장</legend>
+							<label for="store">매장</label>
+							<select id="store">
+								<option value="">선택해주세요</option>
+								<option value="1">강남점</option>
+								<option value="2">홍대점</option>
+							</select>
+						</fieldset>
+					</div>
+<pre><code class="html">&lt;input type="radio" name="receive" id="receive-1" data-target="tg-delivery" checked&gt; &lt;label for="receive-1"&gt;택배&lt;/label&gt;
+&lt;input type="radio" name="receive" id="receive-2" data-target="tg-visit"&gt; &lt;label for="receive-2"&gt;방문 수령&lt;/label&gt;
+&lt;input type="radio" name="receive" id="receive-3"&gt; &lt;label for="receive-3"&gt;미정&lt;/label&gt;
+
+&lt;fieldset class="tg-delivery"&gt; ... &lt;/fieldset&gt;
+&lt;fieldset class="tg-visit"&gt; ... &lt;/fieldset&gt;
+</code></pre>
+<pre><code class="js">radioSelectTg('.radio-tg-area', 'receive', function(inp, tg){
+	console.log(inp.id, tg);
+});
+</code></pre>
+				</div>
+
+				<!-- chk_tgl_ctrl ================================================================ -->
+				<div class="guide-sec">
+					<h3 class="guide-stit">checkbox 선택에 따른 영역 활성화 - chk_tgl_ctrl</h3>
+					<p><strong>chk_tgl_ctrl(area, inp, target, func)</strong> : checkbox 해제 시 target 영역에 <b>inert</b> 속성 부여 (클릭 / 포커스 / 스크린리더 접근 차단)</p>
+					<ul>
+						<li>- area : 검색 범위 / inp : 제어용 checkbox / target : 비활성화할 영역 선택자 / func(비활성화 여부) : 콜백</li>
+						<li>- 비활성화 스타일은 css 의 [inert] 또는 target 에 추가되는 'inert' 클래스로 지정</li>
+						<li>- 제어용 checkbox 가 target 안에 있으면 checkbox(label 포함)를 제외한 나머지 요소에만 inert 적용</li>
+						<li>- ※ inert 는 disabled 와 달리 form 전송에서 제외되지 않음 - 전송 제외가 필요하면 콜백에서 처리</li>
+					</ul>
+					<div class="guide-show chk-tgl-area">
+						<input type="checkbox" id="use-alarm" class="checkbox"> <label for="use-alarm">알림 사용</label>
+						<div class="ctrl-box alarm-box">
+							<label for="alarm-time">알림 시간</label>
+							<select id="alarm-time">
+								<option value="9">오전 9시</option>
+								<option value="18">오후 6시</option>
+							</select>
+							<button type="button" class="btn small">테스트 발송</button>
+						</div>
+
+						<div class="ctrl-box inert-on etc-box">
+							<div>
+								<input type="checkbox" id="use-etc" class="checkbox" checked> <label for="use-etc">기타 의견 입력 (영역 안에 checkbox 가 있는 경우)</label>
 							</div>
+							<textarea id="etc-tx" class="input-box" rows="2" title="기타 의견"></textarea>
 						</div>
 					</div>
-<pre><code class="html">&lt;div class="inp-set"&gt;
-	&lt;label for="inp-test"&gt;기본형 텍스트&lt;/label&gt;
-	&lt;span class="inp-del"&gt;&lt;input type="text" name="" id="inp-test" class="input-box" placeholder="기본형"&gt;&lt;/span&gt;
-	&lt;div class="error-msg"&gt;
-		&lt;span class="tx-red"&gt;내용을 입력해주세요.&lt;/span&gt;
-	&lt;/div&gt;
+<pre><code class="html">&lt;input type="checkbox" id="use-alarm"&gt; &lt;label for="use-alarm"&gt;알림 사용&lt;/label&gt;
+&lt;div class="alarm-box"&gt;
+	&lt;select id="alarm-time"&gt;...&lt;/select&gt;
+	&lt;button type="button" class="btn small"&gt;테스트 발송&lt;/button&gt;
 &lt;/div&gt;
 </code></pre>
-	<br>
-<pre><code class="js">// 단독요소 설정
-let inptName = new nTextSet('.inp-del');
-
-// 다수 요소 설정
-nText('.inp-del');
+<pre><code class="css">.alarm-box[inert] { opacity:.4; }
+</code></pre>
+<pre><code class="js">chk_tgl_ctrl('.chk-tgl-area', '#use-alarm', '.alarm-box', function(off){
+	console.log('비활성화 : ' + off);
+});
 </code></pre>
 				</div>
-
-				<div class="guide-sec">
-					<h3 class="guide-stit">radio 버튼</h3>				
-					<h4 class="guide-sstit">일반형</h3>
-						<div class="guide-show">
-							<input type="radio" name="radio-inps" id="" class="radio">
-							<input type="radio" name="radio-inps" id="" class="radio">
-						</div>
-<pre><code class="html">&lt;input type="radio" name="radio-inps" id="" class="radio"&gt;
-&lt;input type="radio" name="radio-inps" id="" class="radio"&gt;
-</code></pre>
-				</div>
-
-				<div class="guide-sec">
-					<h3 class="guide-stit">checkbox</h3>
-					<h4 class="guide-sstit">일반형</h3>
-						<div class="guide-show">
-							<input type="checkbox" name="" id="" class="checkbox">
-						</div>
-<pre><code class="html">&lt;input type="checkbox" name="" id="" class="checkbox"&gt;
-</code></pre>
-						<h4 class="guide-sstit">토글형</h3>
-						<div class="guide-show">
-							<input type="checkbox" name="" id="" class="check_tgl">
-						</div>
-<pre><code class="html">&lt;input type="checkbox" name="" id="" class="check_tgl"&gt;
-</code></pre>
-				</div>
-
-				<div class="guide-sec">
-					<h3 class="guide-stit">Select</h3>
-					<h4 class="guide-sstit">기본</h4>
-					<p>일반 select</p>
-					<div class="guide-show">
-						<select name="" title="">
-							<option value="direct">직접 선택</option>
-							<option value="nate" disabled>nate.com</option>
-							<option value="daum">daum.net</option>
-						</select>
-					</div>
-<pre><code class="html">&lt;select name="" title=""&gt;
-	&lt;option value=""&gt;직접 선택&lt;/option&gt;
-	&lt;option value=""&gt;nate.com&lt;/option&gt;
-	&lt;option value=""&gt;daum.net&lt;/option&gt;
-&lt;/select&gt;
-</code></pre>
-					<h4 class="guide-sstit">기본 - placeholder</h4>
-					<p>placeholder 같은 효과 - 기본 상태 color 적용</p>
-					<p>selece 에 required 속성 필요 / select:invalid 속성으로 값이 없는 상태의 color 값 설정</p>
-					<p>option 에 별도 color 적용 필요</p>
-					<div class="guide-show">
-						<select name="" title="" required>
-							<option value="" hidden>선택해주세요.</option>
-							<option value="direct">직접 선택</option>
-							<option value="nate">nate.com</option>
-							<option value="daum">daum.net</option>
-						</select>
-					</div>
-<pre><code class="html">&lt;select name="" title="" required&gt;
-	&lt;option value="" hidden&gt;선택해주세요.&lt;/option&gt;
-	&lt;option value=""&gt;직접 선택&lt;/option&gt;
-	&lt;option value=""&gt;nate.com&lt;/option&gt;
-	&lt;option value=""&gt;daum.net&lt;/option&gt;
-&lt;/select&gt;
-</code></pre><br>
-<pre><code class="css">select:invalid { color:#aaa; }
-option { color:#000 }
-</code></pre>
-				</div>
-
-				<div class="guide-sec">
-					<h3 class="guide-stit">File</h3>
-					<p>label 값 필수.</p>
-					<p>최소 사이즈 200px</p>
-					<div class="guide-show">
-						<div class="inp-file">
-							<label for="file" class="btn medium">파일첨부</label>
-							<input type="file" class="" id="file">
-						</div>
-					</div>
-<pre><code class="html">&lt;div class="inp-file"&gt;
-	&lt;label for="file" class="btn medium"&gt;파일첨부&lt;/label&gt;
-	&lt;input type="file" class="" id="file"&gt;
-&lt;/div&gt;
-</code></pre>
-<br>
-<pre><code class="js">// 단독요소 설정
-var fileName = new nFileSet('.inp-file');
-
-// 다수 요소 설정
-nFile('.inp-file');
-</code></pre>
-					<h4 class="guide-sstit">style (not js)</h4>
-					<p>script 를 사용하지 않는 버전</p>
-					<p>파일 경로 표기 방식 및 input 기본 문구(선택된 파일 없음) 교체 불가</p>
-					<div class="guide-show">
-						<div class="inp-file-n">
-							<input type="file" class="" id="file2" placeholder="파일첨부">
-							<label for="file2" class="btn medium">파일첨부</label>
-						</div>
-					</div>
-				</div>
-				<style>
-					.inp-file-n input { position:relative; padding:3px 20px 3px 5px; border:1px solid #ccc; border-radius:3px; line-height:27px; box-sizing:border-box; }
-					.inp-file-n input::file-selector-button { position:absolute; width:1px; height:1px; opacity:0; overflow:hidden; }
-				</style>
 			</section>
 
-
 		</div>
-		<a href="#work-list" class="guide-top">Top</a>	
-		
+		<a href="#work-list" class="guide-top">Top</a>
 	</div>
 
 	<script src="/js/common.js"></script>
 	<!-- input design js -->
-	<script src="/js/inpdesign_v2.1.0.js"></script>
+	<script src="/js/inpdesign_v2.2.0.js"></script>
 
 	<script>
 		hljs.initHighlightingOnLoad();
 
-		let inpName = new nTextSet('.inp-del');
-		let selectName = new nSelectSet('.inp-select');
-		nFile('.inp-file');
-
-		let d_range = new doubleRange('.double-range', 'ppm', 10);
+		checkAll('#chk-all');
+		checkAllDepth('.chk-depth');
+		radioSelectTg('.radio-tg-area', 'receive');
+		chk_tgl_ctrl('.chk-tgl-area', '#use-alarm', '.alarm-box');
+		chk_tgl_ctrl('.chk-tgl-area', '#use-etc', '.etc-box');
 	</script>
 </body>
 </html>

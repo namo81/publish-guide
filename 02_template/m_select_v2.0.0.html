@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+	<meta charset="UTF-8" >
+	<meta name="viewport" content="user-scalable=yes, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, width=device-width">
+	<meta name="description" content="">
+	<meta name="keywords" content="Site Template">
+	<meta property="og:type" content="website">
+	<meta property="og:title" content="Site Template">
+	<meta property="og:description" content="">
+	<meta property="og:image" content="">
+	<meta property="og:url" content="">
+	<link rel="shortcut icon" href="data:;base64,iVBORwOKGO=" />
+
+	<title>모바일 Select(v2.0.0) | 가이드</title>
+	<!-- 가이드 관련 -->
+	<link rel="stylesheet" href="../guide/list-guide.css" media="screen, print" />
+	<link rel="stylesheet" href="../guide/vendor/railscasts.css">
+	<script src="../guide/vendor/highlight.js"></script>
+
+	<!-- 프로젝트 관련 CSS 및 JS 파일 로드 -->
+	<link rel="stylesheet" href="/css/layout_m.css" media="screen, print" />
+
+	<style>
+		.n_select { position:fixed; width:100%; height:100%; top:0; left:0; background-color:rgba(0,0,0,0); z-index:1000; transition:background-color 0.5s;}
+		.n_select .select-title { padding:0 15px; font-size:18px; line-height:28px; font-weight:700; }
+		.n_select.on { background-color:rgba(0,0,0, .8); }
+		.n_select .select-cnt { position:absolute; width:100%; bottom:0; left:0; padding:20px 0 10px; border-radius:10px 10px 0 0; background-color:#fff; transform:translate3d(0,100%,0); box-sizing:border-box; transition:transform 0.5s cubic-bezier(.13,.01,.12, 1); }
+		.n_select.on .select-cnt { transform:translate3d(0,0,0); }
+		.n_select .btns { padding:10px 15px 0; }
+		.n_select .btn-sel-close { position:absolute; width:30px; height:30px; top:15px; right:15px; text-indent:-9999px; background:url(../images/ico_x.svg) no-repeat center center / 16px auto;}
+
+		.n_select .scroll-wrap { position:relative; max-height:60vh; overflow-y:auto; }
+		.n_select .drag-scroll-area .scroll-wrap { max-height:none; overflow:visible; }
+		.n_select .scroll-cnt { position:relative; max-height:100%; overflow-x:hidden; overflow-y:auto; box-sizing:border-box; z-index:5; }
+		.n_select .scroll-cnt::-webkit-scrollbar { display:none; }
+		.n_select .sel-list { width:100%; vertical-align:top; }
+		.n_select .sel-list li { width:100%; height:40px; font-size:13px; line-height:30px; box-sizing:border-box; }
+		.n_select .sel-list button { display:block; width:100%; height:100%; padding:5px 16px; color:#A5AFC2; font-weight:600; text-align:left; box-sizing:border-box; }
+		.n_select .sel-list button:disabled { opacity:.5; }
+		.n_select .sel-list li.sel button,
+		.n_select .select-cnt:not(.drag-scroll-area) .sel-list li button[aria-selected="true"] { background-color:#087bda; color:#fff; }
+		.n_select .drag-scroll-area .sel-list button { text-align:center; }
+		.n_select .drag-scroll-area .scroll-wrap::after { width:calc(100% - 30px); left:15px; border-radius:6px; }
+
+		.sel-demo + .sel-demo { margin-top:16px; }
+		.sel-demo > label { display:block; margin-bottom:6px; font-weight:600; }
+		.sel-result { margin-top:16px; font-size:13px; color:#666; }
+	</style>
+</head>
+<body class="pub-guide">
+	<div id="work-list" class="mobile">
+		<div class="guide">
+
+			<section id="guide-select">
+				<h2 class="guide-sec-tit">모바일용 Select <span class="desc">v2.0.0</span></h2>
+
+				<div class="guide-sec">
+					<h3 class="guide-stit">개요</h3>
+					<p>select 를 버튼으로 대체하고, 버튼 클릭 시 화면 하단에 option 과 연동된 목록을 표출</p>
+					<p>v1 의 nSelectDrag(클릭+드래그) / nSelect(클릭) 를 <b>nSelectMobile</b> 하나로 통합 - <b>drag</b> 옵션으로 드래그 선택 on/off</p>
+					<ul>
+						<li>- drag : false (기본) - 일반 목록 / 항목 클릭 시 바로 선택</li>
+						<li>- drag : true - 휠 형태 목록 / 드래그(터치 스크롤) 후 '확인' 버튼으로 선택, 항목 클릭 시 바로 선택</li>
+					</ul>
+					<p>hidden option 은 목록에서 제외 / disabled option 은 선택 불가 / select 에 readonly · disabled 속성이 있으면 열리지 않음</p>
+					<p>common.js 불필요 (v2.0.0 부터 의존 파일 없음)</p>
+				</div>
+
+				<div class="guide-sec">
+					<h3 class="guide-stit">예시</h3>
+					<div class="guide-show">
+						<!-- 코드 작성 -->
+						<div class="sel-demo">
+							<label for="sel-click">클릭 선택 (drag : false)</label>
+							<div class="n-select sel-click">
+								<select name="sel-click" id="sel-click">
+									<option value="" hidden>선택해주세요</option>
+									<option value="1">string 1</option>
+									<option value="2">string 2</option>
+									<option value="3" disabled>string 3 (disabled)</option>
+									<option value="4">string 4</option>
+									<option value="5">string 5</option>
+								</select>
+							</div>
+						</div>
+						<div class="sel-demo">
+							<label for="sel-drag">드래그 선택 (drag : true)</label>
+							<div class="n-select sel-drag">
+								<select name="sel-drag" id="sel-drag">
+									<option value="1">Number 1</option>
+									<option value="2">Number 2</option>
+									<option value="3" disabled>Number 3 (disabled)</option>
+									<option value="4" selected>Number 4</option>
+									<option value="5">Number 5</option>
+									<option value="6">Number 6</option>
+									<option value="7">Number 7</option>
+								</select>
+							</div>
+						</div>
+						<div class="sel-demo">
+							<label for="sel-readonly">readonly (열리지 않음)</label>
+							<div class="n-select sel-readonly">
+								<select name="sel-readonly" id="sel-readonly" readonly>
+									<option value="1">선택 가능한 값이 1개</option>
+								</select>
+							</div>
+						</div>
+						<p class="sel-result" aria-live="polite">변경 내역 : -</p>
+						<!-- // 코드 작성 -->
+					</div>
+
+					<h4 class="guide-sstit">html</h4>
+					<p>select 를 감싼 영역(area)을 지정 / label 이 연결되어 있으면 버튼에 "label + 선택값" 으로 자동 연결</p>
+<pre><code class="html">&lt;label for="sel-click"&gt;클릭 선택&lt;/label&gt;
+&lt;div class="n-select sel-click"&gt;
+	&lt;select name="sel-click" id="sel-click"&gt;
+		&lt;option value="" hidden&gt;선택해주세요&lt;/option&gt;
+		&lt;option value="1"&gt;string 1&lt;/option&gt;
+		&lt;option value="2"&gt;string 2&lt;/option&gt;
+		&lt;option value="3" disabled&gt;string 3 (disabled)&lt;/option&gt;
+	&lt;/select&gt;
+&lt;/div&gt;
+</code></pre>
+
+					<h4 class="guide-sstit">script</h4>
+					<p>option 항목</p>
+					<ul>
+						<li>- area : select 를 감싼 영역 ( type : string / dom ) <strong class="tx-red">필수</strong></li>
+						<li>- title : 목록 상단 타이틀 ( type : string ) - 없으면 label 텍스트를 모달 이름(aria-label)으로 사용</li>
+						<li>- drag : 드래그 선택 사용 ( type : boolean ) - 기본 false</li>
+						<li>- optHeight : (drag) 항목 1개 높이 px ( type : number ) - 기본 40</li>
+						<li>- btnCls : select 대신 표시되는 버튼 클래스 - 기본 'btn-sel'</li>
+						<li>- modalCls : 모달에 추가할 클래스</li>
+						<li>- btnConfirmTx / btnCloseTx : 확인 / 닫기 버튼 텍스트 - 기본 '확인' / '닫기'</li>
+						<li>- activeChange : 값 변경 후 콜백 ( function(select, value, index) )</li>
+					</ul>
+					<p>메서드 : open() / close() / update() / set_disabled() / set_enabled() / destroy()</p>
+					<p>스크립트로 select 값을 변경한 경우 update() 호출 / 값이 바뀌었을 때만 select 에 change 이벤트 발생</p>
+<pre><code class="js">// 클릭 선택
+let selClick = new nSelectMobile({
+	area : '.n-select.sel-click',
+	title : '항목 선택'
+});
+
+// 드래그 선택
+let selDrag = new nSelectMobile({
+	area : '.n-select.sel-drag',
+	title : '숫자 선택',
+	drag : true,
+	optHeight : 40,
+	activeChange : function(select, value, index){
+		console.log(select.id, value, index);
+	}
+});
+
+// 스크립트로 값 변경 후 반영
+document.querySelector('#sel-drag').value = '2';
+selDrag.update();
+</code></pre>
+				</div>
+
+				<div class="guide-sec">
+					<h3 class="guide-stit">웹접근성</h3>
+					<ul>
+						<li>- 버튼 : aria-haspopup="dialog" / aria-expanded 자동 설정</li>
+						<li>- 모달 : role="dialog" / aria-modal="true" / 타이틀(aria-labelledby) 또는 label 텍스트(aria-label) 연결</li>
+						<li>- 목록 : ul role="listbox" / 항목 button role="option" + aria-selected</li>
+						<li>- 열기 시 타이틀(없으면 선택 항목)로 포커스 이동, 모달 외 영역 inert 처리</li>
+						<li>- ESC / 닫기 버튼 / 선택 후 select 버튼으로 포커스 복귀</li>
+					</ul>
+				</div>
+			</section>
+
+		</div>
+		<a href="#work-list" class="guide-top">Top</a>
+	</div>
+
+	<script src="/js/nSelectMobile_v2.0.0.js"></script>
+	<script>
+		hljs.initHighlightingOnLoad();
+
+		const selResult = document.querySelector('.sel-result');
+		function showResult(select, value, index){
+			selResult.textContent = '변경 내역 : #' + select.id + ' → value "' + value + '" (index ' + index + ')';
+		}
+
+		let selClick = new nSelectMobile({
+			area : '.n-select.sel-click',
+			title : '항목 선택',
+			activeChange : showResult
+		});
+
+		let selDrag = new nSelectMobile({
+			area : '.n-select.sel-drag',
+			title : '숫자 선택',
+			drag : true,
+			optHeight : 40,
+			activeChange : showResult
+		});
+
+		let selReadonly = new nSelectMobile({
+			area : '.n-select.sel-readonly'
+		});
+	</script>
+</body>
+</html>

@@ -1,7 +1,9 @@
 /* nCalendar_v3.0.0.js 대응 CSS */
+/* -- version : v3.1.0 (2026-10-28) : nCalendar_v3.1.0.js 대응 - cal_title(.cal-title) 스타일 추가 -- */
 
 .n_cal { position:absolute; display:none; width:300px; padding:10px; box-sizing:border-box; border:1px solid #aaa; background-color:#fff; border-radius:5px; z-index:0; }
 .n_cal.show { display:block; z-index:100; }
+.n_cal .cal-title { margin-bottom:8px; font-size:14px; line-height:20px; font-weight:700; color:#333; }
 .n_cal.in-page { position:relative; display:block; }
 
 .n_cal.dual { width:540px; }

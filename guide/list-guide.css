@@ -121,7 +121,7 @@ body.pub-guide { background-color:var(--guide-bg); }
 #work-list .sub-link > a,
 #work-list .sub-link > button { display:inline-block; margin-right:5px; padding:0 5px; font-size:12px; line-height:18px; color:#666; border:1px solid #aaa; border-radius:2px; }
 
-#work-list .list { width:100%; max-width:1600px; margin:28px auto 48px; padding:0 25px; box-sizing:border-box; }
+#work-list .list { width:100%; max-width:1600px; margin:20px auto 40px; padding:0 25px; box-sizing:border-box; }
 #work-list .list .site-title { display:flex; align-items:center; gap:8px; margin:36px 0 12px; padding:0 2px; font-size:16px; line-height:24px; font-weight:bold; color:var(--guide-text); }
 #work-list .list .site-title::before { content:''; width:4px; height:16px; background:var(--head-color); border-radius:2px; }
 #work-list .list .site-title:first-child { margin-top:0; }
@@ -162,7 +162,9 @@ body.pub-guide { background-color:var(--guide-bg); }
 #work-list .tbl-guide td.modify dl { overflow:hidden; text-align:left; }
 #work-list .tbl-guide td.modify dt { float:left; font-weight:bold; margin-right:10px; color:var(--head-color-1); }
 #work-list .tbl-guide td.modify dd { display:block; overflow:hidden;  }
-#work-list .tbl-guide tr.del td, #work-list .tbl-guide tr.del td a { color:#aaa; text-decoration: line-through; background-image:none; }
+#work-list .tbl-guide tr.del td, #work-list .tbl-guide tr.del td a { color:#aaa; text-decoration: line-through; }
+#work-list .tbl-guide tr.del td a { background-color: transparent; }
+#work-list .tbl-guide tr.del td a::after { opacity:.3; }
 #work-list .tbl-guide tr.del td.state::after { content:'삭제'; color:#aaa; background:#F1F1F1; }
 #work-list .tbl-guide tr.notuse td { color:var(--guide-text-mute); background:#f1f3f5; }
 #work-list .tbl-guide tr.notuse td a { opacity:.5; }

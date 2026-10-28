@@ -45,6 +45,33 @@
 - 딥 네스팅, base 클래스 오버라이드 지양
 - CSS는 전처리기 없이 순수 CSS(Vanilla CSS)로 작성
 
+#### JS 플러그인 구조
+
+- 신규 플러그인은 **class** 구조로 작성 (기존 함수형 플러그인은 다음 버전업 시 class로 전환)
+- 옵션 기본값은 `Object.assign({ 기본값 }, option)`으로 병합
+- 필수 요소를 찾지 못하는 등 초기화 실패 시 `console.warn` 후 상태값(`ready` 등)으로 표시하고, 공개 메서드는 해당 상태를 확인 후 동작
+- 멤버 접근 범위 규칙
+  - **접두사 없음** : 공개 API - 옵션 및 파일 상단 주석 [메서드]에 명시하는 항목 (`init()`, `destroy()`, `update()` 등)
+  - **`_` 접두사** : 내부용이지만 상속(`extends`)한 자식 class에서 사용·override 할 수 있는 항목 (위치 계산, DOM 생성 등 변형 가능성 있는 로직)
+  - **`#private`** : 외부에서 변경 시 동작이 깨지는 항목 (상태값, 이벤트 핸들러, 내부 DOM 참조)
+- 이벤트 핸들러는 `#onMove = (e) => { ... }` 형태의 화살표 함수 필드로 선언 (`this` 고정 → `bind` 없이 `removeEventListener` 가능)
+- 외부로 꺼내 쓰는 값(옵션 등)은 `#`로 두지 않음 (`Object.assign` / `JSON.stringify` 대상에서 제외되므로)
+
+```js
+class nSample {
+	#dragging = false;                       // 상태값 → #
+	#onMove = (e) => { if (this.#dragging) this._setPos(e.clientX, e.clientY); }; // 핸들러 → #
+
+	constructor(option = {}) {
+		this.opt = Object.assign({ gap: 10 }, option); // 공개
+		this.init();
+	}
+	init() { document.addEventListener('pointermove', this.#onMove); }        // 공개 메서드
+	destroy() { document.removeEventListener('pointermove', this.#onMove); }
+	_setPos(x, y) { /* 자식 class 에서 override 가능 */ }                       // 확장용 → _
+}
+```
+
 ### 3. 버전별 세트 관리
 
 기능을 만들 때는 HTML / CSS / JS를 **버전별 세트**로 관리합니다.
@@ -68,3 +95,4 @@ html / css / js 는 최신 버전을 사용하는걸 전제로 합니다. 단, �
  - 모바일 ios 는 2026년 9월 기준 사용율이 가장 높은 ios18 이상을 기준으로 합니다.
  - 모바일 android 는 2026년 9월 기준 버전별 사용율 합산이 90% 넘어가는 최소 버전을 기준으로 합니다. (android 12)
  - javascript 는 es8 이상.
+   - 위 브라우저 기준에서 지원되는 ES2022 class 문법(클래스 필드, `#private` 필드·메서드)은 사용 가능

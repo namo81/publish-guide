@@ -37,28 +37,32 @@
 				<div class="guide-sec">
 					<h3 class="guide-stit">기본 text</h3>
 					<p>data-type 에 입력가능한 타입 지정</p>
-					<p>num : 숫자 / end : 영문 / kor : 한글</p>
-					<p>data-type="num kor" 등 2개까지 조합 가능</p>
-					<p><strong>inpValueCheck(area, reg)</strong> 함수를 사용하며, area 는 input 선택자 / reg 는 직접 설정할 정규표현식</p>
-					<p>다수의 동일 class 적용 시 별도 querySelectorAll 선택 및 forEach를 통한 다수 적용 필요</p>
+					<p>num : 숫자 / eng : 영문(대소문자) / kor : 한글</p>
+					<p>data-type="num eng kor" 처럼 공백으로 자유롭게 조합 가능 (num 단독일 경우 공백 입력 불가 / 그 외 공백 허용)</p>
+					<p><strong>inpValueCheck(area, reg)</strong> 함수를 사용하며, area 는 input 선택자(일치하는 input 전체 적용) 또는 dom / reg 는 <b>제거할 문자</b> 정규표현식 (지정 시 data-type 무시)</p>
+					<p>한글 조합 중에는 처리하지 않고 조합 완료 후 처리 / 허용되지 않는 문자 제거 시 커서 위치 유지</p>
 					<div class="guide-show">
-						<input type="text" name="" title="" class="input-box inp-txt" data-type="num" placeholder="숫자 입력">
-						<input type="text" name="" title="" class="input-box inp-txt" data-type="eng" placeholder="영문입력">
-						<input type="text" name="" title="" class="input-box inp-txt" data-type="kor" placeholder="한글입력">
+						<input type="text" name="" title="숫자 입력" class="input-box inp-txt" data-type="num" placeholder="숫자 입력">
+						<input type="text" name="" title="영문 입력" class="input-box inp-txt" data-type="eng" placeholder="영문입력">
+						<input type="text" name="" title="한글 입력" class="input-box inp-txt" data-type="kor" placeholder="한글입력">
+						<input type="text" name="" title="숫자 영문 입력" class="input-box inp-txt" data-type="num eng" placeholder="숫자+영문">
+						<input type="text" name="" title="아이디 입력" class="input-box inp-id" placeholder="영문 소문자+숫자 (정규식 지정)">
 					</div>
-<pre><code class="html">&lt;input type="text" name="" title="" class="inp-txt" data-type="num" placeholder="숫자 입력"&gt;
-&lt;input type="text" name="" title="" class="inp-txt" data-type="eng" placeholder="영문입력"&gt;
-&lt;input type="text" name="" title="" class="inp-txt" data-type="kor" placeholder="한글입력"&gt;
+<pre><code class="html">&lt;input type="text" name="" title="숫자 입력" class="inp-txt" data-type="num" placeholder="숫자 입력"&gt;
+&lt;input type="text" name="" title="영문 입력" class="inp-txt" data-type="eng" placeholder="영문입력"&gt;
+&lt;input type="text" name="" title="한글 입력" class="inp-txt" data-type="kor" placeholder="한글입력"&gt;
+&lt;input type="text" name="" title="숫자 영문 입력" class="inp-txt" data-type="num eng" placeholder="숫자+영문"&gt;
+&lt;input type="text" name="" title="아이디 입력" class="inp-id" placeholder="영문 소문자+숫자"&gt;
 </code></pre><br>
 
-<pre><code class="js">// area : input 선택자 / reg : 직접 설정할 정규표현식
+<pre><code class="js">// area : input 선택자(일치하는 input 전체) 또는 dom / reg : 제거할 문자 정규표현식
 inpValueCheck(area, reg)
 
-// ex : 특정 클래스를 가진 input 에 숫자만 입력하도록
-inpValueCheck('.클래스');
+// ex : data-type 기준으로 제한 (선택자에 해당하는 input 전체 적용)
+inpValueCheck('.inp-txt');
 
-// ex : 특정 클래스를 가진 input 에 직접 정규표현식 설정
-inpValueCheck('.클래스', '[a-z0-9]');
+// ex : 직접 정규표현식 설정 - 영문 소문자 / 숫자 외 문자 제거
+inpValueCheck('.inp-id', '[^a-z0-9]');
 </code></pre>
 				</div>
 
@@ -88,12 +92,12 @@ inpValueCheck('.클래스', '[a-z0-9]');
 		<a href="#work-list" class="guide-top">Top</a>	
 	</div>
 
-	<script src="../js/inpdesign_v2.1.0.js"></script>
+	<script src="../js/inpdesign_v2.2.0.js"></script>
 	<script>
 		hljs.initHighlightingOnLoad(); 
 
-		var chkInps = document.querySelectorAll('.inp-txt');
-		Array.prototype.forEach.call(chkInps, function(inp){ inpValueCheck(inp) });
+		inpValueCheck('.inp-txt');
+		inpValueCheck('.inp-id', '[^a-z0-9]');
 
 		function inpChkLogin(wrap){
 			var wrap 	= document.querySelector(wrap),

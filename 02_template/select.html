@@ -49,22 +49,32 @@
 					<h3 class="guide-stit">Select 디자인 적용</h3>
 					<p>option 까지 모두 디자인을 적용하는 경우 사용.</p>
 					<p>단, 추가적인 항목은 불가하며, select 의 value / text 값만 사용 가능.</p>
+					<ul>
+						<li>- hidden option 은 목록에서 제외 (placeholder 용도 - 선택 전 상태는 영역에 'not-sel' 클래스) / disabled option 은 선택 불가</li>
+						<li>- option 의 class 는 목록 버튼에 추가됨</li>
+						<li>- select 에 연결된 label 이 있으면 버튼에 "label + 선택값" 으로 연결 / select 에 'readonly' 클래스 시 선택 불가</li>
+						<li>- 키보드 : 방향키(닫힌 상태에서 열기 / 항목 이동), Enter(선택), ESC · Tab(닫기)</li>
+						<li>- 값이 바뀐 경우에만 select 에 change 이벤트 발생 / 스크립트로 selectedIndex 변경 후 change 이벤트를 dispatch 하면 버튼 텍스트 갱신</li>
+					</ul>
 					<div class="guide-show">
+						<label for="sel-mail">이메일 도메인</label>
 						<div class="n-select">
-							<select name="" title="" readonly>
-								<option value="direct">직접 선택</option>
+							<select name="sel-mail" id="sel-mail">
+								<option value="" hidden>선택해주세요</option>
+								<option value="direct">직접 입력</option>
 								<option value="nate" disabled>nate.com</option>
-								<option value="daum" hidden>daum.net</option>
 								<option value="google">google.com</option>
 								<option value="naver">naver.com</option>
 							</select>
 						</div>
 					</div>
-<pre><code class="html">&lt;div class="n-select"&gt;
-	&lt;select name="" title=""&gt;
-		&lt;option value=""&gt;직접 선택&lt;/option&gt;
-		&lt;option value=""&gt;nate.com&lt;/option&gt;
-		&lt;option value=""&gt;daum.net&lt;/option&gt;
+<pre><code class="html">&lt;label for="sel-mail"&gt;이메일 도메인&lt;/label&gt;
+&lt;div class="n-select"&gt;
+	&lt;select name="sel-mail" id="sel-mail"&gt;
+		&lt;option value="" hidden&gt;선택해주세요&lt;/option&gt;
+		&lt;option value="direct"&gt;직접 입력&lt;/option&gt;
+		&lt;option value="nate" disabled&gt;nate.com&lt;/option&gt;
+		&lt;option value="google"&gt;google.com&lt;/option&gt;
 	&lt;/select&gt;
 &lt;/div&gt;
 </code></pre>
@@ -79,15 +89,26 @@
 </code></pre>
 <pre><code class="js">// 단독요소 설정
 let selectName = new n_select('.n-select');
+selectName.selectDisable(true);	// 사용 불가 설정
 
-// 동일 클래스 다수 설정
+// 동일 클래스 다수 설정 (nSelArr 에 저장 - 1개일 경우 객체 / 다수일 경우 배열)
 n_selects('.n-select');
+
+// 스크립트로 값 변경 시
+selectName.select.selectedIndex = 2;
+selectName.select.dispatchEvent(new Event('change'));
 </code></pre>
 					<h4 class="guide-sstit">dropdown 방식</h4>
 					<p>UI 는 select 형태이나 기능이 다른 경우 사용</p>
 					<p>ex. input 리스트를 토글하여 다중 선택 및 선택값 표출 등</p>
-					<p>** 현재 캡스ON 에서 사용한 다중 체크박스 선택기능 적용</p>
+					<p>** 체크박스 다중 선택 + 확인 / 취소 기능</p>
 					<p>html / css 구조는 유지하며, 타 기능 적용 시 script 수정 필요</p>
+					<ul>
+						<li>- 확인 버튼 : 'btn-confirm' 클래스 (없을 경우 목록 내 첫 번째 '.btn') - 선택 항목을 버튼에 표시 (1개 : 항목명 / 다수 : 'OO 외 n개' / 전체 : '전체')</li>
+						<li>- 취소 버튼 : 'btn-cancel' 클래스 (선택) - 열기 전 체크 상태로 복원</li>
+						<li>- 외부 클릭 / ESC / 키보드로 영역 밖 이동 시 취소와 동일하게 처리</li>
+						<li>- 확인 시 영역(.n-select)에 change 이벤트 발생 / 선언변수.getChecked() : 체크된 input 배열 반환</li>
+					</ul>
 					<div class="guide-show">
 						<div class="n-select dropdown">
 							<button type="button" class="btn-select">선택</button>
@@ -111,10 +132,12 @@ n_selects('.n-select');
 									</li>
 								</ul>
 								<div class="btns">
-									<button type="button" class="btn small">확인</button>
+									<button type="button" class="btn small btn-cancel">취소</button>
+									<button type="button" class="btn small main btn-confirm">확인</button>
 								</div>
 							</div>
 						</div>
+						<p class="dropdown-result">선택 결과 : -</p>
 					</div>
 <pre><code class="html">&lt;div class="n-select dropdown"&gt;
 	&lt;button type="button" class="btn-select"&gt;선택&lt;/button&gt;
@@ -138,7 +161,8 @@ n_selects('.n-select');
 			&lt;/li&gt;
 		&lt;/ul&gt;
 		&lt;div class="btns"&gt;
-			&lt;button type="button" class="btn small"&gt;확인&lt;/button&gt;
+			&lt;button type="button" class="btn small btn-cancel"&gt;취소&lt;/button&gt;
+			&lt;button type="button" class="btn small main btn-confirm"&gt;확인&lt;/button&gt;
 		&lt;/div&gt;
 	&lt;/div&gt;
 &lt;/div&gt;
@@ -149,6 +173,11 @@ n_selects('.n-select');
 </code></pre>
 <pre><code class="js">// 설정
 let n_dropdown_1 = new n_dropdown('.n-select.dropdown');
+
+// 확인 시 선택값 확인
+n_dropdown_1.wrap.addEventListener('change', ()=>{
+	console.log(n_dropdown_1.getChecked());
+});
 </code></pre>
 				</div>
 			</section>
@@ -159,7 +188,7 @@ let n_dropdown_1 = new n_dropdown('.n-select.dropdown');
 
 	<script src="/js/common.js"></script>
 	<!-- input design js -->
-	<script src="/js/inpdesign_v2.1.0.js"></script>
+	<script src="/js/inpdesign_v2.2.0.js"></script>
 
 	<script>
 		hljs.initHighlightingOnLoad();
@@ -167,6 +196,11 @@ let n_dropdown_1 = new n_dropdown('.n-select.dropdown');
 		let n_select_1 = new n_select('.n-select');
 
 		let n_dropdown_1 = new n_dropdown('.n-select.dropdown');
+		const dropdownResult = document.querySelector('.dropdown-result');
+		n_dropdown_1.wrap.addEventListener('change', ()=>{
+			const labels = n_dropdown_1.getChecked().map((inp)=> inp.labels[0].textContent);
+			dropdownResult.textContent = '선택 결과 : ' + (labels.length ? labels.join(', ') : '-');
+		});
 	</script>
 </body>
 </html>
